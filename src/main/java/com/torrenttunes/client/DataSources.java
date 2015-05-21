@@ -18,6 +18,8 @@ public class DataSources {
 	
 	public static final String TORRENTS_DIR() {return HOME_DIR() + "/torrents";}
 	
+	public static final String CACHE_DIR() {return HOME_DIR() + "/cache";}
+	
 	public static final String SAMPLE_TORRENT_FILE() {return TORRENTS_DIR() + 
 			"/[kat.cr]fugazi.studio.discography.1989.2001.flac.torrent";
 	}
@@ -40,7 +42,7 @@ public class DataSources {
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
-	
+	public static final String TORRENT_UPLOAD_URL = "http://127.0.0.1:4567/torrent_upload";
 	
 	public static final List<URI> ANNOUNCE_LIST() {
 		List<URI> list = null;

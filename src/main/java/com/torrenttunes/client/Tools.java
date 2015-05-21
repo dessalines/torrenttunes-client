@@ -17,6 +17,15 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
@@ -27,17 +36,17 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 
 public class Tools {
-	
+
 	static final Logger log = LoggerFactory.getLogger(Tools.class);
 
-			
+
 	public static FilenameFilter MUSIC_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			return name.endsWith(".mp3");
 		}
 	};
-	
-	
+
+
 	public static String sha2FileChecksum(File file) {
 		HashCode hc = null;
 		try {
@@ -47,12 +56,13 @@ public class Tools {
 		}
 		return hc.toString();
 	}
-	
+
 	public static void setupDirectories() {
 		if (!new File(DataSources.HOME_DIR()).exists()) {
 			log.info("Setting up ~/." + DataSources.APP_NAME + " dirs");
 			new File(DataSources.HOME_DIR()).mkdirs();
 			new File(DataSources.TORRENTS_DIR()).mkdirs();
+			new File(DataSources.CACHE_DIR()).mkdirs();
 		} else {
 			log.info("Home directory already exists");
 		}
@@ -178,9 +188,37 @@ public class Tools {
 	public static final void dbClose() {
 		new DB("default").close();
 	}
-	
+
 	public static String constructTrackTorrentFilename(File file, String mbid) {
 		return mbid.toLowerCase() + "_" + sha2FileChecksum(file);
 	}
+
 	
+	
+	public static void uploadFileToTracker(File torrentFile) {
+
+
+		try {
+			HttpClient httpclient = HttpClientBuilder.create().build(); 
+			
+			HttpPost httppost = new HttpPost(DataSources.TORRENT_UPLOAD_URL);
+			
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			builder.addPart("torrent", new FileBody(torrentFile));
+			
+			HttpEntity entity = builder.build();
+	
+			httppost.setEntity(entity);
+
+			HttpResponse response = httpclient.execute(httppost);
+			log.info(response.toString());
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	
+	}
+
 }

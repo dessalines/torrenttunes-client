@@ -1,0 +1,20 @@
+
+
+
+CREATE TABLE 'settings' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'storage_path' TEXT DEFAULT NULL,
+'max_download_speed' INTEGER DEFAULT NULL,
+'max_upload_speed' INTEGER DEFAULT NULL,
+'max_cache_size_mb' INTEGER DEFAULT NULL
+);
+
+CREATE TABLE 'library' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'mbid' TEXT NOT NULL  DEFAULT 'NULL',
+'torrent_path' TEXT NOT NULL  DEFAULT 'NULL',
+'output_parent_path' TEXT NOT NULL  DEFAULT 'NULL',
+UNIQUE (torrent_path)
+);
+
+
