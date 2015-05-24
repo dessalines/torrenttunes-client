@@ -20,7 +20,9 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song;
+import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
 import com.turn.ttorrent.common.Torrent;
 
@@ -66,43 +68,54 @@ public class ScanDirectory {
 		for (ScanInfo si : scanInfos) {
 
 			try {
-				
+
 				// Fetch the song MBID
 				si.setStatus(ScanStatus.Scanning);
 				si.setStatus(ScanStatus.FetchingMusicBrainzId);
 				Song song = Song.fetchSong(si.getFile());
 				si.setMbid(song.getRecordingMBID());
-				
 
+			
 				// Create a torrent for the file, put it in the /.app/torrents dir
 				si.setStatus(ScanStatus.CreatingTorrent);
 				File torrentFile = createAndSaveTorrent(si, song);
-				
+
 				// If that file already exists in the DB, you don't need to do anything to it
 				if (torrentDBFiles.contains(torrentFile)) {
 					log.info(torrentFile + " was already in the DB");
 					continue;
 				}
-				
+
 				// Upload the torrent to the tracker
 				si.setStatus(ScanStatus.UploadingTorrent);
 				Tools.uploadFileToTracker(torrentFile);
-				
+
 				// Start seeding it
 				si.setStatus(ScanStatus.Completed);
 				torrentClient.addTorrent(si.getFile().getParentFile(), torrentFile);
-				
+
+				// Fetch the cover art, not absolutely necessary
+				String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
+				try {
+					CoverArt coverArt = CoverArt.fetchCoverArt(song);
+					coverArtURL = coverArt.getImageURL();
+					coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
+					coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
+				} catch(NoSuchElementException e) {}
+
 				// Save it to the DB
-				Tools.dbInit();
-				Library library = LIBRARY.create("mbid", song.getRecordingMBID(),
-						"torrent_path", torrentFile.getAbsolutePath(),
-						"output_parent_path", si.getFile().getParentFile().getAbsolutePath());
-				library.saveIt();
+				Tools.dbInit();				
+				Actions.saveSongToLibrary(song.getRecordingMBID(), 
+						torrentFile.getAbsolutePath(), 
+						si.getFile().getAbsolutePath(), 
+						song.getArtist(), 
+						song.getRelease(), 
+						song.getRecording(), 
+						coverArtURL,
+						coverArtLargeThumbnail, 
+						coverArtSmallThumbnail,
+						song.getDuration());
 				Tools.dbClose();
-				
-				
-				
-				
 
 
 
@@ -131,7 +144,7 @@ public class ScanDirectory {
 			libraryFiles.add(new File(track.getString("torrent_path")));
 		}
 		Tools.dbClose();
-		
+
 		return libraryFiles;
 	}
 
@@ -142,7 +155,7 @@ public class ScanDirectory {
 		String torrentFileName = Tools.constructTrackTorrentFilename(
 				si.getFile(), song.getRecordingMBID());
 		File torrentFile = new File(DataSources.TORRENTS_DIR() + "/" + torrentFileName + ".torrent");
-		
+
 
 		List<List<URI>> announceList = Arrays.asList(DataSources.ANNOUNCE_LIST());
 
@@ -152,7 +165,7 @@ public class ScanDirectory {
 				Torrent.DEFAULT_PIECE_LENGTH,
 				announceList, 
 				System.getProperty("user.name"));
-		
+
 		OutputStream os = new FileOutputStream(torrentFile);
 		torrent.save(os);
 		os.close();

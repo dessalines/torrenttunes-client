@@ -44,9 +44,11 @@ public class TorrentClient {
 		// start sharing them
 		for (Library track : library) {
 			String torrentPath = track.getString("torrent_path");
-			String outputParent = track.getString("output_parent_path");
+			String filePath = track.getString("file_path");
 			
-			addTorrent(new File(outputParent), new File(torrentPath));
+			File outputParent = new File(filePath).getParentFile();
+			
+			addTorrent(outputParent, new File(torrentPath));
 		}
 		
 		log.info("Done seeding library, total of " + clients.size() + " torrents shared");

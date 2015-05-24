@@ -9,8 +9,11 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-client";
 	
+	public static Integer SPARK_WEB_PORT = 4568;
 	
-	// The path to the ytm dir
+	public static final String MAIN_PAGE_URL = "http://localhost:" + SPARK_WEB_PORT + "/main";
+	
+	// The path to the torrenttunes dir
 	public static String HOME_DIR() {
 		String userHome = System.getProperty( "user.home" ) + "/." + APP_NAME;
 		return userHome;
@@ -35,6 +38,7 @@ public class DataSources {
 	public static final String SOURCE_CODE_HOME() {return HOME_DIR() + "/src";}
 	
 	public static final String SQL_FILE() {return SOURCE_CODE_HOME() + "/ddl.sql";}
+	public static final String SQL_VIEWS_FILE() {return SOURCE_CODE_HOME() + "/views.sql";}
 	
 	public static final String SHADED_JAR_FILE = CODE_DIR + "/target/" + APP_NAME + ".jar";
 
@@ -43,6 +47,19 @@ public class DataSources {
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
 	public static final String TORRENT_UPLOAD_URL = "http://127.0.0.1:4567/torrent_upload";
+
+
+	
+	// Web pages
+	public static final String WEB_HOME() {return SOURCE_CODE_HOME() + "/web";}
+
+	public static final String WEB_HTML() {return WEB_HOME() + "/html";}
+	
+
+	public static final String PAGES(String pageName) {
+		return WEB_HTML() + "/" + pageName + ".html";
+	}
+	
 	
 	public static final List<URI> ANNOUNCE_LIST() {
 		List<URI> list = null;

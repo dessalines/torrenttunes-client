@@ -13,8 +13,31 @@ CREATE TABLE 'library' (
 'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
 'mbid' TEXT NOT NULL  DEFAULT 'NULL',
 'torrent_path' TEXT NOT NULL  DEFAULT 'NULL',
-'output_parent_path' TEXT NOT NULL  DEFAULT 'NULL',
+'file_path' TEXT NOT NULL  DEFAULT 'NULL',
+'title' TEXT DEFAULT NULL,
+'artist' TEXT DEFAULT NULL,
+'album' TEXT DEFAULT NULL,
+'duration_ms' INTEGER NOT NULL  DEFAULT NULL,
+'album_coverart_url' TEXT DEFAULT NULL,
+'album_coverart_thumbnail_large' TEXT DEFAULT NULL,
+'album_coverart_thumbnail_small' TEXT DEFAULT NULL,
 UNIQUE (torrent_path)
+);
+
+CREATE TABLE 'playlist' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'name' TEXT DEFAULT NULL
+);
+
+CREATE TABLE 'playlist_track' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'playlist_id' INTEGER DEFAULT NULL REFERENCES 'playlist' ('id'),
+'library_id' INTEGER DEFAULT NULL REFERENCES 'library' ('id')
+);
+
+CREATE TABLE 'queue_track' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'library_id' INTEGER DEFAULT NULL REFERENCES 'library' ('id')
 );
 
 

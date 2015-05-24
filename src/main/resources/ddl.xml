@@ -10,7 +10,7 @@
             <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
             <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
         </group>
-    </datatypes><table x="237" y="99" name="settings">
+    </datatypes><table x="160" y="7" name="settings">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -30,7 +30,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="530" y="98" name="library">
+<table x="149" y="154" name="library">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -40,14 +40,74 @@
 <row name="torrent_path" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
-<row name="output_parent_path" null="0" autoincrement="0">
+<row name="file_path" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
+<row name="title" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="artist" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="album" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="duration_ms" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="album_coverart_url" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="album_coverart_thumbnail_large" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="album_coverart_thumbnail_small" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <key type="UNIQUE" name="">
 <part>torrent_path</part>
+</key>
+</table>
+<table x="265" y="435" name="playlist">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="458" y="298" name="playlist_track">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="playlist_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="playlist" row="id" />
+</row>
+<row name="library_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="library" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="443" y="151" name="queue_track">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="library_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="library" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
 </key>
 </table>
 </sql>

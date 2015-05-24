@@ -38,7 +38,7 @@ public class InitializeTables {
 				log.info("Opened database successfully");
 
 				Tools.runSQLFile(c, new File(DataSources.SQL_FILE()));
-				//					Tools.runSQLFile(c, new File(DataSources.SQL_VIEWS_FILE()));
+				Tools.runSQLFile(c, new File(DataSources.SQL_VIEWS_FILE()));
 
 				c.close();
 
