@@ -9,12 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.client.DataSources;
 import com.torrenttunes.client.Tools;
+import com.torrenttunes.client.TorrentClient;
 
 public class WebService {
 static final Logger log = LoggerFactory.getLogger(WebService.class);
 
 	
-	public static void start() {
+	public static void start(TorrentClient torrentClient) {
 		
 
 
@@ -27,7 +28,7 @@ static final Logger log = LoggerFactory.getLogger(WebService.class);
 
 		externalStaticFileLocation(DataSources.WEB_HOME());
 		
-		Platform.setup();
+		Platform.setup(torrentClient);
 		
 //		API.setup(tracker);
 		

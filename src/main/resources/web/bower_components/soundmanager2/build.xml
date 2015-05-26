@@ -1,0 +1,335 @@
+<?xml version="1.0"?>
+
+<!--
+
+	SoundManager 2 buildfile (Ant)
+
+	This is tested on OS X and Windows and uses Google's Closure Compiler (JS), MTASC (Flash 8) and mxmlc (Adobe Flex Open Source SDK) for the Flash 9 build.
+	Perl is used only to display file sizes during compilation, and can be commented out if you don't have it installed.
+
+    USAGE
+
+	- Go to the soundmanager2 root directory (ie., where this build.xml file is.)
+	- Create the file .build.properties containing the paths to the external tools.
+	  For example, on Windows:
+
+		closure-compiler.jar=C:\\Tools\\closure\\compiler.jar
+		mtasc=C:\\Tools\\mtasc\\mtasc.exe
+		mxmlc=C:\\Tools\\flex_sdk\\bin\\mxmlc.exe
+
+	- Run "ant"
+
+	RELATED DOWNLOADS
+
+    Google Closure Compiler
+	http://code.google.com/closure/compiler/
+
+    MTASC (Windows / OS X / Linux) compiler for AS2/Flash 8 SWF
+	http://www.mtasc.org/
+
+    Precompiled MTASC binaries (eg., Universal binary that should work on OS X Lion):
+    http://lists.motion-twin.com/pipermail/mtasc/2007-February/030170.html
+
+    Adobe Flex Open Source SDK (including mxmlc compiler) for AS3/Flash 9 SWF
+	http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK
+	** NOTE: ExternalInterface issues were found in SWFs compiled with Flex SDK version 4.5.1.21328. Do not use 4.5.x. Instead, use Flex SDK version 4.1.0.16076 to be safe, which has been confirmed to work with SM2 (Flash 9 version.) **
+
+	WHAT IS AUTOMATED
+
+	* Build of soundmanager-jsmin.js from soundmanager2.js (google closure compiler compression)
+	* Build of soundmanager-nodebug.js and soundmanager-nodebug-jsmin.js (above, plus stripping out <d>-annotated sections</d> of debug functionality, eg. writeDebug() and debug strings etc.)
+	* Build of AS2/AS3 SWFs from .AS source, plus debug-enabled versions. Additionally, cross-domain-enabled versions are made and placed into a zip file.
+
+	MAKING THIS SUCK LESS (TODO)
+
+	* Split up actions (ie., option to do only JS, only SWFs etc. vs. full build)
+
+-->
+
+<project name="SoundManager 2" default="build" basedir=".">
+
+  <property file='${basedir}/.build.properties'/>
+  <property name='mxmlc' value='/Applications/mxmlc/bin/mxmlc'/>
+  <property name='mtasc' value='/Applications/mtasc/mtasc'/>
+  <property name='closure-compiler.jar' value="${user.home}/compiler.jar"/>
+
+  <echo>${closure-compiler.jar}</echo>
+  <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" classpath="${closure-compiler.jar}"/>
+
+<target name="build">
+
+<echo>Removing existing JS builds...</echo>
+
+<delete file="script/soundmanager2-nodebug.js"/>
+<delete file="script/soundmanager2-jsmin.js"/>
+<delete file="script/soundmanager2-nodebug-jsmin.js"/>
+
+<echo>Compressing minified JS...</echo>
+
+<mkdir dir="tmp"/>
+
+<!-- Google Closure Compiler -->
+<echo level="debug"
+ message="java -jar ${closure-compiler.jar} --compilation_level SIMPLE_OPTIMIZATIONS --js script/soundmanager2.js --js_output_file tmp/soundmanager2-jsmin-temp.js"/>
+
+<jscomp compilationLevel="simple" debug="false" output="script/soundmanager2-jsmin.js">
+    <sources dir="script">
+	<file name="soundmanager2.js"/>
+    </sources>
+</jscomp>
+
+<!-- Retain license comment through further closure compiler minification -->
+
+<replace file="script/soundmanager2-jsmin.js">
+    <replacefilter>
+	<replacetoken>/**</replacetoken>
+	<replacevalue>/** @license</replacevalue>
+    </replacefilter>
+</replace>
+
+<echo>Making no-debug JS...</echo>
+
+<copy file="script/soundmanager2.js" tofile="script/soundmanager2-nodebug.js" overwrite="true"/>
+
+<replace file="script/soundmanager2-nodebug.js">
+    <!-- Set debug mode -->
+    <replacefilter>
+	<replacetoken>this.debugMode = true;</replacetoken>
+	<replacevalue>this.debugMode = false;</replacevalue>
+    </replacefilter>
+</replace>
+
+<!-- remove [d] and [/d] blocks -->
+<replaceregexp match="// &lt;d&gt;*.+?// &lt;\/d&gt;" replace="" flags="gs" byline="false" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove sm2._wD() calls -->
+<replaceregexp match="\s+sm2._wD\(*.+?\);" replace="" flags="s" byline="true" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove _wDS() calls -->
+<replaceregexp match="\s+_wDS\(*.+?\);" replace="" flags="s" byline="true" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove debugTS() calls -->
+<replaceregexp match="\s+debugTS\(*.+?\);" replace="" flags="s" byline="true" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove complain() calls -->
+<replaceregexp match="\s+complain\(*.+?\);" replace="" flags="s" byline="true" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove single-line comments -->
+<replaceregexp match="\s+?//.*" replace="" flags="s" byline="true" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove multi-line comments -->
+<replaceregexp match="/\*.+?\*/" replace="" flags="gs" byline="false" file="script/soundmanager2-nodebug.js" />
+
+<!-- remove multiple linebreaks, replace with one (could be improved) -->
+<replaceregexp file="script/soundmanager2-nodebug.js" match="\s+(\r\n)" flags="g" replace="\1" />
+
+<!-- more newline removal (license header) -->
+<!--
+<replaceregexp file="script/soundmanager2-jsmin.js" match="(\r?\n)+" flags="g" replace="\1" />
+-->
+
+<echo>Compressing no-debug JS...</echo>
+
+<jscomp compilationLevel="simple" output="script/soundmanager2-nodebug-jsmin.js">
+	<sources dir="script">
+		<file name="soundmanager2-nodebug.js"/>
+	</sources>
+</jscomp>
+
+<!-- retain license comment through further closure compiler minification? -->
+
+<replace file="script/soundmanager2-jsmin.js" token="/*" value="/** @license"/>
+<replace file="script/soundmanager2-nodebug-jsmin.js" token="/*" value="/** @license"/>
+
+<!-- fetch the license from the full source, and prepend it to the jsmin builds. -->
+
+<!-- a cheap hack: Read the first N lines of a file -->
+<loadfile property="sm2_license_jslint" srcFile="script/soundmanager2.js">
+	<filterchain>
+    	<headfilter lines="15"/>
+  </filterchain>
+</loadfile>
+
+<loadfile property="sm2_license" srcFile="script/soundmanager2.js">
+	<filterchain>
+    	<headfilter lines="12"/>
+  </filterchain>
+</loadfile>
+
+<echo>Retrieved SM2 license:</echo>
+<echo>${sm2_license}</echo>
+
+<!-- prepend license -->
+<!-- this is stupid, there must be a better concat + prepend way, but I couldn't seem to find it. -->
+<replaceregexp file="script/soundmanager2-nodebug.js" match="(.*+)" flags="s" replace="${sm2_license_jslint}\1" />
+<replaceregexp file="script/soundmanager2-nodebug-jsmin.js" match="(.*+)" flags="s" replace="${sm2_license}\1" />
+
+<!-- show size -->
+
+<echo>soundmanager2.js sizes (full, -jsmin, -nodebug, -nodebug-jsmin):</echo>
+
+<!-- TODO: remove this Perl usage -->
+<exec executable="perl">
+    <arg line='-e "print qq($_: ), (stat $_)[7], qq(\n) for @ARGV" script/soundmanager2.js script/soundmanager2-jsmin.js script/soundmanager2-nodebug.js script/soundmanager2-nodebug-jsmin.js'/>
+</exec>
+
+<echo>Building debug version, Flash 8/AS2...</echo>
+
+<exec executable="${mtasc}">
+ <arg line='-swf swf/soundmanager2_debug.swf -main -header 16:16:30 src/SoundManager2.as -version 8'/>
+</exec>
+
+<echo>Building debug version, Flash 9/AS3...</echo>
+
+<exec executable="${mxmlc}">
+ <arg line='-debug=true -static-link-runtime-shared-libraries=true -optimize=true -o swf/soundmanager2_flash9_debug.swf -file-specs src/SoundManager2_AS3.as'/>
+</exec>
+
+<echo>Making no-debug .AS...</echo>
+
+<mkdir dir="tmp/soundmanager2_flash_nodebug"/>
+<copy todir="tmp/soundmanager2_flash_nodebug">
+    <fileset dir="src" includes="*.as"/>
+</copy>
+
+<!-- flash 8 debug -->
+
+<replace file="tmp/soundmanager2_flash_nodebug/SoundManager2.as">
+    <!-- Set debug mode -->
+    <replacefilter>
+	<replacetoken>var debugEnabled = true;</replacetoken>
+	<replacevalue>var debugEnabled = false;</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>writeDebug(</replacetoken>
+	<replacevalue>// flashDebug(</replacevalue>
+    </replacefilter>
+    <!-- <d> and </d> -->
+    <replacefilter>
+	<replacetoken>// &lt;d&gt;</replacetoken>
+	<replacevalue>/*</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>// &lt;/d&gt;</replacetoken>
+	<replacevalue>*/</replacevalue>
+    </replacefilter>
+</replace>
+
+<replace file="tmp/soundmanager2_flash_nodebug/SoundManager2.as">
+    <replacefilter>
+	<replacetoken>writeDebug(</replacetoken>
+	<replacevalue>// writeDebug(</replacevalue>
+    </replacefilter>
+</replace>
+
+<!-- flash 9 debug: SoundManager2 -->
+
+<replace file="tmp/soundmanager2_flash_nodebug/SoundManager2_AS3.as">
+    <replacefilter>
+	<replacetoken>public var debugEnabled: Boolean = true;</replacetoken>
+	<replacevalue>public var debugEnabled: Boolean = false;</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>flashDebug(</replacetoken>
+	<replacevalue>// flashDebug(</replacevalue>
+    </replacefilter>
+    <!-- <d> and </d> -->
+    <replacefilter>
+	<replacetoken>// &lt;d&gt;</replacetoken>
+	<replacevalue>/*</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>// &lt;/d&gt;</replacetoken>
+	<replacevalue>*/</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>writeDebug(</replacetoken>
+	<replacevalue>// writeDebug(</replacevalue>
+    </replacefilter>
+</replace>
+
+<!-- flash 9 debug: SMSound -->
+
+<replace file="tmp/soundmanager2_flash_nodebug/SoundManager2_SMSound_AS3.as">
+    <replacefilter>
+	<replacetoken>flashDebug(</replacetoken>
+	<replacevalue>// flashDebug(</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>writeDebug(</replacetoken>
+	<replacevalue>// writeDebug(</replacevalue>
+    </replacefilter>
+    <!-- <d> and </d> -->
+    <replacefilter>
+	<replacetoken>// &lt;d&gt;</replacetoken>
+	<replacevalue>/*</replacevalue>
+    </replacefilter>
+    <replacefilter>
+	<replacetoken>// &lt;/d&gt;</replacetoken>
+	<replacevalue>*/</replacevalue>
+    </replacefilter>
+</replace>
+
+<echo>Making cross-domain .AS..</echo>
+
+<mkdir dir="tmp/soundmanager2_flash_xdomain"/>
+<mkdir dir="tmp/soundmanager2_flash_xdomain/nodebug"/>
+
+<copy todir="tmp/soundmanager2_flash_xdomain">
+    <fileset dir="src" includes="*.as"/>
+</copy>
+<copy todir="tmp/soundmanager2_flash_xdomain/nodebug">
+    <fileset dir="tmp/soundmanager2_flash_nodebug" includes="*.as"/>
+</copy>
+
+<!-- cross-domain .AS (regular, debug version)... -->
+
+<replace file="tmp/soundmanager2_flash_xdomain/SoundManager2.as" token="var allow_xdomain_scripting = false;" value="var allow_xdomain_scripting = true;"/>
+<replace file="tmp/soundmanager2_flash_xdomain/SoundManager2_AS3.as" token="var allow_xdomain_scripting:Boolean = false;" value="var allow_xdomain_scripting:Boolean = true;"/>
+
+<!-- -nodebug cross-domain -->
+
+<replace file="tmp/soundmanager2_flash_xdomain/nodebug/SoundManager2.as" token="var allow_xdomain_scripting = false;" value="var allow_xdomain_scripting = true;"/>
+<replace file="tmp/soundmanager2_flash_xdomain/nodebug/SoundManager2_AS3.as" token="var allow_xdomain_scripting:Boolean = false;" value="var allow_xdomain_scripting:Boolean = true;"/>
+
+<echo>Building no-debug SWFs...</echo>
+
+<exec executable="${mtasc}">
+ <arg line='-swf swf/soundmanager2.swf -main -header 16:16:30 tmp/soundmanager2_flash_nodebug/SoundManager2.as -version 8'/>
+</exec>
+
+<exec executable="${mxmlc}">
+ <arg line='-static-link-runtime-shared-libraries=true -optimize=true -o swf/soundmanager2_flash9.swf -file-specs tmp/soundmanager2_flash_nodebug/SoundManager2_AS3.as'/>
+</exec>
+
+<echo>Building debug cross-domain SWFs...</echo>
+
+<exec executable="${mtasc}">
+ <arg line='-swf tmp/soundmanager2_flash_xdomain/soundmanager2_debug.swf -main -header 16:16:30 tmp/soundmanager2_flash_xdomain/SoundManager2.as -version 8'/>
+</exec>
+
+<exec executable="${mxmlc}">
+ <arg line='-debug=true -static-link-runtime-shared-libraries=true -optimize=true -o tmp/soundmanager2_flash_xdomain/soundmanager2_flash9_debug.swf -file-specs tmp/soundmanager2_flash_xdomain/SoundManager2_AS3.as'/>
+</exec>
+
+<echo>Building no-debug cross-domain SWFs...</echo>
+
+<exec executable="${mtasc}">
+ <arg line='-swf tmp/soundmanager2_flash_xdomain/soundmanager2.swf -main -header 16:16:30 tmp/soundmanager2_flash_xdomain/nodebug/SoundManager2.as -version 8'/>
+</exec>
+
+<exec executable="${mxmlc}">
+ <arg line='-static-link-runtime-shared-libraries=true -optimize=true -o tmp/soundmanager2_flash_xdomain/soundmanager2_flash9.swf -file-specs tmp/soundmanager2_flash_xdomain/nodebug/SoundManager2_AS3.as'/>
+</exec>
+
+<!-- remove existing .zip, if found -->
+<delete file="swf/soundmanager2_flash_xdomain.zip"/>
+
+<!-- do the zip thing, FROM WITHIN THE TMP/ PATH -->
+<zip destfile="swf/soundmanager2_flash_xdomain.zip" basedir="tmp" includes="soundmanager2_flash_xdomain/*.swf" filesonly="true" level="9">
+</zip>
+
+<delete dir="tmp"/>
+
+</target>
+</project>

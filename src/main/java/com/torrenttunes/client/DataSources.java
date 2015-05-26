@@ -47,6 +47,8 @@ public class DataSources {
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
 	public static final String TORRENT_UPLOAD_URL = "http://127.0.0.1:4567/torrent_upload";
+	
+	public static final String TORRENT_INFO_UPLOAD_URL = "http://127.0.0.1:4567/torrent_info_upload";
 
 
 	
@@ -89,6 +91,7 @@ public class DataSources {
 		
 		return list;
 	}
+
 	
 	
 }

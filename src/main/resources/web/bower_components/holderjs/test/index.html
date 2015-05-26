@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+<head>
+<title>Holder Testing</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" class="holderjs">
+<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css' class="holderjs">
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+<style>
+	body {background: #fff; font-family:Arial,sans-serif;margin:0 auto;min-width:1080px}
+	.thumb {width:300px;height:250px;margin:25px;float:left}
+	.thumb img, .thumb .holderjs, .thumb object {display:block;margin:0 auto}
+	.thumb .caption {padding:10px;text-align:center;margin-top:10px}
+	.thumb.fullpage {float:none;clear:both;width:auto;height:100px;margin:25px}
+	.autosize img {width:100%}
+	#holder1 {background:url('?holder.js/300x200?text=Background%20placeholder&bg=000&fg=fff');width:300px;height:200px}
+</style>
+</head>
+<body>
+
+<div class="thumb">
+	<img data-src="holder.js/300x200">
+	<div class="caption">
+		 Plain placeholder
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?theme=social">
+	<div class="caption">
+		 Themed placeholder
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?random=yes&font=Droid Sans&text=Droid Sans">
+	<div class="caption">
+		Placeholder with random theme
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?text=заполнитель">
+	<div class="caption">
+		 Placeholder with text
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?bg=EE403D&fg=FFFFFF&text=Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+	<div class="caption">
+		 Placeholder with lengthy text
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200/#EE403D:#FFFFFF/text:Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+	<div class="caption">
+		 Placeholder with lengthy text (Legacy)
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.canvas/300x200?bg=EE403D&fg=FFFFFF&text=Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+	<div class="caption">
+		Canvas placeholder with lengthy text
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?theme=social&text=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempor, libero quis accumsan fringilla, augue est laoreet orci, consectetur euismod augue nisl sit amet arcu. Fusce ultrices ornare metus in porta. Aenean ac nisl ut tellus dignissim auctor quis id arcu. Vivamus lorem neque, pulvinar non dictum vel, sagittis lobortis odio.">
+	<div class="caption">
+		 Placeholder with very lengthy text
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?theme=social&text=Lorem ipsum   \n   dolor sit amet, consectetur adipiscing elit.">
+	<div class="caption">
+		 Placeholder with custom newline
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?theme=social&text=Lorem ipsum   \n   dolor sit amet, consectetur adipiscing elit.&nowrap=true">
+	<div class="caption">
+		 Placeholder with disabled line wrap
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?theme=industrial&text=The five boxing wizards jump quickly.&align=left">
+	<div class="caption">
+		 Placeholder with left-aligned text
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?theme=lava&text=The five boxing wizards jump quickly.&align=right">
+	<div class="caption">
+		 Placeholder with right-aligned text
+	</div>
+</div>
+<div class="thumb">
+	<script>
+	var r = Math.random();
+	if(r > 0.5){
+	document.write('<img data-src="holder.js/200x150" src="missing.jpg" style="width:200px;height:150px;outline:solid 3px red">');
+	}
+	else{
+	document.write('<img data-src="holder.js/200x150" src="image.jpg" style="width:200px;height:150px;outline:solid 3px green">');
+	}
+	</script>
+	<div class="caption">
+		Placeholder with (randomly) missing image source
+	</div>
+</div>
+<div class="thumb">
+	<div class="autosize">
+		<img data-src="holder.js/200x133?bg=111&fg=ffff00&auto=yes">
+	</div>
+	<div class="caption">
+		 Auto-sized placeholder
+	</div>
+</div>
+<div class="thumb">
+	<div class="autosize">
+		<img data-src="holder.js/200x133?bg=111&fg=ffff00&auto=yes&textmode=exact">
+	</div>
+	<div class="caption">
+		 Auto-sized placeholder in exact mode
+	</div>
+</div>
+<div class="thumb">
+	<div class="holderjs" id="holder1"></div>
+	<div class="caption">
+		<code>&lt;div&gt;</code> with background placeholder
+	</div>
+</div>
+<div class="thumb">
+	<div class="holderjs" style="width:300px;height:200px" data-background-src="?holder.js/300x200?bg=ff8362&fg=5e422e"></div>
+	<div class="caption">
+		<code>&lt;div&gt;</code> with <code>data-background-src</code> placeholder
+	</div>
+</div>
+
+<div class="thumb">
+	<div id="thumb1">
+	</div>
+	<div class="caption">
+		 Placeholder added through Holder API
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="custom.holder/150x100?theme=custom&auto=yes" style="width:300px;height:200px">
+	<div class="caption">
+		Auto-sized <code>canvas</code> placeholder with custom domain and theme
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?font=Pacifico&bg=4466ff&fg=fff&text=Pacifico">
+	<div class="caption">
+		 Placeholder using <span style="font-family:Pacifico">Pacifico</span> font</span>
+	</div>
+</div>
+<div class="thumb">
+	<object data-src="holder.js/300x200?font=Pacifico&bg=4466ff&fg=fff&text=Pacifico"></object>
+	<div class="caption">
+		<code>object</code> placeholder using <span style="font-family:Pacifico">Pacifico</span> font</span>
+	</div>
+</div>
+<div class="thumb">
+	<div style="overflow:hidden">
+	<img data-src="holder.js/50x75?theme=sky" style="float:left">
+	<img data-src="holder.js/100x75?theme=vine" style="float:left">
+	<img data-src="holder.js/150x75?theme=lava" style="float:left">
+	</div>
+	<div style="overflow:hidden">
+	<img data-src="holder.js/300x125?theme=industrial" style="float:left">
+	</div>
+<div class="caption">
+		 Placeholders demonstrating adaptive text size
+	</div>
+</div>
+<div class="thumb">
+	<img data-src="holder.js/300x200?size=40">
+	<div class="caption">
+		Placeholder with custom font size
+	</div>
+</div>
+<div class="fullpage thumb">
+	<img data-src="holder.js/90px80p?theme=sky">
+	<div class="caption">
+		 Full-page fluid placeholder
+	</div>
+</div>
+<div class="fullpage thumb">
+	<img data-src="holder.js/90%x80%/sky">
+	<div class="caption">
+		 Full-page fluid placeholder (Legacy)
+	</div>
+</div>
+<div class="fullpage thumb">
+	<object data-src="holder.js/90px80p?theme=vine"></object>
+	<div class="caption">
+		 Full-page fluid <code>object</code> placeholder
+	</div>
+</div>
+<div class="fullpage thumb">
+	<img data-src="holder.js/90px80p?theme=lava&textmode=literal">
+	<div class="caption">
+		 Full-page fluid placeholder in literal mode
+	</div>
+</div>
+<div class="fullpage thumb">
+	<img data-src="holder.js/90px80" id="toggleResize">
+	<div class="caption">
+		 Full-page fluid placeholder that toggles resizable updates when clicked
+	</div>
+</div>
+<div class="fullpage thumb">
+	<div id="invisible" style="display:none;width:90%;height:80%;margin:0 auto">
+		<img data-src="holder.js/100px100p?theme=sky">
+	</div>
+	<div class="caption">
+		Fluid placeholder inside invisible parent element.
+	</div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="../holder.js"></script>
+<!--
+<script src="require.js" data-main="test.js"></script>
+-->
+<script>
+	
+$(function () {
+	$("#invisible").show();
+
+	var resize = true;
+	$("#toggleResize").on("click", function () {
+		resize = !resize;
+		Holder.setResizeUpdate($(this).get(0), resize);
+	});
+});
+
+Holder.addImage("holder.js/300x200?theme=sky", "#thumb1").run();
+
+Holder.addTheme("custom", {foreground: "#fff", background: "#000", size: 15}).run({
+	domain: "custom.holder",
+	renderer: "canvas"
+})
+
+Holder.addTheme("fontawesome", {foreground: "#00ccaa", background: "#002211", size: 12}).run({
+	domain: "fontawesome.holder"
+});
+
+Holder.run({
+	domain: "holder.canvas",
+	renderer: "canvas"
+});
+</script>
+</body>
+</html>

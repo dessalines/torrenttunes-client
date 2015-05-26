@@ -1,7 +1,5 @@
 package com.torrenttunes.client;
 
-import java.io.File;
-
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -16,7 +14,7 @@ import com.torrenttunes.client.webservice.WebService;
 
 public class Main {
 	
-	static  Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+	static Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 	
 	public TorrentClient torrentClient;
 	
@@ -49,9 +47,9 @@ public class Main {
 		
 		EmbeddedBrowser.start();
 		
-//		torrentClient = TorrentClient.start();
+		torrentClient = TorrentClient.start();
 		
-		WebService.start();
+		WebService.start(torrentClient);
 		
 		
 		

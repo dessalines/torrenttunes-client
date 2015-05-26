@@ -1,0 +1,14 @@
+{
+  "name": "foggy",
+  "homepage": "https://github.com/nbartlomiej/foggy",
+  "_release": "e33b51c3fd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e33b51c3fd5f9c98616672dbee3b59e6aa48b5af"
+  },
+  "_source": "git://github.com/nbartlomiej/foggy.git",
+  "_target": "*",
+  "_originalSource": "foggy",
+  "_direct": true
+}

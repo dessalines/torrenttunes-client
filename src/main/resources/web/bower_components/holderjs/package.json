@@ -1,0 +1,48 @@
+{
+  "name": "holderjs",
+  "officialName": "Holder",
+  "version": "2.7.1",
+  "summary": "client side image placeholders",
+  "description": "Holder uses SVG to render image placeholders entirely in browser.",
+  "author": {
+    "name": "Ivan Malopinsky",
+    "url": "http://imsky.co"
+  },
+  "homepage": "http://holderjs.com",
+  "license": {
+    "type": "MIT",
+    "url": "http://opensource.org/licenses/MIT"
+  },
+  "keywords": [
+    "images",
+    "placeholders",
+    "client-side",
+    "canvas",
+    "generation",
+    "development",
+    "svg"
+  ],
+  "main": "holder.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/imsky/holder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imsky/holder/issues"
+  },
+  "devDependencies": {
+    "component-type": "^1.1.0",
+    "gulp": "~3",
+    "gulp-concat": "^2.2.0",
+    "gulp-header": "^1.0.2",
+    "gulp-jsbeautifier": "0.0.5",
+    "gulp-jshint": "^1.6.1",
+    "gulp-replace": "^0.5.3",
+    "gulp-todo": "^0.3.8",
+    "gulp-uglifyjs": "^0.4.4",
+    "gulp-util": "~3",
+    "gulp-webpack": "^1.3.0",
+    "moment": "^2.6.0",
+    "trim": "0.0.1"
+  }
+}

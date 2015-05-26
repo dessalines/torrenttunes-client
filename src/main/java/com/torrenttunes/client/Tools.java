@@ -26,10 +26,21 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
@@ -50,7 +61,9 @@ public class Tools {
 
 	public static final Gson GSON = new Gson();
 	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
-	
+
+	public static final ObjectMapper MAPPER = new ObjectMapper();
+
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
 
 
@@ -128,7 +141,7 @@ public class Tools {
 		return postMap;
 
 	}
-	
+
 
 	public static FilenameFilter MUSIC_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
@@ -283,33 +296,72 @@ public class Tools {
 		return mbid.toLowerCase() + "_" + sha2FileChecksum(file);
 	}
 
-	
-	
+
+
 	public static void uploadFileToTracker(File torrentFile) {
 
 
 		try {
 			HttpClient httpclient = HttpClientBuilder.create().build(); 
-			
+
 			HttpPost httppost = new HttpPost(DataSources.TORRENT_UPLOAD_URL);
-			
+
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.addPart("torrent", new FileBody(torrentFile));
-			
+			builder.addPart("test", new StringBody("derp", ContentType.DEFAULT_TEXT));
+
 			HttpEntity entity = builder.build();
-	
+
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
 			log.info(response.toString());
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-	
+
 	}
+
+	public static String uploadTorrentInfoToTracker(String jsonInfo) {
+
+
+		String postURL = DataSources.TORRENT_INFO_UPLOAD_URL;
+
+		String message = "";
+		try {
+
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+
+
+			HttpPost httpPost = new HttpPost(postURL);
+			httpPost.setEntity(new StringEntity(jsonInfo));
+
+			//			httpPost.setEntity(new StringEntity("L"));
+
+			ResponseHandler<String> handler = new BasicResponseHandler();
+
+
+			CloseableHttpResponse response = httpClient.execute(httpPost);
+
+			message = handler.handleResponse(response);
+
+			httpClient.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new NoSuchElementException("Couldn't save the torrent info");
+		} 
+
+		message = "Rqlite write status : " + message;
+		log.info(message);
+		return message;
+	}
+
+
+
 
 
 	public static String readFile(String path) {
@@ -336,5 +388,37 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public static JsonNode jsonToNode(String json) {
+
+		try {
+			JsonNode root = MAPPER.readTree(json);
+			return root;
+		} catch (Exception e) {
+			log.error("json: " + json);
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String nodeToJson(ObjectNode a) {
+		try {
+			return Tools.MAPPER.writeValueAsString(a);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String nodeToJsonPretty(JsonNode a) {
+		try {
+			return Tools.MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(a);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

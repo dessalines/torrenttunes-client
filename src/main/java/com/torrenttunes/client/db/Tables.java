@@ -19,6 +19,10 @@ public class Tables {
 	public static class QueueTrack extends Model {}
 	public static final QueueTrack QUEUE_TRACK = new QueueTrack();
 	
+	@Table("queue_view")
+	public static class QueueView extends Model {}
+	public static final QueueView QUEUE_VIEW = new QueueView();
+	
 	@Table("playlist_track")
 	public static class PlaylistTrack extends Model {}
 	public static final PlaylistTrack PLAYLIST_TRACK = new PlaylistTrack();

@@ -30,8 +30,9 @@ public class ScanDirectory {
 
 	static final Logger log = LoggerFactory.getLogger(ScanDirectory.class);
 
-	public File dir;
-	public TorrentClient torrentClient;
+	private File dir;
+	private TorrentClient torrentClient;
+
 
 	public static ScanDirectory start(File dir, TorrentClient torrentClient) {
 		return new ScanDirectory(dir, torrentClient);
@@ -40,7 +41,7 @@ public class ScanDirectory {
 	private ScanDirectory(File dir, TorrentClient torrentClient) {
 		this.dir = dir;
 		this.torrentClient = torrentClient;
-
+		
 		scan();
 	}
 
@@ -56,10 +57,8 @@ public class ScanDirectory {
 
 		log.info("New torrent files: " + files);
 
-
+		Set<ScanInfo> scanInfos = torrentClient.getScanInfos();
 		// Use ScanInfo to keep track of operations and messages while you're doing them
-		Set<ScanInfo> scanInfos = new LinkedHashSet<ScanInfo>();
-
 		for (File file : files) {
 			scanInfos.add(ScanInfo.create(file));
 		}
@@ -74,26 +73,7 @@ public class ScanDirectory {
 				si.setStatus(ScanStatus.FetchingMusicBrainzId);
 				Song song = Song.fetchSong(si.getFile());
 				si.setMbid(song.getRecordingMBID());
-
-			
-				// Create a torrent for the file, put it in the /.app/torrents dir
-				si.setStatus(ScanStatus.CreatingTorrent);
-				File torrentFile = createAndSaveTorrent(si, song);
-
-				// If that file already exists in the DB, you don't need to do anything to it
-				if (torrentDBFiles.contains(torrentFile)) {
-					log.info(torrentFile + " was already in the DB");
-					continue;
-				}
-
-				// Upload the torrent to the tracker
-				si.setStatus(ScanStatus.UploadingTorrent);
-				Tools.uploadFileToTracker(torrentFile);
-
-				// Start seeding it
-				si.setStatus(ScanStatus.Completed);
-				torrentClient.addTorrent(si.getFile().getParentFile(), torrentFile);
-
+				
 				// Fetch the cover art, not absolutely necessary
 				String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
 				try {
@@ -103,9 +83,32 @@ public class ScanDirectory {
 					coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
 				} catch(NoSuchElementException e) {}
 
+			
+				// Create a torrent for the file, put it in the /.app/torrents dir
+				si.setStatus(ScanStatus.CreatingTorrent);
+				File torrentFile = createAndSaveTorrent(si, song);
+
+				// If that file already exists in the DB, you don't need to do anything to it
+				if (torrentDBFiles.contains(torrentFile)) {
+					log.info(torrentFile + " was already in the DB");
+					si.setStatus(ScanStatus.AlreadyUploaded);
+					continue;
+				}
+
+				// Upload the torrent to the tracker
+				si.setStatus(ScanStatus.UploadingTorrent);
+				Tools.uploadFileToTracker(torrentFile);
+				
+
+				// Start seeding it
+				si.setStatus(ScanStatus.Completed);
+				torrentClient.addTorrent(si.getFile().getParentFile(), torrentFile);
+
+
+
 				// Save it to the DB
 				Tools.dbInit();				
-				Actions.saveSongToLibrary(song.getRecordingMBID(), 
+				Library track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
 						torrentFile.getAbsolutePath(), 
 						si.getFile().getAbsolutePath(), 
 						song.getArtist(), 
@@ -117,7 +120,7 @@ public class ScanDirectory {
 						song.getDuration());
 				Tools.dbClose();
 
-
+				Tools.uploadTorrentInfoToTracker(track.toJson(false));
 
 			} 
 
@@ -182,9 +185,10 @@ public class ScanDirectory {
 	public enum ScanStatus {
 		Pending(" "), 
 		Scanning("Scanning"), 
-		FetchingMusicBrainzId("Found MusicBrainz ID (MBID)"), 
-		MusicBrainzError("Couldn't Find MusicBrainz ID(MBID)"),
+		FetchingMusicBrainzId("Found MusicBrainz ID"), 
+		MusicBrainzError("Couldn't Find MusicBrainz ID"),
 		CreatingTorrent("Creating a torrent file"),
+		AlreadyUploaded("Already uploaded"),
 		UploadingTorrent("Uploading torrent file to server"),
 		UploadingError("Couldn't upload the torrent file"),
 		Completed("Completed, and seeding file");
@@ -204,6 +208,7 @@ public class ScanDirectory {
 
 		private ScanStatus status;
 		private String mbid;
+		
 
 		public static ScanInfo create(File file) {
 			return new ScanInfo(file);
@@ -212,12 +217,23 @@ public class ScanDirectory {
 			this.file = file;
 			this.status = ScanStatus.Pending;
 		}
+		
 		public File getFile() {
 			return file;
 		}
+		
+		public String getFileName() {
+			return file.getName();
+		}
+		
 		public ScanStatus getStatus() {
 			return status;
 		}
+		
+		public String getStatusString() {
+			return status.toString();
+		}
+		
 		public void setStatus(ScanStatus status) {
 			log.debug("Status for " + file.getName() + " : " + status.toString());
 			this.status = status;
@@ -228,11 +244,34 @@ public class ScanDirectory {
 		public void setMbid(String mbid) {
 			this.mbid = mbid;
 		}
+		
+		public String toJson() {
+			String json = null;
+			try {
+				json = Tools.MAPPER.writeValueAsString(this);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return json;
+		}
 
 
 
 
 	}
+	
+
+	public File getDir() {
+		return dir;
+	}
+
+	public TorrentClient getTorrentClient() {
+		return torrentClient;
+	}
+
+
 
 
 

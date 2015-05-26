@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.db.Tables.Library;
 import com.turn.ttorrent.client.Client;
 import com.turn.ttorrent.client.SharedTorrent;
@@ -21,6 +24,7 @@ public class TorrentClient {
 
 	
 	private List<Client> clients;
+	private Set<ScanInfo> scanInfos;
 
 
 	public static TorrentClient start() {
@@ -28,8 +32,8 @@ public class TorrentClient {
 	}
 	
 	private TorrentClient() {
-		clients = new ArrayList<Client>();
-		
+		this.clients = new ArrayList<Client>();
+		this.scanInfos = new LinkedHashSet<ScanInfo>();
 		startSeedingLibrary();
 	}
 	
@@ -88,6 +92,10 @@ public class TorrentClient {
 	
 	public List<Client> getClients() {
 		return clients;
+	}
+	
+	public Set<ScanInfo> getScanInfos() {
+		return scanInfos;
 	}
 	
 }
