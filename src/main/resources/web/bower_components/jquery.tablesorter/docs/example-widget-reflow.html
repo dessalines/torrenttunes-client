@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+	<title>jQuery plugin: Tablesorter 2.0 - Table Reflow Widget</title>
+
+	<!-- jQuery -->
+	<script src="js/jquery-latest.min.js"></script>
+
+	<!-- Demo stuff -->
+	<link class="ui-theme" rel="stylesheet" href="css/jquery-ui.min.css">
+	<script src="js/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/jq.css">
+	<link href="css/tipsy.css" rel="stylesheet">
+	<link href="css/prettify.css" rel="stylesheet">
+	<script src="js/prettify.js"></script>
+	<script src="js/docs.js"></script>
+	<script src="js/jquery.tipsy.min.js"></script>
+
+	<!-- Tablesorter: required -->
+	<link rel="stylesheet" href="../css/theme.blue.css">
+	<script src="../js/jquery.tablesorter.js"></script>
+	<script src="../js/jquery.tablesorter.widgets.js"></script>
+
+	<style>
+	/* override bootstrap link colors */
+	.ui-widget-content a {
+		color: #428BCA;
+	}
+	.ui-widget-content a:hover {
+		text-decoration: underline;
+	}
+	/*** column selector custom css only popup ***/
+	.columnSelectorWrapper {
+		position: relative;
+		margin: 10px 0;
+		display: inline-block;
+	}
+	.columnSelector, .hidden {
+		display: none;
+	}
+	.columnSelectorButton {
+		background: #99bfe6;
+		border: #888 1px solid;
+		color: #111;
+		border-radius: 5px;
+		padding: 5px;
+	}
+	#colSelect1:checked + label {
+		background: #5797d7;
+		border-color: #555;
+	}
+	#colSelect1:checked ~ #columnSelector {
+		display: block;
+	}
+	.columnSelector {
+		width: 120px;
+		position: absolute;
+		top: 30px;
+		padding: 10px;
+		background: #fff;
+		border: #99bfe6 1px solid;
+		border-radius: 5px;
+	}
+	.columnSelector label {
+		display: block;
+	}
+	.columnSelector label:nth-child(1) {
+		border-bottom: #99bfe6 solid 1px;
+		margin-bottom: 5px;
+	}
+	.columnSelector input {
+		margin-right: 5px;
+	}
+	.columnSelector .disabled {
+		color: #ddd;
+	}
+	.frame-wrapper {
+		max-width: 100%;
+		transition: all 1s ease 0s;
+	}
+	iframe {
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+	.sizes, .toggle {
+		display: inline-block;
+		height: 30px;
+		vertical-align: text-bottom;
+	}
+	.resize-frame {
+		list-style: none;
+		width: 250px;
+		height: 35px;
+		cursor: pointer;
+		padding: 5px;
+		margin: 0;
+		display: inline-block;
+	}
+	.resize-frame li {
+		background-image: url(img/screens.png);
+		background-repeat: no-repeat;
+		width: 35px;
+		height: 28px;
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+	}
+	.resize-frame li:hover, .resize-frame li.active {
+		color: #00488c;
+		background-color: #eee;
+		background-image: url(img/screens-blue.png);
+		border-radius: 3px;
+	}
+	.resize-frame li.setauto {
+		vertical-align: top;
+		background-image: none;
+		font-weight: bold;
+		font-family: Menlo, Monaco, Consolas, monospace;
+		font-size: 12px;
+		text-indent: 4px;
+		padding-top: 4px;
+	}
+	.setdktp { background-position: 0 2px; }
+	.settbll { background-position: -35px 2px; }
+	.settblp { background-position: -70px 2px; }
+	.setsmtl { background-position: -105px 2px; }
+	.setsmtp { background-position: -142px 2px; }
+
+	.full     { width: 100%;   height: 420px; } /* full browser */
+	.desktop  { width: 1440px; height: 420px; } /* desktop 1440x1024 */
+	.tablet-l { width: 1024px; height: 420px; } /* tablet landscape 1024x768 */
+	.tablet-p { width: 768px;  height: 420px; } /* tablet portrait 768x1024 */
+	.smart-l  { width: 480px;  height: 320px; } /* smartphone landscape 480x320 */
+	.smart-p  { width: 320px;  height: 420px; } /* smartphone portrait 320x480 */
+	</style>
+	<script src="../js/widgets/widget-columnSelector.js"></script>
+
+	<style>
+	/* REQUIRED CSS: change your reflow breakpoint here (35em below) */
+	@media ( max-width: 35em ) {
+		.ui-table-reflow td,
+		.ui-table-reflow th {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			float: right;
+			/* if not using the stickyHeaders widget (not the css3 version)
+			 * the "!important" flag, and "height: auto" can be removed */
+			width: 100% !important;
+			height: auto !important;
+		}
+		/* reflow widget */
+		.ui-table-reflow tbody td[data-title]:before {
+			color: #469;
+			font-size: .9em;
+			content: attr(data-title);
+			float: left;
+			width: 50%;
+			white-space: pre-wrap;
+			text-align: bottom;
+			display: inline-block;
+		}
+		/* reflow2 widget */
+		table.ui-table-reflow .ui-table-cell-label.ui-table-cell-label-top {
+			display: block;
+			padding: .4em 0;
+			margin: .4em 0;
+			text-transform: uppercase;
+			font-size: .9em;
+			font-weight: 400;
+		}
+		table.ui-table-reflow .ui-table-cell-label {
+			padding: .4em;
+			min-width: 30%;
+			display: inline-block;
+			margin: -.4em 1em -.4em -.4em;
+		}
+	}
+	.ui-table-reflow .ui-table-cell-label {
+		display: none;
+	}
+	</style>
+	<script src="../js/widgets/widget-reflow.js"></script>
+	<script>
+	$(function(){
+		// screen size class names
+		var j = 0,
+		allClasses = '',
+		sizes = [
+			[ 'full',     '100% width' ],
+			[ 'desktop',  'Desktop 1440x1024' ],
+			[ 'tablet-l', 'Tablet landscape 1024x768' ],
+			[ 'tablet-p', 'tablet portrait 768x1024' ],
+			[ 'smart-l',  'smartphone landscape 480x320' ],
+			[ 'smart-p',  'smartphone portrait 320x480' ]
+		];
+		$('.resize-frame li')
+			.each(function(i){
+				// add tooltip to each table size button
+				$(this).attr('title', sizes[j][1]);
+				j = (j + 1) % 6;
+				if (i < 6) {
+					allClasses += sizes[i][0] + ' ';
+				}
+			})
+			.on('click', function(){
+				var $t = $(this),
+					indx = $t.index();
+				$t.addClass('active').siblings().removeClass('active');
+				$t.parent().nextAll('div:first').removeClass(allClasses).addClass( sizes[indx][0] );
+			});
+		// toggle thead in iframe
+		$('button.toggle').click(function(){
+			$(this).nextAll('div:first').find('iframe').contents().find('thead').toggleClass('hide-header');
+		});
+
+		// add tooltip
+		$('.resize-frame li, .toggle').tipsy({ gravity: 's' });
+
+	});
+	</script>
+</head>
+<body>
+
+<div id="banner">
+	<h1>table<em>sorter</em></h1>
+	<h2>Table Reflow Widget</h2>
+	<h3>Flexible client-side table sorting</h3>
+	<a href="index.html">Back to documentation</a>
+</div>
+
+<div id="main">
+
+	<p></p>
+	<br>
+
+	<div class="accordion">
+
+		<h3><a href="#">Notes</a></h3>
+		<div>
+		<ul>
+			<li>This widget will <strong>only work</strong> in tablesorter version 2.8+ and jQuery version 1.7+.</li>
+			<li>The <strong>required css</strong>, shown below, is needed to make this widget work, but is completely customizable.</li>
+			<li>This demo sets the reflow breakpoint to 35em; so you'll need to resize your browser window to see this widget in action.</li>
+			<li>This widget is compatible with the column selector widget; but please note:
+				<ul>
+					<li>When a column is hidden, it will not show up when the table reflow occurs</li>
+					<li>For an example, see the second demo "Reflow + columnSelector widget" below.</li>
+					<li>The column selector widget, by default, has an additional breakpoint at "30em". So if the column selector is set to "Auto" and you continue to reduce the browser width after the table reflows, you'll see "Geometry" row disappear.</li>
+				</ul>
+			</li>
+			<li>It may not have been necessary to create two versions of this widget, but it was done because:
+				<ul>
+					<li>The first "reflow" widget does not add additional content to the tbody table cells, but it did not work well when attempting to add multiple content rows within the data-attribute. It would work if the css explicitly has the content set with a break like this (<a href="http://www.w3.org/TR/CSS2/generate.html#x18">ref</a>):
+						<pre class="prettyprint lang-css">content: "row1 \A row2";</pre>
+						But sadly, this method does not work when a data-attribute with the same content is used:
+						<pre class="prettyprint lang-css">content: attr(data-title);</pre>
+						The second method ignores the backslash and shows <code>"row1 \A row2"</code>
+					</li>
+					<li><span class="label label-info">Update</span>: After some discussion in <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=988694">bugzilla</a>, I discovered that it is possible to add multiple lines of content usigin a data-attribute by setting a <code>white-space: pre;</code> css definition and using <code>&amp;#10</code> instead of <code>\A</code> (<a href="http://jsfiddle.net/96pwE/5/">demo</a>), but I think I'll keep the second reflow version because it actually allows styling.</li>
+					<li>Adding bold elements to every table tbody cell is the method used by jQuery Mobile; so, a second reflow widget "reflow2" was created to do the same, and work properly with a thead containing multiple rows.</li>
+				</ul>
+			</li>
+			<li>
+				If you do not want the sortable headers to show when the table reflows, include this css within the media query:<br>
+				<br>
+				<pre class="prettyprint lang-css">table.ui-table-reflow thead { display: none; }</pre>
+			</li>
+		</ul>
+		</div>
+
+		<h3><a href="#">Reflow Widget</a></h3>
+		<div>
+			<ul>
+				<li>This version adds a <code>data-title</code> attribute (modifiable by the <code>reflow_dataAttrib</code> option), to every table body cell.</li>
+				<li>The required css shows the contents of this data-attribute when the browser width reaches the set break point.</li>
+				<li>So, this widget does not add any additional content to the table cells; which might be preferred if the table content should not be changed.</li>
+				<li>Do not use this version of the widget for a table with more than one header row.</li>
+			</ul>
+
+			<h4>Reflow widget default options (added inside of tablesorter <code>widgetOptions</code>)</h4>
+			<table class="tablesorter-blue">
+				<thead>
+					<tr><th>Option</th><th>Description</th></tr>
+				</thead>
+				<tbody>
+
+					<tr class="odd">
+						<td>reflow_className</td>
+						<td>
+							This class name is added to the table to make it responsive. The class name is the same as that used by <a href="http://demos.jquerymobile.com/1.4.2/table-reflow/">jQuery Mobile</a>.<br>
+							<br>
+							<pre class="prettyprint lang-html">&lt;table class=&quot;tablesorter tablesorter-blue ui-table-reflow&quot;&gt;...&lt;/table&gt;</pre>
+							<br>
+							Default value: <code>&quot;ui-table-reflow&quot;</code>
+						</td>
+					</tr>
+					<tr>
+						<td>reflow_headerAttrib</td>
+						<td>
+							Set this option to use your desired data-attribute. The set data-attribute contains the alternative header title added to every table body cell when the table reflows.<br>
+							<br>
+							For example, the "Sex" column below is renamed to "Gender" within the reflow cells:
+							<pre class="prettyprint lang-html">&lt;th data-name=&quot;Gender&quot;&gt;Sex&lt;/th&gt;</pre>
+							<br>
+							Default value: <code>&quot;data-name&quot;</code>
+						</td>
+					</tr>
+					<tr class="odd">
+						<td>reflow_dataAttrib</td>
+						<td>
+							Set this option to use your desired data-attribute which is added to every table body cell. It will contain the header name which is shown once the table reflows.<br>
+							<br>
+							For example, all of table body cells will show the contents from the set data-attribute when the table reflows:
+							<pre class="prettyprint lang-html">&lt;td data-title=&quot;Gender&quot;&gt;female&lt;/td&gt;</pre>
+							<br>
+							Default value: <code>&quot;data-title&quot;</code>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+		<h3><a href="#">Reflow2 Widget</a></h3>
+		<div>
+			<ul>
+				<li>This version of the reflow widget adds a bold element (<code>&lt;b&gt;</code>), containing the header cell name, to every table body cell.</li>
+				<li>The required css shows these elements when the browser width reaches the set break point.</li>
+				<li>Use this version of the widget for a table with <strong>more than one</strong> header row.</li>
+				<li>So, this widget does add additional content to the table tbody cells; this might not be preferred if the table content should not be changed.</li>
+				<li>If an update occurs, this widget will remove all cell elements, and replace them, even if the headers have changed.</li>
+				<li>In very large tables, initialization of the table may be slightly delayed.</li>
+			</ul>
+
+			<h4>Reflow2 widget default options (added inside of tablesorter <code>widgetOptions</code>)</h4>
+			<table class="tablesorter-blue">
+				<thead>
+					<tr><th>Option</th><th>Description</th></tr>
+				</thead>
+				<tbody>
+
+					<tr class="odd">
+						<td>reflow2_className</td>
+						<td>
+							This class name is added to the table to make it responsive. The class name is the same as that used by <a href="http://demos.jquerymobile.com/1.4.2/table-reflow/">jQuery Mobile</a>.<br>
+							<br>
+							<pre class="prettyprint lang-html">&lt;table class=&quot;tablesorter tablesorter-blue ui-table-reflow&quot;&gt;...&lt;/table&gt;</pre>
+							<br>
+							Default value: <code>&quot;ui-table-reflow&quot;</code>
+						</td>
+					</tr>
+					<tr>
+						<td>reflow2_classIgnore</td>
+						<td>
+							Set this option to use your desired class name. Any header cell with this class name will have it's contents ignored.<br>
+							<br>
+							For example, this is the "Paris" header cell in table3 below:
+							<pre class="prettyprint lang-html">&lt;th class="ui-table-reflow-ignore sorter-false"&gt;Paris&lt;/th&gt;</pre>
+							<br>
+							Default value: <code>&quot;ui-table-reflow-ignore&quot;</code>
+						</td>
+					</tr>
+					<tr class="odd">
+						<td>reflow2_headerAttrib</td>
+						<td>
+							Set this option to use your desired data-attribute. The set data-attribute contains the alternative header title added to every table body cell when the table reflows.<br>
+							<br>
+							For example, the "Sex" column below is renamed to "Gender" within the reflow cells:
+							<pre class="prettyprint lang-html">&lt;th data-name=&quot;Gender&quot;&gt;Sex&lt;/th&gt;</pre>
+							<br>
+							Default value: <code>&quot;data-name&quot;</code>
+						</td>
+					</tr>
+					<tr>
+						<td>reflow2_labelClass</td>
+						<td>
+							Set this option to use your desired class name.<br>
+							<br>
+							When the table reflows, the bold element (<code>&lt;b&gt;</code>) with this class name will be revealed; it must also be defined within the media query to display this element as an "inline-block", so it shares the row with the cell content
+							<h4>CSS</h4>
+							<pre class="prettyprint lang-css">/* additional selectors needed to increase css specificity */
+table.ui-table-reflow .ui-table-cell-label {
+  padding: .4em;
+  min-width: 30%;
+  display: inline-block;
+  margin: -.4em 1em -.4em -.4em;
+}</pre>
+							<h4>HTML</h4>
+							<pre class="prettyprint lang-html">&lt;th&gt;
+	&lt;b class="remove-me ui-table-cell-label"&gt;Month&lt;/b&gt;
+	Jaunuary
+&lt;/th&gt;</pre>
+							<br>
+							Default value: <code>&quot;ui-table-cell-label&quot;</code>
+						</td>
+					</tr>
+					<tr class="odd">
+						<td>reflow2_labelTop</td>
+						<td>
+							Set this option to use your desired class name.<br>
+							<br>
+							When the table reflows, the all upper header cell content is also included in every corresponding column table cell within a bold element (<code>&lt;b&gt;</code>); it must also be defined within the media query to display this element as a "block"
+							<h4>CSS</h4>
+							<pre class="prettyprint lang-css">/* additional selectors needed to increase css specificity */
+table.ui-table-reflow .ui-table-cell-label.ui-table-cell-label-top {
+  display: block;
+  padding: .4em 0;
+  margin: .4em 0;
+  text-transform: uppercase;
+  font-size: .9em;
+  font-weight: 400;
+}</pre>
+							<h4>HTML</h4>
+							<pre class="prettyprint lang-html">&lt;td&gt;
+	&lt;b class="remove-me ui-table-cell-label ui-table-cell-label-top"&gt;Average Temperatures (C)&lt;/b&gt;
+	&lt;b class="remove-me ui-table-cell-label">Minimum Temp&lt;/b&gt;
+	3
+&lt;/td&gt;
+</pre>
+							<br>
+							Default value: <code>&quot;ui-table-cell-label-top&quot;</code>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+
+		<h3><a href="#">Required CSS</a></h3>
+		<div>
+			The reflow widgets require the following css to hide/show header cell content within each table cell. Remove the css for whichever reflow widget that is not being used, as desired.<br>
+			<br>
+			<pre class="prettyprint lang-css">/* REQUIRED CSS: change your reflow breakpoint here (35em below) */
+@media ( max-width: 35em ) {
+
+	/* uncomment out the line below if you don't want the sortable headers to show */
+	/* table.ui-table-reflow thead { display: none; } */
+
+	/* css for reflow & reflow2 widgets */
+	.ui-table-reflow td,
+	.ui-table-reflow th {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: right;
+		/* if not using the stickyHeaders widget (not the css3 version)
+		 * the "!important" flag, and "height: auto" can be removed */
+		width: 100% !important;
+		height: auto !important;
+	}
+
+	/* reflow widget only */
+	.ui-table-reflow tbody td[data-title]:before {
+		color: #469;
+		font-size: .9em;
+		content: attr(data-title);
+		float: left;
+		width: 50%;
+		white-space: pre-wrap;
+		text-align: bottom;
+		display: inline-block;
+	}
+
+	/* reflow2 widget only */
+	table.ui-table-reflow .ui-table-cell-label.ui-table-cell-label-top {
+		display: block;
+		padding: .4em 0;
+		margin: .4em 0;
+		text-transform: uppercase;
+		font-size: .9em;
+		font-weight: 400;
+	}
+	table.ui-table-reflow .ui-table-cell-label {
+		padding: .4em;
+		min-width: 30%;
+		display: inline-block;
+		margin: -.4em 1em -.4em -.4em;
+	}
+
+} /* end media query */
+
+/* reflow2 widget */
+.ui-table-reflow .ui-table-cell-label {
+	display: none;
+}</pre>
+		</div>
+
+	</div>
+
+	<p>
+
+	<h1>Demo <small>(Pick a table width or resize the browser window)</small></h1>
+	<div id="demo"><h3>Reflow widget only</h3>
+	<span class="sizes">Set table width:</span>
+	<ul class="resize-frame">
+		<li class="setauto active">Auto</li>
+		<li class="setdktp"></li>
+		<li class="settbll"></li>
+		<li class="settblp"></li>
+		<li class="setsmtl"></li>
+		<li class="setsmtp"></li>
+	</ul>
+	<button class="toggle" title="Hide/show table header when the breakpoint is reached">Toggle Headers</button>
+	<div class="frame-wrapper full">
+		<iframe src="example-widget-reflow1.html"></iframe>
+	</div>
+
+	<h3>Reflow + columnSelector widget</h3>
+	<span class="sizes">Set table width:</span>
+	<ul class="resize-frame">
+		<li class="setauto active">Auto</li>
+		<li class="setdktp"></li>
+		<li class="settbll"></li>
+		<li class="settblp"></li>
+		<li class="setsmtl"></li>
+		<li class="setsmtp"></li>
+	</ul>
+	<button class="toggle" title="Hide/show table header when the breakpoint is reached">Toggle Headers</button>
+	<div class="frame-wrapper full">
+		<iframe src="example-widget-reflow2.html"></iframe>
+	</div>
+
+	<h3>Reflow2 widget (multiple thead rows)</h3>
+	<span class="sizes">Set table width:</span>
+	<ul class="resize-frame">
+		<li class="setauto active">Auto</li>
+		<li class="setdktp"></li>
+		<li class="settbll"></li>
+		<li class="settblp"></li>
+		<li class="setsmtl"></li>
+		<li class="setsmtp"></li>
+	</ul>
+	<button class="toggle" title="Hide/show table header when the breakpoint is reached">Toggle Headers</button>
+	<div class="frame-wrapper full">
+		<iframe src="example-widget-reflow3.html"></iframe>
+	</div>
+
+</div>
+
+	<h1>HTML</h1>
+	<div>
+		<pre class="prettyprint lang-html">&lt;h3&gt;Reflow widget only&lt;/h3&gt;
+&lt;table id=&quot;table1&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;Age&lt;/th&gt;
+      &lt;th&gt;Total&lt;/th&gt;
+      &lt;th&gt;Discount&lt;/th&gt;
+      &lt;th&gt;Date&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;td&gt;$5.95&lt;/td&gt;&lt;td&gt;22%&lt;/td&gt;&lt;td&gt;Jun 26, 2013 7:22 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;11&lt;/td&gt;&lt;td&gt;12&lt;/td&gt;&lt;td&gt;$82.99&lt;/td&gt;&lt;td&gt;5%&lt;/td&gt;&lt;td&gt;Aug 21, 2013 12:21 PM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;12&lt;/td&gt;&lt;td&gt;51&lt;/td&gt;&lt;td&gt;$99.29&lt;/td&gt;&lt;td&gt;18%&lt;/td&gt;&lt;td&gt;Oct 13, 2013 1:15 PM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;51&lt;/td&gt;&lt;td&gt;28&lt;/td&gt;&lt;td&gt;$9.99&lt;/td&gt;&lt;td&gt;20%&lt;/td&gt;&lt;td&gt;Jul 6, 2013 8:14 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;21&lt;/td&gt;&lt;td&gt;33&lt;/td&gt;&lt;td&gt;$19.99&lt;/td&gt;&lt;td&gt;25%&lt;/td&gt;&lt;td&gt;Dec 10, 2012 5:14 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;013&lt;/td&gt;&lt;td&gt;18&lt;/td&gt;&lt;td&gt;$65.89&lt;/td&gt;&lt;td&gt;45%&lt;/td&gt;&lt;td&gt;Jan 12, 2013 11:14 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;005&lt;/td&gt;&lt;td&gt;45&lt;/td&gt;&lt;td&gt;$153.19&lt;/td&gt;&lt;td&gt;45%&lt;/td&gt;&lt;td&gt;Jan 18, 2014 9:12 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;10&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;$5.29&lt;/td&gt;&lt;td&gt;4%&lt;/td&gt;&lt;td&gt;Jan 8, 2013 5:11 PM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;16&lt;/td&gt;&lt;td&gt;24&lt;/td&gt;&lt;td&gt;$14.19&lt;/td&gt;&lt;td&gt;14%&lt;/td&gt;&lt;td&gt;Jan 14, 2014 11:23 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;66&lt;/td&gt;&lt;td&gt;22&lt;/td&gt;&lt;td&gt;$13.19&lt;/td&gt;&lt;td&gt;11%&lt;/td&gt;&lt;td&gt;Jan 18, 2013 9:12 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;18&lt;/td&gt;&lt;td&gt;$55.20&lt;/td&gt;&lt;td&gt;15%&lt;/td&gt;&lt;td&gt;Feb 12, 2013 7:23 PM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;55&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;td&gt;$123.00&lt;/td&gt;&lt;td&gt;32%&lt;/td&gt;&lt;td&gt;Jan 20, 2014 1:12 PM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;td&gt;$22.09&lt;/td&gt;&lt;td&gt;17%&lt;/td&gt;&lt;td&gt;Jun 11, 2013 10:55 AM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;13&lt;/td&gt;&lt;td&gt;12&lt;/td&gt;&lt;td&gt;$19.99&lt;/td&gt;&lt;td&gt;18%&lt;/td&gt;&lt;td&gt;Jan 20, 2014 7:45 PM&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;73&lt;/td&gt;&lt;td&gt;58&lt;/td&gt;&lt;td&gt;$129.19&lt;/td&gt;&lt;td&gt;39%&lt;/td&gt;&lt;td&gt;Jan 20, 2014 10:11 AM&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3&gt;Reflow   columnSelector widget&lt;/h3&gt;
+&lt;!-- This selector markup is completely customizable --&gt;
+&lt;div class=&quot;columnSelectorWrapper&quot;&gt;
+  &lt;input id=&quot;colSelect1&quot; type=&quot;checkbox&quot; class=&quot;hidden&quot;&gt;
+  &lt;label class=&quot;columnSelectorButton&quot; for=&quot;colSelect1&quot;&gt;Column&lt;/label&gt;
+  &lt;div id=&quot;columnSelector&quot; class=&quot;columnSelector&quot;&gt;
+    &lt;!-- this div is where the column selector is added --&gt;
+  &lt;/div&gt;
+&lt;/div&gt; (When &quot;Auto&quot; is set, the table becomes responsive; resize the browser window to see it work)
+
+&lt;table id=&quot;table2&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th data-priority=&quot;critical&quot;&gt;Name&lt;/th&gt;
+      &lt;th data-priority=&quot;critical&quot;&gt;Major&lt;/th&gt;
+      &lt;th data-priority=&quot;6&quot; data-name=&quot;Gender&quot;&gt;Sex&lt;/th&gt;
+      &lt;th data-priority=&quot;4&quot;&gt;English&lt;/th&gt;
+      &lt;th data-priority=&quot;5&quot;&gt;Japanese&lt;/th&gt;
+      &lt;th data-priority=&quot;3&quot;&gt;Calculus&lt;/th&gt;
+      &lt;th data-priority=&quot;2&quot;&gt;Geometry&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Major&lt;/th&gt;&lt;th&gt;Sex&lt;/th&gt;&lt;th&gt;English&lt;/th&gt;&lt;th&gt;Japanese&lt;/th&gt;&lt;th&gt;Calculus&lt;/th&gt;&lt;th&gt;Geometry&lt;/th&gt;&lt;/tr&gt;
+  &lt;/tfoot&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;Student03&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td&gt;95&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student04&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;60&lt;/td&gt;&lt;td&gt;55&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student05&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;68&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;td&gt;95&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student12&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;75&lt;/td&gt;&lt;td&gt;70&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student13&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student14&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;50&lt;/td&gt;&lt;td&gt;45&lt;/td&gt;&lt;td&gt;55&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student15&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;95&lt;/td&gt;&lt;td&gt;35&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student16&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;50&lt;/td&gt;&lt;td&gt;30&lt;/td&gt;&lt;td&gt;70&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student17&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;female&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;55&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student18&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;30&lt;/td&gt;&lt;td&gt;49&lt;/td&gt;&lt;td&gt;55&lt;/td&gt;&lt;td&gt;75&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student19&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;68&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;td&gt;88&lt;/td&gt;&lt;td&gt;70&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student20&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;40&lt;/td&gt;&lt;td&gt;45&lt;/td&gt;&lt;td&gt;40&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student01&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;td&gt;70&lt;/td&gt;&lt;td&gt;75&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student02&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;td&gt;88&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student06&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;99&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student07&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td&gt;68&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student08&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student09&lt;/td&gt;&lt;td&gt;Mathematics&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;80&lt;/td&gt;&lt;td&gt;50&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;td&gt;75&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student10&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Student11&lt;/td&gt;&lt;td&gt;Languages&lt;/td&gt;&lt;td&gt;male&lt;/td&gt;&lt;td&gt;86&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;td&gt;100&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3&gt;Reflow2 widget (multiple thead rows)&lt;/h3&gt;
+&lt;table id=&quot;table3&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th class=&quot;ui-table-reflow-ignore sorter-false&quot;&gt;Paris&lt;/th&gt;
+      &lt;th colspan=&quot;2&quot;&gt;Average Temperatures (C)&lt;/th&gt;
+      &lt;th colspan=&quot;2&quot;&gt;Average Rainfall&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Month&lt;/th&gt;
+      &lt;th&gt;Minimum Temp&lt;/th&gt;
+      &lt;th&gt;Maximum Temp&lt;/th&gt;
+      &lt;th&gt;Precipitaion (mm)&lt;/th&gt;
+      &lt;th&gt;Rainfall Days&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;th&gt;Jaunuary&lt;/th&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;17.8&lt;/td&gt;&lt;td&gt;10&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;February&lt;/th&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;21.7&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;March&lt;/th&gt;&lt;td&gt;4&lt;/td&gt;&lt;td&gt;13&lt;/td&gt;&lt;td&gt;24.2&lt;/td&gt;&lt;td&gt;10&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;April&lt;/th&gt;&lt;td&gt;6&lt;/td&gt;&lt;td&gt;15&lt;/td&gt;&lt;td&gt;24.6&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;May&lt;/th&gt;&lt;td&gt;10&lt;/td&gt;&lt;td&gt;20&lt;/td&gt;&lt;td&gt;26.2&lt;/td&gt;&lt;td&gt;10&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;June&lt;/th&gt;&lt;td&gt;13&lt;/td&gt;&lt;td&gt;23&lt;/td&gt;&lt;td&gt;25.1&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;July&lt;/th&gt;&lt;td&gt;15&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;td&gt;21.7&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;August&lt;/th&gt;&lt;td&gt;15&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;td&gt;21.4&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;September&lt;/th&gt;&lt;td&gt;11&lt;/td&gt;&lt;td&gt;21&lt;/td&gt;&lt;td&gt;15.6&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;October&lt;/th&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;17&lt;/td&gt;&lt;td&gt;25.3&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;November&lt;/th&gt;&lt;td&gt;5&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;td&gt;22.4&lt;/td&gt;&lt;td&gt;12&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;December&lt;/th&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;26.6&lt;/td&gt;&lt;td&gt;12&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+	</div>
+
+	<h1>Javascript</h1>
+	<div>
+		<pre class="prettyprint lang-js">$(function() {
+
+	// simple reflow widget (table with 1 header row)
+	$("#table1").tablesorter({
+		theme: 'blue',
+		widgets: ['zebra', 'reflow'],
+		widgetOptions : {
+			// class name added to make it responsive (class name within media query)
+			reflow_className    : 'ui-table-reflow',
+			// header attribute containing modified header name
+			reflow_headerAttrib : 'data-name',
+			// data attribute added to each tbody cell
+			// it contains the header cell text, visible upon reflow
+			reflow_dataAttrib   : 'data-title'
+		}
+	});
+
+	// simple reflow widget + columnSelector & stickyHeaders widgets
+	$("#table2").tablesorter({
+		theme: 'blue',
+		widgets: ['zebra', 'reflow', 'columnSelector', 'stickyHeaders'],
+		widgetOptions : {
+			// target the column selector markup
+			columnSelector_container : $('#columnSelector'),
+			// data attribute containing column name to use in the selector container
+			// make it use the same as reflow_headerAttrib
+			columnSelector_name : 'data-name',
+
+			// header attribute containing modified header name
+			reflow_headerAttrib : 'data-name'
+		}
+	});
+
+	// reflow2 widget (table with multiple header rows)
+	$("#table3").tablesorter({
+		theme: 'blue',
+		widgets: ['zebra', 'reflow2'],
+		widgetOptions: {
+			// class name added to make it responsive (class name within media query)
+			reflow2_className    : 'ui-table-reflow',
+			// ignore header cell content with this class name
+			reflow2_classIgnore  : 'ui-table-reflow-ignore',
+			// header attribute containing modified header name
+			reflow2_headerAttrib : 'data-name',
+			// class name applied to thead labels
+			reflow2_labelClass   : 'ui-table-cell-label',
+			// class name applied to first row thead label
+			reflow2_labelTop     : 'ui-table-cell-label-top'
+		}
+	});
+
+});</pre>
+	</div>
+
+</div>
+
+</body>
+</html>

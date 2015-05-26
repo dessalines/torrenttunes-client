@@ -1,0 +1,10 @@
+{
+  "name": "tablesorter",
+  "version": "2.22.1",
+  "dependencies": {
+    "jquery": ">=1.2.6"
+  },
+  "main": [
+    "dist/js/jquery.tablesorter.combined.js"
+  ]
+}

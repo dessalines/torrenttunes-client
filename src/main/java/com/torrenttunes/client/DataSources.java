@@ -13,6 +13,7 @@ public class DataSources {
 	
 	public static final String MAIN_PAGE_URL = "http://localhost:" + SPARK_WEB_PORT + "/main";
 	
+	
 	// The path to the torrenttunes dir
 	public static String HOME_DIR() {
 		String userHome = System.getProperty( "user.home" ) + "/." + APP_NAME;
@@ -46,10 +47,9 @@ public class DataSources {
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
-	public static final String TORRENT_UPLOAD_URL = "http://127.0.0.1:4567/torrent_upload";
+	public static final String TORRENT_UPLOAD_URL = "http://107.170.137.106:4567/torrent_upload";
 	
-	public static final String TORRENT_INFO_UPLOAD_URL = "http://127.0.0.1:4567/torrent_info_upload";
-
+	public static final String TORRENT_INFO_UPLOAD_URL = "http://107.170.137.106:4567/torrent_info_upload";
 
 	
 	// Web pages
@@ -62,12 +62,15 @@ public class DataSources {
 		return WEB_HTML() + "/" + pageName + ".html";
 	}
 	
+
+	public static final String MY_TRACKER_ANNOUNCE = "http://107.170.137.106:6969/announce";
+
 	
 	public static final List<URI> ANNOUNCE_LIST() {
 		List<URI> list = null;
 		try {
 			list = Arrays.asList(
-				new URI("http://127.0.0.1:6969/announce"),
+				new URI(MY_TRACKER_ANNOUNCE),
 				new URI("http://9.rarbg.com:2710/announce"),
 				new URI("http://announce.torrentsmd.com:6969/announce"),
 				new URI("http://bt.careland.com.cn:6969/announce"),

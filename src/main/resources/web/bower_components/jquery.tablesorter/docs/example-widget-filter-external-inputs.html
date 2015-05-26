@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jQuery plugin: Tablesorter 2.0 - Filter Widget External Inputs</title>
+
+	<!-- jQuery -->
+	<script src="js/jquery-latest.min.js"></script>
+
+	<!-- Demo stuff -->
+	<link class="ui-theme" rel="stylesheet" href="css/jquery-ui.min.css">
+	<script src="js/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="css/jq.css">
+	<link href="css/prettify.css" rel="stylesheet">
+	<script src="js/prettify.js"></script>
+	<script src="js/docs.js"></script>
+
+	<!-- Tablesorter: required -->
+	<link rel="stylesheet" href="../css/theme.blue.css">
+	<script src="../js/jquery.tablesorter.js"></script>
+	<script src="../js/jquery.tablesorter.widgets.js"></script>
+
+	<script id="js">$(function() {
+
+	var $table = $('table').tablesorter({
+		theme: 'blue',
+		widgets: ["zebra", "filter"],
+		widgetOptions : {
+			// use the filter_external option OR use bindSearch function (below)
+			// to bind external filters.
+			// filter_external : '.search',
+
+			filter_columnFilters: false,
+			filter_saveFilters : true,
+			filter_reset: '.reset'
+		}
+	});
+
+	// Target the $('.search') input using built in functioning
+	// this binds to the search using "search" and "keyup"
+	// Allows using filter_liveSearch or delayed search &
+	// pressing escape to cancel the search
+	$.tablesorter.filter.bindSearch( $table, $('.search') );
+
+	// Basic search binding, alternate to the above
+	// bind to search - pressing enter and clicking on "x" to clear (Webkit)
+	// keyup allows dynamic searching
+	/*
+	$(".search").bind('search keyup', function (e) {
+		$('table').trigger('search', [ [this.value] ]);
+	});
+	*/
+
+	// Allow changing an input from one column (any column) to another
+	$('select').change(function(){
+		// modify the search input data-column value (swap "0" or "all in this demo)
+		$('.selectable').attr( 'data-column', $(this).val() );
+		// update external search inputs
+		$.tablesorter.filter.bindSearch( $table, $('.search'), false );
+	});
+
+});</script>
+
+</head>
+<body>
+<div id="banner">
+	<h1>table<em>sorter</em></h1>
+	<h2>Filter Widget External Inputs</h2>
+	<h3>Flexible client-side table sorting</h3>
+	<a href="index.html">Back to documentation</a>
+</div>
+<div id="main">
+
+	<p></p>
+	<br>
+	<div class="accordion">
+
+		<h3><a href="#">Notes</a></h3>
+		<div>
+		<ul>
+			<li>As of <span class="version">v2.18.0</span>,
+				<ul>
+					<li>An external input <code>data-column</code> can now target multiple columns:
+						<ul>
+							<li>When designating a column for an external input, you can now set multiple columns and/or a range of columns (e.g. <code>data-column="0-2,4,6-7"</code>.</li>
+							<li>This type of search acts essentially the same as when the column is set to <code>"all"</code> in that "range", "notMatch" and "operators" searches are ignored.</li>
+							<li>The last search performed using either multiple columns or "all" columns will override all other queries; meaning the other inputs won't clear or update (e.g. performing a search for "foo" in an "all" column search input will override any previous searchs, and the input with a <code>data-column="0-2,4,6-7"</code> will not change its value) - this might be confusing to the user if multiple inputs are visible on the page (placeholder text won't help).</li>
+							<li>The selector in the demo below has two additional options: "Columns 0,3" and "Columns 1-2"; as you can see, switching the column to search between "all", "0,3" and "1-2" does not change the query.</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>As of <span class="version">v2.15</span>,
+				<ul>
+					<li>A new filter widget <a href="index.html#widget-filter-external"><code>filter_external</code> option</a> has been added that essentially does the same thing as the <a href="index.html#function-bindsearch"><code>$.tablesorter.bindSearch</code></a> function.</li>
+					<li>Use either to bind external search inputs.</li> 
+					<li>To change an input from searching one column (or all columns) to search any other column, call the <code>$.tablesorter.bindSearch</code> function to update the external inputs, even if the inputs are set using the <code>filter_external</code> option. Pass an additional <code>false</code> flag as the last parameter to force the inputs to update.
+					<pre class="prettyprint lang-js">$.tablesorter.bindSearch( $('table'), $('.search'), false );</pre>
+					</li>
+					<li>This demo shows how to use multiple external search filters to filter the table, and how to make one input dynamically change to filter any or all columns.</li>
+				</ul>
+			</li>
+			<li>The <code>$.tablesorter.filter.bindSearch</code> function allows binding multiple external search filters</li>
+			<li>The advantage of using this function over your own is:
+				<ul>
+					<li>Inputs behave the same as internal filters; searches adhere to the <code>filter_liveSearch</code> and <code>filter_searchDelay</code> options.</li>
+					<li>When pressing the <kbd>Esc</kbd> key, the filter resets.</li>
+				</ul>
+			</li>
+			<li>Include a <code>data-column="#"</code> attribute to specify to which column the search should apply; or <code>data-column="all"</code> to search all columns.</li>
+		</ul>
+		</div>
+	</div>
+
+	<h1>Demo</h1>
+
+	<div id="demo"><input class="search selectable" type="search" placeholder="Search" data-column="all">
+<!-- select to change data-column attribute of the above input -->
+<select class="change-input">
+	<option value="all">all</option>
+	<option value="0,3">Columns 0,3</option>
+	<option value="1-2">Columns 1-2</option>
+	<option value="0">Rank</option>
+	<option value="1">First Name</option>
+	<option value="2">Last Name</option>
+</select>
+<br>
+<input class="search" type="search" placeholder="First Name" data-column="1"><br>
+<input class="search" type="search" placeholder="Last Name" data-column="2"><br>
+<!-- targeted by the "filter_reset" option -->
+<button type="button" class="reset">Reset Search</button>
+
+<table class="tablesorter">
+	<thead>
+		<tr>
+			<th>Rank</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Age</th>
+			<th>Total</th>
+			<th>Discount</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr><td>1</td><td>Philip Aaron</td><td>Johnson Sr Esq</td><td>25</td><td>$5.95</td><td>22%</td><td>Jun 26, 2004 7:22 AM</td></tr>
+		<tr><td>11</td><td>Aaron</td><td>Hibert</td><td>12</td><td>$2.99</td><td>5%</td><td>Aug 21, 2009 12:21 PM</td></tr>
+		<tr><td>12</td><td>Brandon Clark</td><td>Henry Jr</td><td>51</td><td>$42.29</td><td>18%</td><td>Oct 13, 2000 1:15 PM</td></tr>
+		<tr><td>111</td><td>Peter</td><td>Parker</td><td>28</td><td>$9.99</td><td>20%</td><td>Jul 6, 2006 8:14 AM</td></tr>
+		<tr><td>21</td><td>John</td><td>Hood</td><td>33</td><td>$19.99</td><td>25%</td><td>Dec 10, 2002 5:14 AM</td></tr>
+		<tr><td>013</td><td>Clark</td><td>Kent Sr.</td><td>18</td><td>$15.89</td><td>44%</td><td>Jan 12, 2003 11:14 AM</td></tr>
+		<tr><td>005</td><td>Bruce</td><td>Almighty Esq</td><td>45</td><td>$153.19</td><td>44%</td><td>Jan 18, 2021 9:12 AM</td></tr>
+		<tr><td>10</td><td>Alex</td><td>Dumass</td><td>13</td><td>$5.29</td><td>4%</td><td>Jan 8, 2012 5:11 PM</td></tr>
+		<tr><td>16</td><td>Jim</td><td>Franco</td><td>24</td><td>$14.19</td><td>14%</td><td>Jan 14, 2004 11:23 AM</td></tr>
+		<tr><td>166</td><td>Bruce Lee</td><td>Evans</td><td>22</td><td>$13.19</td><td>11%</td><td>Jan 18, 2007 9:12 AM</td></tr>
+		<tr><td>100</td><td>Brenda Lee</td><td>McMasters</td><td>18</td><td>$55.20</td><td>15%</td><td>Feb 12, 2010 7:23 PM</td></tr>
+		<tr><td>55</td><td>Dennis</td><td>Bronson</td><td>65</td><td>$123.00</td><td>32%</td><td>Jan 20, 2001 1:12 PM</td></tr>
+		<tr><td>9</td><td>Martha</td><td>delFuego</td><td>25</td><td>$22.09</td><td>17%</td><td>Jun 11, 2011 10:55 AM</td></tr>
+	</tbody>
+</table></div>
+
+	<h1>Javascript</h1>
+	<div id="javascript">
+		<pre class="prettyprint lang-javascript"></pre>
+	</div>
+
+	<h1>HTML</h1>
+	<div id="html">
+		<pre class="prettyprint lang-html"></pre>
+	</div>
+
+<div class="next-up">
+	<hr />
+	Next up: <a href="example-widget-filter-custom.html">jQuery custom filter widget &rsaquo;&rsaquo;</a>
+</div>
+
+</div>
+
+</body>
+</html>
