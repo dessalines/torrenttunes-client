@@ -20,6 +20,8 @@ CREATE TABLE 'library' (
 'album' TEXT DEFAULT NULL,
 'album_mbid' TEXT DEFAULT NULL,
 'duration_ms' INTEGER NOT NULL  DEFAULT NULL,
+'track_number' INTEGER DEFAULT NULL,
+'year' TEXT DEFAULT NULL,
 'album_coverart_url' TEXT DEFAULT NULL,
 'album_coverart_thumbnail_large' TEXT DEFAULT NULL,
 'album_coverart_thumbnail_small' TEXT DEFAULT NULL,

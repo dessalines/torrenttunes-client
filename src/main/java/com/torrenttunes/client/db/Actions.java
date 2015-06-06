@@ -10,7 +10,7 @@ public class Actions {
 			String filePath, String artist, String artistMbid, String album, String albumMbid,
 			String title, 
 			String albumCoverArtUrl, String albumCoverArtThumbnailLarge,
-			String albumCoverArtThumbnailSmall, Long durationMS) {
+			String albumCoverArtThumbnailSmall, Long durationMS, Integer trackNumber, String year) {
 		
 		Library library = LIBRARY.create("mbid", mbid,
 				"torrent_path", torrentPath,
@@ -21,6 +21,8 @@ public class Actions {
 				"album_mbid", albumMbid,
 				"title", title,
 				"duration_ms", durationMS,
+				"track_number", trackNumber,
+				"year", year,
 				"album_coverart_url", albumCoverArtUrl,
 				"album_coverart_thumbnail_large", albumCoverArtThumbnailLarge,
 				"album_coverart_thumbnail_small", albumCoverArtThumbnailSmall);

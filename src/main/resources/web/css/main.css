@@ -22,6 +22,23 @@
 }
 */
 /* SoundManager2 stuff*/
+.nav-tabs-left { text-align: left !important; }
+
+/*.nav-tabs-left li { float: right; }*/
+
+.nav-tabs > li > a, .nav-tabs .navbar-brand {
+    padding-top:4px !important; 
+    padding-bottom:0 !important;
+    height: 28px;
+    font-size: small;
+}
+.nav-tabs {min-height:28px !important;}
+
+
+.fa-wikipedia:before { font-family: "Times New Roman", Times, serif; font-weight: 400; 
+content: "VV"; letter-spacing:-0.45em; margin-right:0.5em; }
+
+
 
 /* Tablesorter font awesome icons*/
 table.tablesorter thead tr th.headerSortUp:after,

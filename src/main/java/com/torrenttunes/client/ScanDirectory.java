@@ -119,7 +119,10 @@ public class ScanDirectory {
 						coverArtURL,
 						coverArtLargeThumbnail, 
 						coverArtSmallThumbnail,
-						song.getDuration());
+						song.getDuration(),
+						song.getTrackNumber(),
+						song.getYear());
+						
 				Tools.dbClose();
 
 				Tools.uploadTorrentInfoToTracker(track.toJson(false));

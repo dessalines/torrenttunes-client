@@ -120,9 +120,11 @@
             <li><a href="#homeTab" data-toggle="tab">Home</a></li>
             <li><a href="#">Browse</a></li>
             <li><a id="play_queue_btn" href="#">Play Queue</a></li>
-            <li class="active"><a href="#libraryTab" data-toggle="tab">Library</a></li>
+            <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#uploadTab" data-toggle="tab">Upload</a></li>
+            <li class="active"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
+            <li><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
           </ul>
           <h5 class="text-muted sidebar-spaced">Playlists</h5>
           <ul class="nav nav-sidebar main-sidebar">
@@ -138,6 +140,49 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" id="homeTab">
               nada
+            </div>
+            <div role="tabpanel" class="tab-pane fade in active" id="artistcatalogTab">
+              <h2 class="no-padding-top"> 
+             <!-- <i class="fa fa-play-circle-o"></i> -->
+             <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   Artist name</a> <small> 
+             <i class="fa fa-wikipedia"></i> 
+             <i class="fa fa-music"></i>
+             </small></h2>
+              <!-- A bunch of tabs for the artistcatalog -->
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs nav-tabs-left nav-tabs-special" role="tablist">
+                <li class="active hide" role="presentation"><a href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">Main</a></li>
+                <li role="presentation"><a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab">Albums</a></li>
+                <li role="presentation"><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Songs</a></li>
+              </ul>
+              <br>
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
+                  <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> Top Albums </a></h4>
+                  <hr>
+                  <h4><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Top Songs</a></h4>
+                  <hr>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_album">
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_song">...</div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="albumcatalogTab">
+              <div class="row">
+                <div class="col-md-6">
+                  <img class="img-responsive center-block" src="http://cps-static.rovicorp.com/3/JPG_400/MI0000/034/MI0000034823.jpg?partner=allrovi.com" />
+                </div>
+                <div class="col-md-6">
+                  <h1> Album name 
+                       <small>             
+                          <i class="fa fa-wikipedia"></i> 
+                          <i class="fa fa-music"></i>
+                      </small>
+                      <br><small>Artist name</small></h1>
+                  <p> Year </p>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="uploadTab">
               <form id="upload_form" class="form-horizontal" role="form">
@@ -186,7 +231,7 @@
                 </div>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane fade in active" id="libraryTab">
+            <div role="tabpanel" class="tab-pane fade" id="libraryTab">
               <!-- <h2 class="text-center no-padding-top"> Library
                 <br>
               </h2> -->
