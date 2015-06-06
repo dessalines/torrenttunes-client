@@ -120,7 +120,7 @@ public class ScanDirectory {
 						coverArtLargeThumbnail, 
 						coverArtSmallThumbnail,
 						song.getDuration(),
-						song.getTrackNumber(),//
+						song.getTrackNumber(),
 						song.getYear());
 						
 				Tools.dbClose();
