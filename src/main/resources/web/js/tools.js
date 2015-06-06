@@ -1,5 +1,5 @@
 var localSparkService = 'http://localhost:4568/';
-
+var externalSparkService = 'http://104.236.44.89:4567/';
 
 
 var sparkService = localSparkService;

@@ -7,7 +7,8 @@ import com.torrenttunes.client.db.Tables.Library;
 public class Actions {
 	
 	public static Library saveSongToLibrary(String mbid, String torrentPath, 
-			String filePath, String artist, String album, String title, 
+			String filePath, String artist, String artistMbid, String album, String albumMbid,
+			String title, 
 			String albumCoverArtUrl, String albumCoverArtThumbnailLarge,
 			String albumCoverArtThumbnailSmall, Long durationMS) {
 		
@@ -15,7 +16,9 @@ public class Actions {
 				"torrent_path", torrentPath,
 				"file_path", filePath,
 				"artist", artist,
+				"artist_mbid", artistMbid,
 				"album", album,
+				"album_mbid", albumMbid,
 				"title", title,
 				"duration_ms", durationMS,
 				"album_coverart_url", albumCoverArtUrl,

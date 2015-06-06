@@ -1,5 +1,8 @@
 package com.torrenttunes.client;
 
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -8,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
+import com.frostwire.jlibtorrent.TorrentHandle;
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.webservice.WebService;
 
@@ -15,8 +19,6 @@ import com.torrenttunes.client.webservice.WebService;
 public class Main {
 	
 	static Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-	
-	public TorrentClient torrentClient;
 	
 	@Option(name="-uninstall",usage="Uninstall torrenttunes-client.(WARNING, this deletes your library)")
 	private boolean uninstall;
@@ -42,22 +44,23 @@ public class Main {
 		Tools.setupDirectories();
 		
 		Tools.copyResourcesToHomeDir(true);
-		
+
 		InitializeTables.initializeTables();
 		
 		EmbeddedBrowser.start();
 		
-		torrentClient = TorrentClient.start();
+		WebService.start();
 		
-		WebService.start(torrentClient);
-		
+		LibtorrentEngine.INSTANCE.startSeedingLibrary();
 		
 		
 //		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), torrentClient);
+
+//		TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(new File(DataSources.HOME_DIR()), 
+//				DataSources.SAMPLE_TORRENT);
 		
-		
-		
-		
+
+//		log.info(TorrentStats.create(torrent).toString());
 	
 		
 	}

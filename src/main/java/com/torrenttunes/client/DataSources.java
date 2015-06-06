@@ -1,5 +1,6 @@
 package com.torrenttunes.client;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ public class DataSources {
 	
 	public static final String MAIN_PAGE_URL = "http://localhost:" + SPARK_WEB_PORT + "/main";
 	
+	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
 	// The path to the torrenttunes dir
 	public static String HOME_DIR() {
@@ -47,10 +49,6 @@ public class DataSources {
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
-	public static final String TORRENT_UPLOAD_URL = "http://107.170.137.106:4567/torrent_upload";
-	
-	public static final String TORRENT_INFO_UPLOAD_URL = "http://107.170.137.106:4567/torrent_info_upload";
-
 	
 	// Web pages
 	public static final String WEB_HOME() {return SOURCE_CODE_HOME() + "/web";}
@@ -62,9 +60,24 @@ public class DataSources {
 		return WEB_HTML() + "/" + pageName + ".html";
 	}
 	
+	
+	public static final String TRACKER_IP = "104.236.44.89";
+	
+	public static final String TORRENT_UPLOAD_URL = "http://" + TRACKER_IP + ":4567/torrent_upload";
+	
+	public static final String TORRENT_INFO_UPLOAD_URL = "http://" + TRACKER_IP + ":4567/torrent_info_upload";
+	
 
-	public static final String MY_TRACKER_ANNOUNCE = "http://107.170.137.106:6969/announce";
+	public static final String MY_TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
 
+	public static final String LIBTORRENT_OS_LIBRARY_PATH() {
+		String osName = System.getProperty("os.name");
+		System.out.println("Operating system " + osName);
+		
+		String ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
+		System.out.println(ret);
+		return ret;
+	}
 	
 	public static final List<URI> ANNOUNCE_LIST() {
 		List<URI> list = null;

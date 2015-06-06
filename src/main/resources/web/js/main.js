@@ -26,6 +26,7 @@ $(document).ready(function() {
   setupLibrary();
   setupPlayQueue();
   setupUploadForm();
+  setupUploadTable();
   setupPlayQueueBtn();
 
 
@@ -90,8 +91,11 @@ function setupUploadTable() {
 
 function keyboardShortcuts() {
 
+
   $("html").on("keydown", function(e) {
-    if (e.keyCode == 32) {
+
+  	var searchBarIsFocused = $('.typeahead').is(':focus');
+    if (e.keyCode == 32 && !searchBarIsFocused) {
       e.preventDefault();
       player.actions.play();
     }

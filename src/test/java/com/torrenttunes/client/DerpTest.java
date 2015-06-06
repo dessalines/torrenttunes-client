@@ -17,8 +17,8 @@ import junit.framework.TestCase;
 public class DerpTest extends TestCase {
 
 	public void testDerp() throws JsonGenerationException, JsonMappingException, IOException {
-		TorrentClient tc = TorrentClient.start();
-		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), tc);
+//		TorrentClient tc = TorrentClient.start();
+//		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), tc);
 
 		// List all the music files in the sub or sub directories
 		//		String[] types = {"mp3"};

@@ -7,22 +7,20 @@ import static spark.Spark.post;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Set;
 
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.ScanDirectory;
-import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.Tools;
-import com.torrenttunes.client.TorrentClient;
 import com.torrenttunes.client.db.Actions;
 public class Platform {
 
 	static final Logger log = LoggerFactory.getLogger(Platform.class);
 
-	public static void setup(TorrentClient torrentClient) {
+	public static void setup() {
 
 		get("/get_library", (req, res) -> {
 
@@ -99,7 +97,7 @@ public class Platform {
 				String uploadPath = vars.get("upload_path");
 				log.info(uploadPath);
 				
-				ScanDirectory.start(new File(uploadPath), torrentClient);
+				ScanDirectory.start(new File(uploadPath));
 				
 				
 
@@ -120,7 +118,7 @@ public class Platform {
 			try {
 				Tools.allowAllHeaders(req, res);
 
-				String json = Tools.MAPPER.writeValueAsString(torrentClient.getScanInfos());
+				String json = Tools.MAPPER.writeValueAsString(LibtorrentEngine.INSTANCE.getScanInfos());
 
 				return json;
 
