@@ -61,14 +61,16 @@ public class DataSources {
 	}
 	
 	
-	public static final String TRACKER_IP = "104.236.44.89";
+//	public static final String TRACKER_IP = "104.236.44.89";
+	public static final String TRACKER_IP = "127.0.0.1";
 	
-	public static final String TORRENT_UPLOAD_URL = "http://" + TRACKER_IP + ":4567/torrent_upload";
+	public static final String TRACKER_WEB_PORT = "4567";
 	
-	public static final String TORRENT_INFO_UPLOAD_URL = "http://" + TRACKER_IP + ":4567/torrent_info_upload";
+	public static final String TORRENT_UPLOAD_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/torrent_upload";
 	
+	public static final String TORRENT_INFO_UPLOAD_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/torrent_info_upload";
 
-	public static final String MY_TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
+	public static final String TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
 
 	public static final String LIBTORRENT_OS_LIBRARY_PATH() {
 		String osName = System.getProperty("os.name");
@@ -83,7 +85,7 @@ public class DataSources {
 		List<URI> list = null;
 		try {
 			list = Arrays.asList(
-				new URI(MY_TRACKER_ANNOUNCE),
+				new URI(TRACKER_ANNOUNCE),
 				new URI("http://9.rarbg.com:2710/announce"),
 				new URI("http://announce.torrentsmd.com:6969/announce"),
 				new URI("http://bt.careland.com.cn:6969/announce"),

@@ -113,7 +113,7 @@ public class ScanDirectory {
 						si.getFile().getAbsolutePath(), 
 						song.getArtist(), 
 						song.getArtistMBID(),
-						song.getRelease(), 
+						song.getRelease(),
 						song.getReleaseMBID(),
 						song.getRecording(), 
 						coverArtURL,
