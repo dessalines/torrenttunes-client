@@ -1,6 +1,19 @@
 // mustache templates
 var libraryTemplate = $('#library_template').html();
 var uploadInfoTemplate = $('#upload_info_template').html();
+var browseTemplate = $('#browse_template').html();
+
+// The artist catalog pages
+var artistCatalogTemplate = $('#artist_catalog_template').html();
+var topArtistAlbumsTemplate = $('#top_artist_albums_template').html();
+var topArtistSongsTemplate = $('#top_artist_songs_template').html();
+var allArtistAlbumsTemplate = $('#all_artist_albums_template').html();
+var allArtistSongsTemplate = $('#all_artist_songs_template').html();
+
+// The album catalog pages
+var albumCatalogTemplate = $('#album_catalog_template').html();
+var albumCatalogSongsTemplate = $('#album_catalog_songs_template').html();
+
 
 // the play queue
 var library, playQueue = [];
@@ -28,14 +41,134 @@ $(document).ready(function() {
   setupUploadForm();
   setupUploadTable();
   setupPlayQueueBtn();
+  setupTabs();
 
 
 });
 
+
+
+
+function showArtistPage() {
+  $('a[href="#artistcatalogTab"]').tab('show');
+}
+
+function showArtistPageV2(artistMBID) {
+  artistCatalogMBID = artistMBID;
+  $('a[href="#artistcatalogTab"]').tab('show');
+}
+
+function showAlbumPage(releaseMBID) {
+  albumCatalogMBID = releaseMBID;
+  $('a[href="#albumcatalogTab"]').tab('show');
+}
+
+
+
+function setupTabs() {
+
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+    var tabId = $(e.target).attr("href");
+    console.log(tabId);
+
+    if (tabId == "#artistcatalogTab" || tabId == "#artistcatalog_main") {
+      setupArtistCatalogTab();
+
+    } else if (tabId == "#artistcatalog_album") {
+      setupArtistCatalogAlbumTab();
+
+    } else if (tabId == "#artistcatalog_song") {
+      setupArtistCatalogSongTab();
+
+    } else if (tabId == "#albumcatalogTab") {
+      setupAlbumCatalogTab();
+
+    } else if (tabId == "#browseTab") {
+      setupBrowseTab();
+    }
+
+  });
+}
+
+function setupBrowseTab() {
+  getJson('get_artists', null, true).done(function(e) {
+    var artists = JSON.parse(e);
+    console.log(artists);
+
+    fillMustacheWithJson(artists, browseTemplate, '#browse_div');
+  });
+}
+
+function setupAlbumCatalogTab() {
+
+  getJson('get_album/' + albumCatalogMBID, null, true).done(function(e) {
+    var album = JSON.parse(e);
+    console.log(album);
+    artistCatalogMBID = album['artist_mbid'];
+    console.log('set the artist catalog MBID from the album = ' + artistCatalogMBID);
+
+    fillMustacheWithJson(album, albumCatalogTemplate, '#album_catalog_div');
+
+
+    getJson('get_album_songs/' + albumCatalogMBID, null, true).done(function(e) {
+      var albumSongs = JSON.parse(e);
+      console.log(albumSongs);
+
+      fillMustacheWithJson(albumSongs, albumCatalogSongsTemplate, '#album_catalog_songs_div');
+    });
+
+  });
+}
+
+function setupArtistCatalogSongTab() {
+  getJson('get_all_songs/' + artistCatalogMBID, null, true).done(function(e) {
+    var allArtistSongs = JSON.parse(e);
+    console.log(allArtistSongs);
+
+    fillMustacheWithJson(allArtistSongs, topArtistSongsTemplate, '#all_artist_songs_div');
+  });
+}
+
+function setupArtistCatalogAlbumTab() {
+  getJson('get_all_albums/' + artistCatalogMBID, null, true).done(function(e) {
+    var allArtistAlbums = JSON.parse(e);
+    console.log(allArtistAlbums);
+
+    fillMustacheWithJson(allArtistAlbums, topArtistAlbumsTemplate, '#all_artist_albums_div');
+  });
+}
+
+// if this tab was shown, that means a search was done for an artist
+// do a query using the artistCatalogMBID to get the top songs, top albums,
+// and all albums and songs
+function setupArtistCatalogTab() {
+
+  getJson('get_artist/' + artistCatalogMBID, null, true).done(function(e) {
+    var artistCatalog = JSON.parse(e);
+    console.log(artistCatalog);
+
+    fillMustacheWithJson(artistCatalog, artistCatalogTemplate, '#artist_catalog_div');
+  });
+
+  getJson('get_top_albums/' + artistCatalogMBID, null, true).done(function(e) {
+    var topArtistAlbums = JSON.parse(e);
+    console.log(topArtistAlbums);
+
+    fillMustacheWithJson(topArtistAlbums, topArtistAlbumsTemplate, '#top_artist_albums_div');
+  });
+
+  getJson('get_top_songs/' + artistCatalogMBID, null, true).done(function(e) {
+    var topArtistSongs = JSON.parse(e);
+    console.log(topArtistSongs);
+
+    fillMustacheWithJson(topArtistSongs, topArtistSongsTemplate, '#top_artist_songs_div');
+  });
+}
+
 function setupPlayQueueBtn() {
-	$('#play_queue_btn').click(function(e) {
-		player.actions.menu();
-	});
+  $('#play_queue_btn').click(function(e) {
+    player.actions.menu();
+  });
 }
 
 function setupUploadForm() {
@@ -45,6 +178,7 @@ function setupUploadForm() {
       submitButtons: 'button[type="submit"]'
     })
     .on('success.form.bv', function(event) {
+      $('#upload_panel').removeClass('hide');
       event.preventDefault();
 
       // start the upload
@@ -80,6 +214,8 @@ function setupUploadTable() {
     var uploadInfo = JSON.parse(e);
     if (e == "[]") {
       clearInterval(uploadInterval);
+    } else {
+      $('#upload_panel').removeClass('hide');
     }
     console.log(uploadInfo);
 
@@ -94,7 +230,7 @@ function keyboardShortcuts() {
 
   $("html").on("keydown", function(e) {
 
-  	var searchBarIsFocused = $('.typeahead').is(':focus');
+    var searchBarIsFocused = $('.typeahead').is(':focus');
     if (e.keyCode == 32 && !searchBarIsFocused) {
       e.preventDefault();
       player.actions.play();
@@ -113,8 +249,11 @@ function setupLibrary() {
     fillMustacheWithJson(library, libraryTemplate, '#library_div');
 
     $("#library_table").tablesorter({
-    	sortList: [[2,0],[4,0]]
-    }); 
+      sortList: [
+        [2, 0],
+        [4, 0]
+      ]
+    });
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
     setupTrackSelect(library);
@@ -126,7 +265,7 @@ function setupTrackSelect(library) {
   $('.track-select').click(function(e) {
     var full = this.id.split('_');
     var option = full[0];
-    var id = parseInt(full[1])-1;
+    var id = parseInt(full[1]) - 1;
 
     console.log(option);
     console.log(id);

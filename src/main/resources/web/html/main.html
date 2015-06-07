@@ -116,9 +116,9 @@
       <div class="row">
         <!-- The sidebar -->
         <div id="side_col" class="col-md-2 sidebar" role="tabpanel">
-          <ul class="nav nav-sidebar main-sidebar" role="tablist">
+          <ul id="left_tab" class="nav nav-sidebar main-sidebar" role="tablist">
             <li><a href="#homeTab" data-toggle="tab">Home</a></li>
-            <li><a href="#">Browse</a></li>
+            <li><a href="#browseTab" data-toggle="tab">Browse</a></li>
             <li><a id="play_queue_btn" href="#">Play Queue</a></li>
             <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#">Settings</a></li>
@@ -139,18 +139,103 @@
           <!-- Tabs -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" id="homeTab">
-              nada
+              <h1 class="text-center">
+              Trending Albums
+              </h1>
+              <hr>
+              <div id="trending_albums_div"></div>
+              <h1 class="text-center">
+              Trending Songs
+              </h1>
+              <hr>
+              <div id="trending_songs_div"></div>
+              <div class="col-md-4">
+                <div class="panel">
+                  <div class="panel-body">
+                    <div class="row">
+                      <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                      <div class="text-center">
+                        <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client"><i class="fa fa-code-fork fa-6"></i></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h2 class="text-center">
+                        <a href="https://github.com/tchoulihan/openmarket">Open-Source</a>
+                      </h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4 class="text-center text-muted"> TorrentTunes is completely <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client">open-source</a>.</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel">
+                  <div class="panel-body">
+                    <div class="row">
+                      <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                      <div class="text-center">
+                        <a class="text-normal" href="/network"><i class="fa fa-server fa-6"></i></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h2 class="text-center">
+                        <a href="/network">Decentralized</a>
+                      </h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4 class="text-center text-muted"> TorrentTunes uses BitTorrent to make sure that the songs will always be available.</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel">
+                  <div class="panel-body">
+                    <div class="row">
+                      <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                      <div class="text-center">
+                        <a class="text-normal" href=""><i class="fa fa-coffee fa-6"></i></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h2 class="text-center">
+                        <a href="">Free</a>
+                      </h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4 class="text-center text-muted"> TorrenTunes is entirely free to use. You can donate <a href="" class="text-muted">here</a>.</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane fade in active" id="artistcatalogTab">
-              <h2 class="no-padding-top"> 
-             <!-- <i class="fa fa-play-circle-o"></i> -->
-             <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   Artist name</a> <small> 
-             <i class="fa fa-wikipedia"></i> 
-             <i class="fa fa-music"></i>
-             </small></h2>
+              <!-- <i class="fa fa-play-circle-o"></i> -->
+              <div id="artist_catalog_div">
+                <script id="artist_catalog_template" type="x-tmpl-mustache">
+                  <h2 class="no-padding-top"> 
+                     <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{name}}</a> <small> 
+                      <i class="fa fa-wikipedia"></i> 
+                       <i class="fa fa-music"></i>
+                      </small></h2>
+                </script>
+              </div>
               <!-- A bunch of tabs for the artistcatalog -->
               <!-- Nav tabs -->
-              <ul class="nav nav-tabs nav-tabs-left nav-tabs-special" role="tablist">
+              <ul id="artistcatalog_tab" class="nav nav-tabs nav-tabs-left nav-tabs-special" role="tablist">
                 <li class="active hide" role="presentation"><a href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">Main</a></li>
                 <li role="presentation"><a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab">Albums</a></li>
                 <li role="presentation"><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Songs</a></li>
@@ -160,217 +245,370 @@
                 <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
                   <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> Top Albums </a></h4>
                   <hr>
-                  <h4><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Top Songs</a></h4>
-                  <hr>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_album">
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_song">...</div>
-              </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="albumcatalogTab">
-              <div class="row">
-                <div class="col-md-6">
-                  <img class="img-responsive center-block" src="http://cps-static.rovicorp.com/3/JPG_400/MI0000/034/MI0000034823.jpg?partner=allrovi.com" />
-                </div>
-                <div class="col-md-6">
-                  <h1> Album name 
-                       <small>             
-                          <i class="fa fa-wikipedia"></i> 
-                          <i class="fa fa-music"></i>
-                      </small>
-                      <br><small>Artist name</small></h1>
-                  <p> Year </p>
-                </div>
-              </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="uploadTab">
-              <form id="upload_form" class="form-horizontal" role="form">
-                <div id="upload_form_div" class="form-group">
-                  <label for="inputUsername3" class="col-sm-12">Music Directory</label>
-                  <div class="col-sm-12">
-                    <input name="upload_path" type="inputEmail3" class="form-control" id="inputEmail3" data-bv-notempty="true" data-bv-notempty-message="A path is required" placeholder="C:/Music/..." />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-12">
-                    <button id="uploadBtn" type="submit" class="btn btn-default btn-lg btn-block" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Upload</button>
-                  </div>
-                </div>
-              </form>
-              <!-- Now the table showing the upload statuses -->
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div id="upload_info_div">
-                    <script id="upload_info_template" type="x-tmpl-mustache">
-                      <table class="table table-hover table-striped tablesorter table-overflow">
-                        <colgroup>
-                          <col style="width:50%">
-                            <col style="width:25%">
-                              <col style="width:25%">
-                        </colgroup>
-                        <thead>
-                          <tr>
-                            <th>File</th>
-                            <th>MusicBrainz ID</th>
-                            <th>Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{#.}}
-                          <tr>
-                            <td class="text-overflow"><span>{{fileName}}</span></td>
-                            <td class="text-overflow"><span>{{mbid}}</span></td>
-                            <td class="text-overflow"><span>{{statusString}}</span></td>
-                          </tr>
-                          {{/.}}
-                        </tbody>
-                      </table>
+                  <div id="top_artist_albums_div">
+                    <script id="top_artist_albums_template" type="x-tmpl-mustache">
+                      <div class="row">
+                        {{#.}}
+                        <div class="col-md-3">
+                          {{#album_coverart_thumbnail_small}}
+                          <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
+                          {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
+                          <a a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
+                          {{/album_coverart_thumbnail_small}}
+                          <div class="spacer"></div>
+                          <div class="text-overflow">
+                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><b>{{title}}</b></a>
+                          </div>
+                          <p class="text-muted">{{year}}
+                            <br> {{number_of_songs}} songs
+                          </p>
+                        </div>
+                        {{/.}} {{^.}}
+                        <p> No albums</p> {{/.}}
+                      </div>
                     </script>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="libraryTab">
-              <!-- <h2 class="text-center no-padding-top"> Library
-                <br>
-              </h2> -->
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div id="library_div">
-                    <script id="library_template" type="x-tmpl-mustache">
-                      <table id="library_table" class="table table-hover table-striped tablesorter table-overflow">
-                        <colgroup>
-                          <col style="width:7%">
-                            <col style="width:35%">
-                              <col style="width:25%">
-                                <col style="width:8%">
-                                  <col style="width:25%">
-                        </colgroup>
-                        <thead>
-                          <tr>
-                            <th colspan="2">Track</th>
-                            <th>Artist</th>
-                            <th>Time</th>
-                            <th>Album</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{#.}}
-                          <tr>
-                            <td>
-                              <span>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Top Songs</a></h4>
+                      <div id="top_artist_songs_div">
+                        <script id="top_artist_songs_template" type="x-tmpl-mustache">
+                          <table id="top_artist_songs_table" class="table table-hover table-striped tablesorter table-overflow">
+                            <colgroup>
+                              <col style="width:7%">
+                                <col style="width:60%">
+                                  <col style="width:8%">
+                                    <col style="width:20%">
+                                      <col style="width:5%">
+                            </colgroup>
+                            <thead>
+                              <tr>
+                                <th colspan="2">Track</th>
+                                <th>Time</th>
+                                <th>Album</th>
+                                <th>Plays</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {{#.}}
+                              <tr>
+                                <td>
+                                  <span>
                             <div class="btn-group text-normal">
                               <a id="play-button_{{id}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="#">
                                 <span class="fa fa-angle-down"></span>
-                              <span class="sr-only">Toggle Dropdown</span></a>
-                              <ul class="dropdown-menu" role="menu">
-                                <li><a id="play-now_{{id}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
-                                <li><a id="play-next_{{id}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
-                                <li><a id="play-last_{{id}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
-                                <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
-                              </ul>
+                                  <span class="sr-only">Toggle Dropdown</span></a>
+                                  <ul class="dropdown-menu" role="menu">
+                                    <li><a id="play-now_{{id}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+                                    <li><a id="play-next_{{id}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+                                    <li><a id="play-last_{{id}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+                                    <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
+                                  </ul>
+                      </div>
+                      </td>
+                      <td class="text-overflow"><span>{{title}}</span></td>
+                      <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
+                      <td class="text-overflow" <span>{{release_title}}</span>
+                      </td>
+                      <td class="text-overflow" <span>{{plays}}</span>
+                      </td>
+                      </tr>
+                      {{/.}}
+                      </tbody>
+                      </table>
+                      </script>
+                    </div>
                   </div>
-                  </td>
-                  <td class="text-overflow"><span>{{title}}</span></td>
-                  <td class="text-overflow"><span>{{artist}}</span></td>
-                  <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                  <td class="text-overflow" <span>{{album}}</span>
-                  </td>
-                  </tr>
-                  {{/.}}
-                  </tbody>
-                  </table>
-                  </script>
+                </div>
+                <hr>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="artistcatalog_album">
+                <div id="all_artist_albums_div">
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="artistcatalog_song">
+                <div id="all_artist_songs_div">
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- end of wrapper -->
-    </div>
-    <div class="sm2-bar-ui flat full-width fixed hide">
-      <div class="bd sm2-main-controls">
-        <div class="sm2-inline-texture"></div>
-        <div class="sm2-inline-gradient"></div>
-        <div class="sm2-inline-element sm2-button-element">
-          <div class="sm2-button-bd">
-            <a href="#play" class="sm2-inline-button play-pause">Play / pause</a>
-          </div>
-        </div>
-        <div class="sm2-inline-element sm2-inline-status">
-          <div class="sm2-playlist">
-            <div class="sm2-playlist-target">
-              <!-- playlist <ul> + <li> markup will be injected here -->
-              <!-- if you want default / non-JS content, you can put that here. -->
-              <noscript>
-                <p>JavaScript is required.</p>
-              </noscript>
-            </div>
-          </div>
-          <div class="sm2-progress">
-            <div class="sm2-row">
-              <div class="sm2-inline-time">0:00</div>
-              <div class="sm2-progress-bd">
-                <div class="sm2-progress-track">
-                  <div class="sm2-progress-bar"></div>
-                  <div class="sm2-progress-ball">
-                    <div class="icon-overlay"></div>
+          <div role="tabpanel" class="tab-pane fade" id="albumcatalogTab">
+            <div id="album_catalog_div">
+              <script id="album_catalog_template" type="x-tmpl-mustache">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{#album_coverart_url}}
+                    <a class="text-normal" onclick="showArtistPage();" href="#">
+                      <img class="img-responsive center-block" src="{{album_coverart_url}}" />
+                    </a>
+                    {{/album_coverart_url}} {{^album_coverart_url}}
+                    <a a href="#" onclick="showArtistPage();"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
+                    {{/album_coverart_url}}
+                  </div>
+                  <div class="col-md-6">
+                    <h1> {{title}}
+                       <small>
+                          <i class="fa fa-wikipedia"></i> 
+                          <i class="fa fa-music"></i>
+                      </small>
+                      <br><small>
+                      <a onclick="showArtistPage();" href="#">{{artist_name}}
+                       </a>
+                      </small>
+                      </h1>
+                    <p> {{year}} </p>
                   </div>
                 </div>
-              </div>
-              <div class="sm2-inline-duration">0:00</div>
-            </div>
-          </div>
-        </div>
-        <div class="sm2-inline-element sm2-button-element sm2-volume">
-          <div class="sm2-button-bd">
-            <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
-            <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
-          </div>
-        </div>
-        <div class="sm2-inline-element sm2-button-element">
-          <div class="sm2-button-bd">
-            <a href="#prev" title="Previous" class="sm2-inline-button previous">&lt; previous</a>
-          </div>
-        </div>
-        <div class="sm2-inline-element sm2-button-element">
-          <div class="sm2-button-bd">
-            <a href="#next" title="Next" class="sm2-inline-button next">&gt; next</a>
-          </div>
-        </div>
-        <div class="sm2-inline-element sm2-button-element sm2-menu">
-          <div class="sm2-button-bd">
-            <a href="#menu" class="sm2-inline-button menu">menu</a>
-          </div>
-        </div>
-      </div>
-      <div class="bd sm2-playlist-drawer sm2-element">
-        <div class="sm2-inline-texture">
-          <div class="sm2-box-shadow"></div>
-        </div>
-        <!-- playlist content is mirrored here -->
-        <div class="sm2-playlist-wrapper">
-          <ul class="sm2-playlist-bd">
-            <div id="playlist_div">
-              <script id="playlist_template" type="x-tmpl-mustache">
-                {{#.}}
-                <li><a href="{{file_path}}"><b>{{artist}}</b> - {{title}}</a><a href="3">test</a></li>
-                {{/.}}
+                <br>
+                <div id="album_catalog_songs_div"></div>
               </script>
             </div>
-            <!-- Some examples
+          </div>
+          <script id="album_catalog_songs_template" type="x-tmpl-mustache">
+            <table id="album_catalog_songs_table" class="table table-hover table-striped tablesorter table-overflow">
+              <colgroup>
+                <col style="width:6%">
+                  <col style="width:4%">
+                    <col style="width:80%">
+                      <col style="width:10%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Track</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#.}}
+                <tr>
+                  <td>
+                    <span>
+                            <div class="btn-group text-normal">
+                              <a id="play-button_{{id}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a class="text-normal" data-toggle="dropdown" href="#">
+                                <span class="fa fa-angle-down"></span>
+                    <span class="sr-only">Toggle Dropdown</span></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a id="play-now_{{id}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+                      <li><a id="play-next_{{id}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+                      <li><a id="play-last_{{id}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+                      <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
+                    </ul>
+        </div>
+        </td>
+        <td class="text-overflow"><span>{{track_number}}</span></td>
+        <td class="text-overflow"><span>{{title}}</span></td>
+        <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
+        </tr>
+        {{/.}}
+        </tbody>
+        </table>
+        </script>
+        <div role="tabpanel" class="tab-pane fade" id="browseTab">
+          <div id="browse_div">
+            <script id="browse_template" type="x-tmpl-mustache">
+              <div class="row">
+                <div class="col-md-12">
+                  {{#.}}
+                  <h4>
+                   <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#">{{name}}</a>
+                  <small>
+                  <i class="fa fa-wikipedia"></i>
+                  <i class="fa fa-music"></i> 
+                  <i class="fa fa-headphones"></i>
+                  </small>
+                  </h4> {{/.}}
+                </div>
+              </div>
+            </script>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="uploadTab">
+          <form id="upload_form" class="form-horizontal" role="form">
+            <div id="upload_form_div" class="form-group">
+              <label for="inputUsername3" class="col-sm-12">Music Directory</label>
+              <div class="col-sm-12">
+                <input name="upload_path" type="inputEmail3" class="form-control" id="inputEmail3" data-bv-notempty="true" data-bv-notempty-message="A path is required" placeholder="C:/Music/..." />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <button id="uploadBtn" type="submit" class="btn btn-default btn-lg btn-block" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Upload</button>
+              </div>
+            </div>
+          </form>
+          <!-- Now the table showing the upload statuses -->
+          <div id="upload_panel" class="panel panel-default hide">
+            <div class="panel-body">
+              <div id="upload_info_div">
+                <script id="upload_info_template" type="x-tmpl-mustache">
+                  <table class="table table-hover table-striped tablesorter table-overflow">
+                    <colgroup>
+                      <col style="width:50%">
+                        <col style="width:25%">
+                          <col style="width:25%">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>File</th>
+                        <th>MusicBrainz ID</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#.}}
+                      <tr>
+                        <td class="text-overflow"><span>{{fileName}}</span></td>
+                        <td class="text-overflow"><span>{{mbid}}</span></td>
+                        <td class="text-overflow"><span>{{statusString}}</span></td>
+                      </tr>
+                      {{/.}}
+                    </tbody>
+                  </table>
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="libraryTab">
+          <!-- <h2 class="text-center no-padding-top"> Library
+                <br>
+              </h2> -->
+          <div id="library_div">
+            <script id="library_template" type="x-tmpl-mustache">
+              <table id="library_table" class="table table-hover table-striped tablesorter table-overflow">
+                <colgroup>
+                  <col style="width:7%">
+                    <col style="width:35%">
+                      <col style="width:25%">
+                        <col style="width:8%">
+                          <col style="width:25%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th colspan="2">Track</th>
+                    <th>Artist</th>
+                    <th>Time</th>
+                    <th>Album</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#.}}
+                  <tr>
+                    <td>
+                      <span>
+                            <div class="btn-group text-normal">
+                              <a id="play-button_{{id}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a class="text-normal" data-toggle="dropdown" href="#">
+                                <span class="fa fa-angle-down"></span>
+                      <span class="sr-only">Toggle Dropdown</span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a id="play-now_{{id}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+                        <li><a id="play-next_{{id}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+                        <li><a id="play-last_{{id}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+                        <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
+                      </ul>
+          </div>
+          </td>
+          <td class="text-overflow"><span>{{title}}</span></td>
+          <td class="text-overflow"><span>{{artist}}</span></td>
+          <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
+          <td class="text-overflow" <span>{{album}}</span>
+          </td>
+          </tr>
+          {{/.}}
+          </tbody>
+          </table>
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of wrapper -->
+  </div>
+  <div class="sm2-bar-ui flat full-width fixed hide">
+    <div class="bd sm2-main-controls">
+      <div class="sm2-inline-texture"></div>
+      <div class="sm2-inline-gradient"></div>
+      <div class="sm2-inline-element sm2-button-element">
+        <div class="sm2-button-bd">
+          <a href="#play" class="sm2-inline-button play-pause">Play / pause</a>
+        </div>
+      </div>
+      <div class="sm2-inline-element sm2-inline-status">
+        <div class="sm2-playlist">
+          <div class="sm2-playlist-target">
+            <!-- playlist <ul> + <li> markup will be injected here -->
+            <!-- if you want default / non-JS content, you can put that here. -->
+            <noscript>
+              <p>JavaScript is required.</p>
+            </noscript>
+          </div>
+        </div>
+        <div class="sm2-progress">
+          <div class="sm2-row">
+            <div class="sm2-inline-time">0:00</div>
+            <div class="sm2-progress-bd">
+              <div class="sm2-progress-track">
+                <div class="sm2-progress-bar"></div>
+                <div class="sm2-progress-ball">
+                  <div class="icon-overlay"></div>
+                </div>
+              </div>
+            </div>
+            <div class="sm2-inline-duration">0:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="sm2-inline-element sm2-button-element sm2-volume">
+        <div class="sm2-button-bd">
+          <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
+          <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
+        </div>
+      </div>
+      <div class="sm2-inline-element sm2-button-element">
+        <div class="sm2-button-bd">
+          <a href="#prev" title="Previous" class="sm2-inline-button previous">&lt; previous</a>
+        </div>
+      </div>
+      <div class="sm2-inline-element sm2-button-element">
+        <div class="sm2-button-bd">
+          <a href="#next" title="Next" class="sm2-inline-button next">&gt; next</a>
+        </div>
+      </div>
+      <div class="sm2-inline-element sm2-button-element sm2-menu">
+        <div class="sm2-button-bd">
+          <a href="#menu" class="sm2-inline-button menu">menu</a>
+        </div>
+      </div>
+    </div>
+    <div class="bd sm2-playlist-drawer sm2-element">
+      <div class="sm2-inline-texture">
+        <div class="sm2-box-shadow"></div>
+      </div>
+      <!-- playlist content is mirrored here -->
+      <div class="sm2-playlist-wrapper">
+        <ul class="sm2-playlist-bd">
+          <div id="playlist_div">
+            <script id="playlist_template" type="x-tmpl-mustache">
+              {{#.}}
+              <li><a href="{{file_path}}"><b>{{artist}}</b> - {{title}}</a><a href="3">test</a></li>
+              {{/.}}
+            </script>
+          </div>
+          <!-- Some examples
 
             <li><a href="/home/tyler/Downloads/Feist/Let%20It%20Die/03%20Let%20It%20Die.mp3">
           DERP</a></li>
             <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20LA%20%28Prod%20Chin%20Injetti%29.mp3"><b>SonReal</b> - LA (Prod. Chin Injetti)<span class="label">Explicit</span></a></li>
             <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20Let%20Me%20%28Prod%202oolman%29.mp3"><b>SonReal</b> - Let Me <span class="label">Explicit</span></a></li> -->
-          </ul>
-        </div>
+        </ul>
       </div>
     </div>
+  </div>
   </div>
   <!-- Modals -->
   <!-- end of login modal -->
