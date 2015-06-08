@@ -14,6 +14,10 @@ var allArtistSongsTemplate = $('#all_artist_songs_template').html();
 var albumCatalogTemplate = $('#album_catalog_template').html();
 var albumCatalogSongsTemplate = $('#album_catalog_songs_template').html();
 
+// The home page template
+var trendingAlbumsTemplate = $('#trending_albums_template').html();
+
+
 
 // the play queue
 var library, playQueue = [];
@@ -107,7 +111,7 @@ function setupHomeTab() {
     var albums = JSON.parse(e);
     console.log(albums);
 
-    fillMustacheWithJson(albums, topArtistAlbumsTemplate, '#trending_albums_div');
+    fillMustacheWithJson(albums, trendingAlbumsTemplate, '#trending_albums_div');
   });
 
   getJson('get_trending_songs', null, true).done(function(e) {

@@ -143,7 +143,32 @@
               Trending Albums
               </h1>
               <hr>
-              <div id="trending_albums_div"></div>
+              <div id="trending_albums_div">
+                <script id="trending_albums_template" type="x-tmpl-mustache">
+                  <div class="row">
+                    {{#.}}
+                    <div class="col-xs-3">
+                      {{#album_coverart_thumbnail_small}}
+                      <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
+                      {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
+                      <a a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
+                      {{/album_coverart_thumbnail_small}}
+                      <div class="spacer"></div>
+                      <div class="text-overflow">
+                        <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal"><b>{{artist_name}}</b></a>
+                      </div>
+                      <div class="text-overflow">
+                        <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><i>{{title}}</i></a>
+                      </div>
+                      <p class="text-muted">{{year}}
+                        <br> {{number_of_songs}} songs
+                      </p>
+                    </div>
+                    {{/.}} {{^.}}
+                    <p> No albums</p> {{/.}}
+                  </div>
+                </script>
+              </div>
               <h1 class="text-center">
               Trending Songs
               </h1>
@@ -361,7 +386,7 @@
                        </a>
                       </small>
                       </h1>
-                    <p> {{year}} </p>
+                    <p class="text-muted"> {{year}} &middot; {{number_of_songs}} songs</p>
                   </div>
                 </div>
                 <br>
