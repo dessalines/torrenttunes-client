@@ -6,7 +6,7 @@ import org.codehaus.jackson.JsonNode;
 import com.torrenttunes.client.db.Tables.Library;
 public class Actions {
 	
-	public static Library saveSongToLibrary(String mbid, String torrentPath, 
+	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid, String album, String albumMbid,
 			String title, 
 			String albumCoverArtUrl, String albumCoverArtThumbnailLarge,
@@ -14,6 +14,7 @@ public class Actions {
 		
 		Library library = LIBRARY.create("mbid", mbid,
 				"torrent_path", torrentPath,
+				"info_hash", infoHash,
 				"file_path", filePath,
 				"artist", artist,
 				"artist_mbid", artistMbid,

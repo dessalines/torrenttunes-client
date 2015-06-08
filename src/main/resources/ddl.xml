@@ -40,6 +40,9 @@
 <row name="torrent_path" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
+<row name="info_hash" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
 <row name="file_path" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>

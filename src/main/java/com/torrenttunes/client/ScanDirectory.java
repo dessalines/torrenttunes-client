@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.frostwire.jlibtorrent.Entry;
+import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.swig.create_torrent;
 import com.frostwire.jlibtorrent.swig.error_code;
 import com.frostwire.jlibtorrent.swig.file_storage;
@@ -102,14 +103,15 @@ public class ScanDirectory {
 				// Start seeding it
 				si.setStatus(ScanStatus.Seeding);
 				log.info(si.getFile().getParentFile().getAbsolutePath());
-				LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), torrentFile);
-
-
+				TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
+						torrentFile);
+				
 
 				// Save it to the DB
 				Tools.dbInit();				
 				Library track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
 						torrentFile.getAbsolutePath(), 
+						torrent.getInfoHash().toHex(),
 						si.getFile().getAbsolutePath(), 
 						song.getArtist(), 
 						song.getArtistMBID(),
@@ -190,7 +192,7 @@ public class ScanDirectory {
 		t.set_creator(System.getProperty("user.name"));
 
 		error_code ec = new error_code();
-
+		
 
 		// reads the files and calculates the hashes
 		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
@@ -201,9 +203,11 @@ public class ScanDirectory {
 
 		// Get the bencode and write the file
 		Entry entry =  new Entry(t.generate());
+	
 		Map<String, Entry> entryMap = entry.dictionary();
 		Entry entryFromUpdatedMap = Entry.fromMap(entryMap);
 		final byte[] bencode = entryFromUpdatedMap.bencode();
+		
 		try {
 			FileOutputStream fos;
 

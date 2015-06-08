@@ -149,78 +149,82 @@
               </h1>
               <hr>
               <div id="trending_songs_div"></div>
-              <div class="col-md-4">
-                <div class="panel">
-                  <div class="panel-body">
-                    <div class="row">
-                      <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
-                      <div class="text-center">
-                        <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client"><i class="fa fa-code-fork fa-6"></i></a>
+              <hr class="featurette-divider">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="panel">
+                    <div class="panel-body">
+                      <div class="row">
+                        <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                        <div class="text-center">
+                          <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client"><i class="fa fa-code-fork fa-6"></i></a>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h2 class="text-center">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h2 class="text-center">
                         <a href="https://github.com/tchoulihan/openmarket">Open-Source</a>
                       </h2>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h4 class="text-center text-muted"> TorrentTunes is completely <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client">open-source</a>.</h4>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h4 class="text-center text-muted"> TorrentTunes is completely <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client">open-source</a>.</h4>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="panel">
-                  <div class="panel-body">
-                    <div class="row">
-                      <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
-                      <div class="text-center">
-                        <a class="text-normal" href="/network"><i class="fa fa-server fa-6"></i></a>
+                <div class="col-md-4">
+                  <div class="panel">
+                    <div class="panel-body">
+                      <div class="row">
+                        <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                        <div class="text-center">
+                          <a class="text-normal" href="/network"><i class="fa fa-server fa-6"></i></a>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h2 class="text-center">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h2 class="text-center">
                         <a href="/network">Decentralized</a>
                       </h2>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h4 class="text-center text-muted"> TorrentTunes uses BitTorrent to make sure that the songs will always be available.</h4>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h4 class="text-center text-muted"> TorrentTunes uses BitTorrent to make sure that the songs will always be available.</h4>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="panel">
-                  <div class="panel-body">
-                    <div class="row">
-                      <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
-                      <div class="text-center">
-                        <a class="text-normal" href=""><i class="fa fa-coffee fa-6"></i></a>
+                <div class="col-md-4">
+                  <div class="panel">
+                    <div class="panel-body">
+                      <div class="row">
+                        <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                        <div class="text-center">
+                          <a class="text-normal" href=""><i class="fa fa-coffee fa-6"></i></a>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h2 class="text-center">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h2 class="text-center">
                         <a href="">Free</a>
                       </h2>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h4 class="text-center text-muted"> TorrenTunes is entirely free to use. You can donate <a href="" class="text-muted">here</a>.</h4>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h4 class="text-center text-muted"> TorrenTunes is entirely free to use. You can donate <a href="" class="text-muted">here</a>.</h4>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <br>
             </div>
             <div role="tabpanel" class="tab-pane fade in active" id="artistcatalogTab">
               <!-- <i class="fa fa-play-circle-o"></i> -->
@@ -249,7 +253,7 @@
                     <script id="top_artist_albums_template" type="x-tmpl-mustache">
                       <div class="row">
                         {{#.}}
-                        <div class="col-md-3">
+                        <div class="col-xs-3">
                           {{#album_coverart_thumbnail_small}}
                           <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                           {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
@@ -309,7 +313,7 @@
                       </td>
                       <td class="text-overflow"><span>{{title}}</span></td>
                       <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                      <td class="text-overflow" <span>{{release_title}}</span>
+                      <td class="text-overflow" <span>{{album}}</span>
                       </td>
                       <td class="text-overflow" <span>{{plays}}</span>
                       </td>
@@ -525,6 +529,17 @@
           </script>
         </div>
       </div>
+      <!-- Footer -->
+      <div class="row-fluid">
+        <hr class="featurette-divider">
+        <footer>
+          <p class="pull-right"><a href="#">Back to top</a>
+          </p>
+          <p>&copy; 2015 TorrentTunes, Inc. &middot; <a href="https://github.com/tchoulihan/torrenttunes-client">About</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client">Contact</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client">Support</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client">Github</a>
+          </p>
+        </footer>
+      </div>
+      <br>
     </div>
   </div>
   <!-- end of wrapper -->

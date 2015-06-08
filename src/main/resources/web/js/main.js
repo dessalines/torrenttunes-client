@@ -51,11 +51,12 @@ $(document).ready(function() {
 
 function showArtistPage() {
   $('a[href="#artistcatalogTab"]').tab('show');
+  $('a[href="#artistcatalog_main"]').tab('show');
 }
 
 function showArtistPageV2(artistMBID) {
   artistCatalogMBID = artistMBID;
-  $('a[href="#artistcatalogTab"]').tab('show');
+  showArtistPage();
 }
 
 function showAlbumPage(releaseMBID) {
@@ -85,6 +86,8 @@ function setupTabs() {
 
     } else if (tabId == "#browseTab") {
       setupBrowseTab();
+    } else if (tabId == "#homeTab") {
+      setupHomeTab();
     }
 
   });
@@ -98,6 +101,24 @@ function setupBrowseTab() {
     fillMustacheWithJson(artists, browseTemplate, '#browse_div');
   });
 }
+
+function setupHomeTab() {
+  getJson('get_trending_albums', null, true).done(function(e) {
+    var albums = JSON.parse(e);
+    console.log(albums);
+
+    fillMustacheWithJson(albums, topArtistAlbumsTemplate, '#trending_albums_div');
+  });
+
+  getJson('get_trending_songs', null, true).done(function(e) {
+    var songs = JSON.parse(e);
+    console.log(songs);
+
+    fillMustacheWithJson(songs, libraryTemplate, '#trending_songs_div');
+  });
+
+}
+
 
 function setupAlbumCatalogTab() {
 

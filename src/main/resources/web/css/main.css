@@ -354,6 +354,10 @@ body.modal-open {
   height: 200px !important;
 }
 
+.album-small {
+  height: 250px !important;
+}
+
 .panel-picture-large {
   height: 321px !important;
 }
