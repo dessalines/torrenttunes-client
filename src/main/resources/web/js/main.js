@@ -454,7 +454,7 @@ function playNow(trackObj) {
 }
 
 function buildLiFromTrackObject(trackObj) {
-  var li = '<li><a href="' + trackObj['file_path'] + '"><b>' +
+  var li = '<li><a href="/' + trackObj['file_path'] + '"><b>' +
     trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
 
   return li;
