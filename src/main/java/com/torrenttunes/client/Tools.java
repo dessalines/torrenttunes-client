@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
@@ -509,5 +510,30 @@ public class Tools {
 
 	}
 
+	public static void addExternalWebServiceVarToTools() {
+
+		log.info("tools.js = " + DataSources.TOOLS_JS());
+		try {
+			List<String> lines = java.nio.file.Files.readAllLines(Paths.get(DataSources.TOOLS_JS()));
+
+			String interalServiceLine = "var localSparkService = '" + 
+					DataSources.WEB_SERVICE_URL + "';";
+
+			String externalServiceLine = "var externalSparkService ='" + 
+					DataSources.TRACKER_URL + "';";
+
+			lines.set(0, interalServiceLine);
+			lines.set(1, externalServiceLine);
+
+			java.nio.file.Files.write(Paths.get(DataSources.TOOLS_JS()), lines);
+			Files.touch(new File(DataSources.TOOLS_JS()));
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
 

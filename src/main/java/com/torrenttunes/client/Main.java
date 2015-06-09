@@ -1,8 +1,5 @@
 package com.torrenttunes.client;
 
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -11,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
-import com.frostwire.jlibtorrent.TorrentHandle;
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.webservice.WebService;
 
@@ -44,6 +40,8 @@ public class Main {
 		Tools.setupDirectories();
 		
 		Tools.copyResourcesToHomeDir(true);
+		
+		Tools.addExternalWebServiceVarToTools();
 
 		InitializeTables.initializeTables();
 		

@@ -19,7 +19,9 @@ public class DataSources {
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
-	public static final String MAIN_PAGE_URL = "http://localhost:" + SPARK_WEB_PORT + "/main";
+	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT;
+	
+	public static final String MAIN_PAGE_URL = WEB_SERVICE_URL + "/main";
 	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
@@ -58,7 +60,8 @@ public class DataSources {
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
-	
+	public static final String TOOLS_JS() {return SOURCE_CODE_HOME() + "/web/js/tools.js";}
+
 	// Web pages
 	public static final String WEB_HOME() {return SOURCE_CODE_HOME() + "/web";}
 
@@ -70,14 +73,16 @@ public class DataSources {
 	}
 	
 	
-//	public static final String TRACKER_IP = "104.236.44.89";
-	public static final String TRACKER_IP = "127.0.0.1";
+	public static final String TRACKER_IP = "104.236.44.89";
+//	public static final String TRACKER_IP = "127.0.0.1";
 	
 	public static final String TRACKER_WEB_PORT = "4567";
 	
-	public static final String TORRENT_UPLOAD_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/torrent_upload";
+	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT;
 	
-	public static final String TORRENT_INFO_UPLOAD_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/torrent_info_upload";
+	public static final String TORRENT_UPLOAD_URL = TRACKER_URL + "/torrent_upload";
+	
+	public static final String TORRENT_INFO_UPLOAD_URL = TRACKER_URL + "/torrent_info_upload";
 
 	public static final String TORRENT_DOWNLOAD_URL(String infoHash) {
 		return "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/download_torrent/" + infoHash;
