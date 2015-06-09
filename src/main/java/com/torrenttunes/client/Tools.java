@@ -1,13 +1,18 @@
 package com.torrenttunes.client;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
@@ -65,8 +70,11 @@ public class Tools {
 	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
 
 	public static final ObjectMapper MAPPER = new ObjectMapper();
-	
+
 	public static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#0.00"); 
+
+	public static final String USER_AGENT = "torrenttunes-client/1.0.0 (https://github.com/tchoulihan/torrenttunes-client)";
+
 
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
 
@@ -424,13 +432,82 @@ public class Tools {
 		}
 		return null;
 	}
-	
+
 	public static String humanReadableByteCount(long bytes, boolean si) {
-	    int unit = si ? 1000 : 1024;
-	    if (bytes < unit) return bytes + " B";
-	    int exp = (int) (Math.log(bytes) / Math.log(unit));
-	    String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
-	    return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+		int unit = si ? 1000 : 1024;
+		if (bytes < unit) return bytes + " B";
+		int exp = (int) (Math.log(bytes) / Math.log(unit));
+		String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+		return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+	}
+
+	public static final String httpGetString(String url) {
+		String res = "";
+		try {
+			URL externalURL = new URL(url);
+
+			URLConnection yc = externalURL.openConnection();
+			yc.setRequestProperty("User-Agent", USER_AGENT);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(
+							yc.getInputStream()));
+			String inputLine;
+
+			while ((inputLine = in.readLine()) != null) 
+				res+="\n" + inputLine;
+			in.close();
+
+			return res;
+		} catch(IOException e) {}
+		return res;
+	}
+
+	public static final byte[] httpGetBytes(String urlString) throws IOException {
+		URL url = new URL(urlString);
+
+		URLConnection uc = url.openConnection();
+		int len = uc.getContentLength();
+		InputStream is = new BufferedInputStream(uc.getInputStream());
+		try {
+			byte[] data = new byte[len];
+			int offset = 0;
+			while (offset < len) {
+				int read = is.read(data, offset, data.length - offset);
+				if (read < 0) {
+					break;
+				}
+				offset += read;
+			}
+			if (offset < len) {
+				throw new IOException(
+						String.format("Read %d bytes; expected %d", offset, len));
+			}
+			return data;
+		} finally {
+			is.close();
+		}
+	}
+
+
+	public static final void httpGetBytesV2(String urlString, String savePath) throws IOException {
+		URL url = new URL(urlString);
+
+		URLConnection uc = url.openConnection();
+
+		InputStream input = uc.getInputStream();
+		byte[] buffer = new byte[4096];
+		int n = - 1;
+
+		OutputStream output = new FileOutputStream(savePath);
+		while ( (n = input.read(buffer)) != -1) {
+
+			output.write(buffer, 0, n);
+
+		}
+		output.close();
+
 	}
 
 }
+

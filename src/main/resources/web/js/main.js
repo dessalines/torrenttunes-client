@@ -40,33 +40,17 @@ soundManager.onready(function() {
 $(document).ready(function() {
   keyboardShortcuts();
 
-  setupLibrary();
+
   setupPlayQueue();
-  setupUploadForm();
-  setupUploadTable();
   setupPlayQueueBtn();
   setupTabs();
+
 
 
 });
 
 
 
-
-function showArtistPage() {
-  $('a[href="#artistcatalogTab"]').tab('show');
-  $('a[href="#artistcatalog_main"]').tab('show');
-}
-
-function showArtistPageV2(artistMBID) {
-  artistCatalogMBID = artistMBID;
-  showArtistPage();
-}
-
-function showAlbumPage(releaseMBID) {
-  albumCatalogMBID = releaseMBID;
-  $('a[href="#albumcatalogTab"]').tab('show');
-}
 
 
 
@@ -92,10 +76,33 @@ function setupTabs() {
       setupBrowseTab();
     } else if (tabId == "#homeTab") {
       setupHomeTab();
+    } else if (tabId == "#libraryTab") {
+      setupLibrary();
+    } else if (tabId == "#uploadTab") {
+      setupUploadForm();
+      setupUploadTable();
     }
 
   });
 }
+
+
+function showArtistPage() {
+  $('a[href="#artistcatalogTab"]').tab('show');
+  $('a[href="#artistcatalog_main"]').tab('show');
+}
+
+function showArtistPageV2(artistMBID) {
+  artistCatalogMBID = artistMBID;
+  showArtistPage();
+}
+
+function showAlbumPage(releaseMBID) {
+  albumCatalogMBID = releaseMBID;
+  $('a[href="#albumcatalogTab"]').tab('show');
+}
+
+
 
 function setupBrowseTab() {
   getJson('get_artists', null, true).done(function(e) {
@@ -119,6 +126,7 @@ function setupHomeTab() {
     console.log(songs);
 
     fillMustacheWithJson(songs, libraryTemplate, '#trending_songs_div');
+    setupTrackSelect();
   });
 
 }
@@ -140,6 +148,7 @@ function setupAlbumCatalogTab() {
       console.log(albumSongs);
 
       fillMustacheWithJson(albumSongs, albumCatalogSongsTemplate, '#album_catalog_songs_div');
+      setupTrackSelect();
     });
 
   });
@@ -151,6 +160,7 @@ function setupArtistCatalogSongTab() {
     console.log(allArtistSongs);
 
     fillMustacheWithJson(allArtistSongs, topArtistSongsTemplate, '#all_artist_songs_div');
+    setupTrackSelect();
   });
 }
 
@@ -187,6 +197,7 @@ function setupArtistCatalogTab() {
     console.log(topArtistSongs);
 
     fillMustacheWithJson(topArtistSongs, topArtistSongsTemplate, '#top_artist_songs_div');
+    setupTrackSelect();
   });
 }
 
@@ -281,50 +292,68 @@ function setupLibrary() {
     });
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
-    setupTrackSelect(library);
 
+    setupTrackSelect();
   });
 }
 
-function setupTrackSelect(library) {
+function setupTrackSelect() {
   $('.track-select').click(function(e) {
     var full = this.id.split('_');
     var option = full[0];
-    var id = parseInt(full[1]) - 1;
+    var infoHash = full[1];
 
     console.log(option);
-    console.log(id);
+    console.log(infoHash);
 
-    // now get the object
+    // now fetch or download the song
+    getJson('fetch_or_download_song/' + infoHash).done(function(e1) {
+
+      var trackObj = JSON.parse(e1);
+
+      // var id = parseInt(full[1]) - 1;
+      var id = parseInt(trackObj['id']);
+
+      console.log(id);
+
+
+      if (option == 'play-now') {
+        playNow(trackObj);
+      } else if (option == 'play-button') {
+        playNow(trackObj);
+      } else if (option == 'play-next') {
+        // add it to the playqueue
+        addToQueueNext(trackObj);
+
+      } else if (option == 'play-last') {
+        // add it to the playqueue
+        addToQueueLast(trackObj);
+      }
+
+      $('.sm2-bar-ui').removeClass('hide');
+
+      playQueue.push(trackObj);
+
+      console.log(playQueue);
+
+      // Refresh the player
+      player.playlistController.refresh();
+
+      // post it to the DB to save it
+      simplePost('save_play_queue', JSON.stringify(playQueue), null, function() {
+        // console.log('play queue saved');
+      }, null, null, null);
+
+
+
+
+    });
+
+
     // console.log(library[0]);
-    console.log(library[id]);
+    // console.log(library[id]);
 
-    if (option == 'play-now') {
-      playNow(library[id]);
-    } else if (option == 'play-button') {
-      playNow(library[id]);
-    } else if (option == 'play-next') {
-      // add it to the playqueue
-      addToQueueNext(library[id]);
 
-    } else if (option == 'play-last') {
-      // add it to the playqueue
-      addToQueueLast(library[id]);
-    }
-
-    $('.sm2-bar-ui').removeClass('hide');
-
-    playQueue.push(library[id]);
-
-    console.log(playQueue);
-
-    // Refresh the player
-    player.playlistController.refresh();
-
-    // post it to the DB to save it
-    simplePost('save_play_queue', JSON.stringify(playQueue), null, function() {
-      // console.log('play queue saved');
-    }, null, null, null);
 
   });
 

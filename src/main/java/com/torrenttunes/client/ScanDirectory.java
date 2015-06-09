@@ -59,12 +59,15 @@ public class ScanDirectory {
 
 		Set<ScanInfo> scanInfos = LibtorrentEngine.INSTANCE.getScanInfos();
 		// Use ScanInfo to keep track of operations and messages while you're doing them
-		for (File file : files) {
-			scanInfos.add(ScanInfo.create(file));
-		}
+
 
 		// The main scanning loop
-		for (ScanInfo si : scanInfos) {
+		for (File file : files) {
+			
+			// Create a scanInfo from it
+			ScanInfo si = ScanInfo.create(file);
+			scanInfos.add(si);
+		
 
 			try {
 
@@ -105,7 +108,7 @@ public class ScanDirectory {
 				log.info(si.getFile().getParentFile().getAbsolutePath());
 				TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
 						torrentFile);
-				
+
 
 				// Save it to the DB
 				Tools.dbInit();				
@@ -124,10 +127,13 @@ public class ScanDirectory {
 						song.getDuration(),
 						song.getTrackNumber(),
 						song.getYear());
-						
+
 				Tools.dbClose();
 
 				Tools.uploadTorrentInfoToTracker(track.toJson(false));
+
+				// Set it as scanned
+				si.setScanned(true);
 
 			} 
 
@@ -137,6 +143,7 @@ public class ScanDirectory {
 				si.setStatus(ScanStatus.MusicBrainzError);
 				continue;
 			}
+
 
 
 		}
@@ -161,7 +168,7 @@ public class ScanDirectory {
 
 
 	private File createAndSaveTorrent(ScanInfo si, Song song) {
-		
+
 		String torrentFileName = Tools.constructTrackTorrentFilename(
 				si.getFile(), song.getRecordingMBID());
 		File torrentFile = new File(DataSources.TORRENTS_DIR() + "/" + torrentFileName + ".torrent");
@@ -172,27 +179,36 @@ public class ScanDirectory {
 
 		// Add the file
 		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
-//		fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
-//		fs.add_file(DataSources.SAMPLE_TORRENT.getAbsolutePath(), DataSources.SAMPLE_TORRENT.getAbsolutePath().length());
-//		libtorrent.add_files(fs, DataSources.SAMPLE_TORRENT.getAbsolutePath());
-		
-//		fs.set_name(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
-//				+ "- tt[" + torrentFileName + "]");
-		
-		
-		
+		//		fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
+		//		fs.add_file(DataSources.SAMPLE_TORRENT.getAbsolutePath(), DataSources.SAMPLE_TORRENT.getAbsolutePath().length());
+		//		libtorrent.add_files(fs, DataSources.SAMPLE_TORRENT.getAbsolutePath());
+
+		//		fs.set_name(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+		//				+ "- tt[" + torrentFileName + "]");
+
+
+
 
 		create_torrent t = new create_torrent(fs);
-		for (URI announce : DataSources.ANNOUNCE_LIST()) {
-			t.add_tracker(announce.toASCIIString());
+		
+		// Add trackers in tiers
+		for (int i = 0; i < DataSources.ANNOUNCE_LIST().size(); i++) {
+			URI announce = DataSources.ANNOUNCE_LIST().get(i);
+			
+			if (i == 0) {
+				t.add_tracker(announce.toASCIIString(), 0);
+			} else {
+				t.add_tracker(announce.toASCIIString(), 1);
+			}
+		
 		}
-		
-		
-		
+
+
+
 		t.set_creator(System.getProperty("user.name"));
 
 		error_code ec = new error_code();
-		
+
 
 		// reads the files and calculates the hashes
 		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
@@ -203,11 +219,11 @@ public class ScanDirectory {
 
 		// Get the bencode and write the file
 		Entry entry =  new Entry(t.generate());
-	
+
 		Map<String, Entry> entryMap = entry.dictionary();
 		Entry entryFromUpdatedMap = Entry.fromMap(entryMap);
 		final byte[] bencode = entryFromUpdatedMap.bencode();
-		
+
 		try {
 			FileOutputStream fos;
 
@@ -221,7 +237,7 @@ public class ScanDirectory {
 			log.error("Couldn't write file");
 			e.printStackTrace();
 		}
-		
+
 		return torrentFile;
 
 	}
@@ -257,8 +273,10 @@ public class ScanDirectory {
 	public static class ScanInfo {
 		private File file;
 
+
 		private ScanStatus status;
 		private String mbid;
+		private Boolean scanned;
 
 
 		public static ScanInfo create(File file) {
@@ -267,6 +285,7 @@ public class ScanDirectory {
 		private ScanInfo(File file) {
 			this.file = file;
 			this.status = ScanStatus.Pending;
+			this.scanned = false;
 		}
 
 		public File getFile() {
@@ -309,6 +328,15 @@ public class ScanDirectory {
 		}
 
 
+		public void setScanned(Boolean scanned) {
+			this.scanned = scanned;
+		}
+		public Boolean getScanned() {
+			return scanned;
+		}
+
+
+
 
 
 	}
@@ -317,6 +345,8 @@ public class ScanDirectory {
 	public File getDir() {
 		return dir;
 	}
+
+
 
 
 

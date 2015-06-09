@@ -6,7 +6,14 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.torrenttunes.client.webservice.Platform;
+
 public class DataSources {
+	
+	static final Logger log = LoggerFactory.getLogger(DataSources.class);
 
 	public static String APP_NAME = "torrenttunes-client";
 	
@@ -25,6 +32,8 @@ public class DataSources {
 	public static final String TORRENTS_DIR() {return HOME_DIR() + "/torrents";}
 	
 	public static final String CACHE_DIR() {return HOME_DIR() + "/cache";}
+	
+	public static final String CACHE_FILE(String fileName) {return CACHE_DIR() + "/" + fileName;}
 	
 	public static final String SAMPLE_TORRENT_FILE() {return TORRENTS_DIR() + 
 			"/[kat.cr]fugazi.studio.discography.1989.2001.flac.torrent";
@@ -70,14 +79,25 @@ public class DataSources {
 	
 	public static final String TORRENT_INFO_UPLOAD_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/torrent_info_upload";
 
+	public static final String TORRENT_DOWNLOAD_URL(String infoHash) {
+		return "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/download_torrent/" + infoHash;
+	}
+	
+	public static final String TORRENT_INFO_DOWNLOAD_URL(String infoHash) {
+		return "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/download_torrent_info/" + infoHash;
+	}
+	
 	public static final String TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
+	
+	
+	
 
 	public static final String LIBTORRENT_OS_LIBRARY_PATH() {
 		String osName = System.getProperty("os.name");
-		System.out.println("Operating system " + osName);
+		log.info("Operating system " + osName);
 		
 		String ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
-		System.out.println(ret);
+		log.info(ret);
 		return ret;
 	}
 	
@@ -85,7 +105,7 @@ public class DataSources {
 		List<URI> list = null;
 		try {
 			list = Arrays.asList(
-				new URI(TRACKER_ANNOUNCE),
+//				new URI(TRACKER_ANNOUNCE),
 				new URI("http://9.rarbg.com:2710/announce"),
 				new URI("http://announce.torrentsmd.com:6969/announce"),
 				new URI("http://bt.careland.com.cn:6969/announce"),
