@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>com.github.tchoulihan</groupId>
 			<artifactId>activejdbc</artifactId>
-			<version>1.4.19-SNAPSHOT</version>
+			<version>1.4.20</version>
 			<exclusions>
 				<exclusion>
 					<groupId>opensymphony</groupId>
