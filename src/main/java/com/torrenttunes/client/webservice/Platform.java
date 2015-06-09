@@ -157,13 +157,15 @@ public class Platform {
 				LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 				
 				Tools.allowAllHeaders(req, res);
-				Tools.dbInit();
+				
 				
 				String json = null;
 				String infoHash = req.params(":infoHash");
 				
 				// Fetch the song by its info hash, and return that row
+				Tools.dbInit();
 				Library track = LIBRARY.findFirst("info_hash = ?", infoHash);
+				Tools.dbClose();
 				
 				if (track != null) {
 					json = track.toJson(false);
@@ -217,6 +219,7 @@ public class Platform {
 					lte.getScanInfos().add(si);
 					
 					// Save the track to your DB
+					Tools.dbInit();
 					Library newTrack = Actions.saveSongToLibrary(songMbid, 
 							torrentPath, 
 							infoHash,
@@ -234,6 +237,7 @@ public class Platform {
 							year);
 					
 					newTrack.saveIt();
+					Tools.dbClose();
 					
 					json = newTrack.toJson(false);
 					
