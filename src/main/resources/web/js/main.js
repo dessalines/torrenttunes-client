@@ -43,7 +43,9 @@ $(document).ready(function() {
 
   setupPlayQueue();
   setupPlayQueueBtn();
+  setupHomeTab();
   setupTabs();
+
 
 
 
@@ -457,7 +459,7 @@ function buildLiFromTrackObject(trackObj) {
   var li = '<li><a href="file:///' + trackObj['file_path'] + '"><b>' +
     trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
 
-    console.log(trackObj['file_path']);
+  console.log(trackObj['file_path']);
 
   return li;
 }

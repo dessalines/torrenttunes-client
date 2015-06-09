@@ -192,15 +192,8 @@ public class ScanDirectory {
 		create_torrent t = new create_torrent(fs);
 		
 		// Add trackers in tiers
-		for (int i = 0; i < DataSources.ANNOUNCE_LIST().size(); i++) {
-			URI announce = DataSources.ANNOUNCE_LIST().get(i);
-			
-			if (i == 0) {
-				t.add_tracker(announce.toASCIIString(), 0);
-			} else {
-				t.add_tracker(announce.toASCIIString(), 1);
-			}
-		
+		for (URI announce : DataSources.ANNOUNCE_LIST()) {
+			t.add_tracker(announce.toASCIIString());
 		}
 
 

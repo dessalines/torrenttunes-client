@@ -117,13 +117,13 @@
         <!-- The sidebar -->
         <div id="side_col" class="col-md-2 sidebar" role="tabpanel">
           <ul id="left_tab" class="nav nav-sidebar main-sidebar" role="tablist">
-            <li><a href="#homeTab" data-toggle="tab">Home</a></li>
+            <li class="active"><a href="#homeTab" data-toggle="tab">Home</a></li>
             <li><a href="#browseTab" data-toggle="tab">Browse</a></li>
             <li><a id="play_queue_btn" href="#">Play Queue</a></li>
             <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#uploadTab" data-toggle="tab">Upload</a></li>
-            <li class="active"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
+            <li><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
             <li><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
           </ul>
           <h5 class="text-muted sidebar-spaced">Playlists</h5>
@@ -138,7 +138,7 @@
         <div class="othermain-col col-md-10 col-md-offset-2">
           <!-- Tabs -->
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" id="homeTab">
+            <div role="tabpanel" class="tab-pane fade in active" id="homeTab">
               <h1 class="text-center">
               Trending Albums
               </h1>
@@ -270,7 +270,7 @@
               </ul>
               <br>
               <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
+                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_main">
                   <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> Top Albums </a></h4>
                   <hr>
                   <div id="top_artist_albums_div">

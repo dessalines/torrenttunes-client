@@ -46,9 +46,13 @@ public enum LibtorrentEngine  {
 		s.setTorrentConnectBoost(5);
 		s.setMinReconnectTime(1);
 		s.setActiveDownloads(10);
+//		s.setActiveSeeds(1);
+		
+	
 //        s.setActiveSeeds(9999);
         
-		log.info("active DL limit: " + String.valueOf(session.getSettings().getActiveLimit()));
+		log.info("active DL limit: " + s.getActiveLimit() +
+				"\nactive seed limit: " + s.getActiveSeeds());
 //		log.info("active seed limit: " + String.valueOf(session.getSettings().get));
 //		sessionSettings.setActiveSeeds(0);
 		
@@ -126,8 +130,8 @@ public enum LibtorrentEngine  {
 			
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
-				TorrentStats ts = TorrentStats.create(torrent);
-				log.info(ts.toString());
+//				TorrentStats ts = TorrentStats.create(torrent);
+//				log.info(ts.toString());
 				super.blockFinished(alert);
 			}
 			@Override
