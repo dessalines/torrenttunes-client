@@ -19,7 +19,7 @@ public class DataSources {
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
-	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT;
+	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
 	public static final String MAIN_PAGE_URL = WEB_SERVICE_URL + "/main";
 	
@@ -78,18 +78,18 @@ public class DataSources {
 	
 	public static final String TRACKER_WEB_PORT = "4567";
 	
-	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT;
+	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/";
 	
-	public static final String TORRENT_UPLOAD_URL = TRACKER_URL + "/torrent_upload";
+	public static final String TORRENT_UPLOAD_URL = TRACKER_URL + "torrent_upload";
 	
-	public static final String TORRENT_INFO_UPLOAD_URL = TRACKER_URL + "/torrent_info_upload";
+	public static final String TORRENT_INFO_UPLOAD_URL = TRACKER_URL + "torrent_info_upload";
 
 	public static final String TORRENT_DOWNLOAD_URL(String infoHash) {
-		return "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/download_torrent/" + infoHash;
+		return TRACKER_URL + "download_torrent/" + infoHash;
 	}
 	
 	public static final String TORRENT_INFO_DOWNLOAD_URL(String infoHash) {
-		return "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/download_torrent_info/" + infoHash;
+		return TRACKER_URL + "download_torrent_info/" + infoHash;
 	}
 	
 	public static final String TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
