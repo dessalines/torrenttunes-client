@@ -49,7 +49,7 @@ public class Main {
 		
 		WebService.start();
 		
-//		LibtorrentEngine.INSTANCE.startSeedingLibrary();
+		LibtorrentEngine.INSTANCE.startSeedingLibrary();
 		
 		
 //		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), torrentClient);
