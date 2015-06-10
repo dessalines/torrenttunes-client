@@ -491,7 +491,7 @@ public class Tools {
 	}
 
 
-	public static final void httpGetBytesV2(String urlString, String savePath) throws IOException {
+	public static final void httpSaveFile(String urlString, String savePath) throws IOException {
 		URL url = new URL(urlString);
 
 		URLConnection uc = url.openConnection();

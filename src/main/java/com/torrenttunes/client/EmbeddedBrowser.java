@@ -21,19 +21,23 @@ import javafx.stage.Stage;
 public class EmbeddedBrowser extends Application implements Runnable {
 	private Scene scene;
 	@Override public void start(Stage stage) {
+		
+		System.setProperty("prism.lcdtext", "false");
+		
+		
 		// create the scene
 		stage.setTitle("U suci");
 		scene = new Scene(new Browser(),750,500, Color.web("#666970"));
 		stage.setScene(scene);
 		//        scene.getStylesheets().add("webviewsample/BrowserToolbar.css");  
-		
-        // TODO set icon
-//        stage.getIcons().add(new Image("/path/to/stackoverflow.jpg"));
-        
-        
+
+		// TODO set icon
+		//        stage.getIcons().add(new Image("/path/to/stackoverflow.jpg"));
+
+
 		stage.setMaximized(true);
 		stage.show();
-		
+
 		stage.setOnCloseRequest(e -> System.exit(0));
 
 
@@ -44,7 +48,7 @@ public class EmbeddedBrowser extends Application implements Runnable {
 	}
 
 	public static void start(){
-		
+
 		EmbeddedBrowser e = new EmbeddedBrowser();
 		Thread thread = new Thread(e);
 		thread.start();
@@ -64,7 +68,7 @@ class Browser extends Region {
 		//apply the styles
 		getStyleClass().add("browser");
 		// load the web page
-		webEngine.load(DataSources.MAIN_PAGE_URL);
+		webEngine.load(DataSources.MAIN_PAGE_URL());
 		//add the web view to the scene
 		getChildren().add(browser);
 

@@ -301,15 +301,21 @@ function setupLibrary() {
 
 function setupTrackSelect() {
   $('.track-select').click(function(e) {
-    var full = this.id.split('_');
+    // var full = this.id.split('_');
+    var name = $(this).attr('name');
+    var full = name.split('_');
+
+
+
+    console.log(full);
     var option = full[0];
     var infoHash = full[1];
-
+    var playButtonName = 'play-button_' + infoHash;
     console.log(option);
     console.log(infoHash);
 
     // now fetch or download the song
-    getJson('fetch_or_download_song/' + infoHash).done(function(e1) {
+    getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
 
       var trackObj = JSON.parse(e1);
 
@@ -392,7 +398,6 @@ function addToQueueLast(trackObj) {
 
   // var index = $('.sm2-playlist-wrapper li').length - 1;
   var index = $("#playlist_div").children().length - 1;
-  console.log(index);
 
 
 
@@ -458,8 +463,6 @@ function playNow(trackObj) {
 function buildLiFromTrackObject(trackObj) {
   var li = '<li><a href="file:///' + trackObj['file_path'] + '"><b>' +
     trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
-
-  console.log(trackObj['file_path']);
 
   return li;
 }

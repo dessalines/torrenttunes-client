@@ -10,6 +10,8 @@ import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 
+import com.musicbrainz.mp3.tagger.Tools.Song;
+import com.musicbrainz.mp3.tagger.Tools.Tagger.MusicBrainzQuery;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
 
 import junit.framework.TestCase;
@@ -34,5 +36,10 @@ public class DerpTest extends TestCase {
 		//		
 		//		String json = Tools.MAPPER.writeValueAsString(scanInfos);
 		//		System.out.println(json);
+		
+		
+		Song song = Song.fetchSong(new File("/home/tyler/.torrenttunes-client/cache/1-06 Raconte-Moi Une Histoire.mp3"));
+		System.out.println(song.getRecording());
+		
 	}
 }

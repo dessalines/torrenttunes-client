@@ -21,7 +21,7 @@ public class DataSources {
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
-	public static final String MAIN_PAGE_URL = WEB_SERVICE_URL + "/main";
+
 	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
@@ -66,6 +66,8 @@ public class DataSources {
 	public static final String WEB_HOME() {return SOURCE_CODE_HOME() + "/web";}
 
 	public static final String WEB_HTML() {return WEB_HOME() + "/html";}
+	
+	public static final String MAIN_PAGE_URL() {return "file://" + WEB_HTML() + "/main.html";}
 	
 
 	public static final String PAGES(String pageName) {

@@ -123,8 +123,8 @@
             <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#uploadTab" data-toggle="tab">Upload</a></li>
-            <li><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
-            <li><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
+            <li class="hide"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
+            <li class="hide"><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
           </ul>
           <h5 class="text-muted sidebar-spaced">Playlists</h5>
           <ul class="nav nav-sidebar main-sidebar">
@@ -250,7 +250,7 @@
               </div>
               <br>
             </div>
-            <div role="tabpanel" class="tab-pane fade in active" id="artistcatalogTab">
+            <div role="tabpanel" class="tab-pane fade " id="artistcatalogTab">
               <!-- <i class="fa fa-play-circle-o"></i> -->
               <div id="artist_catalog_div">
                 <script id="artist_catalog_template" type="x-tmpl-mustache">
@@ -270,7 +270,7 @@
               </ul>
               <br>
               <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_main">
+                <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
                   <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> Top Albums </a></h4>
                   <hr>
                   <div id="top_artist_albums_div">
@@ -322,14 +322,14 @@
                                 <td>
                                   <span>
                         <div class="btn-group text-normal">
-                              <a id="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="#">
                                 <span class="fa fa-angle-down"></span>
                                   <span class="sr-only">Toggle Dropdown</span></a>
                                   <ul class="dropdown-menu" role="menu">
-                                    <li><a id="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
-                                    <li><a id="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
-                                    <li><a id="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+                                    <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+                                    <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+                                    <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                                     <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                                   </ul>
                       </div>
@@ -414,14 +414,14 @@
                   <td>
                     <span>
                         <div class="btn-group text-normal">
-                              <a id="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="#">
                                 <span class="fa fa-angle-down"></span>
                     <span class="sr-only">Toggle Dropdown</span></a>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a id="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
-                      <li><a id="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
-                      <li><a id="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+                      <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+                      <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+                      <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                       <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                     </ul>
         </div>
@@ -528,14 +528,14 @@
                     <td>
                       <span>
                         <div class="btn-group text-normal">
-                              <a id="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="#">
                                 <span class="fa fa-angle-down"></span>
                       <span class="sr-only">Toggle Dropdown</span></a>
                       <ul class="dropdown-menu" role="menu">
-                        <li><a id="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
-                        <li><a id="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
-                        <li><a id="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+                        <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+                        <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+                        <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                       </ul>
           </div>

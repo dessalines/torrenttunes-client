@@ -1,5 +1,5 @@
 var localSparkService = 'http://localhost:4568/';
-// var externalSparkService = 'http://104.236.44.89:4567/';
+var externalSparkService = 'http://104.236.44.89:4567/';
 
 // var externalSparkService = 'http://127.0.0.1:4567/';
 
@@ -18,9 +18,10 @@ var pageNumbers = {};
 // var cookie_path_name = "/";
 
 
-function getJson(shortUrl, noToast, external) {
+function getJson(shortUrl, noToast, external, name) {
   noToast = (typeof noToast === "undefined") ? false : noToast;
   external = (typeof external === "undefined") ? false : external;
+  name = (typeof name === "undefined") ? false : name;
 
   var url;
 
@@ -32,12 +33,26 @@ function getJson(shortUrl, noToast, external) {
   }
 
   console.log(url);
-  return simpleAjax(url, noToast);
+  return simpleAjax(url, noToast, name);
 
 
 }
 
-function simpleAjax(url, noToast) {
+function simpleAjax(url, noToast, name) {
+
+  if (name != null) {
+    var btn = $('[name="' + name + '"]');
+    var prevText = btn.html();
+    console.log(prevText);
+
+    btn.html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>');
+
+
+  }
+
+  // Loading
+  // btn.button('loading');
+
   return $.ajax({
     type: "GET",
     url: url,
@@ -46,11 +61,14 @@ function simpleAjax(url, noToast) {
     },
     // data: seriesData, 
     success: function(data, status, xhr) {
-
+      btn.html(prevText);
     },
     error: function(request, status, error) {
       if (!noToast) {
         toastr.error(request.responseText);
+      }
+      if (name != null) {
+        btn.html(prevText);
       }
     }
   });
