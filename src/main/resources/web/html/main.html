@@ -51,7 +51,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">TorrentTunes</a>
+          <a class="navbar-brand" href="https://github.com/tchoulihan/torrenttunes-client">TorrentTunes</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -122,7 +122,7 @@
             <li><a id="play_queue_btn" href="#">Play Queue</a></li>
             <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#">Settings</a></li>
-            <li><a href="#uploadTab" data-toggle="tab">Upload</a></li>
+            <li><a href="#uploadTab" data-toggle="tab">Share</a></li>
             <li class="hide"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
             <li class="hide"><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
           </ul>
@@ -139,7 +139,7 @@
           <!-- Tabs -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="homeTab">
-              <h1 class="text-center">
+              <h1 class="text-center no-padding-top">
               Trending Albums
               </h1>
               <hr>
@@ -313,7 +313,7 @@
                                 <th colspan="2">Track</th>
                                 <th>Time</th>
                                 <th>Album</th>
-                                <th>Plays</th>
+                                <th align="right">Plays</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -336,9 +336,9 @@
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>
                       <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                      <td class="text-overflow" <span>{{{album}}}</span>
+                      <td class="text-overflow"> <span>{{{album}}}</span>
                       </td>
-                      <td class="text-overflow" <span>{{plays}}</span>
+                      <td class="text-overflow" align="right"> <span>{{plays}}</span>
                       </td>
                       </tr>
                       {{/.}}
@@ -463,7 +463,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-12">
-                <button id="uploadBtn" type="submit" class="btn btn-default btn-lg btn-block" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Upload</button>
+                <button id="uploadBtn" type="submit" class="btn btn-default btn-lg btn-block" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Share</button>
               </div>
             </div>
           </form>
@@ -506,7 +506,7 @@
               </h2> -->
           <div id="library_div">
             <script id="library_template" type="x-tmpl-mustache">
-              <table id="library_table" class="table table-hover table-striped tablesorter table-overflow">
+              <table name="library_table" class="table table-hover table-striped tablesorter table-overflow">
                 <colgroup>
                   <col style="width:7%">
                     <col style="width:35%">
@@ -543,7 +543,7 @@
           <td class="text-overflow"><span>{{{title}}}</span></td>
           <td class="text-overflow"><span>{{{artist}}}</span></td>
           <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-          <td class="text-overflow" <span>{{{album}}}</span>
+          <td class="text-overflow"> <span>{{{album}}}</span>
           </td>
           </tr>
           {{/.}}

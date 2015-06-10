@@ -289,7 +289,7 @@ function setupLibrary() {
 
     fillMustacheWithJson(library, libraryTemplate, '#library_div');
 
-    $("#library_table").tablesorter({
+    $("[name=library_table]").tablesorter({
       sortList: [
         [2, 0],
         [4, 0]
@@ -351,9 +351,14 @@ function setupTrackSelect() {
       player.playlistController.refresh();
 
       // post it to the DB to save it
-      simplePost('save_play_queue', JSON.stringify(playQueue), null, function() {
+
+      // simplePost('save_play_queue', JSON.stringify(playQueue), null, function() {
+      //   // console.log('play queue saved');
+      // }, null, null, null);
+
+      simplePost('add_play_count/' + infoHash, null, null, function() {
         // console.log('play queue saved');
-      }, null, null, null);
+      }, true, true, null);
 
 
 

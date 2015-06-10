@@ -69,7 +69,10 @@ function setupSearch() {
     displayKey: 'search',
     source: artistList,
     templates: {
-      header: '<h3 class="search-set">Artists</h3>'
+      header: '<h3 class="search-set">Artists</h3>',
+      suggestion: function(context) {
+        return Mustache.render('<div>{{{search}}} </div>', context);
+      }
     }
   }, {
     name: 'album_list',
@@ -77,7 +80,10 @@ function setupSearch() {
     displayKey: 'search',
     source: albumList,
     templates: {
-      header: '<h3 class="search-set">Albums</h3>'
+      header: '<h3 class="search-set">Albums</h3>',
+      suggestion: function(context) {
+        return Mustache.render('<div>{{{search}}} </div>', context);
+      }
     }
 
 
