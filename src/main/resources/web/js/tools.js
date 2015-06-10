@@ -61,7 +61,9 @@ function simpleAjax(url, noToast, name) {
     },
     // data: seriesData, 
     success: function(data, status, xhr) {
-      btn.html(prevText);
+      if (name != null) {
+        btn.html(prevText);
+      }
     },
     error: function(request, status, error) {
       if (!noToast) {
