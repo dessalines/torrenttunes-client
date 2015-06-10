@@ -155,10 +155,10 @@
                       {{/album_coverart_thumbnail_small}}
                       <div class="spacer"></div>
                       <div class="text-overflow">
-                        <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal"><b>{{artist_name}}</b></a>
+                        <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal"><b>{{{artist_name}}}</b></a>
                       </div>
                       <div class="text-overflow">
-                        <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><i>{{title}}</i></a>
+                        <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><i>{{{title}}}</i></a>
                       </div>
                       <p class="text-muted">{{year}} &middot; {{number_of_songs}} songs
                       </p>
@@ -255,7 +255,7 @@
               <div id="artist_catalog_div">
                 <script id="artist_catalog_template" type="x-tmpl-mustache">
                   <h2 class="no-padding-top"> 
-                     <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{name}}</a> <small> 
+                     <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{{name}}}</a> <small> 
                       <i class="fa fa-wikipedia"></i> 
                        <i class="fa fa-music"></i>
                       </small></h2>
@@ -285,7 +285,7 @@
                           {{/album_coverart_thumbnail_small}}
                           <div class="spacer"></div>
                           <div class="text-overflow">
-                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><b>{{title}}</b></a>
+                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><b>{{{title}}}</b></a>
                           </div>
                           <p class="text-muted">{{year}} &middot; {{number_of_songs}} songs
                           </p>
@@ -334,9 +334,9 @@
                                   </ul>
                       </div>
                       </td>
-                      <td class="text-overflow"><span>{{title}}</span></td>
+                      <td class="text-overflow"><span>{{{title}}}</span></td>
                       <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                      <td class="text-overflow" <span>{{album}}</span>
+                      <td class="text-overflow" <span>{{{album}}}</span>
                       </td>
                       <td class="text-overflow" <span>{{plays}}</span>
                       </td>
@@ -374,13 +374,13 @@
                     {{/album_coverart_url}}
                   </div>
                   <div class="col-md-6">
-                    <h1> {{title}}
+                    <h1> {{{title}}}
                        <small>
                           <i class="fa fa-wikipedia"></i> 
                           <i class="fa fa-music"></i>
                       </small>
                       <br><small>
-                      <a onclick="showArtistPage();" href="#">{{artist_name}}
+                      <a onclick="showArtistPage();" href="#">{{{artist_name}}}
                        </a>
                       </small>
                       </h1>
@@ -427,7 +427,7 @@
         </div>
         </td>
         <td class="text-overflow"><span>{{track_number}}</span></td>
-        <td class="text-overflow"><span>{{title}}</span></td>
+        <td class="text-overflow"><span>{{{title}}}</span></td>
         <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
         </tr>
         {{/.}}
@@ -540,10 +540,10 @@
                       </ul>
           </div>
           </td>
-          <td class="text-overflow"><span>{{title}}</span></td>
-          <td class="text-overflow"><span>{{artist}}</span></td>
+          <td class="text-overflow"><span>{{{title}}}</span></td>
+          <td class="text-overflow"><span>{{{artist}}}</span></td>
           <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-          <td class="text-overflow" <span>{{album}}</span>
+          <td class="text-overflow" <span>{{{album}}}</span>
           </td>
           </tr>
           {{/.}}
