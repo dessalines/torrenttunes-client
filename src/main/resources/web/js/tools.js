@@ -21,7 +21,7 @@ var pageNumbers = {};
 function getJson(shortUrl, noToast, external, name) {
   noToast = (typeof noToast === "undefined") ? false : noToast;
   external = (typeof external === "undefined") ? false : external;
-  name = (typeof name === "undefined") ? false : name;
+  name = (typeof name === "undefined") ? null : name;
 
   var url;
 
@@ -187,7 +187,7 @@ function fillProgressBar(url, divId) {
   }, 100); // 1000 milliseconds = 1 second.
 }
 
-function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, noToast, clearForm, external) {
+function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, noToast, clearForm, external, errorFunctions) {
   // !!!!!!They must have names unfortunately
   // An optional arg
   modalId = (typeof modalId === "undefined") ? "defaultValue" : modalId;
@@ -260,6 +260,10 @@ function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, n
 
     },
     error: function(request, status, error) {
+      if (errorFunctions != null) {
+        errorFunctions(request);
+      }
+
       if (request.responseText != null) {
         toastr.error(request.responseText);
       } else {

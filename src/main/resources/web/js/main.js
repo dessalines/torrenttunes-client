@@ -233,6 +233,8 @@ function setupUploadForm() {
 
 
 
+      }, null, null, null, function() {
+        clearInterval(uploadInterval);
       });
 
 
@@ -269,7 +271,8 @@ function keyboardShortcuts() {
   $("html").on("keydown", function(e) {
 
     var searchBarIsFocused = $('.typeahead').is(':focus');
-    if (e.keyCode == 32 && !searchBarIsFocused) {
+    var inputIsFocused = $('input').is(':focus');
+    if (e.keyCode == 32 && !searchBarIsFocused && !inputIsFocused) {
       e.preventDefault();
       player.actions.play();
     }
