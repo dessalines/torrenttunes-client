@@ -21,6 +21,11 @@
   padding:0; margin:0;
 }
 */
+
+
+.artist-link {
+  font-size: 12px;
+}
 /* SoundManager2 stuff*/
 .nav-tabs-left { text-align: left !important; }
 

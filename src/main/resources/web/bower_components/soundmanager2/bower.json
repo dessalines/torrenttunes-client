@@ -16,14 +16,5 @@
     "CONTRIBUTING.md",
     "package.js",
     "package.json"
-  ],
-  "_release": "9d65641698",
-  "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "9d656416988a942d81883ad688992b21957aa318"
-  },
-  "_source": "git://github.com/scottschiller/SoundManager2.git",
-  "_target": "*",
-  "_originalSource": "soundmanager2"
+  ]
 }

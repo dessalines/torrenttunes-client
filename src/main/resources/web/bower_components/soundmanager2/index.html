@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <title>SoundManager 2: JavaScript Sound For The Web</title>
@@ -29,6 +29,11 @@
 <!-- IE CSS font hax -->
 <!--[if lte IE 8]>
 <style>
+ #turntable-demo {
+  /* nope. */
+  display: none;
+ }
+ #tidal-link { display: none; /* this uses SVG, so, meh. */ }
  h2.special {
   /* IE 6-8 font reset, doesn't like sort-of-defined @font-family */
   font-family:"helvetica neue",helvetica,arial,verdana,tahoma,"sans serif";
@@ -183,9 +188,9 @@
 	            <div id="inline-video">
 
 					<video id="turntable-video" loop autoplay onclick="if (!this.paused) { this.pause(); } else { this.play(); }">
+						<source src="demo/_image/turntable-loop-1920x500-bw.webm" type="video/webm">
 						<source src="demo/_image/turntable-loop-1920x500-h264-512kbps-h264.mp4">
 						<source src="demo/_image/turntable-loop-1920x500-h264-512kbps-bw.mov" type="video/mp4">
-						<source src="demo/_image/turntable-loop-1920x500-bw.webm" type="video/webm">
 						<img id="turntable-static-video" src="demo/_image/turntable-loop-poster.jpg" alt="" style="width:100%;max-width:1920px" />
 					</video>
 
@@ -299,6 +304,17 @@
 
 					  <div class="sm2-playlist-wrapper">
 					    <ul class="sm2-playlist-bd">
+						     <!-- example: playable link, "buy" link, "download" link -->
+						     <li>
+						      <div class="sm2-row">
+						       <div class="sm2-col sm2-wide">
+						        <a href="http://freshly-ground.com/data/audio/sm2/Figub%20Brazlevi%C4%8D%20-%20Bosnian%20Syndicate.mp3" class="exclude button-exclude inline-exclude"><b>Figub Brazlevič</b> - Bosnian Syndicate <span title="Published under a Creative Commons BY-NC-ND license" class="label">(BY-CC-ND license)</span></a>
+						       </div>
+						       <div class="sm2-col">
+						        <a href="http://figubbrazlevic.bandcamp.com/track/bosnian-syndicate" target="_blank" title="Buy &quot;Bosnian Syndicate&quot;" class="sm2-icon sm2-cart">Buy this track</a>
+						       </div>
+						      </div>
+						     </li>
 						     <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20Let%20Me%20%28Prod%202oolman%29.mp3" class="exclude button-exclude inline-exclude"><b>SonReal</b> - Let Me <span class="label">Explicit</span></a></li>
 						     <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20LA%20%28Prod%20Chin%20Injetti%29.mp3" class="exclude button-exclude inline-exclude"><b>SonReal</b> - LA (Prod. Chin Injetti)<span class="label">Explicit</span></a></li>
 						     <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20People%20Asking.mp3" class="exclude button-exclude inline-exclude"><b>SonReal</b> - People Asking <span class="label">Explicit</span></a></li>
@@ -320,7 +336,7 @@
 					</div>
 
 					<div class="demo-more" style="margin-top:-45px">
-						Featured demo: <a href="demo/bar-ui/" title="Demo" class="cta dark-cta">Bar UI <span>&raquo;</span></a>
+						Featured demo: <a href="demo/bar-ui/" title="Bar UI: Demo" class="cta dark-cta">Bar UI <span>&raquo;</span></a>
 					</div>
 
 				</div>
@@ -415,10 +431,10 @@
 
 					<div class="column">
 						<div class="column-wrapper">
-							<h3 style="cursor:help" title="Gzip-compressed file size on a typical set-up is 11 KB. And was it supposed to be the &quot;Swiss Army&quot; kind? I forget.">The ginsu knife: <b style="white-space:nowrap">11 KB<span class="performance icon"></span></b></h3>
+							<h3 style="cursor:help" title="Gzip-compressed file size on a typical set-up is 12 KB. And was it supposed to be the &quot;Swiss Army&quot; kind? I forget.">The ginsu knife: <b style="white-space:nowrap">12 KB<span class="performance icon"></span></b></h3>
 							<h4>Big&nbsp;features, <b>small footprint</b></h4>
 							<p><em>But wait, there's more!</em></p>
-							<p>Performance is an important metric, too. SoundManager 2 packs a comprehensive, feature-rich API into as little as <a href="doc/getstarted/#basic-inclusion" title="SoundManager 2: Build options (down to ~11 KB in size)" style="white-space:nowrap" class="cta">11 KB</a> over the wire when optimized; that's less than 8% of the original, uncompressed file size.</p>
+							<p>Performance is an important metric, too. SoundManager 2 packs a comprehensive, feature-rich API into as little as <a href="doc/getstarted/#basic-inclusion" title="SoundManager 2: Build options (down to ~12 KB in size)" style="white-space:nowrap" class="cta">12 KB</a> over the wire when optimized; that's less than 8% of the original, uncompressed file size.</p>
 							<p>SM2 is self-contained, having no external dependencies, and is compatible with popular JavaScript frameworks.</p>
 							<p>The source code is BSD-licensed and is provided in fully-commented, non-debug and compiler-optimized "minified" versions appropriate for development and production use.</p>
 						</div>
@@ -544,6 +560,7 @@
 							     <li><a href="http://freshly-ground.com/data/audio/sm2/The%20Fugitives%20-%20Graffiti%20Sex.mp3" class="exclude button-exclude inline-exclude"><b>The Fugitives</b> - Graffiti Sex</a></li>
 							     <li><a href="http://freshly-ground.com/data/audio/sm2/Adrian%20Glynn%20-%20Seven%20Or%20Eight%20Days.mp3" class="exclude button-exclude inline-exclude"><b>Adrian Glynn</b> - Seven Or Eight Days</a></li>
 							     <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20I%20Tried.mp3" class="exclude button-exclude inline-exclude"><b>SonReal</b> - I Tried</a></li>
+							     <li><a href="http://freshly-ground.com/data/audio/sm2/gong-192kbps.mp3" class="exclude button-exclude inline-exclude">32" Gong Sounds (rubber + standard mallets)</a></li>
 							     <li><a href="http://freshly-ground.com/data/audio/mpc/20060826%20-%20Armstrong.mp3" class="exclude button-exclude inline-exclude">Armstrong Beat</a></li>
 							     <li><a href="http://freshly-ground.com/data/audio/mpc/20090119%20-%20Untitled%20Groove.mp3" class="exclude button-exclude inline-exclude">Untitled Groove</a></li>
 							     <li><a href="http://freshly-ground.com/data/audio/sm2/birds-in-kauai-128kbps-aac-lc.mp4" class="exclude button-exclude inline-exclude">Birds In Kaua'i (AAC)</a></li>
@@ -582,7 +599,7 @@
 							</div>
 
 							<div class="demo-more">
-								<a href="demo/bar-ui/" title="Demo" class="cta">Bar UI <span>&raquo;</span></a>
+								<a href="demo/bar-ui/" title="Bar UI: Demo" class="cta">Bar UI <span>&raquo;</span></a>
 							</div>
 
 							<!-- 360 player -->
@@ -623,6 +640,95 @@
 							<h3>Experimental</h3>
 							<h4>Advanced <b>prototypes</b></h4>
 
+                            <div id="turntable-demo">
+
+							  <div style="clear:both;position:relative;text-align:center;margin-top:-7.5%">
+
+							    <!-- note: inline-block is just for centering -->
+
+							    <div id="turntable-large" class="turntable has-slipmat" style="display:inline-block">
+
+							       <div class="frame"></div>
+
+							       <div class="table-bg"></div>
+
+							       <!-- image that sets the base dimensions-->
+							       <img src="demo/turntable/image/tt_case_and_lighting.png" alt="" class="stub" />
+
+							       <div class="bd">
+
+							        <div class="platter"></div>
+							        
+							        <div class="slipmat-holder">
+							         <div class="slipmat"></div>
+							        </div>
+
+							        <div class="record-holder">
+							         <div class="record"></div>
+							         <div class="record-grooves"></div>
+							         <div class="label"></div>
+							        </div>
+
+							        <div class="spindle"></div>
+							        <div class="power-light"></div>
+							        <a href="#" class="power-dial" data-method="powerToggle"></a>
+							        <a href="#" class="button start-stop" data-method="toggle"></a>
+							        <a href="#" class="button speed-33 on"></a>
+							        <a href="#" class="button speed-45"></a>
+							        <div class="light light-on"></div>
+							        <a href="#" class="button light"></a>
+							        <div class="tonearm-holder">
+							         <div class="tonearm"></div>
+							        </div>
+							       </div>
+
+							    </div>
+
+							  </div>
+
+							  <div class="demo-more" style="position:relative;z-index:2;margin-right:7%;margin-top:-5.25%">
+								<a href="demo/turntable/" title="Turntable UI Demo" class="cta dark-cta">Turntable UI <span>&raquo;</span></a>
+							  </div>
+
+							  <!-- end turntable -->
+
+							  <ul class="tt-playlist">
+								<li>
+									<a href="http://freshly-ground.com/data/audio/sm2/Beckyoncé%20-%20Single%20Loser.mp3" data-turntable="turntable-large" data-artwork="http://freshly-ground.com/data/image/sm2/beckyonce.jpg" class="norewrite exclude button-exclude inline-exclude sm2-exclude cta turntable-include">Beckyoncé - Single Loser (Put A Beck On It)</a> (<span title="Published under a Creative Commons BY-NC-SA license">BY-NC-SA</span>, <a href="https://soundcloud.com/beckyonce/single-loser-put-a-beck-on-it" target="_blank" class="cta">via</a>)
+								</li>
+								<li>
+									<a href="http://freshly-ground.com/data/audio/sm2/Figub%20Brazlevi%C4%8D%20-%20Bosnian%20Syndicate.mp3" data-turntable="turntable-large" data-artwork="http://freshly-ground.com/data/image/sm2/trainyards-cover-640.jpg" class="norewrite exclude button-exclude inline-exclude sm2-exclude cta turntable-include"><b>Figub Brazlevič</b> - Bosnian Syndicate</a> (<span title="Published under a Creative Commons BY-NC-ND license">BY-CC-ND license</span>, <a href="http://figubbrazlevic.bandcamp.com/track/bosnian-syndicate" target="_blank" class="cta">via</a>)
+								</li>
+								<li>
+									<a href="http://freshly-ground.com/data/audio/sm2/Chill With Schill (Summer 2012 Session Excerpt).mp3" data-turntable="turntable-large" class="norewrite exclude button-exclude inline-exclude sm2-exclude cta turntable-include">Chill With Schill (Summer 2012 Session Excerpt)</a>
+								</li>
+								<li>
+									<a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20LA%20%28Prod%20Chin%20Injetti%29.mp3" data-turntable="turntable-large" data-artwork="http://freshly-ground.com/data/image/sm2/sonreal-onelongday-65.jpg" class="norewrite exclude button-exclude inline-exclude cta turntable-include">SonReal - L.A. (Prod. Injetti)</a>
+								</li>
+							  </ul>
+
+							</div>
+
+							<style>
+								/* quick hack for playlist above */
+								ul.tt-playlist {
+									position: relative;
+									color: #999;
+									padding-left: 2.75em;
+									font-size: 92%;
+								}
+								ul.tt-playlist li {
+									margin: 0px;
+									padding: 0px;
+								}
+								/*
+								.turntable .frame {
+									background: url(demo/turntable/image/pinstriped_suit_vertical.png);
+									background-size: 142px 76px;
+								}
+								*/
+							</style>
+
 							<p>The Cassette Tape UI is a skinnable player based on the TDK MA-R90 cassette tape, a classic design from 1982.</p>
 
 							<div>
@@ -630,10 +736,6 @@
 							</div>
 
 							<p style="margin:0.5em 0px 0px 0px;padding:0px;font-size:92%;text-align:left;color:#666;margin-bottom:0.5em;white-space:normal">Remember Type IV, Metal &amp; Chromium/CrO2? <a href="http://www.youtube.com/watch?v=uMUnaI_IdBU" title="TDK TV ad, 1980s" class="cta">Those were the days</a>.</p>
-
-							<p>The "Wheels Of Steel" started as a simple CSS prototype, and evolved to replicate most of the UI and functionality of a traditional DJ set-up. Pitch bending, scratch and EQ effects are present where supported.</p>
-							<p style="margin:0px 0px 0.5em 0px;padding:0px;text-align:center" class="bonus-demo"><a href="http://wheelsofsteel.net/" title="The Wheels Of Steel: Online turntable / browser-based DJ prototype" style="margin:0px;padding:0px;background:#fff"><img src="demo/_image/wheelsofsteel-full-ui.jpg" alt="wheelsofsteel.net: Online turntable demo (screenshot)" style="display:block;width:100%;min-width:100%;max-width:315px;margin-left:-4px;border:none" /></a></p>
-							<p style="margin:0px;padding:0px;font-size:92%;text-align:left;color:#666;margin-bottom:0.5em;white-space:normal">The <a href="http://wheelsofsteel.net/" title="The Wheels Of Steel: Online turntable / browser-based DJ prototype" class="cta">Wheels Of Steel</a>, a browser-based DJ turntable prototype. For the tech details, read <a href="http://www.schillmania.com/content/entries/2011/wheels-of-steel/" title="The making of 'The Wheels Of Steel': An Ode To Turntables (in HTML)" class="cta">An Ode To Turntables (in HTML.)</a></p>
 
 						</div>
 					</div>
@@ -713,44 +815,20 @@ mySound.play();
 								Examples using multi-track playback, progress and combinations of sound and animation:
 							</p>
 
-							<ul class="bonus-demos">
+							<h4>Armor Alley: Web Prototype (PC-DOS game remake)</strong></h4>
 
-								<li>
-									<p class="smaller"><strong>Armor Alley (game)</strong></p>
-									<a href="http://www.schillmania.com/armor-alley/" style="display:inline-block" title="Armor Alley: Web Prototype (1990 PC-DOS version)"><img src="demo/_image/armor-alley-screenshot.png" alt="Armor Alley: Web Prototype (demo screenshot)" style="display:block;width:100%;max-width:200px" /></a>
-								</li>
+							<iframe width="100%" height="400" src="https://www.youtube.com/embed/bTH2OYJ6vVY" frameborder="0" allowfullscreen></iframe>
 
-								<li>
-									<p class="smaller"><strong>SURVIVOR remake</strong></p>
-									<a href="http://www.schillmania.com/survivor/" style="display:inline-block" title="SURVIVOR (1982 Commodore 64 game remake)"><img src="demo/_image/survivor-screenshot.png" alt="SURVIVOR (C64 game remake) demo screenshot" style="display:block;width:100%;max-width:200px" /></a>
-								</li>
+							<p><a href="http://schillmania.com/armor-alley/" class="cta">Armor Alley</a> is a side-scrolling, real-time vehicle simulation / strategy game, originally released for the Mac and PC-DOS computers in 1990. This web-based remake is a tribute to the attention to detail shown in the original. Your goal is to defend a convoy as it moves into enemy territory; the game ends when a van reaches the opposing base. See the <a href="http://www.schillmania.com/content/entries/2013/armor-alley-web-prototype/" class="cta">making-of</a> for more.</p>
 
-								<li>
-									<p class="smaller"><strong>Drum Machine</strong></p>
-									<a href="demo/mpc/" style="display:inline-block" title="MPC (sampler/drum machine) demo"><img src="demo/_image/mpc-screenshot.png" alt="MPC (drum machine) demo screenshot" style="display:block;width:100%;max-width:200px" /></a>
-								</li>
+							<h4>SURVIVOR (Commodore 64 game remake)</strong></h4>
 
-								<li>
-									<p class="smaller"><strong>Christmas Lights</strong></p>
-									<a href="demo/christmas-lights/" style="display:inline-block" title="Smashable Christmas Lights demo"><img src="demo/_image/christmas-lights.jpg" alt="Smash Christmas Lights demo" style="display:block;width:100%;max-width:200px;border-radius:7px" /></a>
-								</li>
+							<iframe width="100%" height="390" src="https://www.youtube.com/embed/h6DyJbCnLvw" frameborder="0" allowfullscreen></iframe>
 
-							</ul>
-
-							<h4 style="clear:left;padding-top:1em">"Audio sprites" (sound segments / samples) demo</h4>
-
-							<p>With sound playback options like <code>from</code> and <code>to</code>, you can play portions of a larger, single-file "sprite" of many sounds.</p>
-
-							<p class="bonus-demo clear">
-								<a href="demo/api/#fitter-happier" title="&quot;Fitter, Happier&quot; sound sample demo"><img src="demo/_image/fitter-happier-waveform.jpg" alt="&quot;Fitter, Happier&quot; waveform screenshot" style="width:100%;max-width:562px" /></a>
-							</p>
-
-
-							<p>
-								For more live examples, see the <a href="demo/api/" title="SoundManager 2 API demos" class="cta">API Demos</a>.
-							</p>
+							<p><a href="http://schillmania.com/survivor/" class="cta">SURVIVOR</a> is a web-based remake of a Commodore 64 game. The goal is to shoot out turrets and destroy bases, while avoiding contact with basically everything around you. Sound was used creatively in the original, and it has been re-implemented in this modern interpretation. See the <a href="http://www.schillmania.com/content/entries/2012/survivor-c64-html-remake/" class="cta">making-of</a> for more.</p>
 
 						</div>
+
 					</div>
 
 					<div class="column">
@@ -764,6 +842,9 @@ mySound.play();
 							<div class="inthewild active">
 
 								<ul class="inthewild">
+									<li id="tidal-link">
+										<a id="tidal" href="http://tidal.com/" title="TIDAL (web player, non-FLAC streaming)"><span>TIDAL</span></a>
+									</li>
 									<li>
 										<a id="beats-music" href="http://beatsmusic.com/" title="Beats Music (web player)"><span>Beats Music</span></a>
 									</li>
@@ -792,13 +873,10 @@ mySound.play();
 										<a id="nyancat" href="http://nyan.cat/" title="NON-STOP NYAN CAT!"><span>NON-STOP NYAN CAT!</span></a>
 									</li>
 									<li>
-										<a id="audiogalaxy" href="http://audiogalaxy.com/" title="Audiogalaxy"><span>Audiogalaxy</span></a>
-									</li>
-									<li>
 										<a id="freesound" href="http://freesound.org" title="Freesound.org"><span>freesound.org</span></a>
 									</li>
 									<li>
-										<a id="baroque-me" href="http://baroque.me/" title="Alexander Chen's &quot;baroque.me&quot;"><span>baroque.me</span></a>
+										<a id="baroque-me" href="http://www.chenalexander.com/Bach" title="Alexander Chen's &quot;baroque.me&quot;"><span>Baroque</span></a>
 									</li>
 								</ul>
 
@@ -821,7 +899,13 @@ mySound.play();
 								<li>Icons: Desktop / mobile / iOS device iconography via <a href="http://glyphish.com/" class="cta">glyphish.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 Unported" class="cta">CC</a>). Tile background: "<a href="http://subtlepatterns.com/tiny-grid/" class="cta">Tiny Grid</a>". Homepage header typeface: <a href="http://work.meredithmandel.com/#379252/Typeface-Chunk-Five" class="cta">Chunk (Five)</a> by Meredith Mandel (<a href="http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;id=OFL&amp;_sc=1" title="SIL Open Font License (OFL)" class="cta">OFL</a>).</li>
 								<li>Music: <em>Seven Or Eight Days</em> courtesy of <a href="http://www.adrianglynn.com/" title="Adrian Glynn, Vancouver-based Singer/Songwriter" class="cta">Adrian Glynn</a>. <em>Graffiti Sex</em> courtesy of <a href="http://www.fugitives.ca/" title="The Fugitives, multi-instrumentalists from Vancouver" class="cta">The Fugitives</a>, from the album <em>In Streetlight Communion</em>. <em>Let Me</em>, <em>LA</em>, <em>I Tried</em> and <em>People Asking</em> courtesy of <a href="http://sonreal.ca/" title="SonReal, Vancouver-based hip-hop artist" class="cta">SonReal</a>.</li>
 							</ul>
-						
+
+							<h4 style="clear:left;padding-top:1em">Additional experimental demo</h4>
+
+							<p>The "Wheels Of Steel" started as a simple CSS prototype, and evolved to replicate most of the UI and functionality of a traditional DJ set-up. Pitch bending, scratch and EQ effects are present where supported.</p>
+							<p style="margin:0px 0px 0.5em 0px;padding:0px;text-align:center" class="bonus-demo"><a href="http://wheelsofsteel.net/" title="The Wheels Of Steel: Online turntable / browser-based DJ prototype" style="margin:0px;padding:0px;background:#fff"><img src="demo/_image/wheelsofsteel-full-ui.jpg" alt="wheelsofsteel.net: Online turntable demo (screenshot)" style="display:block;width:100%;min-width:100%;max-width:315px;margin-left:-4px;border:1px solid #f0f0f0" /></a></p>
+							<p style="margin:0px;padding:0px;font-size:92%;text-align:left;color:#666;margin-bottom:0.5em;white-space:normal">The <a href="http://wheelsofsteel.net/" title="The Wheels Of Steel: Online turntable / browser-based DJ prototype" class="cta">Wheels Of Steel</a>, a browser-based DJ turntable prototype. For the tech details, read <a href="http://www.schillmania.com/content/entries/2011/wheels-of-steel/" title="The making of 'The Wheels Of Steel': An Ode To Turntables (in HTML)" class="cta">An Ode To Turntables (in HTML.)</a></p>
+
 						</div>
 
 					</div>

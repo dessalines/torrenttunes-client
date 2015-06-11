@@ -13,7 +13,7 @@
   <!-- Bootstrap core CSS -->
   <link href="../css/white.plum.bootstrap.min.css" rel="stylesheet">
   <!-- Link to font awesome -->
-  <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
   <!-- Bootstrap social css -->
   <link href="../bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet">
@@ -256,8 +256,33 @@
                 <script id="artist_catalog_template" type="x-tmpl-mustache">
                   <h2 class="no-padding-top"> 
                      <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{{name}}}</a> <small> 
-                      <i class="fa fa-wikipedia"></i> 
-                       <i class="fa fa-music"></i>
+                     {{#official_homepage}}
+                     <a href="{{official_homepage}}" data-toggle="tooltip" data-placement="auto" title="Home Page"><i class="text-muted fa fa-fw fa-home"></i></a>
+                      {{/official_homepage}}
+                      {{#wikipedia_link}}
+                      <a href="{{wikipedia_link}}" data-toggle="tooltip" data-placement="auto" title="Wikipedia"><i class="text-muted fa fa-fw fa-wikipedia"></i> </a>
+                      {{/wikipedia_link}}
+                      {{#allmusic_link}}
+                      <a href="{{allmusic_link}}" data-toggle="tooltip" data-placement="auto" title="AllMusic"><i class="text-muted fa fa-fw fa-music"></i></a>
+                      {{/allmusic_link}}
+                      {{#lastfm}}
+                      <a href="{{lastfm}}" data-toggle="tooltip" data-placement="auto" title="Last.fm"><i class="text-muted fa fa-fw fa-lastfm"></i></a>
+                      {{/lastfm}}
+                      {{#soundcloud}}
+                      <a href="{{soundcloud}}" data-toggle="tooltip" data-placement="auto" title="SoundCloud"><i class="text-muted fa fa-fw fa-soundcloud"></i></a>
+                      {{/soundcloud}}
+                      {{#youtube}}
+                      <a href="{{youtube}}" data-toggle="tooltip" data-placement="auto" title="YouTube"><i class="text-muted fa fa-fw fa-youtube"></i></a>
+                      {{/youtube}}
+                      {{#imdb}}
+                      <a href="{{imdb}}" data-toggle="tooltip" data-placement="auto" title="IMDB"><i class="text-muted fa fa-fw fa-film"></i></a>
+                      {{/imdb}}
+                      {{#lyrics}}
+                      <a href="{{lyrics}}" data-toggle="tooltip" data-placement="auto" title="Lyrics"><i class="text-muted fa fa-fw fa-file-text-o"></i></a>
+                      {{/lyrics}}
+                       {{#image_url}}
+                      <a href="{{image_url}}" data-toggle="tooltip" data-placement="auto" title="Picture"><i class="text-muted fa fa-fw fa-picture-o"></i></a>
+                      {{/image_url}}
                       </small></h2>
                 </script>
               </div>
@@ -438,17 +463,19 @@
           <div id="browse_div">
             <script id="browse_template" type="x-tmpl-mustache">
               <div class="row">
-                <div class="col-md-12">
-                  {{#.}}
+                {{#.}}
+                <div class="col-md-2">
+                  {{#image_url}}
+                  <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="{{image_url}}" /></a> 
+                  {{/image_url}} {{^image_url}}
+                  <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif" /></a>
+                  {{/image_url}}
                   <h4>
                    <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#">{{name}}</a>
-                  <small>
-                  <i class="fa fa-wikipedia"></i>
-                  <i class="fa fa-music"></i> 
-                  <i class="fa fa-headphones"></i>
-                  </small>
-                  </h4> {{/.}}
+                  
+                  </h4>
                 </div>
+                {{/.}}
               </div>
             </script>
           </div>

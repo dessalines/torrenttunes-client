@@ -5,6 +5,9 @@ $(document).ready(function() {
 
   setupSearch();
 
+  $('[data-toggle="tooltip"]').tooltip();
+
+
 });
 
 function setupSearch() {

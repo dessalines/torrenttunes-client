@@ -185,6 +185,7 @@ function setupArtistCatalogTab() {
     console.log(artistCatalog);
 
     fillMustacheWithJson(artistCatalog, artistCatalogTemplate, '#artist_catalog_div');
+    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
   });
 
   getJson('get_top_albums/' + artistCatalogMBID, null, true).done(function(e) {
