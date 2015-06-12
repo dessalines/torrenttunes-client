@@ -241,12 +241,13 @@ public class Platform {
 					newTrack.saveIt();
 					Tools.dbClose();
 					
+					json = newTrack.toJson(false);
+					
 					// Need to add the # of peers, and block IO until download is done, or times out
 					final CountDownLatch signal = new CountDownLatch(1);
 		
 					
 					lte.getSession().addListener(new TorrentAlertAdapter(torrent) {
-						private Library newTrack;
 						@Override
 						public void torrentFinished(TorrentFinishedAlert alert) {
 							
@@ -259,15 +260,10 @@ public class Platform {
 							log.info("Seeder post response: " + resp);
 							signal.countDown();
 						}
-						
-						
-						private TorrentAlertAdapter init(Library var) {
-							newTrack = var;
-							return this;
-						}
+
 						
 
-					}.init(newTrack));
+					});
 					
 					
 					// Or if it takes more than 30 seconds to download a file, then set no peers,
@@ -286,9 +282,7 @@ public class Platform {
 					
 					signal.await();
 					
-					// Post the seeder count to the tracker
-					
-					json = LIBRARY.findFirst("mbid = ?", songMbid).toJson(false);
+				
 	
 				}
 				
