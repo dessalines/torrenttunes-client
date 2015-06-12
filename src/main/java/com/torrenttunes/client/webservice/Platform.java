@@ -228,9 +228,27 @@ public class Platform {
 					final CountDownLatch signal = new CountDownLatch(1);
 		
 					
+					
+					// If it takes more than 30 seconds to download a file, then set no peers,
+					// and throw an error
+					Timer timer = new Timer();
+					timer.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							signal.countDown();
+							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(infoHash, null));
+							log.info("Seeder post response: " + resp);
+							throw new NoSuchElementException("Torrent took longer than 20 seconds to download");
+						}
+						
+					}, 20000);
+					
 					lte.getSession().addListener(new TorrentAlertAdapter(torrent) {
+						private Timer timer;
+						
 						@Override
 						public void torrentFinished(TorrentFinishedAlert alert) {
+							
 							
 							// Save the track to your DB
 							Tools.dbInit();
@@ -255,7 +273,7 @@ public class Platform {
 							
 							TorrentStats ts = TorrentStats.create(torrent);
 							log.info(ts.toString());
-							
+						
 							
 							
 							// Once the torrent's finished, save the number of peers:
@@ -263,30 +281,24 @@ public class Platform {
 									infoHash, ts.getPeers()));
 							log.info("Seeder post response: " + resp);
 							signal.countDown();
+							timer.cancel();
+
 							
 							
 						}
-
 						
-
-					});
-					
-					
-					// Or if it takes more than 30 seconds to download a file, then set no peers,
-					// and throw an error
-					Timer timer = new Timer();
-					timer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							signal.countDown();
-							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(infoHash, null));
-							log.info("Seeder post response: " + resp);
-							throw new NoSuchElementException("Torrent took longer than 20 seconds to download");
+						
+						private TorrentAlertAdapter init(Timer t) {
+							timer = t;
+							return this;
 						}
 						
-					}, 20000);
+						
 
-					
+					}.init(timer));
+
+
+			
 					signal.await();
 					
 					// Get the json for the saved track
