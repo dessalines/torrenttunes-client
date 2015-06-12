@@ -13,6 +13,7 @@ public class Actions {
 			String albumCoverArtUrl, String albumCoverArtThumbnailLarge,
 			String albumCoverArtThumbnailSmall, Long durationMS, Integer trackNumber, String year) {
 		
+		
 		Library library = LIBRARY.create("mbid", mbid,
 				"torrent_path", torrentPath,
 				"info_hash", infoHash,
@@ -30,6 +31,7 @@ public class Actions {
 				"album_coverart_thumbnail_small", albumCoverArtThumbnailSmall);
 		
 		library.saveIt();
+	
 		
 		return library;
 		

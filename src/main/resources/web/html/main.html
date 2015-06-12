@@ -241,7 +241,7 @@
               <div id="artist_catalog_div">
                 <script id="artist_catalog_template" type="x-tmpl-mustache">
                   <h2 class="no-padding-top"> 
-                     <a class="text-normal" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{{name}}}</a> <small> 
+                     <a href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{{name}}}</a> <small> 
                      {{#official_homepage}}
                      <a href="{{official_homepage}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Home Page"><i class="text-muted fa fa-fw fa-home"></i></a>
                       {{/official_homepage}}
@@ -347,7 +347,7 @@
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>
                       <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                      <td class="text-overflow"> <span>{{{album}}}</span>
+                      <td class="text-overflow"> <a href="#" onclick="showAlbumPage('{{release_mbid}}')" class="text-normal">{{{album}}}</a>
                       </td>
                       <td class="text-overflow" align="right"> <span>{{plays}}</span>
                       </td>
@@ -553,9 +553,9 @@
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>
-          <td class="text-overflow"><span>{{{artist}}}</span></td>
+          <td class="text-overflow"><a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal">{{{artist}}}</a></td>
           <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-          <td class="text-overflow"> <span>{{{album}}}</span>
+          <td class="text-overflow"> <a href="#" onclick="showAlbumPage('{{release_mbid}}')" class="text-normal">{{{album}}}</a>
           </td>
           </tr>
           {{/.}}

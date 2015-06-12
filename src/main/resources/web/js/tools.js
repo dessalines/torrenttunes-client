@@ -75,6 +75,7 @@ function simpleAjax(url, noToast, name) {
       }
       
       if (name != null) {
+        console.log('replacing button text');
         btn.html(prevText);
       }
     }

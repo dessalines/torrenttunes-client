@@ -143,6 +143,7 @@ table.tablesorter thead tr th.headerSortDown:after {
 
 .text-normal {
   color: #333;
+  text-decoration: none !important;
 }
 
 .rounded-left {
@@ -991,7 +992,7 @@ background-color: #222222;*/
 }
 
 .tt-hint {
-  color: #999
+  color: #aaa
 }
 
 .tt-menu {
@@ -1010,13 +1011,22 @@ background-color: #222222;*/
   padding: 3px 20px;
   font-size: 18px;
   line-height: 24px;
+  background-color: none;
+  color: #2A9FD6; 
 }
 
 .tt-suggestion.tt-cursor {
-  /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
-  
-  color: #fff;
+   color: #2A9FD6; 
   background-color: #0097cf;
+
+}
+.tt-cursor {
+  color: #FF6666; 
+  background-color: #428bca;
+}
+
+.tt-suggestion p {
+    margin: 0;
 }
 
 .twitter-typeahead {

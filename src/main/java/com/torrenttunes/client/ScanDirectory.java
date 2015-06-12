@@ -50,7 +50,12 @@ public class ScanDirectory {
 		// List all the music files in the sub or sub directories
 		String[] types = {"mp3"};
 
-		Collection<File> files = FileUtils.listFiles(dir, types , true);
+		Collection<File> files = null;
+		try {
+			files = FileUtils.listFiles(dir, types , true);
+		} catch(java.lang.IllegalArgumentException e) {
+			throw new NoSuchElementException("Couldn't find directory: " + dir);
+		}
 
 		// Remove all that aren't already in the library(you don't need to upload or seed them)
 		Set<File> torrentDBFiles = loadTorrentsFromDB();
@@ -63,11 +68,11 @@ public class ScanDirectory {
 
 		// The main scanning loop
 		for (File file : files) {
-			
+
 			// Create a scanInfo from it
 			ScanInfo si = ScanInfo.create(file);
 			scanInfos.add(si);
-		
+
 
 			try {
 
@@ -111,22 +116,28 @@ public class ScanDirectory {
 
 
 				// Save it to the DB
-				Tools.dbInit();				
-				Library track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
-						torrentFile.getAbsolutePath(), 
-						torrent.getInfoHash().toHex(),
-						si.getFile().getAbsolutePath(), 
-						song.getArtist(), 
-						song.getArtistMBID(),
-						song.getRelease(),
-						song.getReleaseMBID(),
-						song.getRecording(), 
-						coverArtURL,
-						coverArtLargeThumbnail, 
-						coverArtSmallThumbnail,
-						song.getDuration(),
-						song.getTrackNumber(),
-						song.getYear());
+				Library track = null;
+				Tools.dbInit();
+				try {
+					track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
+							torrentFile.getAbsolutePath(), 
+							torrent.getInfoHash().toHex(),
+							si.getFile().getAbsolutePath(), 
+							song.getArtist(), 
+							song.getArtistMBID(),
+							song.getRelease(),
+							song.getReleaseMBID(),
+							song.getRecording(), 
+							coverArtURL,
+							coverArtLargeThumbnail, 
+							coverArtSmallThumbnail,
+							song.getDuration(),
+							song.getTrackNumber(),
+							song.getYear());
+				} catch(Exception e) {
+					si.setStatus(ScanStatus.DBError);
+					continue;
+				}
 
 				Tools.dbClose();
 
@@ -190,7 +201,7 @@ public class ScanDirectory {
 
 
 		create_torrent t = new create_torrent(fs);
-		
+
 		// Add trackers in tiers
 		for (URI announce : DataSources.ANNOUNCE_LIST()) {
 			t.add_tracker(announce.toASCIIString());
@@ -251,7 +262,8 @@ public class ScanDirectory {
 		AlreadyUploaded("Already uploaded"),
 		UploadingTorrent("Uploading torrent file to server"),
 		UploadingError("Couldn't upload the torrent file"),
-		Seeding("Completed, and seeding file");
+		Seeding("Completed, and seeding file"),
+		DBError("DB error, couldn't save");
 
 
 		private String s;
