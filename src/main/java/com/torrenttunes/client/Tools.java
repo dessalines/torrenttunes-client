@@ -516,7 +516,7 @@ public class Tools {
 			URL externalURL = new URL(seederInfoUpload);
 
 			URLConnection yc = externalURL.openConnection();
-			yc.setDoOutput(true);
+
 			yc.setRequestProperty("User-Agent", USER_AGENT);
 
 			BufferedReader in = new BufferedReader(
