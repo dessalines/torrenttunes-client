@@ -238,7 +238,6 @@ public class Platform {
 							signal.countDown();
 							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(infoHash, "0-0"));
 							log.info("Seeder post response: " + resp);
-							throw new NoSuchElementException("Torrent took longer than 40 seconds to download");
 						}
 
 					}, 40000);
