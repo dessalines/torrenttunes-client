@@ -99,7 +99,7 @@ table.tablesorter thead tr th.headerSortDown:after {
   background-color: #000000;
   /* non-RGBA fallback */
   
-  background-color: rgba(0, 0, 0, 0.72);
+  background-color: rgba(30, 56, 66, 0.72);
 }
 
 .sm2-bar-ui .sm2-inline-texture {
@@ -116,7 +116,7 @@ table.tablesorter thead tr th.headerSortDown:after {
   padding-top: 4px !important;
   padding-bottom: 0 !important;
   height: 28px;
-  color: #333;
+/*  color: #333;*/
 }
 
 .main-sidebar > .active > a {
@@ -998,8 +998,8 @@ background-color: #222222;*/
   width: 422px;
   margin-top: 12px;
   padding: 8px 0;
-  background-color: #fff;  /*for light themes*/
-/*  background-color: #424242; for dark themes*/
+  /*background-color: #fff; */ /*for light themes*/
+  background-color: #424242; /*for dark themes*/
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
