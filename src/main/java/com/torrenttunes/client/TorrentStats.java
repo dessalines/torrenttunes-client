@@ -16,7 +16,7 @@ public class TorrentStats {
 		this.downloadSpeed = Tools.humanReadableByteCount(torrent.getStatus().getDownloadRate(), true)+ "/s";
 		this.uploadSpeed = Tools.humanReadableByteCount(torrent.getStatus().getUploadRate(), true)+ "/s";
 		this.progress = Tools.NUMBER_FORMAT.format(torrent.getStatus().getProgressPpm()*1E-4) + "%";
-		this.peers = torrent.getStatus().getNumConnections() + "/" + 
+		this.peers = torrent.getStatus().getNumConnections() + "-" + 
 				torrent.getStatus().getConnectCandidates();
 		this.state = torrent.getStatus().getState().toString();
 		this.name = torrent.getName();

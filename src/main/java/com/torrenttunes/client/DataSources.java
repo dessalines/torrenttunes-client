@@ -95,6 +95,10 @@ public class DataSources {
 	}
 	
 	public static final String TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
+
+	public static final String SEEDER_INFO_UPLOAD(String infoHash, String seeders) {
+		return TRACKER_URL + "seeder_upload/" + infoHash + "/" + seeders;
+	}
 	
 	
 	

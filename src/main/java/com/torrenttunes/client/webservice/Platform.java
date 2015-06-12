@@ -174,7 +174,8 @@ public class Platform {
 				Tools.dbClose();
 				
 				if (track != null) {
-					json = track.toJson(false);
+					json = track.toJson(false);					
+					
 				}
 				// If it doesn't exist, download the torrent to the cache dir
 				else {
@@ -240,8 +241,6 @@ public class Platform {
 					newTrack.saveIt();
 					Tools.dbClose();
 					
-					json = newTrack.toJson(false);
-					
 					// Need to add the # of peers, and block IO until download is done, or times out
 					final CountDownLatch signal = new CountDownLatch(1);
 		
@@ -255,10 +254,9 @@ public class Platform {
 							log.info(ts.toString());
 							
 							// Once the torrent's finished, save the number of peers:
-							Tools.dbInit();
-							newTrack.set("seeders", ts.getPeers());
-							Tools.dbClose();
-							
+							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(
+									infoHash, ts.getPeers()));
+							log.info("Seeder post response: " + resp);
 							signal.countDown();
 						}
 						
@@ -279,16 +277,22 @@ public class Platform {
 						@Override
 						public void run() {
 							signal.countDown();
+							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(infoHash, null));
+							log.info("Seeder post response: " + resp);
 							throw new NoSuchElementException("Torrent took longer than 20 seconds to download");
 						}
 						
 					}, 20000);
 					
 					signal.await();
+					
+					// Post the seeder count to the tracker
+					
+					json = LIBRARY.findFirst("mbid = ?", songMbid).toJson(false);
 	
 				}
 				
-
+			
 
 				return json;
 				

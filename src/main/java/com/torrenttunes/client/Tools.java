@@ -510,6 +510,29 @@ public class Tools {
 
 	}
 
+	public static String httpSimplePost(String seederInfoUpload) {
+		String res = "";
+		try {
+			URL externalURL = new URL(seederInfoUpload);
+
+			URLConnection yc = externalURL.openConnection();
+			yc.setDoOutput(true);
+			yc.setRequestProperty("User-Agent", USER_AGENT);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(
+							yc.getInputStream()));
+			String inputLine;
+
+			while ((inputLine = in.readLine()) != null) 
+				res+="\n" + inputLine;
+			in.close();
+
+			return res;
+		} catch(IOException e) {}
+		return res;
+	}
+
 	public static void addExternalWebServiceVarToTools() {
 
 		log.info("tools.js = " + DataSources.TOOLS_JS());
