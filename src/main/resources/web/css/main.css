@@ -22,6 +22,9 @@
 }
 */
 
+.form-control {
+  background-color: #424242;
+}
 
 .artist-link {
   font-size: 12px;
@@ -269,11 +272,15 @@ body.modal-open {
 }
 
 #search_form > .input-group > .form-group {
-  display: inline;
+  display: inline !important;
+}
+
+.navbar-input-group {
+  display: inline !important;
 }
 
 @media (max-width: 767px) {
-  #searchbar > .navbar-form {
+  #searchbar > .navbar-form , #search_form > .input-group {
     width: 100%;
   }
 }
@@ -285,8 +292,8 @@ body.modal-open {
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  #searchbar > .navbar-form {
-    width: 425px;
+   #searchbar > .navbar-form, .navbar-form .input-group {
+    width: 425px !important;
   }
 }
 
