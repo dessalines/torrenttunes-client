@@ -46,10 +46,18 @@ $(document).ready(function() {
   setupHomeTab();
   setupTabs();
 
+  errorTest();
+
 
 
 
 });
+
+function errorTest() {
+    getJson('error_test').done(function(e) {
+      
+  });
+}
 
 
 

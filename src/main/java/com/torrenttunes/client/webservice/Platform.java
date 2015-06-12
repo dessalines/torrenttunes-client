@@ -344,6 +344,24 @@ public class Platform {
 			}
 
 		});
+		
+		get("/error_test", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				throw new NoSuchElementException("error testing");
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} 
+
+
+
+
+		});
 
 	}
 

@@ -66,8 +66,14 @@ function simpleAjax(url, noToast, name) {
     },
     error: function(request, status, error) {
       if (!noToast) {
-        toastr.error(request.responseText);
+
+        if (request.status == 0) {
+          toastr.error("TorrentTunes hasn't been started yet...");
+        } else {
+          toastr.error(request.responseText);
+        }
       }
+      
       if (name != null) {
         btn.html(prevText);
       }
@@ -530,7 +536,6 @@ function fillMustacheFromJson(url, templateHtml, divId) {
 
     },
     error: function(request, status, error) {
-
       toastr.error(request.responseText);
     }
   });
@@ -676,7 +681,7 @@ var seedersToTypeObj = {
       }
 
       var peers = parseInt(t.split("-")[1]);
-      console.log('peers = ' + peers);
+      // console.log('peers = ' + peers);
 
       var type;
       if (peers >= 3) {
