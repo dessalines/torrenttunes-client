@@ -277,7 +277,7 @@ public class Platform {
 							
 							
 							// Once the torrent's finished, save the number of peers:
-							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(
+							String resp = Tools.httpGetString(DataSources.SEEDER_INFO_UPLOAD(
 									infoHash, ts.getPeers()));
 							log.info("Seeder post response: " + resp);
 							signal.countDown();
