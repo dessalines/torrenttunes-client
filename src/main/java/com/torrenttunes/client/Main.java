@@ -47,9 +47,11 @@ public class Main {
 		
 //		EmbeddedBrowserJavaFX.start();
 		
-		EmbeddedBrowserJframe.start();
+//		EmbeddedBrowserJframe.start();
 		
 		WebService.start();
+		
+		Tools.pollAndOpenStartPage();
 		
 		LibtorrentEngine.INSTANCE.startSeedingLibrary();
 		

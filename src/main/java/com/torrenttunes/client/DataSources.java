@@ -67,6 +67,8 @@ public class DataSources {
 
 	public static final String WEB_HTML() {return WEB_HOME() + "/html";}
 	
+	public static final String WEB_SERVICE_STARTED_URL() {return WEB_SERVICE_URL + "hello";}
+	
 	public static final String MAIN_PAGE_URL() {return "file://" + WEB_HTML() + "/main.html";}
 	
 

@@ -3,12 +3,28 @@ var artistCatalogMBID, albumCatalogMBID;
 
 $(document).ready(function() {
 
+  // history.replaceState(null, null,"file:///URL Rewrite Example", null);
+
+  // window.location.hash="derp";
   setupSearch();
 
   $('[data-toggle="tooltip"]').tooltip();
 
+  // closing the window functions
+  windowClose();
 
 });
+
+function windowClose() {
+  window.onbeforeunload = function() {
+    console.log('derp');
+
+    
+    simplePost('power_off', null, false, null, true, false);
+    // return "TorrentTunes has been powered off";
+    return null;
+  };
+}
 
 function setupSearch() {
 

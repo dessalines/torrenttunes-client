@@ -1,5 +1,6 @@
 package com.torrenttunes.client;
 
+import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +12,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
@@ -558,5 +563,60 @@ public class Tools {
 		}
 
 	}
+	
+	public static void pollAndOpenStartPage() {
+		// TODO poll some of the url's every .5 seconds, and load the page when they come back with a result
+		int i = 500;
+		int cTime = 0;
+		while (cTime < 30000) {
+			try {
+				try {
+					String webServiceStartedURL = DataSources.WEB_SERVICE_STARTED_URL();
+
+					HttpURLConnection connection = null;
+					URL url = new URL(webServiceStartedURL);
+					connection = (HttpURLConnection) url.openConnection();
+					connection.setConnectTimeout(5000);//specify the timeout and catch the IOexception
+					connection.connect();
+					Thread.sleep(2*i);
+					Tools.openWebpage(DataSources.MAIN_PAGE_URL());
+					cTime = 30000;
+				} catch (IOException e) {
+					log.info("Could not connect to local webservice, retrying in 500ms up to 30 seconds");
+					cTime += i;
+
+					Thread.sleep(i);
+
+				}
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	public static void openWebpage(String urlString) {
+		try {
+			URL url = new URL(urlString);
+			openWebpage(url.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void openWebpage(URI uri) {
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+			try {
+				desktop.browse(uri);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
 

@@ -5,7 +5,6 @@ import static com.torrenttunes.client.db.Tables.QUEUE_VIEW;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-
 import java.io.File;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -13,11 +12,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 
-
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
@@ -41,7 +38,8 @@ public class Platform {
 	static final Logger log = LoggerFactory.getLogger(Platform.class);
 
 	public static void setup() {
-
+		
+	
 		get("/get_library", (req, res) -> {
 
 			try {
@@ -330,6 +328,20 @@ public class Platform {
 
 
 
+
+		});
+		
+		post("/power_off", (req, res) -> {
+			try {
+			
+
+				Runtime.getRuntime().exit(0);
+				return "A yellow brick road";
+
+			} catch (Exception e) {
+				res.status(666);
+				return e.getMessage();
+			}
 
 		});
 
