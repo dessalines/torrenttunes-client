@@ -238,10 +238,10 @@ public class Platform {
 							signal.countDown();
 							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(infoHash, null));
 							log.info("Seeder post response: " + resp);
-							throw new NoSuchElementException("Torrent took longer than 20 seconds to download");
+							throw new NoSuchElementException("Torrent took longer than 40 seconds to download");
 						}
 						
-					}, 20000);
+					}, 40000);
 					
 					lte.getSession().addListener(new TorrentAlertAdapter(torrent) {
 						private Timer timer;
