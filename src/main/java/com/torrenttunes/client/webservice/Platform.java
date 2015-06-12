@@ -218,30 +218,11 @@ public class Platform {
 					ScanInfo si = ScanInfo.create(new File(audioFilePath));
 					si.setStatus(ScanStatus.Seeding);
 					si.setMbid(songMbid);
-					lte.getScanInfos().add(si);
+					lte.getScanInfos().add(si); // TODO not sure about this one
 					
-					// Save the track to your DB
-					Tools.dbInit();
-					Library newTrack = Actions.saveSongToLibrary(songMbid, 
-							torrentPath, 
-							infoHash,
-							audioFilePath, 
-							artist, 
-							artistMbid,
-							album,
-							albumMbid,
-							songTitle, 
-							coverArt,
-							thumbnailLarge, 
-							thumbnailSmall,
-							duration,
-							trackNumber,
-							year);
+
 					
-					newTrack.saveIt();
-					Tools.dbClose();
 					
-					json = newTrack.toJson(false);
 					
 					// Need to add the # of peers, and block IO until download is done, or times out
 					final CountDownLatch signal = new CountDownLatch(1);
@@ -251,14 +232,39 @@ public class Platform {
 						@Override
 						public void torrentFinished(TorrentFinishedAlert alert) {
 							
+							// Save the track to your DB
+							Tools.dbInit();
+							Library newTrack = Actions.saveSongToLibrary(songMbid, 
+									torrentPath, 
+									infoHash,
+									audioFilePath, 
+									artist, 
+									artistMbid,
+									album,
+									albumMbid,
+									songTitle, 
+									coverArt,
+									thumbnailLarge, 
+									thumbnailSmall,
+									duration,
+									trackNumber,
+									year);
+							
+							newTrack.saveIt();
+							Tools.dbClose();
+							
 							TorrentStats ts = TorrentStats.create(torrent);
 							log.info(ts.toString());
+							
+							
 							
 							// Once the torrent's finished, save the number of peers:
 							String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(
 									infoHash, ts.getPeers()));
 							log.info("Seeder post response: " + resp);
 							signal.countDown();
+							
+							
 						}
 
 						
@@ -279,8 +285,14 @@ public class Platform {
 						}
 						
 					}, 20000);
+
 					
 					signal.await();
+					
+					// Get the json for the saved track
+					Tools.dbInit();
+					json = LIBRARY.findFirst("info_hash = ?", infoHash).toJson(false);
+					Tools.dbClose();
 					
 				
 	
