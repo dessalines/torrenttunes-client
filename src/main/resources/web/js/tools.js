@@ -669,6 +669,9 @@ var seedersToTypeObj = {
   "seedersToType": function() {
     return function(text, render) {
       var t = render(text);
+      if (t == null)  {
+        return "muted";
+      }
       var peers = parseInt(t.split("-")[1]);
       console.log('peers = ' + peers);
 
