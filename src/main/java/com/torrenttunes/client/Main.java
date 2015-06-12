@@ -45,7 +45,9 @@ public class Main {
 
 		InitializeTables.initializeTables();
 		
-		EmbeddedBrowser.start();
+//		EmbeddedBrowserJavaFX.start();
+		
+		EmbeddedBrowserJframe.start();
 		
 		WebService.start();
 		

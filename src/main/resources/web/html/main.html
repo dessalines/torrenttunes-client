@@ -175,31 +175,7 @@
               <div id="trending_songs_div"></div>
               <hr class="featurette-divider">
               <div class="row">
-                <div class="col-md-4">
-                  <div class="panel">
-                    <div class="panel-body">
-                      <div class="row">
-                        <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
-                        <div class="text-center">
-                          <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client"><i class="fa fa-code-fork fa-6"></i></a>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <h2 class="text-center">
-                        <a href="https://github.com/tchoulihan/openmarket">Open-Source</a>
-                      </h2>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <h4 class="text-center text-muted"> TorrentTunes is completely <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client">open-source</a>.</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
+               <div class="col-md-4">
                   <div class="panel">
                     <div class="panel-body">
                       <div class="row">
@@ -217,12 +193,37 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12">
-                          <h4 class="text-center text-muted"> TorrentTunes uses BitTorrent to make sure that the songs will always be available.</h4>
+                          <h5 class="text-center text-muted"> Every song is a <i>.torrent</i> file, shared on open and public bittorrent trackers. </h5>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div class="col-md-4">
+                  <div class="panel">
+                    <div class="panel-body">
+                      <div class="row">
+                        <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                        <div class="text-center">
+                          <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client"><i class="fa fa-code-fork fa-6"></i></a>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h2 class="text-center">
+                        <a href="https://github.com/tchoulihan/torrenttunes-client">Open-Source</a>
+                      </h2>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 class="text-center text-muted"> TorrentTunes is fully <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client">open-source</a>, feel free to ask for features or bugixes on <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client">github.</a></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
                 <div class="col-md-4">
                   <div class="panel">
                     <div class="panel-body">
@@ -241,7 +242,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12">
-                          <h4 class="text-center text-muted"> TorrenTunes is entirely free to use. You can donate <a href="" class="text-muted">here</a>.</h4>
+                          <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but there are server costs. You can donate <a href="" class="text-muted">here</a>.</h5>
                         </div>
                       </div>
                     </div>
@@ -327,10 +328,10 @@
                         <script id="top_artist_songs_template" type="x-tmpl-mustache">
                           <table id="top_artist_songs_table" class="table table-hover table-striped tablesorter table-overflow">
                             <colgroup>
-                              <col style="width:7%">
-                                <col style="width:60%">
-                                  <col style="width:8%">
-                                    <col style="width:20%">
+                              <col style="width:8%">
+                                <col style="width:50%">
+                                  <col style="width:7%">
+                                    <col style="width:30%">
                                       <col style="width:5%">
                             </colgroup>
                             <thead>
@@ -347,7 +348,7 @@
                                 <td>
                                   <span>
                         <div class="btn-group text-normal">
-                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a> 
                               <a class="text-normal" data-toggle="dropdown" href="#">
                                 <span class="fa fa-angle-down"></span>
                                   <span class="sr-only">Toggle Dropdown</span></a>
@@ -357,6 +358,7 @@
                                     <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                                     <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                                   </ul>
+                                  <i class="fa text-success fa-fw fa-circle"></i>
                       </div>
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>
@@ -399,17 +401,18 @@
                     {{/album_coverart_url}}
                   </div>
                   <div class="col-md-6">
-                    <h1> {{{title}}}
-                       <small>
-                          <i class="fa fa-wikipedia"></i> 
-                          <i class="fa fa-music"></i>
-                      </small>
+                    <h1> {{{title}}}  
+                    <small><a class="play-album text-normal" href="javascript:void(0)"><i class="fa fa-play-circle-o fa-fw"></i></a>
+                    </small>
+                       
                       <br><small>
                       <a onclick="showArtistPage();" href="#">{{{artist_name}}}
                        </a>
                       </small>
                       </h1>
                     <p class="text-muted"> {{year}} &middot; {{number_of_songs}} songs</p>
+
+
                   </div>
                 </div>
                 <br>
@@ -420,9 +423,9 @@
           <script id="album_catalog_songs_template" type="x-tmpl-mustache">
             <table id="album_catalog_songs_table" class="table table-hover table-striped tablesorter table-overflow">
               <colgroup>
-                <col style="width:6%">
+                <col style="width:8%">
                   <col style="width:4%">
-                    <col style="width:80%">
+                    <col style="width:78%">
                       <col style="width:10%">
               </colgroup>
               <thead>
@@ -449,6 +452,7 @@
                       <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                       <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                     </ul>
+                    <i class="fa text-success fa-fw fa-circle"></i>
         </div>
         </td>
         <td class="text-overflow"><span>{{track_number}}</span></td>
@@ -535,10 +539,10 @@
             <script id="library_template" type="x-tmpl-mustache">
               <table name="library_table" class="table table-hover table-striped tablesorter table-overflow">
                 <colgroup>
-                  <col style="width:7%">
+                  <col style="width:8%">
                     <col style="width:35%">
                       <col style="width:25%">
-                        <col style="width:8%">
+                        <col style="width:7%">
                           <col style="width:25%">
                 </colgroup>
                 <thead>
@@ -565,6 +569,7 @@
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                       </ul>
+                      <i class="fa text-success fa-fw fa-circle"></i>
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>

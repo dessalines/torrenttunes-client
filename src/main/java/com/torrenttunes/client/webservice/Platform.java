@@ -5,13 +5,19 @@ import static com.torrenttunes.client.db.Tables.QUEUE_VIEW;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+
 import java.io.File;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
+
 
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
@@ -25,6 +31,11 @@ import com.torrenttunes.client.Tools;
 import com.torrenttunes.client.TorrentStats;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
+
+
+
+
+
 public class Platform {
 
 	static final Logger log = LoggerFactory.getLogger(Platform.class);
@@ -62,7 +73,7 @@ public class Platform {
 
 				Tools.dbInit();
 				String json = QUEUE_VIEW.findAll().toJson(false);
-				log.info(json);
+
 
 				return json;
 
@@ -83,7 +94,7 @@ public class Platform {
 
 			try {
 				Tools.allowAllHeaders(req, res);
-				log.info(req.body());
+
 				JsonNode on = Tools.jsonToNode(req.body());
 				
 				Tools.dbInit();
@@ -111,7 +122,6 @@ public class Platform {
 				Map<String, String> vars = Tools.createMapFromAjaxPost(req.body());
 				
 				String uploadPath = vars.get("upload_path");
-				log.info(uploadPath);
 				
 				ScanDirectory.start(new File(uploadPath));
 				
@@ -155,8 +165,6 @@ public class Platform {
 				
 				Tools.allowAllHeaders(req, res);
 				
-	
-				
 				String json = null;
 				String infoHash = req.params(":infoHash");
 				
@@ -167,7 +175,7 @@ public class Platform {
 				
 				if (track != null) {
 					json = track.toJson(false);
-				} 
+				}
 				// If it doesn't exist, download the torrent to the cache dir
 				else {
 					
@@ -234,31 +242,53 @@ public class Platform {
 					
 					json = newTrack.toJson(false);
 					
+					// Need to add the # of peers, and block IO until download is done, or times out
 					final CountDownLatch signal = new CountDownLatch(1);
+		
 					
-					// Only return after the torrent has finished, so wait for it
 					lte.getSession().addListener(new TorrentAlertAdapter(torrent) {
+						private Library newTrack;
 						@Override
 						public void torrentFinished(TorrentFinishedAlert alert) {
+							
 							TorrentStats ts = TorrentStats.create(torrent);
 							log.info(ts.toString());
-							super.torrentFinished(alert);
+							
+							// Once the torrent's finished, save the number of peers:
+							Tools.dbInit();
+							newTrack.set("seeders", ts.getPeers());
+							Tools.dbClose();
+							
 							signal.countDown();
 						}
 						
-					});
+						
+						private TorrentAlertAdapter init(Library var) {
+							newTrack = var;
+							return this;
+						}
+						
+
+					}.init(newTrack));
+					
+					
+					// Or if it takes more than 30 seconds to download a file, then set no peers,
+					// and throw an error
+					Timer timer = new Timer();
+					timer.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							signal.countDown();
+							throw new NoSuchElementException("Torrent took longer than 20 seconds to download");
+						}
+						
+					}, 20000);
 					
 					signal.await();
-					
-					
-					
-					
+	
 				}
 				
-				
 
-				
-				
 
 				return json;
 				
@@ -275,6 +305,8 @@ public class Platform {
 		});
 
 	}
+	
+	
 
 
 

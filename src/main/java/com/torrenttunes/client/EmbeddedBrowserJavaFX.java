@@ -18,15 +18,15 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 
-public class EmbeddedBrowser extends Application implements Runnable {
+public class EmbeddedBrowserJavaFX extends Application implements Runnable {
 	private Scene scene;
 	@Override public void start(Stage stage) {
 		
-		System.setProperty("prism.lcdtext", "false");
+		System.setProperty("prism.lcdtext", "true");
 		
 		
 		// create the scene
-		stage.setTitle("U suci");
+		stage.setTitle(DataSources.APP_NAME);
 		scene = new Scene(new Browser(),750,500, Color.web("#666970"));
 		stage.setScene(scene);
 		//        scene.getStylesheets().add("webviewsample/BrowserToolbar.css");  
@@ -49,7 +49,7 @@ public class EmbeddedBrowser extends Application implements Runnable {
 
 	public static void start(){
 
-		EmbeddedBrowser e = new EmbeddedBrowser();
+		EmbeddedBrowserJavaFX e = new EmbeddedBrowserJavaFX();
 		Thread thread = new Thread(e);
 		thread.start();
 	}

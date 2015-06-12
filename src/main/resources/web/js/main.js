@@ -151,6 +151,7 @@ function setupAlbumCatalogTab() {
 
       fillMustacheWithJson(albumSongs, albumCatalogSongsTemplate, '#album_catalog_songs_div');
       setupTrackSelect();
+      setupAlbumPlaySelect(albumSongs);
     });
 
   });
@@ -185,7 +186,9 @@ function setupArtistCatalogTab() {
     console.log(artistCatalog);
 
     fillMustacheWithJson(artistCatalog, artistCatalogTemplate, '#artist_catalog_div');
-    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   });
 
   getJson('get_top_albums/' + artistCatalogMBID, null, true).done(function(e) {
@@ -303,6 +306,73 @@ function setupLibrary() {
   });
 }
 
+function setupAlbumPlaySelect(albumSongs) {
+  $('.play-album').click(function(e) {
+
+
+    // for the first one, play now
+    var trackInfoFirst = albumSongs[0];
+    var infoHashFirst = trackInfoFirst['info_hash'];
+
+    downloadOrFetchTrackObj(infoHashFirst, 'play-now');
+
+    // All the others, download them, but add them to the queue at the last
+    for (var z = 1; z < albumSongs.length; z++) {
+      var trackInfo = albumSongs[z];
+      var infoHash = trackInfo['info_hash'];
+
+      downloadOrFetchTrackObj(infoHash, 'play-last');
+    }
+
+  });
+}
+
+
+function downloadOrFetchTrackObj(infoHash, option) {
+  // now fetch or download the song
+  var playButtonName = 'play-button_' + infoHash;
+
+  getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
+    var trackObj = JSON.parse(e1);
+
+    // var id = parseInt(full[1]) - 1;
+    var id = parseInt(trackObj['id']);
+
+
+    if (option == 'play-now') {
+      playNow(trackObj);
+    } else if (option == 'play-button') {
+      playNow(trackObj);
+    } else if (option == 'play-next') {
+      // add it to the playqueue
+      addToQueueNext(trackObj);
+
+    } else if (option == 'play-last') {
+      // add it to the playqueue
+      addToQueueLast(trackObj);
+    }
+
+    $('.sm2-bar-ui').removeClass('hide');
+
+    // playQueue.push(trackObj);
+
+    // Refresh the player
+    player.playlistController.refresh();
+
+    // post it to the DB to save it
+
+    // simplePost('save_play_queue', JSON.stringify(playQueue), null, function() {
+    //   // console.log('play queue saved');
+    // }, null, null, null);
+
+    simplePost('add_play_count/' + infoHash, null, null, function() {
+      // console.log('play queue saved');
+    }, true, true, null);
+
+
+  });
+}
+
 function setupTrackSelect() {
   $('.track-select').click(function(e) {
     // var full = this.id.split('_');
@@ -314,67 +384,24 @@ function setupTrackSelect() {
     console.log(full);
     var option = full[0];
     var infoHash = full[1];
-    var playButtonName = 'play-button_' + infoHash;
+
     console.log(option);
     console.log(infoHash);
 
-    // now fetch or download the song
-    getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
-
-      var trackObj = JSON.parse(e1);
-
-      // var id = parseInt(full[1]) - 1;
-      var id = parseInt(trackObj['id']);
-
-      console.log(id);
-
-
-      if (option == 'play-now') {
-        playNow(trackObj);
-      } else if (option == 'play-button') {
-        playNow(trackObj);
-      } else if (option == 'play-next') {
-        // add it to the playqueue
-        addToQueueNext(trackObj);
-
-      } else if (option == 'play-last') {
-        // add it to the playqueue
-        addToQueueLast(trackObj);
-      }
-
-      $('.sm2-bar-ui').removeClass('hide');
-
-      playQueue.push(trackObj);
-
-      console.log(playQueue);
-
-      // Refresh the player
-      player.playlistController.refresh();
-
-      // post it to the DB to save it
-
-      // simplePost('save_play_queue', JSON.stringify(playQueue), null, function() {
-      //   // console.log('play queue saved');
-      // }, null, null, null);
-
-      simplePost('add_play_count/' + infoHash, null, null, function() {
-        // console.log('play queue saved');
-      }, true, true, null);
-
-
-
-
-    });
-
-
-    // console.log(library[0]);
-    // console.log(library[id]);
-
+    downloadOrFetchTrackObj(infoHash, option);
 
 
   });
 
+
+  // console.log(library[0]);
+  // console.log(library[id]);
+
+
+
 }
+
+
 
 function setupPlayQueue() {
   // Load it from the DB
@@ -457,7 +484,7 @@ function playNow(trackObj) {
 
   // player.actions.stop();
   $('.sm2-playlist-bd li').removeClass('selected');
-  console.log(index);
+ 
   if (index != 0) {
 
     player.playlistController.playItemByOffset(index);

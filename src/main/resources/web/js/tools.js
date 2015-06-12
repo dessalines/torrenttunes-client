@@ -43,7 +43,6 @@ function simpleAjax(url, noToast, name) {
   if (name != null) {
     var btn = $('[name="' + name + '"]');
     var prevText = btn.html();
-    console.log(prevText);
 
     btn.html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>');
 
