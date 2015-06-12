@@ -358,7 +358,11 @@
                                     <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                                     <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                                   </ul>
-                                  <i class="fa text-success fa-fw fa-circle"></i>
+                                  {{#seeders}} <i class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
+                                  {{/seeders}} {{^seeders}}
+                                    <i class="fa text-muted fa-fw fa-circle"></i>
+                                  {{/seeders}}
+
                       </div>
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>

@@ -518,6 +518,7 @@ function fillMustacheFromJson(url, templateHtml, divId) {
       $.extend(data, htmlDecoder);
       $.extend(data, numToStars);
       $.extend(data, millisToMinutesAndSecondsObj);
+      $.extend(data, seedersToTypeObj);
       Mustache.parse(templateHtml); // optional, speeds up future uses
       var rendered = Mustache.render(templateHtml, data);
       $(divId).html(rendered);
@@ -545,6 +546,7 @@ function fillMustacheWithJson(data, templateHtml, divId) {
   $.extend(data, htmlDecoder);
   $.extend(data, numToStars);
   $.extend(data, millisToMinutesAndSecondsObj);
+  $.extend(data, seedersToTypeObj);
   Mustache.parse(templateHtml); // optional, speeds up future uses
   var rendered = Mustache.render(templateHtml, data);
   $(divId).html(rendered);
@@ -659,6 +661,27 @@ var millisToMinutesAndSecondsObj = {
       var t = render(text);
       var millis = parseInt(t);
       return millisToMinutesAndSeconds(millis);
+    }
+  }
+}
+
+var seedersToTypeObj = {
+  "seedersToType": function() {
+    return function(text, render) {
+      var t = render(text);
+      var peers = parseInt(t.split("-")[1]);
+      console.log('peers = ' + peers);
+
+      var type;
+      if (peers >= 3) {
+        type =  "success";
+      } else if (peers >= 1) {
+        type =  "warning";
+      } else if (peers == 0) {
+        type =  "danger";
+      }
+
+      return type;
     }
   }
 }
