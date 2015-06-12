@@ -175,7 +175,7 @@
               <div id="trending_songs_div"></div>
               <hr class="featurette-divider">
               <div class="row">
-               <div class="col-md-4">
+                <div class="col-md-4">
                   <div class="panel">
                     <div class="panel-body">
                       <div class="row">
@@ -223,7 +223,6 @@
                     </div>
                   </div>
                 </div>
-               
                 <div class="col-md-4">
                   <div class="panel">
                     <div class="panel-body">
@@ -358,9 +357,7 @@
                                     <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                                     <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                                   </ul>
-                                  <i class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
-                                  
-
+                                  <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
                       </div>
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>
@@ -413,8 +410,6 @@
                       </small>
                       </h1>
                     <p class="text-muted"> {{year}} &middot; {{number_of_songs}} songs</p>
-
-
                   </div>
                 </div>
                 <br>
@@ -454,7 +449,7 @@
                       <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                       <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                     </ul>
-                    <i class="fa text-success fa-fw fa-circle"></i>
+                    <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
         </div>
         </td>
         <td class="text-overflow"><span>{{track_number}}</span></td>
@@ -472,7 +467,7 @@
                 {{#.}}
                 <div class="col-md-2">
                   {{#image_url}}
-                  <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="{{image_url}}" /></a> 
+                  <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="{{image_url}}" /></a>
                   {{/image_url}} {{^image_url}}
                   <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif" /></a>
                   {{/image_url}}
@@ -571,7 +566,7 @@
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                       </ul>
-                      <i class="fa text-success fa-fw fa-circle"></i>
+                      <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>

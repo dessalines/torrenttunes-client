@@ -669,22 +669,38 @@ var seedersToTypeObj = {
   "seedersToType": function() {
     return function(text, render) {
       var t = render(text);
-      if (t == null)  {
+
+      // don't ask me why this logic works, trial and error
+      if (!isNaN(t)) {
         return "muted";
       }
+
       var peers = parseInt(t.split("-")[1]);
       console.log('peers = ' + peers);
 
       var type;
       if (peers >= 3) {
-        type =  "success";
+        type = "success";
       } else if (peers >= 1) {
-        type =  "warning";
+        type = "warning";
       } else if (peers == 0) {
-        type =  "danger";
+        type = "danger";
       }
 
       return type;
+    }
+  },
+  "seedersToNum": function() {
+    return function(text, render) {
+      var t = render(text);
+      if (!isNaN(t)) {
+        return "Unknown # of";
+      }
+
+      var peers = parseInt(t.split("-")[1]);
+
+      return peers;
+
     }
   }
 }

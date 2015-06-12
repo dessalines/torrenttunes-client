@@ -128,6 +128,9 @@ function setupHomeTab() {
     console.log(songs);
 
     fillMustacheWithJson(songs, libraryTemplate, '#trending_songs_div');
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
     setupTrackSelect();
   });
 
@@ -150,6 +153,9 @@ function setupAlbumCatalogTab() {
       console.log(albumSongs);
 
       fillMustacheWithJson(albumSongs, albumCatalogSongsTemplate, '#album_catalog_songs_div');
+      $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+      });
       setupTrackSelect();
       setupAlbumPlaySelect(albumSongs);
     });
@@ -204,6 +210,9 @@ function setupArtistCatalogTab() {
 
     fillMustacheWithJson(topArtistSongs, topArtistSongsTemplate, '#top_artist_songs_div');
     setupTrackSelect();
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   });
 }
 
@@ -292,6 +301,10 @@ function setupLibrary() {
     console.log(library);
 
     fillMustacheWithJson(library, libraryTemplate, '#library_div');
+
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
 
     $("[name=library_table]").tablesorter({
       sortList: [
@@ -484,7 +497,7 @@ function playNow(trackObj) {
 
   // player.actions.stop();
   $('.sm2-playlist-bd li').removeClass('selected');
- 
+
   if (index != 0) {
 
     player.playlistController.playItemByOffset(index);
