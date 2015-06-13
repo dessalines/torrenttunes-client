@@ -681,7 +681,7 @@ var seedersToTypeObj = {
         return "muted";
       }
 
-      var peers = parseInt(t.split("-")[4]);
+      var peers = parseInt(t.split("-")[1]);
       // console.log('peers = ' + peers);
 
       var type;
@@ -703,7 +703,7 @@ var seedersToTypeObj = {
         return "Unknown # of";
       }
 
-      var peers = parseInt(t.split("-")[4]);
+      var peers = parseInt(t.split("-")[1]);
 
       return peers;
 
