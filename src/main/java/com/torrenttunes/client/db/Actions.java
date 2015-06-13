@@ -25,16 +25,16 @@ import com.torrenttunes.client.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.db.Tables.Settings;
 public class Actions {
-	
+
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
-	
+
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid, String album, String albumMbid,
 			String title, 
 			String albumCoverArtUrl, String albumCoverArtThumbnailLarge,
 			String albumCoverArtThumbnailSmall, Long durationMS, Integer trackNumber, String year) {
-		
-		
+
+
 		Library library = LIBRARY.create("mbid", mbid,
 				"torrent_path", torrentPath,
 				"info_hash", infoHash,
@@ -50,14 +50,14 @@ public class Actions {
 				"album_coverart_url", albumCoverArtUrl,
 				"album_coverart_thumbnail_large", albumCoverArtThumbnailLarge,
 				"album_coverart_thumbnail_small", albumCoverArtThumbnailSmall);
-		
+
 		library.saveIt();
-	
-		
+
+
 		return library;
-		
+
 	}
-	
+
 	public static void clearAndSavePlayQueue(JsonNode on) {
 		QUEUE_TRACK.deleteAll();
 		for (int i = 0; i < on.size(); i++) {
@@ -69,45 +69,45 @@ public class Actions {
 
 	public static String saveSettings(String storagePath, Integer maxDownloadSpeed,
 			Integer maxUploadSpeed, Integer maxCacheSize) {
-		
+
 		Settings s = SETTINGS.findFirst("id = ?", 1);
-		
+
 		StringBuilder message = new StringBuilder();
-		
+
 		// If storage path has changed, you need to move all the torrents in that cache directory,
 		// to wherever they want, and change their 
 		// TODO
-		
+
 		String currentStoragePath = s.getString("storage_path");
 		if (!storagePath.equals(currentStoragePath)) {
 			message.append("Moved all music files from " + currentStoragePath  + " to " + storagePath);
 		}
-		
+
 		s.set("max_download_speed", maxDownloadSpeed,
 				"max_upload_speed", maxUploadSpeed,
 				"max_cache_size_mb", maxCacheSize);
 		s.saveIt();
-		
+
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
 		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
 		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
 		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
 		lte.updateSettings();
-		
+
 		message.append("Settings Saved");
-		
+
 		return message.toString();
 
-		
+
 	}
-	
-public static String downloadTorrent(String infoHash) throws IOException, InterruptedException {
-		
-		
+
+	public static String downloadTorrent(String infoHash) throws IOException, InterruptedException {
+
+
 		String json = null;
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
-		
+
 		Library track;
 		String torrentPath = DataSources.TORRENTS_DIR() + "/" + infoHash + ".torrent";
 
@@ -196,7 +196,7 @@ public static String downloadTorrent(String infoHash) throws IOException, Interr
 				TorrentStats ts = TorrentStats.create(torrent);
 				log.info(ts.toString());
 
-
+			
 
 				// Once the torrent's finished, save the number of peers:
 				String resp = Tools.httpGetString(DataSources.SEEDER_INFO_UPLOAD(
@@ -228,7 +228,7 @@ public static String downloadTorrent(String infoHash) throws IOException, Interr
 		track = LIBRARY.findFirst("info_hash = ?", infoHash);
 		Tools.dbClose();
 
-		// if it wasn't succesful(IE no peers found or > 40 seconds)
+		// if it wasn't successful(IE no peers found or > 40 seconds)
 		if (track == null) {
 			throw new NoSuchElementException("No peers found for " + 
 					artist + " - " + songTitle);
@@ -241,24 +241,24 @@ public static String downloadTorrent(String infoHash) throws IOException, Interr
 
 
 	public static Boolean spaceFreeInStoragePath() {
-		
+
 		// Check to make sure you have space in the cache
 		Tools.dbInit();
 		Settings settings = SETTINGS.findFirst("id = ?", 1);
 		Tools.dbClose();
-		
+
 		Integer settingsFreeSpaceMB = settings.getInteger("max_cache_size_mb");
 		settingsFreeSpaceMB = (settingsFreeSpaceMB != -1) ? settingsFreeSpaceMB : Integer.MAX_VALUE;
-		
+
 		Long temp = Math.round(Tools.folderSize(new File(DataSources.MUSIC_STORAGE_PATH)) * 0.000001);
 		Integer storageFolderSizeMB = temp.intValue();
-		
+
 		Boolean spaceFree = (storageFolderSizeMB < settingsFreeSpaceMB) && 
 				(new File("/").getUsableSpace() > 0);
-		
+
 		return spaceFree;
 	}
 
-	
+
 
 }
