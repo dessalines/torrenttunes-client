@@ -259,6 +259,34 @@ public class Actions {
 		return spaceFree;
 	}
 
+	public static String deleteSong(String infoHash) {
+		
+		String message = null;
+		
+		try {
+		// Stop the torrent, remove it from the session
+		TorrentHandle torrent = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
+		LibtorrentEngine.INSTANCE.getSession().removeTorrent(torrent);
+		
+		// Remove it from the DB
+		Library song = LIBRARY.findFirst("info_hash = ?", infoHash);
+		String torrentPath = song.getString("torrent_path");
+		String filePath = song.getString("file_path");
+		song.delete();
+
+		// delete the .torrent file and the file
+		new File(torrentPath).delete();
+		new File(filePath).delete();
+		
+		message = filePath + " has been deleted";
+		} catch(NullPointerException e) {
+			e.printStackTrace();
+			throw new NoSuchElementException("Song has already been deleted");
+		}
+		
+		return message;
+	}
+
 
 
 }

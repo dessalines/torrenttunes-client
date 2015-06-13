@@ -7,30 +7,18 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frostwire.jlibtorrent.TorrentAlertAdapter;
-import com.frostwire.jlibtorrent.TorrentHandle;
-import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
 import com.torrenttunes.client.LibtorrentEngine;
-import com.torrenttunes.client.TorrentStats;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
-import com.torrenttunes.client.db.Tables.Settings;
-import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
-import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
-import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
 
 
 
@@ -296,13 +284,39 @@ public class Platform {
 			}
 
 		});
+		
+		post("/delete_song/:infoHash", (req, res) -> {
+			try {
+				Tools.allowAllHeaders(req, res);
+				Tools.logRequestInfo(req);
+
+				String infoHash = req.params(":infoHash");
+				Tools.dbInit();
+				String message = Actions.deleteSong(infoHash);
+				
+
+				return message;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+		});
 
 	}
-
-
-
-
-
-
+	
+	
 
 }
+
+
+
+
+
+
+
+

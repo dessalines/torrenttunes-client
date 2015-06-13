@@ -114,6 +114,7 @@ public class ScanDirectory {
 				log.info(si.getFile().getParentFile().getAbsolutePath());
 				TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
 						torrentFile);
+				
 
 
 				// Save it to the DB

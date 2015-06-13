@@ -112,8 +112,8 @@
             <li class="hide"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
             <li class="hide"><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
           </ul>
-          <h5 class="text-muted sidebar-spaced">Playlists</h5>
-          <ul class="nav nav-sidebar main-sidebar">
+          <h5 class="text-muted sidebar-spaced hide">Playlists</h5>
+          <ul class="nav nav-sidebar main-sidebar hide">
             <li><a href="#">list 1</a></li>
             <li><a href="#">list 2</a></li>
           </ul>
@@ -154,7 +154,6 @@
                   </div>
                 </script>
               </div>
-              
               <h3 class="text-center">
               Trending Songs
               </h3>
@@ -242,7 +241,7 @@
               <div id="artist_catalog_div">
                 <script id="artist_catalog_template" type="x-tmpl-mustache">
                   <h2 class="no-padding-top"> 
-                     <a href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{{name}}}</a> <small> 
+                     <a name="artistcatalog_main" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   {{{name}}}</a> <small> 
                      {{#official_homepage}}
                      <a href="{{official_homepage}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Home Page"><i class="text-muted fa fa-fw fa-home"></i></a>
                       {{/official_homepage}}
@@ -277,8 +276,8 @@
               <!-- Nav tabs -->
               <ul id="artistcatalog_tab" class="nav nav-tabs nav-tabs-left nav-tabs-special" role="tablist">
                 <li class="active hide" role="presentation"><a href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">Main</a></li>
-                <li role="presentation"><a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab">Albums</a></li>
-                <li role="presentation"><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Songs</a></li>
+                <li name="artistcatalog_album" role="presentation"><a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab">Albums</a></li>
+                <li name="artistcatalog_song" role="presentation"><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Songs</a></li>
               </ul>
               <br>
               <div class="tab-content">
@@ -529,7 +528,6 @@
                     <span class="input-group-addon" id="basic-addon3">kB/s</span>
                   </div>
                 </div>
-
                 <div class="form-group">
                   <label class="col-sm-4 control-label" for="formGroupInputLarge">Maximum Cache Size</label>
                   <div class="col-sm-4 input-group">
@@ -584,7 +582,13 @@
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
                       </ul>
-                      <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
+
+                    
+                      {{#file_path}}
+                      <a name="delete-track_{{info_hash}}" class="track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
+                      {{/file_path}} {{^file_path}}
+                          <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
+                      {{/file_path}}
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>
@@ -697,6 +701,21 @@
         </div>
       </div>
     </div>
+    <script id="song_player_template" type="x-tmpl-mustache">
+      <div class="btn-group text-normal">
+        {{{search}}}
+        <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+        <a class="text-normal" data-toggle="dropdown" href="#">
+          <i class="fa fa-angle-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
+          <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
+          <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
+          <li><a><i class="fa fa-list fa-fw"></i> Add to Playlist</a></li>
+        </ul>
+        <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
+      </div>
+    </script>
     <!-- Modals -->
     <!-- end of login modal -->
     <!-- Bootstrap core JavaScript

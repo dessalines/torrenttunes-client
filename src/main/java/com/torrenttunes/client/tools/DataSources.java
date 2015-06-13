@@ -108,11 +108,17 @@ public class DataSources {
 	
 
 	public static final String LIBTORRENT_OS_LIBRARY_PATH() {
-		String osName = System.getProperty("os.name");
+		String osName = System.getProperty("os.name").toLowerCase();
 		log.info("Operating system " + osName);
 		
-		String ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
-		log.info(ret);
+		String ret = null;
+		if (osName.contains("linux")) {
+			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
+		} else if (osName.contains("mac")) {
+			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
+		} else if (osName.contains("windows")) {
+			ret = SOURCE_CODE_HOME() + "libjlibtorrent.dylib";
+		}
 		return ret;
 	}
 	

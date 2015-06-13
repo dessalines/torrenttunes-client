@@ -42,7 +42,7 @@ $(document).ready(function() {
   keyboardShortcuts();
 
 
-  
+
   setupPlayQueueBtn();
   setupHomeTab();
   setupSettingsTab();
@@ -127,21 +127,6 @@ function setupSettingsTab() {
 }
 
 
-function showArtistPage() {
-  $('a[href="#artistcatalogTab"]').tab('show');
-  $('a[href="#artistcatalog_main"]').tab('show');
-}
-
-function showArtistPageV2(artistMBID) {
-  artistCatalogMBID = artistMBID;
-  showArtistPage();
-}
-
-function showAlbumPage(releaseMBID) {
-  albumCatalogMBID = releaseMBID;
-  $('a[href="#albumcatalogTab"]').tab('show');
-}
-
 
 
 function setupBrowseTab() {
@@ -225,6 +210,8 @@ function setupArtistCatalogAlbumTab() {
 // and all albums and songs
 function setupArtistCatalogTab() {
 
+
+
   getJson('get_artist/' + artistCatalogMBID, null, true).done(function(e) {
     var artistCatalog = JSON.parse(e);
     console.log(artistCatalog);
@@ -233,6 +220,12 @@ function setupArtistCatalogTab() {
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+
+    $('[name=artistcatalog_main]').click(function(e) {
+      console.log('clicked');
+      $('[name=artistcatalog_album], [name=artistcatalog_song]').removeClass('active');
+    });
+
   });
 
   getJson('get_top_albums/' + artistCatalogMBID, null, true).done(function(e) {
@@ -354,6 +347,7 @@ function setupLibrary() {
     // setup the add/play buttons
 
     setupTrackSelect();
+    setupTrackDelete();
   });
 }
 
@@ -424,33 +418,6 @@ function downloadOrFetchTrackObj(infoHash, option) {
   });
 }
 
-function setupTrackSelect() {
-  $('.track-select').click(function(e) {
-    // var full = this.id.split('_');
-    var name = $(this).attr('name');
-    var full = name.split('_');
-
-
-
-    console.log(full);
-    var option = full[0];
-    var infoHash = full[1];
-
-    console.log(option);
-    console.log(infoHash);
-
-    downloadOrFetchTrackObj(infoHash, option);
-
-
-  });
-
-
-  // console.log(library[0]);
-  // console.log(library[id]);
-
-
-
-}
 
 
 

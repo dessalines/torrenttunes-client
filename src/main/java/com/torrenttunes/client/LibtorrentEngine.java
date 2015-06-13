@@ -3,8 +3,10 @@ package com.torrenttunes.client;
 import static com.torrenttunes.client.db.Tables.LIBRARY;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -38,7 +40,9 @@ public enum LibtorrentEngine  {
 
 	private Session session;
 	private SessionSettings sessionSettings;
+	private Map<String, TorrentHandle> infoHashToTorrentMap;
 	
+
 	private Set<ScanInfo> scanInfos;
 
 	private LibtorrentEngine() {
@@ -64,6 +68,7 @@ public enum LibtorrentEngine  {
 		
 		
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
+		this.infoHashToTorrentMap = new HashMap<String, TorrentHandle>();
 
 
 
@@ -102,6 +107,7 @@ public enum LibtorrentEngine  {
 		log.info("added torrent " + torrent.getName());
 
 		shareTorrent(torrent);
+		infoHashToTorrentMap.put(torrent.getInfoHash().toString().toLowerCase(), torrent);
 
 		return torrent;
 
@@ -181,6 +187,9 @@ public enum LibtorrentEngine  {
 		log.info("Libtorrent settings updated");
 	}
 
+	public Map<String, TorrentHandle> getInfoHashToTorrentMap() {
+		return infoHashToTorrentMap;
+	}
 
 
 
