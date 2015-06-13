@@ -73,7 +73,7 @@ function simpleAjax(url, noToast, name) {
           toastr.error(request.responseText);
         }
       }
-      
+
       if (name != null) {
         console.log('replacing button text');
         btn.html(prevText);
@@ -681,7 +681,8 @@ var seedersToTypeObj = {
         return "muted";
       }
 
-      var peers = parseInt(t.split("-")[1]);
+      var peerInfo = t.split("-").map(Number);
+      var peers = peerInfo.max();
       // console.log('peers = ' + peers);
 
       var type;
@@ -703,7 +704,8 @@ var seedersToTypeObj = {
         return "Unknown # of";
       }
 
-      var peers = parseInt(t.split("-")[1]);
+      var peerInfo = t.split("-").map(Number);
+      var peers = peerInfo.max();
 
       return peers;
 
@@ -1088,3 +1090,10 @@ Array.prototype.contains = function(obj) {
 }
 
 
+Array.prototype.max = function() {
+  return Math.max.apply(null, this);
+};
+
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
+};
