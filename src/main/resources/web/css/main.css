@@ -21,6 +21,16 @@
   padding:0; margin:0;
 }
 */
+.input-group-addon .form-control-feedback {
+  top: 1px;
+}
+.logo {
+  display: inline-block;
+  height: 28px;
+  width: 28px;
+  margin-top: -5px;
+  margin-right: 10px;
+}
 
 .form-control {
   background-color: #424242;
@@ -30,65 +40,75 @@
   font-size: 12px;
 }
 /* SoundManager2 stuff*/
-.nav-tabs-left { text-align: left !important; }
 
+.nav-tabs-left {
+  text-align: left !important;
+}
 /*.nav-tabs-left li { float: right; }*/
 
-.nav-tabs > li > a, .nav-tabs .navbar-brand {
-    padding-top:4px !important; 
-    padding-bottom:0 !important;
-    height: 28px;
-    font-size: small;
+.nav-tabs > li > a,
+.nav-tabs .navbar-brand {
+  padding-top: 4px !important;
+  padding-bottom: 0 !important;
+  height: 28px;
+  font-size: small;
 }
-.nav-tabs {min-height:28px !important;}
 
+.nav-tabs {
+  min-height: 28px !important;
+}
 
-.fa-wikipedia:before { font-family: "Times New Roman", Times, serif; font-weight: 400; 
-content: "VV"; letter-spacing:-0.45em; margin-right:0.5em; }
-
-
-
+.fa-wikipedia:before {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 400;
+  content: "VV";
+  letter-spacing: -0.45em;
+  margin-right: 0.5em;
+}
 /* Tablesorter font awesome icons*/
+
 table.tablesorter thead tr th.headerSortUp:after,
 table.tablesorter thead tr th.headerSortDown:after,
 table.tablesorter thead tr th.header:after {
   font-family: FontAwesome;
 }
+
 table.tablesorter thead tr th.header:after {
   margin-left: 5px;
   content: "\f0dc";
 }
+
 table.tablesorter thead tr th.headerSortUp:after {
   margin-left: 5px;
   content: "\f0de";
 }
+
 table.tablesorter thead tr th.headerSortDown:after {
   margin-left: 5px;
   content: "\f0dd";
 }
-
-
 /* Pretty file uploading*/
+
 .btn-file {
-    position: relative;
-    overflow: hidden;
-}
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
+  position: relative;
+  overflow: hidden;
 }
 
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
 
 .sm2-bar-ui {
   font-size: 18px;
@@ -116,7 +136,7 @@ table.tablesorter thead tr th.headerSortDown:after {
   padding-top: 4px !important;
   padding-bottom: 0 !important;
   height: 28px;
-/*  color: #333;*/
+  /*  color: #333;*/
 }
 
 .main-sidebar > .active > a {
@@ -281,7 +301,8 @@ body.modal-open {
 }
 
 @media (max-width: 767px) {
-  #searchbar > .navbar-form , #search_form > .input-group {
+  #searchbar > .navbar-form,
+  #search_form > .input-group {
     width: 100%;
   }
 }
@@ -293,7 +314,8 @@ body.modal-open {
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-   #searchbar > .navbar-form, .navbar-form .input-group {
+  #searchbar > .navbar-form,
+  .navbar-form .input-group {
     width: 425px !important;
   }
 }
@@ -414,7 +436,6 @@ body.modal-open {
   padding-top: 0px;
   margin-top: 0px;
 }
-
 
 .pushdown {
   margin-top: 5px;
@@ -671,7 +692,6 @@ img {
 
 .table {
   font-size: .85em;
-
 }
 /*dropdown hover*/
 
@@ -999,8 +1019,12 @@ background-color: #222222;*/
   width: 422px;
   margin-top: 12px;
   padding: 8px 0;
-  /*background-color: #fff; */ /*for light themes*/
-  background-color: #424242; /*for dark themes*/
+  /*background-color: #fff; */
+  /*for light themes*/
+  
+  background-color: #424242;
+  /*for dark themes*/
+  
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
@@ -1012,21 +1036,21 @@ background-color: #222222;*/
   font-size: 18px;
   line-height: 24px;
   background-color: none;
-  color: #2A9FD6; 
+  color: #2A9FD6;
 }
 
 .tt-suggestion.tt-cursor {
-   color: #2A9FD6; 
+  color: #2A9FD6;
   background-color: #0097cf;
-
 }
+
 .tt-cursor {
-  color: #FF6666; 
+  color: #FF6666;
   background-color: #428bca;
 }
 
 .tt-suggestion p {
-    margin: 0;
+  margin: 0;
 }
 
 .twitter-typeahead {

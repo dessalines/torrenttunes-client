@@ -33,9 +33,11 @@ public class DataSources {
 	
 	public static final String TORRENTS_DIR() {return HOME_DIR() + "/torrents";}
 	
-	public static final String CACHE_DIR() {return HOME_DIR() + "/cache";}
+	public static final String DEFAULT_MUSIC_STORAGE_PATH() {return HOME_DIR() + "/cache";}
 	
-	public static final String CACHE_FILE(String fileName) {return CACHE_DIR() + "/" + fileName;}
+	public static String MUSIC_STORAGE_PATH = DEFAULT_MUSIC_STORAGE_PATH();
+	
+	public static final String CACHE_FILE(String fileName) {return MUSIC_STORAGE_PATH + "/" + fileName;}
 	
 	public static final String SAMPLE_TORRENT_FILE() {return TORRENTS_DIR() + 
 			"/[kat.cr]fugazi.studio.discography.1989.2001.flac.torrent";

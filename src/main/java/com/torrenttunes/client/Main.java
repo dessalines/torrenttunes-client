@@ -11,6 +11,8 @@ import ch.qos.logback.classic.Logger;
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.webservice.WebService;
 
+import static com.torrenttunes.client.db.Tables.*;
+
 
 public class Main {
 	
@@ -45,9 +47,8 @@ public class Main {
 
 		InitializeTables.initializeTables();
 		
-//		EmbeddedBrowserJavaFX.start();
-		
-//		EmbeddedBrowserJframe.start();
+		// Set the music storage location
+		setupMusicStoragePath();
 		
 		WebService.start();
 		
@@ -55,16 +56,17 @@ public class Main {
 		
 		LibtorrentEngine.INSTANCE.startSeedingLibrary();
 		
-		
-//		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), torrentClient);
-
-//		TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(new File(DataSources.HOME_DIR()), 
-//				DataSources.SAMPLE_TORRENT);
-		
-
-//		log.info(TorrentStats.create(torrent).toString());
+	
 	
 		
+	}
+
+	private static void setupMusicStoragePath() {
+		Tools.dbInit();
+		Settings s = SETTINGS.findFirst("id = ?", 1);
+		Tools.dbClose();
+		String storagePath = s.getString("storage_path");
+		DataSources.MUSIC_STORAGE_PATH = storagePath;
 	}
 	
 	private void parseArguments(String[] args) {

@@ -183,7 +183,7 @@ public class Tools {
 			log.info("Setting up ~/." + DataSources.APP_NAME + " dirs");
 			new File(DataSources.HOME_DIR()).mkdirs();
 			new File(DataSources.TORRENTS_DIR()).mkdirs();
-			new File(DataSources.CACHE_DIR()).mkdirs();
+			new File(DataSources.DEFAULT_MUSIC_STORAGE_PATH()).mkdirs();
 		} else {
 			log.info("Home directory already exists");
 		}
@@ -616,6 +616,17 @@ public class Tools {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static Long folderSize(File directory) {
+	    long length = 0;
+	    for (File file : directory.listFiles()) {
+	        if (file.isFile())
+	            length += file.length();
+	        else
+	            length += folderSize(file);
+	    }
+	    return length;
 	}
 	
 }

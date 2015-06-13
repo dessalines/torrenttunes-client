@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.client.DataSources;
 import com.torrenttunes.client.Tools;
+import com.torrenttunes.client.db.Tables.Settings;
+
+import static com.torrenttunes.client.db.Tables.*;
 
 
 public class InitializeTables {
@@ -43,6 +46,8 @@ public class InitializeTables {
 				c.close();
 
 				log.info("Table created successfully");
+				
+				fillTables();
 			} else {
 				log.info("DB already exists");
 
@@ -51,6 +56,21 @@ public class InitializeTables {
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			System.exit(0);
 		}
+	}
+	
+	public static void fillTables() {
+		Tools.dbInit();
+		fillSettingsTable();
+		Tools.dbClose();
+	}
+	
+	public static void fillSettingsTable() {
+		
+		SETTINGS.createIt("storage_path", DataSources.DEFAULT_MUSIC_STORAGE_PATH(),
+				"max_download_speed", -1,
+				"max_upload_speed", -1,
+				"max_cache_size_mb", -1);
+		
 	}
 
 }

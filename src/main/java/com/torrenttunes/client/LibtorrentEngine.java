@@ -36,27 +36,30 @@ public enum LibtorrentEngine  {
 
 
 	private Session session;
+	private SessionSettings sessionSettings;
+	
 	private Set<ScanInfo> scanInfos;
 
 	private LibtorrentEngine() {
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 		session = new Session();
-		SessionSettings s = SessionSettings.newDefaults();
-		s.setTorrentConnectBoost(5);
-		s.setMinReconnectTime(1);
-		s.setActiveDownloads(10);
+		sessionSettings = SessionSettings.newDefaults();
+		sessionSettings.setTorrentConnectBoost(5);
+		sessionSettings.setMinReconnectTime(1);
+		sessionSettings.setActiveDownloads(10);
+		
 //		s.setActiveSeeds(1);
 		
 	
 //        s.setActiveSeeds(9999);
         
-		log.info("active DL limit: " + s.getActiveLimit() +
-				"\nactive seed limit: " + s.getActiveSeeds());
+		log.info("active DL limit: " + sessionSettings.getActiveLimit() +
+				"\nactive seed limit: " + sessionSettings.getActiveSeeds());
 //		log.info("active seed limit: " + String.valueOf(session.getSettings().get));
 //		sessionSettings.setActiveSeeds(0);
 		
-		session.setSettings(s);
+		session.setSettings(sessionSettings);
 		
 		
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
@@ -175,6 +178,15 @@ public enum LibtorrentEngine  {
 
 	public Session getSession() {
 		return session;
+	}
+	
+	public SessionSettings getSessionSettings() {
+		return sessionSettings;
+	}
+	
+	public void updateSettings() {
+		session.setSettings(sessionSettings);
+		log.info("Libtorrent settings updated");
 	}
 
 

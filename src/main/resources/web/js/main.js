@@ -54,8 +54,8 @@ $(document).ready(function() {
 });
 
 function errorTest() {
-    getJson('error_test').done(function(e) {
-      
+  getJson('error_test').done(function(e) {
+
   });
 }
 
@@ -91,9 +91,38 @@ function setupTabs() {
     } else if (tabId == "#uploadTab") {
       setupUploadForm();
       setupUploadTable();
+    } else if (tabId == "#settingsTab") {
+      setupSettingsTab();
     }
 
   });
+}
+
+function setupSettingsTab() {
+
+  $('#settingsForm').bootstrapValidator({
+      message: 'This value is not valid',
+      excluded: [':disabled'],
+      submitButtons: 'button[type="submit"]',
+
+    })
+    .on('success.form.bv', function(event) {
+      event.preventDefault();
+      standardFormPost('save_settings', "#settingsForm");
+    })
+
+  getJson('get_settings').done(function(e) {
+    var settings = JSON.parse(e);
+    console.log(settings);
+
+    $('input[name="max_upload_speed"]').val(settings['max_upload_speed']);
+    $('input[name="max_download_speed"]').val(settings['max_download_speed']);
+    $('input[name="max_cache_size_mb"]').val(settings['max_cache_size_mb']);
+    $('input[name="storage_path"]').val(settings['storage_path']);
+
+
+  });
+
 }
 
 

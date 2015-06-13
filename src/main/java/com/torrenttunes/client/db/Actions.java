@@ -4,6 +4,7 @@ import static com.torrenttunes.client.db.Tables.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.JsonNode;
 
+import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Tables.Library;
 public class Actions {
 	
@@ -44,6 +45,39 @@ public class Actions {
 			Integer libraryId = track.get("id").asInt();
 			QUEUE_TRACK.createIt("library_id", libraryId);
 		}
+	}
+
+	public static String saveSettings(String storagePath, Integer maxDownloadSpeed,
+			Integer maxUploadSpeed, Integer maxCacheSize) {
+		
+		Settings s = SETTINGS.findFirst("id = ?", 1);
+		
+		StringBuilder message = new StringBuilder();
+		
+		// If storage path has changed, you need to move all the torrents in that cache directory,
+		// to wherever they want, and change their 
+		// TODO
+		
+		String currentStoragePath = s.getString("storage_path");
+		if (!storagePath.equals(currentStoragePath)) {
+			message.append("Moved all music files from " + currentStoragePath  + " to " + storagePath);
+		}
+		
+		s.set("max_download_speed", maxDownloadSpeed,
+				"max_upload_speed", maxUploadSpeed,
+				"max_cache_size_mb", maxCacheSize);
+		s.saveIt();
+		
+		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
+		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
+		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
+		lte.updateSettings();
+		
+		message.append("Settings Saved");
+		
+		return message.toString();
+
+		
 	}
 
 }
