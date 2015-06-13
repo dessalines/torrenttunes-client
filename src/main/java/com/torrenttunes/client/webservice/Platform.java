@@ -213,6 +213,7 @@ public class Platform {
 
 
 				//				Runtime.getRuntime().exit(0);
+				log.info("Powering off...");
 				System.exit(0);
 				return "A yellow brick road";
 
