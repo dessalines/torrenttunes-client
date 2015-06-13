@@ -4,25 +4,27 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 
 public class TorrentStats {
 	private TorrentHandle torrent;
-	
+
 	private String downloadSpeed, uploadSpeed, progress, peers, state, name;
-	
+
 	public static TorrentStats create(TorrentHandle torrent) {
 		return new TorrentStats(torrent);
 	}
-	
+
 	private TorrentStats(TorrentHandle torrent) {
 		this.torrent = torrent;
 		this.downloadSpeed = Tools.humanReadableByteCount(torrent.getStatus().getDownloadRate(), true)+ "/s";
 		this.uploadSpeed = Tools.humanReadableByteCount(torrent.getStatus().getUploadRate(), true)+ "/s";
 		this.progress = Tools.NUMBER_FORMAT.format(torrent.getStatus().getProgressPpm()*1E-4) + "%";
 		this.peers = torrent.getStatus().getNumConnections() + "-" + 
-				torrent.getStatus().getConnectCandidates();
+				torrent.getStatus().getConnectCandidates() + "-" + 
+				torrent.getStatus().getNumSeeds() + "-" + 
+				torrent.getStatus().getNumComplete();
 		this.state = torrent.getStatus().getState().toString();
 		this.name = torrent.getName();
 	}
-	
-	
+
+
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("\nName: " + name);
@@ -32,9 +34,9 @@ public class TorrentStats {
 		s.append("\nPeers: " + peers);
 		s.append("\nState: " + state);
 
-		
+
 		return s.toString();
-		
+
 	}
 
 	public TorrentHandle getTorrent() {
@@ -56,7 +58,7 @@ public class TorrentStats {
 	public String getPeers() {
 		return peers;
 	}
-	
+
 	public String getState() {
 		return state;
 	}
@@ -64,8 +66,8 @@ public class TorrentStats {
 	public String getName() {
 		return name;
 	}
-	
 
-	
-	
+
+
+
 }
