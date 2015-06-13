@@ -35,15 +35,18 @@ soundManager.onready(function() {
   console.log(player.dom);
   console.log(player.actions);
   // player.actions.play();
+  setupPlayQueue();
 });
 
 $(document).ready(function() {
   keyboardShortcuts();
 
 
-  setupPlayQueue();
+  
   setupPlayQueueBtn();
   setupHomeTab();
+  setupSettingsTab();
+
   setupTabs();
 
   // errorTest();
@@ -91,8 +94,6 @@ function setupTabs() {
     } else if (tabId == "#uploadTab") {
       setupUploadForm();
       setupUploadTable();
-    } else if (tabId == "#settingsTab") {
-      setupSettingsTab();
     }
 
   });

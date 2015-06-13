@@ -148,19 +148,10 @@ public enum LibtorrentEngine  {
 
 		});
 
-
-		
-//		torrent.readPiece(0);
-
 		
 		torrent.resume();
 		
-//		torrent.setPieceDeadline(0, 5);
-//		torrent.forceReannounce();
-//		torrent.forceDHTAnnounce();
-//		torrent.queuePositionTop();
-//		torrent.forceRecheck();
-//		torrent.scrapeTracker();
+
 		
 		
 		

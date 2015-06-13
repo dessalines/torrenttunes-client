@@ -180,16 +180,16 @@ public class Platform {
 				// If it doesn't exist, download the torrent to the cache dir
 				else {
 
-					if (spaceFreeInStoragePath()) {
-						json = downloadTorrent(infoHash);
+					if (Actions.spaceFreeInStoragePath()) {
+						json = Actions.downloadTorrent(infoHash);
 					} else {
 						throw new NoSuchElementException("Not enough storage space, "
 								+ "change your cache size in settings,"
 								+ " or delete some songs from your library");
 					}
-					
-					
-					
+
+
+
 				}
 
 
@@ -298,160 +298,7 @@ public class Platform {
 
 	}
 
-	private static String downloadTorrent(String infoHash) throws IOException, InterruptedException {
-		
-		
-		String json = null;
-		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
-		
-		Library track;
-		String torrentPath = DataSources.TORRENTS_DIR() + "/" + infoHash + ".torrent";
 
-		// Fetch the .torrent file it to a file, save it to the torrents dir
-		Tools.httpSaveFile(DataSources.TORRENT_DOWNLOAD_URL(infoHash), torrentPath);
-
-		// Fetch the .torrent file json info
-		String trackJson = Tools.httpGetString(DataSources.TORRENT_INFO_DOWNLOAD_URL(infoHash));
-
-		JsonNode jsonNode = Tools.jsonToNode(trackJson);
-
-		// Set up all the necessary vars from the jsonInfo
-		String songMbid = jsonNode.get("song_mbid").asText();
-		String songTitle = jsonNode.get("title").asText();
-		Long duration = jsonNode.get("duration_ms").asLong();
-		Integer trackNumber = jsonNode.get("track_number").asInt();
-		String album = jsonNode.get("album").asText();
-		String albumMbid = jsonNode.get("release_mbid").asText();
-		String artist = jsonNode.get("artist").asText();
-		String artistMbid = jsonNode.get("artist_mbid").asText();
-		String year = jsonNode.get("year").asText();
-		String coverArt = jsonNode.get("album_coverart_url").asText();
-		String thumbnailLarge = jsonNode.get("album_coverart_thumbnail_large").asText();
-		String thumbnailSmall = jsonNode.get("album_coverart_thumbnail_small").asText();
-
-
-
-		// add the torrent file(saving to the storage dir), scan info, and start seeding it					
-		TorrentHandle torrent = lte.addTorrent(
-				new File(DataSources.MUSIC_STORAGE_PATH), new File(torrentPath));
-
-		String audioFilePath = DataSources.CACHE_FILE(torrent.getName());
-
-		// Set up the scanInfo
-		ScanInfo si = ScanInfo.create(new File(audioFilePath));
-		si.setStatus(ScanStatus.Seeding);
-		si.setMbid(songMbid);
-		lte.getScanInfos().add(si); // TODO not sure about this one
-
-
-		// Need to add the # of peers, and block IO until download is done, or times out
-		final CountDownLatch signal = new CountDownLatch(1);
-
-
-		// If it takes more than 30 seconds to download a file, then set no peers,
-		// and throw an error
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				signal.countDown();
-				String resp = Tools.httpSimplePost(DataSources.SEEDER_INFO_UPLOAD(infoHash, "0-0"));
-				log.info("Seeder post response: " + resp);
-			}
-
-		}, 40000);
-
-		lte.getSession().addListener(new TorrentAlertAdapter(torrent) {
-			private Timer timer;
-
-			@Override
-			public void torrentFinished(TorrentFinishedAlert alert) {
-
-
-				// Save the track to your DB
-				Tools.dbInit();
-				Library newTrack = Actions.saveSongToLibrary(songMbid, 
-						torrentPath, 
-						infoHash,
-						audioFilePath, 
-						artist, 
-						artistMbid,
-						album,
-						albumMbid,
-						songTitle, 
-						coverArt,
-						thumbnailLarge, 
-						thumbnailSmall,
-						duration,
-						trackNumber,
-						year);
-
-				newTrack.saveIt();
-				Tools.dbClose();
-
-				TorrentStats ts = TorrentStats.create(torrent);
-				log.info(ts.toString());
-
-
-
-				// Once the torrent's finished, save the number of peers:
-				String resp = Tools.httpGetString(DataSources.SEEDER_INFO_UPLOAD(
-						infoHash, ts.getPeers()));
-				log.info("Seeder post response: " + resp);
-				signal.countDown();
-				timer.cancel();
-
-
-
-			}
-
-
-			private TorrentAlertAdapter init(Timer t) {
-				timer = t;
-				return this;
-			}
-
-
-
-		}.init(timer));
-
-
-
-		signal.await();
-
-		// Get the json for the saved track
-		Tools.dbInit();
-		track = LIBRARY.findFirst("info_hash = ?", infoHash);
-		Tools.dbClose();
-
-		// if it wasn't succesful(IE no peers found or > 40 seconds)
-		if (track == null) {
-			throw new NoSuchElementException("No peers found for " + 
-					artist + " - " + songTitle);
-		} else {
-			json = track.toJson(false);
-		}
-		return json;
-	}
-
-
-
-	public static Boolean spaceFreeInStoragePath() {
-		
-		// Check to make sure you have space in the cache
-		Tools.dbInit();
-		Settings settings = SETTINGS.findFirst("id = ?", 1);
-		Tools.dbClose();
-		
-		Integer settingsFreeSpaceMB = settings.getInteger("max_cache_size_mb");
-		Long temp = Math.round(Tools.folderSize(new File(DataSources.MUSIC_STORAGE_PATH)) * 0.000001);
-		Integer storageFolderSizeMB = temp.intValue();
-		
-		Boolean spaceFree = (storageFolderSizeMB < settingsFreeSpaceMB) && 
-				(new File("/").getUsableSpace() > 0);
-		
-		return spaceFree;
-	}
 
 
 
