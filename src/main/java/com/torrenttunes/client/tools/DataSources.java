@@ -62,6 +62,8 @@ public class DataSources {
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	
+	public static final String JAR_FILE() {return HOME_DIR() + "/" + APP_NAME + ".jar";}
+	
 	public static final String TOOLS_JS() {return SOURCE_CODE_HOME() + "/web/js/tools.js";}
 
 	// Web pages
@@ -114,9 +116,9 @@ public class DataSources {
 		String ret = null;
 		if (osName.contains("linux")) {
 			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
-		} else if (osName.contains("mac")) {
-			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
 		} else if (osName.contains("windows")) {
+			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
+		} else if (osName.contains("mac")) {
 			ret = SOURCE_CODE_HOME() + "libjlibtorrent.dylib";
 		}
 		return ret;
@@ -150,6 +152,14 @@ public class DataSources {
 		
 		return list;
 	}
+
+	public static String WINDOWS_SHORTCUT_LINK() {
+			return System.getProperty( "user.home" ) + "/desktop/Torrent Tunes.lnk";
+	}
+
+	public static String ICON_LOCATION() {return WEB_HOME() + "/image/favicon.ico";}
+
+	public static String WINDOWS_INSTALL_VBS() {return SOURCE_CODE_HOME() + "/windows_install.vbs";}
 
 	
 	

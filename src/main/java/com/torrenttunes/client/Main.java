@@ -40,8 +40,11 @@ public class Main {
 		log.setLevel(Level.toLevel(loglevel));
 		
 		
-		// Initialize
+		// Install Shortcuts
 		Tools.setupDirectories();
+		
+		Tools.installShortcuts();
+		
 		
 		Tools.copyResourcesToHomeDir(true);
 		

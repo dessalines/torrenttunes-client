@@ -215,6 +215,11 @@ public class Tools {
 				e.printStackTrace();
 			}
 			Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
+
+			// rename it to a jar
+			new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
+
+
 			//		new Tools().copyJarResourcesRecursively("src", configHome);
 		} else {
 			log.info("The source directory already exists");
@@ -563,7 +568,7 @@ public class Tools {
 		}
 
 	}
-	
+
 	public static void pollAndOpenStartPage() {
 		// TODO poll some of the url's every .5 seconds, and load the page when they come back with a result
 		int i = 500;
@@ -594,7 +599,7 @@ public class Tools {
 			}
 		}
 	}
-	
+
 	public static void openWebpage(String urlString) {
 		try {
 			URL url = new URL(urlString);
@@ -606,7 +611,7 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void openWebpage(URI uri) {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -617,17 +622,80 @@ public class Tools {
 			}
 		}
 	}
-	
+
 	public static Long folderSize(File directory) {
-	    long length = 0;
-	    for (File file : directory.listFiles()) {
-	        if (file.isFile())
-	            length += file.length();
-	        else
-	            length += folderSize(file);
-	    }
-	    return length;
+		long length = 0;
+		for (File file : directory.listFiles()) {
+			if (file.isFile())
+				length += file.length();
+			else
+				length += folderSize(file);
+		}
+		return length;
 	}
-	
+
+	public static void installShortcuts() {
+		if (!new File(DataSources.HOME_DIR()).exists()) {
+			String osName = System.getProperty("os.name").toLowerCase();
+
+
+			if (osName.contains("linux")) {
+				installLinuxShortcuts();
+			} else if (osName.contains("windows")) {
+				installWindowsShortcuts();
+			} else if (osName.contains("mac")) {
+				installMacShortcuts();
+			}
+
+
+		}
+
+	}
+
+	public static void installMacShortcuts() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public static void installWindowsShortcuts() {
+
+		try {
+
+			// create and write the .vbs file
+			String s = "Set oWS = WScript.CreateObject(\"WScript.Shell\")\n"+
+					"sLinkFile = \"" + DataSources.WINDOWS_SHORTCUT_LINK() + "\"\n"+
+					"Set oLink = oWS.CreateShortcut(sLinkFile)\n"+
+					"oLink.TargetPath = \"" + DataSources.JAR_FILE() + "\"\n"+
+					"\' oLink.Arguments = \"\"\n"+
+					"oLink.Description = \"Torrent Tunes\" \n"+
+					"\' oLink.HotKey = \"ALT+CTRL+F\"\n"+
+					"oLink.IconLocation = \"" + DataSources.ICON_LOCATION() + "\"\n"+
+					"\' oLink.WindowStyle = \"1\" \n"+
+					"\' oLink.WorkingDirectory = \"C:\\Program Files\\MyApp\"\n"+
+					"oLink.Save";
+
+
+			log.info(s);
+			java.nio.file.Files.write(Paths.get(DataSources.WINDOWS_INSTALL_VBS()), s.getBytes());
+			
+			// Run the shortcut install script
+			String cmd = "cscript " + DataSources.WINDOWS_INSTALL_VBS();
+			Runtime.getRuntime().exec(cmd);
+			
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	public static void installLinuxShortcuts() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
 
