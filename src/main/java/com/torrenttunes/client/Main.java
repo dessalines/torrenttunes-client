@@ -47,8 +47,9 @@ public class Main {
 
 		InitializeTables.initializeTables();
 		
-		// Set the music storage location
-		setupMusicStoragePath();
+		setupSettings();
+
+		
 		
 		WebService.start();
 		
@@ -61,13 +62,37 @@ public class Main {
 		
 	}
 
-	private static void setupMusicStoragePath() {
+	private static void setupSettings() {
 		Tools.dbInit();
 		Settings s = SETTINGS.findFirst("id = ?", 1);
 		Tools.dbClose();
+		
+
+		
+		setupMusicStoragePath(s);
+		setupLibTorrentSettings(s);
+	}
+	
+	
+	private static void setupMusicStoragePath(Settings s) {
 		String storagePath = s.getString("storage_path");
 		DataSources.MUSIC_STORAGE_PATH = storagePath;
 	}
+	
+	private static void setupLibTorrentSettings(Settings s) {
+		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
+		Integer maxDownloadSpeed = s.getInteger("max_download_speed");
+		Integer maxUploadSpeed = s.getInteger("max_upload_speed");
+		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
+		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
+		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
+		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
+		lte.updateSettings();
+	}
+	
+	
+	
+	
 	
 	private void parseArguments(String[] args) {
 		CmdLineParser parser = new CmdLineParser(this);

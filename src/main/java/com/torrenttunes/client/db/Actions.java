@@ -69,6 +69,8 @@ public class Actions {
 		s.saveIt();
 		
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
+		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
+		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
 		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
 		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
 		lte.updateSettings();
@@ -79,5 +81,8 @@ public class Actions {
 
 		
 	}
+	
+
+	
 
 }
