@@ -1,4 +1,4 @@
-package com.torrenttunes.client;
+package com.torrenttunes.client.tools;
 
 import java.awt.Desktop;
 import java.io.BufferedInputStream;

@@ -1,4 +1,4 @@
-package com.torrenttunes.client;
+package com.torrenttunes.client.tools;
 
 import java.io.File;
 import java.net.URI;

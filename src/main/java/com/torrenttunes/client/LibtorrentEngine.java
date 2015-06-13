@@ -21,9 +21,10 @@ import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.StatsAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
 import com.frostwire.jlibtorrent.swig.session_settings;
-import com.torrenttunes.client.ScanDirectory.ScanInfo;
-import com.torrenttunes.client.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.db.Tables.Library;
+import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
+import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
 
 
 public enum LibtorrentEngine  {

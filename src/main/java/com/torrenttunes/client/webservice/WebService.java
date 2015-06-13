@@ -7,8 +7,8 @@ import static spark.SparkBase.setPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.torrenttunes.client.DataSources;
-import com.torrenttunes.client.Tools;
+import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.Tools;
 
 public class WebService {
 static final Logger log = LoggerFactory.getLogger(WebService.class);

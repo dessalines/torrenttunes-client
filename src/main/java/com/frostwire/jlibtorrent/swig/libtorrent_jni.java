@@ -8,7 +8,7 @@
 
 package com.frostwire.jlibtorrent.swig;
 
-import com.torrenttunes.client.DataSources;
+import com.torrenttunes.client.tools.DataSources;
 
 public class libtorrent_jni {
 

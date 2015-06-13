@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
-import com.torrenttunes.client.DataSources;
 import com.torrenttunes.client.LibtorrentEngine;
-import com.torrenttunes.client.Tools;
 import com.torrenttunes.client.TorrentStats;
-import com.torrenttunes.client.ScanDirectory.ScanInfo;
-import com.torrenttunes.client.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.db.Tables.Settings;
+import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
+import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
 public class Actions {
 
 	static final Logger log = LoggerFactory.getLogger(Actions.class);

@@ -1,4 +1,4 @@
-package com.torrenttunes.client;
+package com.torrenttunes.client.extra;
 
 public class EmbeddedBrowserJframe {
 	

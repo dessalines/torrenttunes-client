@@ -1,6 +1,7 @@
 package com.torrenttunes.client;
 
 import com.frostwire.jlibtorrent.TorrentHandle;
+import com.torrenttunes.client.tools.Tools;
 
 public class TorrentStats {
 	private TorrentHandle torrent;

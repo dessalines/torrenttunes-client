@@ -1,4 +1,4 @@
-package com.torrenttunes.client;
+package com.torrenttunes.client.extra;
 
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
@@ -12,6 +12,8 @@ import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.StatsAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
+import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.Tools;
 
 
 public final class DownloadTorrent {

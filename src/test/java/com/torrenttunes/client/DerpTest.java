@@ -18,7 +18,9 @@ import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.StatsAlert;
 import com.musicbrainz.mp3.tagger.Tools.Song;
 import com.musicbrainz.mp3.tagger.Tools.Tagger.MusicBrainzQuery;
-import com.torrenttunes.client.ScanDirectory.ScanInfo;
+import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 
 import static com.torrenttunes.client.db.Tables.*;
 import junit.framework.TestCase;

@@ -7,9 +7,9 @@ import java.sql.DriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.torrenttunes.client.DataSources;
-import com.torrenttunes.client.Tools;
 import com.torrenttunes.client.db.Tables.Settings;
+import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.Tools;
 
 import static com.torrenttunes.client.db.Tables.*;
 

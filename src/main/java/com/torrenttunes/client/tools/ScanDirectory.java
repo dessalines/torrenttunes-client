@@ -1,4 +1,4 @@
-package com.torrenttunes.client;
+package com.torrenttunes.client.tools;
 
 import static com.torrenttunes.client.db.Tables.LIBRARY;
 
@@ -26,6 +26,7 @@ import com.frostwire.jlibtorrent.swig.file_storage;
 import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song;
+import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
 
