@@ -139,7 +139,7 @@ public class Actions {
 		TorrentHandle torrent = lte.addTorrent(
 				new File(DataSources.MUSIC_STORAGE_PATH), new File(torrentPath));
 
-		String audioFilePath = DataSources.CACHE_FILE(torrent.getName());
+		String audioFilePath = DataSources.AUDIO_FILE(torrent.getName());
 
 		// Set up the scanInfo
 		ScanInfo si = ScanInfo.create(new File(audioFilePath));

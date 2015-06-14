@@ -184,6 +184,8 @@ public class Tools {
 			new File(DataSources.HOME_DIR()).mkdirs();
 			new File(DataSources.TORRENTS_DIR()).mkdirs();
 			new File(DataSources.DEFAULT_MUSIC_STORAGE_PATH()).mkdirs();
+
+
 		} else {
 			log.info("Home directory already exists");
 		}
@@ -405,6 +407,10 @@ public class Tools {
 
 		try {
 			FileUtils.deleteDirectory(new File(DataSources.HOME_DIR()));
+
+
+			Tools.uninstallShortcuts();
+
 			log.info("Torrenttunes-client uninstalled successfully.");
 			System.exit(0);
 		} catch (IOException e) {
@@ -635,20 +641,43 @@ public class Tools {
 	}
 
 	public static void installShortcuts() {
-		if (!new File(DataSources.HOME_DIR()).exists()) {
-			String osName = System.getProperty("os.name").toLowerCase();
 
+		String osName = System.getProperty("os.name").toLowerCase();
 
-			if (osName.contains("linux")) {
-				installLinuxShortcuts();
-			} else if (osName.contains("windows")) {
-				installWindowsShortcuts();
-			} else if (osName.contains("mac")) {
-				installMacShortcuts();
-			}
-
-
+		if (osName.contains("linux")) {
+			installLinuxShortcuts();
+		} else if (osName.contains("windows")) {
+			installWindowsShortcuts();
+		} else if (osName.contains("mac")) {
+			installMacShortcuts();
 		}
+	}
+
+	public static void uninstallShortcuts() {
+
+		String osName = System.getProperty("os.name").toLowerCase();
+
+		if (osName.contains("linux")) {
+			uninstallLinuxShortcuts();
+		} else if (osName.contains("windows")) {
+			uninstallWindowsShortcuts();
+		} else if (osName.contains("mac")) {
+			uninstallMacShortcuts();
+		}
+	}
+
+
+	public static void uninstallMacShortcuts() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public static void uninstallWindowsShortcuts() {
+		new File(DataSources.WINDOWS_SHORTCUT_LINK()).delete();
+	}
+
+	public static void uninstallLinuxShortcuts() {
+		new File(DataSources.LINUX_DESKTOP_FILE()).delete();
 
 	}
 
@@ -659,14 +688,15 @@ public class Tools {
 
 	public static void installWindowsShortcuts() {
 
+		log.info("Installing windows shortcuts...");
 		try {
 
 			// create and write the .vbs file
 			String s = "Set oWS = WScript.CreateObject(\"WScript.Shell\")\n"+
 					"sLinkFile = \"" + DataSources.WINDOWS_SHORTCUT_LINK() + "\"\n"+
 					"Set oLink = oWS.CreateShortcut(sLinkFile)\n"+
-					"oLink.TargetPath = \"" + DataSources.JAR_FILE() + "\"\n"+
-					"\' oLink.Arguments = \"\"\n"+
+					"oLink.TargetPath = \"" + System.getProperty("java.home") + "/bin/javaw.exe \"\n" +
+					"oLink.Arguments = \"-jar " +  DataSources.JAR_FILE() + "\"\n"+
 					"oLink.Description = \"Torrent Tunes\" \n"+
 					"\' oLink.HotKey = \"ALT+CTRL+F\"\n"+
 					"oLink.IconLocation = \"" + DataSources.ICON_LOCATION() + "\"\n"+
@@ -674,14 +704,12 @@ public class Tools {
 					"\' oLink.WorkingDirectory = \"C:\\Program Files\\MyApp\"\n"+
 					"oLink.Save";
 
-
-			log.info(s);
 			java.nio.file.Files.write(Paths.get(DataSources.WINDOWS_INSTALL_VBS()), s.getBytes());
-			
+
 			// Run the shortcut install script
 			String cmd = "cscript " + DataSources.WINDOWS_INSTALL_VBS();
 			Runtime.getRuntime().exec(cmd);
-			
+
 
 
 		} catch (IOException e) {
@@ -693,8 +721,31 @@ public class Tools {
 	}
 
 	public static void installLinuxShortcuts() {
-		// TODO Auto-generated method stub
+		log.info("Installing linux shortcuts...");
+		try {
+			String s = "[Desktop Entry]\n"+
+					"Type=Application\n"+
+					"Encoding=UTF-8\n"+
+					"Name=Torrent Tunes\n"+
+					"Comment=A sample application\n"+
+					"Exec=java -jar " + DataSources.JAR_FILE() + "\n"+
+					"Icon=" + DataSources.ICON_LOCATION() + "\n"+
+					"Terminal=false\n"+
+					"Categories=Audio;Music;Player;AudioVideo\n"+
+					"GenericName=Music Player";
 
+			log.info(s);
+
+			java.nio.file.Files.write(Paths.get(DataSources.LINUX_DESKTOP_FILE()), s.getBytes());
+			
+			// Run the shortcut install script
+//			String cmd = "desktop-file-install " + DataSources.LINUX_DESKTOP_FILE();
+//			Runtime.getRuntime().exec(cmd);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

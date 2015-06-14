@@ -43,10 +43,12 @@ public class Main {
 		// Install Shortcuts
 		Tools.setupDirectories();
 		
+		
+		
+		
+		Tools.copyResourcesToHomeDir(false);
+
 		Tools.installShortcuts();
-		
-		
-		Tools.copyResourcesToHomeDir(true);
 		
 		Tools.addExternalWebServiceVarToTools();
 
