@@ -695,15 +695,30 @@ public class Tools {
 			String s = "do shell script \"java -jar " + DataSources.JAR_FILE() + "\"";
 			java.nio.file.Files.write(Paths.get(DataSources.MAC_INSTALL_APPLESCRIPT()), s.getBytes());
 
+			File appDir = new File(DataSources.MAC_APP_LOCATION());
+			if (appDir.exists()) {
+				FileUtils.deleteDirectory(appDir);
+			}
 			// Run the shortcut install script
 			String cmd = "osacompile -o " + DataSources.MAC_APP_LOCATION() + " " + 
 					DataSources.MAC_INSTALL_APPLESCRIPT();
-			Runtime.getRuntime().exec(cmd);
+			
+			log.info("osacompile cmd : " + cmd);
+			Process p = Runtime.getRuntime().exec(cmd);
+			p.waitFor();
 			
 			// Have to change the stupid Icons and app name
 			//TODO https://gist.github.com/fabiofl/5873100
+			
+			// Replace the icon:
+			java.nio.file.Files.copy(Paths.get(DataSources.ICON_MAC_LOCATION()), 
+					Paths.get(DataSources.MAC_ICON_APPLET()),
+					StandardCopyOption.REPLACE_EXISTING);
+			
+			// Touch the app folder: 
+			new File(DataSources.MAC_APP_LOCATION()).setLastModified(System.currentTimeMillis());
 
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

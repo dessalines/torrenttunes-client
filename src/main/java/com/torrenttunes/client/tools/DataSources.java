@@ -160,6 +160,8 @@ public class DataSources {
 	}
 
 	public static String ICON_LOCATION() {return WEB_HOME() + "/image/favicon.ico";}
+	public static String ICON_MAC_LOCATION() {return WEB_HOME() + "/image/favicon.icns";}
+	public static String MAC_ICON_APPLET() {return MAC_APP_LOCATION() + "/Contents/Resources/applet.icns";}
 
 	public static String WINDOWS_INSTALL_VBS() {return SOURCE_CODE_HOME() + "/windows_install.vbs";}
 
@@ -169,7 +171,7 @@ public class DataSources {
 
 	public static String MAC_INSTALL_APPLESCRIPT() {return SOURCE_CODE_HOME() + "/mac_install.scpt";}
 
-	public static String MAC_APP_LOCATION() {return System.getProperty("user.home") + "/Applications/torrenttunes.app";}
+	public static String MAC_APP_LOCATION() {return System.getProperty("user.home") + "/Applications/TorrentTunes.app";}
 	
 	public static final String FETCH_LATEST_RELEASE_URL() {
 		return "https://api.github.com/repos/tchoulihan/bitmerchant/releases/latest";
