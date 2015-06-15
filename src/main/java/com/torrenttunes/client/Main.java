@@ -23,6 +23,12 @@ public class Main {
 	@Option(name="-uninstall",usage="Uninstall torrenttunes-client.(WARNING, this deletes your library)")
 	private boolean uninstall;
 	
+	@Option(name="-recopy",usage="Recopies your source folders")
+	private boolean recopy;
+	
+	@Option(name="-installonly",usage="Only installs it, doesn't run it")
+	private boolean installOnly;
+	
 	@Option(name="-loglevel", usage="Sets the log level [INFO, DEBUG, etc.]")     
 	private String loglevel = "INFO";
 	
@@ -36,26 +42,28 @@ public class Main {
 			Tools.uninstall();
 		}
 		
-		
+		log.info("recopy = " + recopy);
 		log.setLevel(Level.toLevel(loglevel));
 		
+		Updater.checkForUpdate();
 		
 		// Install Shortcuts
 		Tools.setupDirectories();
 		
-		
-		
-		
-		Tools.copyResourcesToHomeDir(false);
+		Tools.copyResourcesToHomeDir(recopy);
 
-		Tools.installShortcuts();
+		
 		
 		Tools.addExternalWebServiceVarToTools();
 
 		InitializeTables.initializeTables();
 		
 		setupSettings();
-
+		
+		
+		if (installOnly) {
+			System.exit(0);
+		}
 		
 		
 		WebService.start();
@@ -84,6 +92,7 @@ public class Main {
 	private static void setupMusicStoragePath(Settings s) {
 		String storagePath = s.getString("storage_path");
 		DataSources.MUSIC_STORAGE_PATH = storagePath;
+		log.info("Storage path = " + DataSources.MUSIC_STORAGE_PATH);
 	}
 	
 	private static void setupLibTorrentSettings(Settings s) {
@@ -92,9 +101,9 @@ public class Main {
 		Integer maxUploadSpeed = s.getInteger("max_upload_speed");
 		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
 		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
-		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
-		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
-		lte.updateSettings();
+//		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
+//		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
+//		lte.updateSettings();
 	}
 	
 	

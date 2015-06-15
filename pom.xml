@@ -7,6 +7,7 @@
 
 	<properties>
 		<java.library.path>${basedir}/src/main/resources/lib</java.library.path>
+		<main.class>com.torrenttunes.client.Main</main.class>
 	</properties>
 
 
@@ -22,7 +23,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -54,7 +54,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.torrenttunes.client.Main</mainClass>
+									<mainClass>${main.class}</mainClass>
 
 								</transformer>
 							</transformers>

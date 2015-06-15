@@ -17,6 +17,11 @@ var albumCatalogSongsTemplate = $('#album_catalog_songs_template').html();
 // The home page template
 var trendingAlbumsTemplate = $('#trending_albums_template').html();
 
+// playlist templates
+var playlistHomeTemplate = $('#playlist_home_template').html();
+var playlistLeftTabTemplate = $('#playlist_left_tab_template').html();
+var playlistPageTemplate = $('#playlist_page_template').html();
+var addToPlaylistTemplate = $('#add_to_playlist_template').html();
 
 
 // the play queue
@@ -42,10 +47,11 @@ $(document).ready(function() {
   keyboardShortcuts();
 
 
-
+  setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
   setupSettingsTab();
+  setupPlaylistForm();
 
   setupTabs();
 
@@ -94,9 +100,69 @@ function setupTabs() {
     } else if (tabId == "#uploadTab") {
       setupUploadForm();
       setupUploadTable();
+    } else if (tabId == "#playlistTab") {
+      setupPlaylistTab();
+    } else if (tabId == "#playlistPageTab") {
+      setupPlaylistPageTab();
     }
 
   });
+}
+
+function setupPlaylistLeftTab() {
+  getJson('get_playlists').done(function(e) {
+    var playlists = JSON.parse(e);
+    console.log(playlists);
+    Mustache.parse(playlistLeftTabTemplate);
+    var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
+    $(rendered).appendTo("#left_tab");
+
+
+  });
+}
+
+function setupPlaylistTab() {
+
+  getJson('get_playlists').done(function(e) {
+    var playLists = JSON.parse(e);
+    fillMustacheWithJson(playLists, playlistHomeTemplate, '#playlist_home_div');
+    setupPlaylistDelete();
+  });
+}
+
+function setupPlaylistPageTab() {
+  getJson('get_playlist/' + playlistPageTabID).done(function(e) {
+    var playlist = JSON.parse(e);
+    console.log(playlist);
+
+    fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
+    addPlaylistDropdowns();
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
+
+    setupTrackSelect();
+    setupPlaylistPlaySelect(playlist);
+    
+    $('#playlist_page_div tbody').sortable();
+  });
+}
+
+function setupPlaylistForm() {
+  $('#create_playlist_form').bootstrapValidator({
+      message: 'This value is not valid',
+      excluded: [':disabled'],
+      submitButtons: 'button[type="submit"]',
+
+    })
+    .on('success.form.bv', function(event) {
+      event.preventDefault();
+      standardFormPost('create_playlist', "#create_playlist_form", null, null, function(id) {
+
+        console.log('New playlist Created ' + id);
+        showPlaylist(id);
+      }, true);
+    });
 }
 
 function setupSettingsTab() {
@@ -110,7 +176,7 @@ function setupSettingsTab() {
     .on('success.form.bv', function(event) {
       event.preventDefault();
       standardFormPost('save_settings', "#settingsForm");
-    })
+    });
 
   getJson('get_settings').done(function(e) {
     var settings = JSON.parse(e);
@@ -154,7 +220,9 @@ function setupHomeTab() {
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+    addPlaylistDropdowns();
     setupTrackSelect();
+    
   });
 
 }
@@ -179,7 +247,9 @@ function setupAlbumCatalogTab() {
       $('[data-toggle="tooltip"]').tooltip({
         container: 'body'
       });
+      addPlaylistDropdowns();
       setupTrackSelect();
+      
       setupAlbumPlaySelect(albumSongs);
     });
 
@@ -192,7 +262,9 @@ function setupArtistCatalogSongTab() {
     console.log(allArtistSongs);
 
     fillMustacheWithJson(allArtistSongs, topArtistSongsTemplate, '#all_artist_songs_div');
+     addPlaylistDropdowns();
     setupTrackSelect();
+   
   });
 }
 
@@ -240,7 +312,9 @@ function setupArtistCatalogTab() {
     console.log(topArtistSongs);
 
     fillMustacheWithJson(topArtistSongs, topArtistSongsTemplate, '#top_artist_songs_div');
+    addPlaylistDropdowns();
     setupTrackSelect();
+    
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
@@ -324,14 +398,32 @@ function keyboardShortcuts() {
 
 }
 
+function addPlaylistDropdowns() {
+  getJson('get_playlists').done(function(e) {
+
+    var playlists = JSON.parse(e);
+    console.log(playlists);
+    // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
+    Mustache.parse(addToPlaylistTemplate);
+    var rendered = Mustache.render(addToPlaylistTemplate, playlists);
+    $(rendered).appendTo(".add_to_playlist_class");
+
+    setupAddToPlaylist();
+
+  });
+
+}
 
 function setupLibrary() {
+
+
   getJson('get_library').done(function(e) {
 
     library = JSON.parse(e);
     console.log(library);
 
     fillMustacheWithJson(library, libraryTemplate, '#library_div');
+
 
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
@@ -345,9 +437,10 @@ function setupLibrary() {
     });
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
-
+    addPlaylistDropdowns();
     setupTrackSelect();
     setupTrackDelete();
+
   });
 }
 
@@ -364,6 +457,27 @@ function setupAlbumPlaySelect(albumSongs) {
     // All the others, download them, but add them to the queue at the last
     for (var z = 1; z < albumSongs.length; z++) {
       var trackInfo = albumSongs[z];
+      var infoHash = trackInfo['info_hash'];
+
+      downloadOrFetchTrackObj(infoHash, 'play-last');
+    }
+
+  });
+}
+
+function setupPlaylistPlaySelect(playlistSongs) {
+  $('.play-playlist').click(function(e) {
+
+
+    // for the first one, play now
+    var trackInfoFirst = playlistSongs[0];
+    var infoHashFirst = trackInfoFirst['info_hash'];
+
+    downloadOrFetchTrackObj(infoHashFirst, 'play-now');
+
+    // All the others, download them, but add them to the queue at the last
+    for (var z = 1; z < playlistSongs.length; z++) {
+      var trackInfo = playlistSongs[z];
       var infoHash = trackInfo['info_hash'];
 
       downloadOrFetchTrackObj(infoHash, 'play-last');

@@ -17,6 +17,8 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-client";
 	
+	public static String TAG_NAME = "1.2";
+	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
@@ -119,7 +121,7 @@ public class DataSources {
 		} else if (osName.contains("windows")) {
 			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
 		} else if (osName.contains("mac")) {
-			ret = SOURCE_CODE_HOME() + "libjlibtorrent.dylib";
+			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.dylib";
 		}
 		return ret;
 	}
@@ -165,6 +167,14 @@ public class DataSources {
 		return System.getProperty("user.home") + "/.local/share/applications/" + APP_NAME + ".desktop";
 	}
 
+	public static String MAC_INSTALL_APPLESCRIPT() {return SOURCE_CODE_HOME() + "/mac_install.scpt";}
+
+	public static String MAC_APP_LOCATION() {return System.getProperty("user.home") + "/Applications/torrenttunes.app";}
 	
+	public static final String FETCH_LATEST_RELEASE_URL() {
+		return "https://api.github.com/repos/tchoulihan/bitmerchant/releases/latest";
+	}
+
+	public static String TEMP_JAR_PATH() {return System.getProperty("user.home") + "/" + APP_NAME + ".jar";}
 	
 }

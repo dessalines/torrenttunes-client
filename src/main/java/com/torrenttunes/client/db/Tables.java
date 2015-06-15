@@ -27,6 +27,10 @@ public class Tables {
 	public static class PlaylistTrack extends Model {}
 	public static final PlaylistTrack PLAYLIST_TRACK = new PlaylistTrack();
 	
+	@Table("playlist_track_view")
+	public static class PlaylistTrackView extends Model {}
+	public static final PlaylistTrackView PLAYLIST_TRACK_VIEW = new PlaylistTrackView();
+	
 	@Table("playlist")
 	public static class Playlist extends Model {}
 	public static final Playlist PLAYLIST = new Playlist();

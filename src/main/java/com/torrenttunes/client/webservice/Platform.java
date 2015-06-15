@@ -1,6 +1,6 @@
 package com.torrenttunes.client.webservice;
 
-import static com.torrenttunes.client.db.Tables.LIBRARY;
+import static com.torrenttunes.client.db.Tables.*;
 import static com.torrenttunes.client.db.Tables.QUEUE_VIEW;
 import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static spark.Spark.get;
@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
+import com.torrenttunes.client.db.Tables.Playlist;
 import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
 
@@ -103,6 +104,133 @@ public class Platform {
 
 
 		});
+		
+		get("/get_playlists", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				Tools.dbInit();
+				String json = PLAYLIST.findAll().toJson(false);
+
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+
+
+		});
+		
+		get("/get_playlist/:playlistId", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+				
+				String playlistId = req.params(":playlistId");
+				Tools.dbInit();
+				String json = PLAYLIST_TRACK_VIEW.find("playlist_id = ?", playlistId).toJson(false);
+
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+
+
+		});
+		
+		post("/create_playlist", (req, res) -> {
+			try {
+				Tools.allowAllHeaders(req, res);
+				Tools.logRequestInfo(req);
+
+				Map<String, String> vars = Tools.createMapFromAjaxPost(req.body());
+
+				String name = vars.get("name");
+
+				Tools.dbInit();
+				String playlistId = Actions.createPlaylist(name);
+
+				return playlistId;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+		});
+		
+		post("/add_to_playlist/:playlistId/:infoHash", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				Tools.dbInit();
+				
+				String playlistId = req.params(":playlistId");
+				String infoHash = req.params(":infoHash");
+				
+				String message = Actions.addToPlaylist(playlistId, infoHash);
+
+
+				return message;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+
+		});
+		
+		post("/delete_playlist/:playlistId", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				Tools.dbInit();
+				
+				String playlistId = req.params(":playlistId");
+				
+				String message = Actions.deletePlaylist(playlistId);
+
+
+				return message;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+
+		});
+
 
 		post("/upload_music_directory", (req, res) -> {
 

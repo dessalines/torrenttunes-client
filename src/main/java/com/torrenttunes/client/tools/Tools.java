@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -197,6 +198,8 @@ public class Tools {
 		String zipFile = null;
 
 		if (copyAnyway || !new File(DataSources.SOURCE_CODE_HOME()).exists()) {
+
+
 			log.info("Copying resources to  ~/." + DataSources.APP_NAME + " dirs");
 
 			try {
@@ -216,12 +219,16 @@ public class Tools {
 
 				e.printStackTrace();
 			}
-			Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
-
-			// rename it to a jar
-			new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
 
 
+			// unzip and rename it to a jar, if it doesn't already exist
+			// TODO gotta figure this one out
+//			if (!new File(DataSources.JAR_FILE()).exists()) {
+				Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
+				new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
+//			}
+
+			Tools.installShortcuts();
 			//		new Tools().copyJarResourcesRecursively("src", configHome);
 		} else {
 			log.info("The source directory already exists");
@@ -682,7 +689,24 @@ public class Tools {
 	}
 
 	public static void installMacShortcuts() {
-		// TODO Auto-generated method stub
+		log.info("Installing mac shortcuts...");
+
+		try {
+			String s = "do shell script \"java -jar " + DataSources.JAR_FILE() + "\"";
+			java.nio.file.Files.write(Paths.get(DataSources.MAC_INSTALL_APPLESCRIPT()), s.getBytes());
+
+			// Run the shortcut install script
+			String cmd = "osacompile -o " + DataSources.MAC_APP_LOCATION() + " " + 
+					DataSources.MAC_INSTALL_APPLESCRIPT();
+			Runtime.getRuntime().exec(cmd);
+			
+			// Have to change the stupid Icons and app name
+			//TODO https://gist.github.com/fabiofl/5873100
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -729,6 +753,7 @@ public class Tools {
 					"Name=Torrent Tunes\n"+
 					"Comment=A sample application\n"+
 					"Exec=java -jar " + DataSources.JAR_FILE() + "\n"+
+					"Path=" + DataSources.HOME_DIR() + "\n" + 
 					"Icon=" + DataSources.ICON_LOCATION() + "\n"+
 					"Terminal=false\n"+
 					"Categories=Audio;Music;Player;AudioVideo\n"+
@@ -736,16 +761,39 @@ public class Tools {
 
 			log.info(s);
 
+			File desktopFile = new File(DataSources.LINUX_DESKTOP_FILE());
+			if (desktopFile.exists()) {
+				desktopFile.delete();
+			}
 			java.nio.file.Files.write(Paths.get(DataSources.LINUX_DESKTOP_FILE()), s.getBytes());
-			
+
 			// Run the shortcut install script
-//			String cmd = "desktop-file-install " + DataSources.LINUX_DESKTOP_FILE();
-//			Runtime.getRuntime().exec(cmd);
-			
+			//			String cmd = "desktop-file-install " + DataSources.LINUX_DESKTOP_FILE();
+			//			Runtime.getRuntime().exec(cmd);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void restartApplication() throws URISyntaxException, IOException {
+		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+		final File currentJar = new File(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+		/* is it a jar file? */
+		if(!currentJar.getName().endsWith(".jar"))
+			return;
+
+		/* Build command: java -jar application.jar */
+		final ArrayList<String> command = new ArrayList<String>();
+		command.add(javaBin);
+		command.add("-jar");
+		command.add(currentJar.getPath());
+
+		final ProcessBuilder builder = new ProcessBuilder(command);
+		builder.start();
+		System.exit(0);
 	}
 
 }

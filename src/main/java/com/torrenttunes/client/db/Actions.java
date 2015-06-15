@@ -10,6 +10,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.JsonNode;
+import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,8 @@ import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
 public class Actions {
 
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
+	
+	public static final Integer DOWNLOAD_TIMEOUT = 40000;
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid, String album, String albumMbid,
@@ -91,9 +94,9 @@ public class Actions {
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
 		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
-		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
-		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
-		lte.updateSettings();
+//		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
+//		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
+//		lte.updateSettings();
 
 		message.append("Settings Saved");
 
@@ -155,6 +158,7 @@ public class Actions {
 		// If it takes more than 30 seconds to download a file, then set no peers,
 		// and throw an error
 		Timer timer = new Timer();
+
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -163,7 +167,7 @@ public class Actions {
 				log.info("Seeder post response: " + resp);
 			}
 
-		}, 40000);
+		}, DOWNLOAD_TIMEOUT);
 
 		lte.getSession().addListener(new TorrentAlertAdapter(torrent) {
 			private Timer timer;
@@ -231,7 +235,7 @@ public class Actions {
 		// if it wasn't successful(IE no peers found or > 40 seconds)
 		if (track == null) {
 			throw new NoSuchElementException("No peers found for " + 
-					artist + " - " + songTitle);
+					artist + " - " + songTitle + ", or download took too long");
 		} else {
 			json = track.toJson(false);
 		}
@@ -285,6 +289,37 @@ public class Actions {
 		}
 		
 		return message;
+	}
+
+	public static String createPlaylist(String name) {
+		
+		// Create it, then fetch the id
+		PLAYLIST.createIt("name", name);
+		
+		Playlist p = PLAYLIST.findFirst("name = ?", name);
+		
+		return p.getString("id");
+	}
+
+	public static String addToPlaylist(String playlistId, String infoHash) {
+	
+		// Find the library id for an infohash
+		String libraryId = LIBRARY.findFirst("info_hash = ?", infoHash).getString("id");
+		
+		PLAYLIST_TRACK.createIt("playlist_id", playlistId,
+				"library_id", libraryId);
+		
+		
+		return "Added to playlist";
+	}
+
+	public static String deletePlaylist(String playlistId) {
+
+		PLAYLIST_TRACK.delete("playlist_id = ?", playlistId);
+		
+		PLAYLIST.findFirst("id = ?", playlistId).delete();
+		
+		return "Playlist deleted";
 	}
 
 

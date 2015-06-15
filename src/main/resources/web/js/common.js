@@ -1,4 +1,4 @@
-var artistCatalogMBID, albumCatalogMBID;
+var artistCatalogMBID, albumCatalogMBID, playlistPageTabID;
 
 var songPlayerTemplate = $('#song_player_template').html();
 
@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  windowClose();
+  // windowClose();
 
 });
 
@@ -86,6 +86,9 @@ function setupSearch() {
       suggestion: function(context) {
         var ret = Mustache.render(songPlayerTemplate, context);
         setupTrackSelect();
+        $('a', ret).on('click', function() {
+          alert('derp');
+        });
         return ret;
       }
     }
@@ -232,6 +235,14 @@ function showAlbumPage(releaseMBID) {
 }
 
 
+function showPlaylist(id) {
+  playlistPageTabID = id;
+  // $('a[href="#homeTab"]').tab('show');
+  $('a[href="#playlistPageTab"]').tab('show');
+  console.log('showing ' + playlistPageTabID);
+}
+
+
 function setupTrackSelect() {
   $('.track-select').click(function(e) {
     console.log('track selected');
@@ -253,35 +264,115 @@ function setupTrackSelect() {
 
   });
 
-  
-    // console.log(library[0]);
-    // console.log(library[id]);
+
+  // console.log(library[0]);
+  // console.log(library[id]);
 
 
 
 }
 
+function setupAddToPlaylist() {
+  $('.add_to_playlist').click(function(e) {
+    console.log('adding to playlist');
+    // var full = this.id.split('_');
+    var name = $(this).attr('name');
+    var full = name.split('_');
+
+
+
+    console.log(full);
+    var option = full[0];
+    var playlistId = full[1];
+
+    var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
+    simplePost('add_to_playlist/' + playlistId + "/" + infoHash, null, null, function() {
+      console.log('Track ' + infoHash + ' added to playlist');
+    });
+
+  });
+
+
+  // console.log(library[0]);
+  // console.log(library[id]);
+}
+
+
+
 function setupTrackDelete() {
-      $('.track-delete').click(function(e) {
-        console.log('track selected for delete');
-        // var full = this.id.split('_');
-        var name = $(this).attr('name');
-        var full = name.split('_');
+  $('.track-delete').click(function(e) {
+    console.log('track selected for delete');
+    // var full = this.id.split('_');
+    var name = $(this).attr('name');
+    var full = name.split('_');
 
 
 
-        console.log(full);
-        var option = full[0];
-        var infoHash = full[1];
+    console.log(full);
+    var option = full[0];
+    var infoHash = full[1];
 
-        console.log(option);
-        console.log(infoHash);
+    console.log(option);
+    console.log(infoHash);
 
-        simplePost('delete_song/' + infoHash, null, null, function() {
-          $('[name=' + name).tooltip('hide');
-          $('[name=' + name).closest("tr").remove();
-        });
+    simplePost('delete_song/' + infoHash, null, null, function() {
+      $('[name=' + name).tooltip('hide');
+      $('[name=' + name).closest("tr").remove();
+    });
 
-      });
+  });
 
-    }
+}
+
+function setupPlaylistTrackDelete() {
+  $('.playlist-track-delete').click(function(e) {
+    console.log('track selected for delete');
+    // var full = this.id.split('_');
+    var name = $(this).attr('name');
+    var full = name.split('_');
+
+
+
+    console.log(full);
+    var option = full[0];
+    var libraryid = full[1];
+
+    console.log(option);
+    console.log(libraryid);
+
+    simplePost('delete_song/' + libraryid, null, null, function() {
+      $('[name=' + name).tooltip('hide');
+      $('[name=' + name).closest("tr").remove();
+    });
+
+  });
+
+}
+
+function setupPlaylistDelete() {
+  $('.playlist-delete').click(function(e) {
+    // var full = this.id.split('_');
+    var name = $(this).attr('name');
+    var full = name.split('_');
+
+
+
+    console.log(full);
+    var option = full[0];
+    var playlistId = full[1];
+
+    console.log(option);
+    console.log(playlistId);
+
+
+    simplePost('delete_playlist/' + playlistId, null, null, function() {
+      // $('[name=' + name).tooltip('hide');
+      // $('[name=' + name).parent().closest("a").remove();
+      $('[name=' + name).parent().parent().remove();
+      // setupPlaylistLeftTab();
+
+    });
+
+  });
+
+}
