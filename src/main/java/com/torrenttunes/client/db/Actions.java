@@ -28,7 +28,7 @@ import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
 public class Actions {
 
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
-	
+
 	public static final Integer DOWNLOAD_TIMEOUT = 40000;
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
@@ -94,9 +94,9 @@ public class Actions {
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
 		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
-//		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
-//		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
-//		lte.updateSettings();
+		//		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
+		//		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
+		//		lte.updateSettings();
 
 		message.append("Settings Saved");
 
@@ -200,7 +200,7 @@ public class Actions {
 				TorrentStats ts = TorrentStats.create(torrent);
 				log.info(ts.toString());
 
-			
+
 
 				// Once the torrent's finished, save the number of peers:
 				String resp = Tools.httpGetString(DataSources.SEEDER_INFO_UPLOAD(
@@ -264,62 +264,73 @@ public class Actions {
 	}
 
 	public static String deleteSong(String infoHash) {
-		
-		String message = null;
-		
-		try {
-		// Stop the torrent, remove it from the session
-		TorrentHandle torrent = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
-		LibtorrentEngine.INSTANCE.getSession().removeTorrent(torrent);
-		
-		// Remove it from the DB
-		Library song = LIBRARY.findFirst("info_hash = ?", infoHash);
-		String torrentPath = song.getString("torrent_path");
-		String filePath = song.getString("file_path");
-		song.delete();
 
-		// delete the .torrent file and the file
-		new File(torrentPath).delete();
-		new File(filePath).delete();
-		
-		message = filePath + " has been deleted";
+		String message = null;
+
+		try {
+			// Stop the torrent, remove it from the session
+			TorrentHandle torrent = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
+			LibtorrentEngine.INSTANCE.getSession().removeTorrent(torrent);
+
+			// Remove it from the DB
+			Library song = LIBRARY.findFirst("info_hash = ?", infoHash);
+			String torrentPath = song.getString("torrent_path");
+			String filePath = song.getString("file_path");
+			song.delete();
+
+			// delete the .torrent file and the file
+			new File(torrentPath).delete();
+			new File(filePath).delete();
+
+			message = filePath + " has been deleted";
 		} catch(NullPointerException e) {
 			e.printStackTrace();
 			throw new NoSuchElementException("Song has already been deleted");
 		}
-		
+
 		return message;
 	}
 
 	public static String createPlaylist(String name) {
-		
+
 		// Create it, then fetch the id
 		PLAYLIST.createIt("name", name);
-		
+
 		Playlist p = PLAYLIST.findFirst("name = ?", name);
-		
+
 		return p.getString("id");
 	}
 
 	public static String addToPlaylist(String playlistId, String infoHash) {
-	
+
 		// Find the library id for an infohash
 		String libraryId = LIBRARY.findFirst("info_hash = ?", infoHash).getString("id");
-		
+
 		PLAYLIST_TRACK.createIt("playlist_id", playlistId,
 				"library_id", libraryId);
-		
-		
+
+
 		return "Added to playlist";
 	}
 
 	public static String deletePlaylist(String playlistId) {
 
 		PLAYLIST_TRACK.delete("playlist_id = ?", playlistId);
-		
+
 		PLAYLIST.findFirst("id = ?", playlistId).delete();
-		
+
 		return "Playlist deleted";
+	}
+
+	public static String removeFromPlaylist(String playlistId, String infoHash) {
+		PlaylistTrackView p = PLAYLIST_TRACK_VIEW.findFirst("playlist_id = ? and info_hash = ?", playlistId, infoHash);
+
+		String playlistTrackId = p.getString("playlist_track_id");
+
+		log.info("playlist track id = " + playlistId);
+		PLAYLIST_TRACK.findFirst("id = ?",	playlistTrackId).delete();
+
+		return "Track removed from playlist";
 	}
 
 

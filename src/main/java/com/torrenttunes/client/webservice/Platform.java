@@ -205,6 +205,33 @@ public class Platform {
 
 		});
 		
+		post("/remove_from_playlist/:playlistId/:infoHash", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				Tools.dbInit();
+				
+				String playlistId = req.params(":playlistId");
+				String infoHash = req.params(":infoHash");
+				
+				String message = Actions.removeFromPlaylist(playlistId, infoHash);
+
+
+				return message;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+
+		});
+		
 		post("/delete_playlist/:playlistId", (req, res) -> {
 
 			try {
