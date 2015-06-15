@@ -114,10 +114,13 @@
             <li>
               <h5 class="sidebar-spaced"><a class="text-muted" href="#playlistTab" data-toggle="tab">PlayLists</a></h5></li>
             <li class="hide"><a href="#playlistPageTab" data-toggle="tab">playlist page tab</a></li>
+            <div id="playlist_left_tab_div">  </div>
             <script id="playlist_left_tab_template" type="x-tmpl-mustache">
               {{#.}}
-              <li><a data-toggle="tab" class="text-normal" onclick="showPlaylist('{{id}}');" href="#">{{name}}</a></li> {{/.}}
+              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal" onclick="showPlaylist('{{id}}');" href="#">{{name}}</a></li> {{/.}}
             </script>
+          
+
           </ul>
         </div>
       </div>

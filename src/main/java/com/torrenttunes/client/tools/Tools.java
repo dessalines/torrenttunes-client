@@ -707,9 +707,6 @@ public class Tools {
 			Process p = Runtime.getRuntime().exec(cmd);
 			p.waitFor();
 			
-			// Have to change the stupid Icons and app name
-			//TODO https://gist.github.com/fabiofl/5873100
-			
 			// Replace the icon:
 			java.nio.file.Files.copy(Paths.get(DataSources.ICON_MAC_LOCATION()), 
 					Paths.get(DataSources.MAC_ICON_APPLET()),

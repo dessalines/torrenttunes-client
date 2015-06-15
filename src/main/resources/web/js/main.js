@@ -111,11 +111,14 @@ function setupTabs() {
 
 function setupPlaylistLeftTab() {
   getJson('get_playlists').done(function(e) {
+    $('li.playlist-left-tab-element').remove();
     var playlists = JSON.parse(e);
     console.log(playlists);
     Mustache.parse(playlistLeftTabTemplate);
     var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
-    $(rendered).appendTo("#left_tab");
+    console.log(rendered);
+    
+    $('#playlist_left_tab_div').after(rendered);
 
 
   });
@@ -161,6 +164,7 @@ function setupPlaylistForm() {
 
         console.log('New playlist Created ' + id);
         showPlaylist(id);
+        setupPlaylistLeftTab();
       }, true);
     });
 }
@@ -633,4 +637,33 @@ function buildLiFromTrackObject(trackObj) {
     trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
 
   return li;
+}
+
+
+function setupPlaylistDelete() {
+  $('.playlist-delete').click(function(e) {
+    // var full = this.id.split('_');
+    var name = $(this).attr('name');
+    var full = name.split('_');
+
+
+
+    console.log(full);
+    var option = full[0];
+    var playlistId = full[1];
+
+    console.log(option);
+    console.log(playlistId);
+
+
+    simplePost('delete_playlist/' + playlistId, null, null, function() {
+      // $('[name=' + name).tooltip('hide');
+      // $('[name=' + name).parent().closest("a").remove();
+      $('[name=' + name).parent().parent().remove();
+      setupPlaylistLeftTab();
+
+    });
+
+  });
+
 }

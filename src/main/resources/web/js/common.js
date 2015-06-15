@@ -349,30 +349,4 @@ function setupPlaylistTrackDelete() {
 
 }
 
-function setupPlaylistDelete() {
-  $('.playlist-delete').click(function(e) {
-    // var full = this.id.split('_');
-    var name = $(this).attr('name');
-    var full = name.split('_');
 
-
-
-    console.log(full);
-    var option = full[0];
-    var playlistId = full[1];
-
-    console.log(option);
-    console.log(playlistId);
-
-
-    simplePost('delete_playlist/' + playlistId, null, null, function() {
-      // $('[name=' + name).tooltip('hide');
-      // $('[name=' + name).parent().closest("a").remove();
-      $('[name=' + name).parent().parent().remove();
-      // setupPlaylistLeftTab();
-
-    });
-
-  });
-
-}
