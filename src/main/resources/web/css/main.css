@@ -21,9 +21,26 @@
   padding:0; margin:0;
 }
 */
+
+#home_page_loading_div {
+  min-height: 100%;
+  /* Fallback for browsers do NOT support vh unit */
+  
+  min-height: 50vh;
+  /* These two lines are counted as one :-)       */
+  
+  display: flex;
+  align-items: center;
+}
+
+.white {
+  background-color: #FFF;
+}
+
 .input-group-addon .form-control-feedback {
   top: 1px;
 }
+
 .logo {
   display: inline-block;
   height: 28px;

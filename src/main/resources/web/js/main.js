@@ -52,6 +52,7 @@ $(document).ready(function() {
   setupHomeTab();
   setupSettingsTab();
   setupPlaylistForm();
+  setupDonate();
 
   setupTabs();
 
@@ -215,6 +216,7 @@ function setupHomeTab() {
     console.log(albums);
 
     fillMustacheWithJson(albums, trendingAlbumsTemplate, '#trending_albums_div');
+
   });
 
   getJson('get_trending_songs', null, true).done(function(e) {
@@ -227,6 +229,8 @@ function setupHomeTab() {
     });
     addPlaylistDropdowns();
     setupTrackSelect();
+    $('#home_page_div').removeClass('hide');
+    $('#home_page_loading_div').addClass('hide');
 
   });
 
@@ -640,8 +644,20 @@ function playNow(trackObj) {
 }
 
 function buildLiFromTrackObject(trackObj) {
-  var li = '<li><a href="file:///' + trackObj['file_path'] + '"><b>' +
+  // var encodedAudioFilePath = localSparkService + 'get_audio_file/' +
+  //   encodeURIComponent(trackObj['file_path']);
+
+
+
+  // var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
+  //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
+
+  var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
     trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
+
+  // console.log(li);
+  // console.log(encodedAudioFilePath);
+
 
   return li;
 }
@@ -673,4 +689,18 @@ function setupPlaylistDelete() {
 
   });
 
+}
+
+function setupDonate() {
+  var address = '14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX';
+  var btcText = "bitcoin:" + address;
+  $('#qrcode').html('');
+  $('#qrcode').qrcode({
+    "width": 100,
+    "height": 100,
+    "fill": "#000",
+    "background": "#FFF",
+    "text": btcText
+  });
+  $('#receive_address').html(address);
 }

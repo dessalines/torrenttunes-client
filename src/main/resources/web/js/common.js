@@ -13,11 +13,11 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  // windowClose();
+  setupWindowClose();
 
 });
 
-function windowClose() {
+function setupWindowClose() {
   window.onbeforeunload = function() {
     console.log('derp');
 

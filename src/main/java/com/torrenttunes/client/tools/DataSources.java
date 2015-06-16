@@ -47,6 +47,8 @@ public class DataSources {
 	
 	public static final String SAMPLE_MUSIC_DIR = "/home/tyler/Downloads";
 	
+	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";
+	
 	public static final String DB_FILE() {return HOME_DIR() + "/db/db.sqlite";}
 	
 	

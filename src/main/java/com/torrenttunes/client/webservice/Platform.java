@@ -1,23 +1,37 @@
 package com.torrenttunes.client.webservice;
 
 import static com.torrenttunes.client.db.Tables.*;
-import static com.torrenttunes.client.db.Tables.QUEUE_VIEW;
-import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+
+
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+
+
+import javax.servlet.http.HttpServletResponse;
+
+
 
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.db.Tables.Playlist;
+import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
 
@@ -402,6 +416,63 @@ public class Platform {
 
 
 
+
+		});
+		
+		get("/get_sample_song", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				HttpServletResponse raw = res.raw();
+				raw.getOutputStream().write(Files.readAllBytes(Paths.get(DataSources.SAMPLE_SONG)));
+				raw.getOutputStream().flush();
+				raw.getOutputStream().close();
+
+				return res.raw();
+				
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			}
+
+		});
+		
+		get("/get_audio_file/:encodedPath", (req, res) -> {
+			res.type("audio/mpeg");
+//			res.header("Content-Disposition", "filename=\"music.mp3\"");
+			try {
+				Tools.allowAllHeaders(req, res);
+				
+				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
+				
+
+				HttpServletResponse raw = res.raw();
+//				raw.getOutputStream().write(Files.readAllBytes(Paths.get(path)));
+//				raw.getOutputStream().flush();
+//				raw.getOutputStream().close();
+				BufferedOutputStream bos = new BufferedOutputStream(raw.getOutputStream(), 1024);
+				bos.write(Files.readAllBytes(Paths.get(path)));
+				bos.flush();
+				bos.close();
+				
+				
+//				DataOutputStream dataOut = new DataOutputStream(raw.getOutputStream());
+//				dataOut.write(Files.readAllBytes(Paths.get(path)));
+//				
+//				dataOut.flush();
+//				dataOut.close();
+				
+				
+
+				return res.raw();
+				
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			}
 
 		});
 

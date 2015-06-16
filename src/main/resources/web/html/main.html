@@ -90,6 +90,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li><a class="text-normal" href="#" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-fw"></i></a></li>
             <li><a href="#settingsTab" data-toggle="tab"><i class="fa fa-fw fa-cog"></i></a></li>
           </ul>
         </div>
@@ -114,13 +115,11 @@
             <li>
               <h5 class="sidebar-spaced"><a class="text-muted" href="#playlistTab" data-toggle="tab">PlayLists</a></h5></li>
             <li class="hide"><a href="#playlistPageTab" data-toggle="tab">playlist page tab</a></li>
-            <div id="playlist_left_tab_div">  </div>
+            <div id="playlist_left_tab_div"> </div>
             <script id="playlist_left_tab_template" type="x-tmpl-mustache">
               {{#.}}
-              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal" onclick="showPlaylist('{{id}}');" href="#">{{name}}</a></li> {{/.}}
+              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{id}}');" href="#">{{name}}</a></li> {{/.}}
             </script>
-          
-
           </ul>
         </div>
       </div>
@@ -130,6 +129,8 @@
           <!-- Tabs -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="homeTab">
+              <div class="col-md-offset-4" id="home_page_loading_div"><i class='fa fa-circle-o-notch fa-spin fa-fw fa-6'></i></div>
+              <div id="home_page_div" class="hide">
               <h3 class="text-center no-padding-top">
               Trending Albums
               </h3>
@@ -220,19 +221,19 @@
                       <div class="row">
                         <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
                         <div class="text-center">
-                          <a class="text-normal" href=""><i class="fa fa-coffee fa-6"></i></a>
+                          <a class="text-normal" href="#" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-6"></i></a>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-12">
                           <h2 class="text-center">
-                        <a href="">Free</a>
+                        <a href="#" data-toggle="modal" data-target="#donateModal">Free</a>
                       </h2>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-12">
-                          <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but there are server costs. You can donate <a href="" class="text-muted">here</a>.</h5>
+                          <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but there are server costs. You can donate <a href="#" class="text-muted" data-toggle="modal" data-target="#donateModal">here</a>.</h5>
                         </div>
                       </div>
                     </div>
@@ -240,6 +241,7 @@
                 </div>
               </div>
               <br>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane fade " id="artistcatalogTab">
               <!-- <i class="fa fa-play-circle-o"></i> -->
@@ -480,10 +482,10 @@
                   <small> 
                   <a name="delete-playlist_{{id}}" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
                   </small>
-                  </h3> {{/.}}
+                  </h3> {{/.}} {{#0}}
+                  <hr>{{/0}}
                 </script>
               </div>
-              <hr>
               <form id="create_playlist_form" class="form-inline">
                 <div class="form-group">
                   <label for="exampleInputName2">Name</label>
@@ -495,13 +497,10 @@
             <div role="tabpanel" class="tab-pane fade" id="playlistPageTab">
               <div id="playlist_page_div">
                 <script id="playlist_page_template" type="x-tmpl-mustache">
-                <h3> {{0.name}}
+                  <h3> {{0.name}}
                   <small><a class="play-playlist text-normal" href="javascript:void(0)"><i class="fa fa-play-circle-o fa-fw"></i></a>
                     </small>
                 </h3>
-              
-
-
                   <table name="playlist_table" class="table table-hover table-striped tablesorter table-overflow">
                     <colgroup>
                       <col style="width:10%">
@@ -560,7 +559,7 @@
                 <div id="upload_form_div" class="form-group">
                   <label for="inputUsername3" class="col-sm-12">Music Directory</label>
                   <div class="col-sm-12">
-                    <input name="upload_path" type="inputEmail3" class="form-control" id="inputEmail3" data-bv-notempty="true" data-bv-notempty-message="A path is required" placeholder="C:/Music/..." />
+                    <input name="upload_path" type="inputEmail3" class="form-control" id="inputEmail3" data-bv-notempty="true" data-bv-notempty-message="A path is required" placeholder="C:/Music/...(Windows) or /home/[username]/Downloads(Linux) or /Users/[username]/Music(Mac)" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -808,14 +807,34 @@
       </div>
     </script>
     <script id="add_to_playlist_template" type="x-tmpl-mustache">
-      {{#0}}<li class="divider"></li>{{/0}}
-      {{#.}}
+      {{#0}}
+      <li class="divider"></li>{{/0}} {{#.}}
       <li>
         <a name="add-to-playlist_{{id}}" class="add_to_playlist"> <i class="fa fa-list fa-fw"></i> Add to Playlist {{name}} </a>
       </li>
       {{/.}}
     </script>
     <!-- Modals -->
+    <div class="modal fade bs-example-modal-lg" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="userloginModalLabel">Donate Bitcoin</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div id="qrcode" class="text-center"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <h4 id="receive_address" class="text-center well"></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- end of login modal -->
     <!-- Bootstrap core JavaScript
       ================================================== -->
