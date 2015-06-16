@@ -23,8 +23,8 @@ function setupWindowClose() {
 
 
     simplePost('power_off', null, false, null, true, false);
-    // return "TorrentTunes has been powered off";
-    return null;
+    return "TorrentTunes has been powered off.";
+    // return null;
   };
 }
 

@@ -53,6 +53,7 @@ public enum LibtorrentEngine  {
 		sessionSettings.setTorrentConnectBoost(5);
 		sessionSettings.setMinReconnectTime(1);
 		sessionSettings.setActiveDownloads(10);
+	
 		
 //		s.setActiveSeeds(1);
 		

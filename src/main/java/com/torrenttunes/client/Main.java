@@ -1,5 +1,7 @@
 package com.torrenttunes.client;
 
+import java.io.File;
+
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -10,6 +12,7 @@ import ch.qos.logback.classic.Logger;
 
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
 import com.torrenttunes.client.webservice.WebService;
 
@@ -31,6 +34,9 @@ public class Main {
 	
 	@Option(name="-loglevel", usage="Sets the log level [INFO, DEBUG, etc.]")     
 	private String loglevel = "INFO";
+	
+	@Option(name="-sharedirectory", usage="Scans a directory to share")     
+	private String shareDirectory = null;
 	
 	
 	public void doMain(String[] args) {
@@ -69,6 +75,10 @@ public class Main {
 		WebService.start();
 		
 		Tools.pollAndOpenStartPage();
+		
+		if (shareDirectory != null) {
+			ScanDirectory.start(new File(shareDirectory));
+		}
 		
 		LibtorrentEngine.INSTANCE.startSeedingLibrary();
 		
