@@ -216,7 +216,6 @@ public class Tools {
 					log.info("you need to build the project first");
 				}
 			} catch (IOException e) {
-
 				e.printStackTrace();
 			}
 
@@ -224,10 +223,18 @@ public class Tools {
 			// unzip and rename it to a jar, if it doesn't already exist
 			// TODO gotta figure this one out
 			File jarFile = new File(DataSources.JAR_FILE());
-			if (jarFile.exists()) {
-				jarFile.delete();
-			}
+			try {
+				File currentJar = new File(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+				if (!jarFile.equals(currentJar)) {
+					jarFile.delete();
+				}
+				
 			
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 //			if (!new File(DataSources.JAR_FILE()).exists()) {
 				Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
 				new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));

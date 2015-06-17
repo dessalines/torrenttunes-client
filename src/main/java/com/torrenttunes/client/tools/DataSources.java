@@ -23,8 +23,6 @@ public class DataSources {
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
-
-	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
 	// The path to the torrenttunes dir
