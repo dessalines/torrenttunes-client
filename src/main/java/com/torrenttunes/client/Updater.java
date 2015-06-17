@@ -68,7 +68,7 @@ public class Updater {
 //			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
 			ProcessBuilder b = new ProcessBuilder(cmd);
 			Process p = b.start();
-			b.inheritIO();
+			new File(DataSources.JAR_FILE()).deleteOnExit();
 			System.exit(0);
 //			p.waitFor();
 
