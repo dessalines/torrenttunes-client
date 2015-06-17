@@ -69,7 +69,9 @@ public class Updater {
 			ProcessBuilder b = new ProcessBuilder(cmd);
 			Process p = b.start();
 			b.inheritIO();
-			p.waitFor();
+			System.exit(0);
+//			p.waitFor();
+
 //			
 //			
 ////			 Delete the temp download filefile
