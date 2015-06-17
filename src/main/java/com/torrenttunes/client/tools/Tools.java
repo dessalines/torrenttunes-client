@@ -316,7 +316,7 @@ public class Tools {
 
 	public static final void dbInit() {
 		try {
-			new DB("torrenttunesclient").open("org.sqlite.JDBC", "jdbc:sqlite:" + DataSources.DB_FILE(), "root", "p@ssw0rd");
+			new DB("ttc").open("org.sqlite.JDBC", "jdbc:sqlite:" + DataSources.DB_FILE(), "root", "p@ssw0rd");
 		} catch (DBException e) {
 			e.printStackTrace();
 			dbClose();
@@ -326,7 +326,7 @@ public class Tools {
 	}
 
 	public static final void dbClose() {
-		new DB("torrenttunesclient").close();
+		new DB("ttc").close();
 	}
 
 	public static String constructTrackTorrentFilename(File file, String mbid) {
