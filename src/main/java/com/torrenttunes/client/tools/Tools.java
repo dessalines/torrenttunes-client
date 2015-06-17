@@ -776,7 +776,7 @@ public class Tools {
 					"Categories=Audio;Music;Player;AudioVideo\n"+
 					"GenericName=Music Player";
 
-			log.info(s);
+//			log.info(s);
 
 			File desktopFile = new File(DataSources.LINUX_DESKTOP_FILE());
 			if (desktopFile.exists()) {
