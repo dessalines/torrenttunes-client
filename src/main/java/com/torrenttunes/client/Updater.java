@@ -56,6 +56,7 @@ public class Updater {
 			Tools.httpSaveFile(downloadUrl, DataSources.TEMP_JAR_PATH());
 
 			Thread.sleep(1000);
+			log.info("sleeping");
 			
 			// Run the shortcut install script, recopying the source files, and only installing
 			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
