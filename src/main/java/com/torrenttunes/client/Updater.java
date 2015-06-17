@@ -2,10 +2,8 @@ package com.torrenttunes.client;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,27 +63,27 @@ public class Updater {
 			cmd.add("-jar");
 			cmd.add(DataSources.TEMP_JAR_PATH());
 			cmd.add("-recopy");
-			cmd.add("-installonly");
+//			cmd.add("");
 			
 //			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
 			ProcessBuilder b = new ProcessBuilder(cmd);
 			Process p = b.start();
 			b.inheritIO();
 			p.waitFor();
-			
-			
-//			 Delete the temp download filefile
-			new File(DataSources.TEMP_JAR_PATH()).delete();
-			
-			cmd.clear();
-			cmd.add("java");
-			cmd.add("-jar");
-			cmd.add(DataSources.JAR_FILE());
-//			cmd = "java -jar " + DataSources.JAR_FILE();
-			ProcessBuilder b2 = new ProcessBuilder(cmd);
-			b2.start();
-		
-			System.exit(0);
+//			
+//			
+////			 Delete the temp download filefile
+//			new File(DataSources.TEMP_JAR_PATH()).delete();
+//			
+//			cmd.clear();
+//			cmd.add("java");
+//			cmd.add("-jar");
+//			cmd.add(DataSources.JAR_FILE());
+////			cmd = "java -jar " + DataSources.JAR_FILE();
+//			ProcessBuilder b2 = new ProcessBuilder(cmd);
+//			b2.start();
+//		
+//			System.exit(0);
 			
 
 
