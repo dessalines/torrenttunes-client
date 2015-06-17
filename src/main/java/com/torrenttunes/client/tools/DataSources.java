@@ -17,7 +17,7 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-client";
 	
-	public static String TAG_NAME = "1.2";
+	public static String TAG_NAME = "0.0.2";
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
@@ -176,7 +176,7 @@ public class DataSources {
 	public static String MAC_APP_LOCATION() {return System.getProperty("user.home") + "/Applications/TorrentTunes.app";}
 	
 	public static final String FETCH_LATEST_RELEASE_URL() {
-		return "https://api.github.com/repos/tchoulihan/bitmerchant/releases/latest";
+		return "https://api.github.com/repos/tchoulihan/torrenttunes-client/releases/latest";
 	}
 
 	public static String TEMP_JAR_PATH() {return System.getProperty("user.home") + "/" + APP_NAME + ".jar";}

@@ -1,5 +1,9 @@
 package com.torrenttunes.client;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ public class Updater {
 
 	public static void checkForUpdate() {
 
+		log.info("Checking for update...");
 		String jsonStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
 
 		JsonNode json = Tools.jsonToNode(jsonStr);
@@ -40,30 +45,32 @@ public class Updater {
 	public static void downloadAndInstallJar(JsonNode json) {
 		log.info("Update found, downloading jar and installing update");
 
-//		try {
+		try {
 			// Download the jar
 			String downloadUrl = json.get("assets").get(0).get("browser_download_url").asText();
 			log.info(downloadUrl);
 
-//			Tools.httpSaveFile(downloadUrl, DataSources.TEMP_JAR_PATH());
-//
-//			
-//			// Run the shortcut install script, recopying the source files, and only installing
-//			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
-//			Runtime.getRuntime().exec(cmd);
-//			
-//			// Delete the temp download filefile
-//			new File(DataSources.TEMP_JAR_PATH()).delete();
-//			
-//			Tools.restartApplication();
+			Tools.httpSaveFile(downloadUrl, DataSources.TEMP_JAR_PATH());
+
+			
+			// Run the shortcut install script, recopying the source files, and only installing
+			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
+			Process p = Runtime.getRuntime().exec(cmd);
+			
+			p.waitFor();
+			
+			// Delete the temp download filefile
+			new File(DataSources.TEMP_JAR_PATH()).delete();
+			
+			Tools.restartApplication();
 			
 			
 
 
-//		} catch (IOException | URISyntaxException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		} catch (IOException | URISyntaxException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
