@@ -10,6 +10,8 @@ import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.esotericsoftware.minlog.Log;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
@@ -26,6 +28,8 @@ import static com.torrenttunes.client.db.Tables.*;
 import junit.framework.TestCase;
 
 public class DerpTest extends TestCase {
+	
+	static final Logger log = LoggerFactory.getLogger(DerpTest.class);
 
 	public void testDerp() throws JsonGenerationException, JsonMappingException, IOException {
 //		TorrentClient tc = TorrentClient.start();
@@ -77,5 +81,23 @@ public class DerpTest extends TestCase {
 		System.out.println(json);
 		
 		Thread.sleep(10000);
+	}
+	
+	public void testDerp3() {
+		log.info("Checking for update...");
+		String htmlStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
+		log.info(DataSources.FETCH_LATEST_RELEASE_URL());
+		log.info(htmlStr);
+
+		String tagName = htmlStr.split("/tchoulihan/torrenttunes-client/releases/tag/")[1].split("\"")[0];
+		log.info("Latest Tag #: " + tagName);
+			
+		if (!DataSources.TAG_NAME.equals(tagName)) {
+//			downloadAndInstallJar(tagName);
+
+		} else {
+			log.info("No updates found");
+
+		}
 	}
 }

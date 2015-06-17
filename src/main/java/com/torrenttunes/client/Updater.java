@@ -23,17 +23,15 @@ public class Updater {
 	public static void checkForUpdate() {
 
 		log.info("Checking for update...");
-		String jsonStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
-		log.info(DataSources.FETCH_LATEST_RELEASE_URL());
-		log.info(jsonStr);
-		
-		
-		JsonNode json = Tools.jsonToNode(jsonStr);
+		String htmlStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
+//		log.info(DataSources.FETCH_LATEST_RELEASE_URL());
+//		log.info(htmlStr);
 
-		String tagName = json.get("tag_name").asText();
-
+		String tagName = htmlStr.split("/tchoulihan/torrenttunes-client/releases/tag/")[1].split("\"")[0];
+		log.info("Latest Tag #: " + tagName);
+			
 		if (!DataSources.TAG_NAME.equals(tagName)) {
-			downloadAndInstallJar(json);
+			downloadAndInstallJar(tagName);
 
 		} else {
 			log.info("No updates found");
@@ -45,14 +43,15 @@ public class Updater {
 
 
 	}
-	public static void downloadAndInstallJar(JsonNode json) {
+	public static void downloadAndInstallJar(String tagName) {
 		log.info("Update found, downloading jar and installing update");
 
 		try {
 			// Download the jar
-			String downloadUrl = json.get("assets").get(0).get("browser_download_url").asText();
+			String downloadUrl = "https://github.com/tchoulihan/torrenttunes-client/releases/download/" + tagName + 
+					"/torrenttunes-client.jar";
 			log.info(downloadUrl);
-
+			
 			Tools.httpSaveFile(downloadUrl, DataSources.TEMP_JAR_PATH());
 
 			
