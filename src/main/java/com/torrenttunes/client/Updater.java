@@ -55,12 +55,13 @@ public class Updater {
 			
 			Tools.httpSaveFile(downloadUrl, DataSources.TEMP_JAR_PATH());
 
+			Thread.sleep(1000);
 			
 			// Run the shortcut install script, recopying the source files, and only installing
 			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
 			ProcessBuilder b = new ProcessBuilder(cmd);
-			b.inheritIO();
 			b.start();
+			b.inheritIO();
 			
 //			 Delete the temp download filefile
 			new File(DataSources.TEMP_JAR_PATH()).delete();
@@ -75,7 +76,7 @@ public class Updater {
 
 
 
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
