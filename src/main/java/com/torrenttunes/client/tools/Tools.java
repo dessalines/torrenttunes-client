@@ -781,6 +781,8 @@ public class Tools {
 			File desktopFile = new File(DataSources.LINUX_DESKTOP_FILE());
 			if (desktopFile.exists()) {
 				desktopFile.delete();
+			} else {
+				desktopFile.getParentFile().mkdirs();
 			}
 			java.nio.file.Files.write(Paths.get(DataSources.LINUX_DESKTOP_FILE()), s.getBytes());
 
