@@ -320,7 +320,7 @@ function setupTrackDelete() {
     console.log(infoHash);
 
     simplePost('delete_song/' + infoHash, null, null, function() {
-      $('[name=' + name).tooltip('hide');
+      $('wrapper').tooltip('hide');
       $('[name=' + name).closest("tr").remove();
     });
 
@@ -347,7 +347,7 @@ function setupPlaylistTrackDelete() {
     var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
     simplePost('remove_from_playlist/' + playlistPageTabID + "/" + playlistId, null, null, function() {
       console.log('Track ' + infoHash + ' removed from playlist');
-      $('[name=' + name).tooltip('hide');
+      $('wrapper').tooltip('hide');
        setupPlaylistPageTab();
     });
 
