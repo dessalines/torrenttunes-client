@@ -223,6 +223,11 @@ public class Tools {
 
 			// unzip and rename it to a jar, if it doesn't already exist
 			// TODO gotta figure this one out
+			File jarFile = new File(DataSources.JAR_FILE());
+			if (jarFile.exists()) {
+				jarFile.delete();
+			}
+			
 //			if (!new File(DataSources.JAR_FILE()).exists()) {
 				Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
 				new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
@@ -311,7 +316,7 @@ public class Tools {
 
 	public static final void dbInit() {
 		try {
-			new DB("default").open("org.sqlite.JDBC", "jdbc:sqlite:" + DataSources.DB_FILE(), "root", "p@ssw0rd");
+			new DB(DataSources.APP_NAME).open("org.sqlite.JDBC", "jdbc:sqlite:" + DataSources.DB_FILE(), "root", "p@ssw0rd");
 		} catch (DBException e) {
 			e.printStackTrace();
 			dbClose();
@@ -321,7 +326,7 @@ public class Tools {
 	}
 
 	public static final void dbClose() {
-		new DB("default").close();
+		new DB(DataSources.APP_NAME).close();
 	}
 
 	public static String constructTrackTorrentFilename(File file, String mbid) {

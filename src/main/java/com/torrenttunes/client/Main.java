@@ -1,6 +1,7 @@
 package com.torrenttunes.client;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -41,6 +42,7 @@ public class Main {
 
 	public void doMain(String[] args) {
 
+		log.info(Arrays.toString(args));
 		parseArguments(args);
 
 		// See if the user wants to uninstall it
@@ -48,7 +50,6 @@ public class Main {
 			Tools.uninstall();
 		}
 
-		log.info("recopy = " + recopy);
 		log.setLevel(Level.toLevel(loglevel));
 
 		if (!installOnly) {

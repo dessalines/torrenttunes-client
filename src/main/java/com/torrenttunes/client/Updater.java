@@ -28,6 +28,7 @@ public class Updater {
 //		log.info(htmlStr);
 
 		String tagName = htmlStr.split("/tchoulihan/torrenttunes-client/releases/tag/")[1].split("\"")[0];
+		log.info("Current Tag #: " + DataSources.TAG_NAME);
 		log.info("Latest Tag #: " + tagName);
 			
 		if (!DataSources.TAG_NAME.equals(tagName)) {
@@ -56,13 +57,22 @@ public class Updater {
 
 			
 			// Run the shortcut install script, recopying the source files, and only installing
-			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy";
-			Process p = Runtime.getRuntime().exec(cmd);
+			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
+			ProcessBuilder b = new ProcessBuilder(cmd);
+			b.inheritIO();
+			b.start();
+			
+//			 Delete the temp download filefile
+			new File(DataSources.TEMP_JAR_PATH()).delete();
+			
+			
+			cmd = "java -jar " + DataSources.JAR_FILE();
+			ProcessBuilder b2 = new ProcessBuilder(cmd);
+			b2.start();
 		
 			System.exit(0);
 			
-			// Delete the temp download filefile
-//			new File(DataSources.TEMP_JAR_PATH()).delete();
+
 
 
 		} catch (IOException e) {
