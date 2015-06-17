@@ -56,20 +56,16 @@ public class Updater {
 
 			
 			// Run the shortcut install script, recopying the source files, and only installing
-			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
+			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy";
 			Process p = Runtime.getRuntime().exec(cmd);
-			
-			p.waitFor();
+		
+			System.exit(0);
 			
 			// Delete the temp download filefile
-			new File(DataSources.TEMP_JAR_PATH()).delete();
-			
-			Tools.restartApplication();
-			
-			
+//			new File(DataSources.TEMP_JAR_PATH()).delete();
 
 
-		} catch (IOException | URISyntaxException | InterruptedException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
