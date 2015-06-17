@@ -63,6 +63,7 @@ public class Updater {
 			cmd.add("-jar");
 			cmd.add(DataSources.TEMP_JAR_PATH());
 			cmd.add("-recopy");
+			cmd.add("&>log.out");
 //			cmd.add("");
 			
 //			String cmd = "java -jar " + DataSources.TEMP_JAR_PATH() + " -recopy -installonly";
