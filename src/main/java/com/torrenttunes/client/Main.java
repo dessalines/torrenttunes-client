@@ -67,13 +67,11 @@ public class Main {
 
 		InitializeTables.initializeTables();
 
-		setupSettings();
-
-
 		if (installOnly) {
 			System.exit(0);
 		}
-
+		
+		setupSettings();
 
 		WebService.start();
 
@@ -94,8 +92,6 @@ public class Main {
 		Tools.dbInit();
 		Settings s = SETTINGS.findFirst("id = ?", 1);
 		Tools.dbClose();
-
-
 
 		setupMusicStoragePath(s);
 		setupLibTorrentSettings(s);
