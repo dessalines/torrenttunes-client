@@ -24,7 +24,10 @@ public class Updater {
 
 		log.info("Checking for update...");
 		String jsonStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
-
+		log.info(DataSources.FETCH_LATEST_RELEASE_URL());
+		log.info(jsonStr);
+		
+		
 		JsonNode json = Tools.jsonToNode(jsonStr);
 
 		String tagName = json.get("tag_name").asText();
