@@ -53,7 +53,7 @@ public class Updater {
 			log.info(downloadUrl);
 			
 			Tools.httpSaveFile(downloadUrl, DataSources.TEMP_JAR_PATH());
-
+			
 			Thread.sleep(1000);
 			log.info("sleeping");
 			
