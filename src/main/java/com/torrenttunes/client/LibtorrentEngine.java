@@ -59,7 +59,13 @@ public enum LibtorrentEngine  {
 		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
+		sessionSettings.setDownloadRateLimit(0);
 		sessionSettings.setMaxPeerlistSize(0);
+		sessionSettings.setConnectionsLimit(3000);
+		sessionSettings.setConnectionSpeed(40);
+		sessionSettings.setUnchokeSlotsLimit(-1);
+		
+		
 //		sessionSettings.setAutoManagePreferSeeds(true);
 		sessionSettings.setUploadRateLimit(0);
 //		sessionSettings.setSendBufferLowWatermark(50);
