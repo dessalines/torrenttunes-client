@@ -51,13 +51,13 @@ public enum LibtorrentEngine  {
 
 		session = new Session();
 		sessionSettings = SessionSettings.newHighPerformanceSeed();
-		sessionSettings.setTorrentConnectBoost(5);
-		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(10);
-		sessionSettings.setActiveSeeds(999999);
-		sessionSettings.setAutoManagePreferSeeds(true);
-		sessionSettings.setUploadRateLimit(0);
-		sessionSettings.setSendBufferLowWatermark(50);
+//		sessionSettings.setTorrentConnectBoost(5);
+//		sessionSettings.setMinReconnectTime(1);
+//		sessionSettings.setActiveDownloads(10);
+//		sessionSettings.setActiveSeeds(999999);
+//		sessionSettings.setAutoManagePreferSeeds(true);
+//		sessionSettings.setUploadRateLimit(0);
+//		sessionSettings.setSendBufferLowWatermark(50);
 	
 		
 		
