@@ -50,13 +50,18 @@ public enum LibtorrentEngine  {
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 		session = new Session();
-		sessionSettings = SessionSettings.newHighPerformanceSeed();
-//		sessionSettings.setTorrentConnectBoost(5);
-//		sessionSettings.setMinReconnectTime(1);
-//		sessionSettings.setActiveDownloads(10);
-//		sessionSettings.setActiveSeeds(999999);
+		sessionSettings = SessionSettings.newDefaults();
+		sessionSettings.setTorrentConnectBoost(5);
+		sessionSettings.setMinReconnectTime(1);
+		sessionSettings.setActiveDownloads(999);
+		sessionSettings.setActiveSeeds(999999);
+		sessionSettings.setPeerConnectTimeout(35);
+		sessionSettings.allowMultipleConnectionsPerIp(true);
+		sessionSettings.announceDoubleNAT(true);
+		sessionSettings.setUploadRateLimit(0);
+		sessionSettings.setMaxPeerlistSize(0);
 //		sessionSettings.setAutoManagePreferSeeds(true);
-//		sessionSettings.setUploadRateLimit(0);
+		sessionSettings.setUploadRateLimit(0);
 //		sessionSettings.setSendBufferLowWatermark(50);
 	
 		
