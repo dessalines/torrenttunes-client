@@ -54,6 +54,7 @@ public enum LibtorrentEngine  {
 		sessionSettings.setTorrentConnectBoost(5);
 		sessionSettings.setMinReconnectTime(1);
 		sessionSettings.setActiveDownloads(999);
+		sessionSettings.setActiveLimit(999999);
 		sessionSettings.setActiveSeeds(999999);
 		sessionSettings.setPeerConnectTimeout(35);
 		sessionSettings.allowMultipleConnectionsPerIp(true);
@@ -62,7 +63,7 @@ public enum LibtorrentEngine  {
 		sessionSettings.setDownloadRateLimit(0);
 		sessionSettings.setMaxPeerlistSize(0);
 		sessionSettings.setConnectionsLimit(3000);
-		sessionSettings.setConnectionSpeed(40);
+		sessionSettings.setConnectionSpeed(9999);
 		sessionSettings.setUnchokeSlotsLimit(-1);
 		
 		
