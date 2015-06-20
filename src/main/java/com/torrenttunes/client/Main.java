@@ -88,7 +88,7 @@ public class Main {
 
 	}
 
-	private static void setupSettings() {
+	public static void setupSettings() {
 		Tools.dbInit();
 		Settings s = SETTINGS.findFirst("id = ?", 1);
 		Tools.dbClose();
@@ -98,7 +98,7 @@ public class Main {
 	}
 
 
-	private static void setupMusicStoragePath(Settings s) {
+	public static void setupMusicStoragePath(Settings s) {
 		String storagePath = s.getString("storage_path");
 		DataSources.MUSIC_STORAGE_PATH = storagePath;
 		log.info("Storage path = " + DataSources.MUSIC_STORAGE_PATH);

@@ -66,7 +66,7 @@ public class InitializeTables {
 	
 	public static void fillSettingsTable() {
 		
-		SETTINGS.createIt("storage_path", DataSources.DEFAULT_MUSIC_STORAGE_PATH(),
+		SETTINGS.createIt("storage_path", DataSources.MUSIC_STORAGE_PATH,
 				"max_download_speed", -1,
 				"max_upload_speed", -1,
 				"max_cache_size_mb", -1);

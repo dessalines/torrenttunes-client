@@ -143,7 +143,11 @@ public class ScanDirectory {
 
 				Tools.dbClose();
 
+				try {
 				Tools.uploadTorrentInfoToTracker(track.toJson(false));
+				} catch(NoSuchElementException e) {
+					si.setStatus(ScanStatus.UploadingError);
+				}
 
 				// Set it as scanned
 				si.setScanned(true);

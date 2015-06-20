@@ -17,6 +17,7 @@ import com.frostwire.jlibtorrent.Session;
 import com.frostwire.jlibtorrent.SessionSettings;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
+import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
@@ -49,11 +50,16 @@ public enum LibtorrentEngine  {
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 		session = new Session();
-		sessionSettings = SessionSettings.newDefaults();
+		sessionSettings = SessionSettings.newHighPerformanceSeed();
 		sessionSettings.setTorrentConnectBoost(5);
 		sessionSettings.setMinReconnectTime(1);
 		sessionSettings.setActiveDownloads(10);
+		sessionSettings.setActiveSeeds(999999);
+		sessionSettings.setAutoManagePreferSeeds(true);
+		sessionSettings.setUploadRateLimit(0);
+		sessionSettings.setSendBufferLowWatermark(50);
 	
+		
 		
 //		s.setActiveSeeds(1);
 		
