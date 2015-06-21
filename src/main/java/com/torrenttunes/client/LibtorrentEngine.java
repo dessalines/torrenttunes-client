@@ -65,10 +65,12 @@ public enum LibtorrentEngine  {
 		sessionSettings.setConnectionsLimit(3000);
 		sessionSettings.setConnectionSpeed(9999);
 		sessionSettings.setUnchokeSlotsLimit(-1);
+		sessionSettings.setUploadRateLimit(0);
+		
 		
 		
 //		sessionSettings.setAutoManagePreferSeeds(true);
-		sessionSettings.setUploadRateLimit(0);
+
 //		sessionSettings.setSendBufferLowWatermark(50);
 	
 		

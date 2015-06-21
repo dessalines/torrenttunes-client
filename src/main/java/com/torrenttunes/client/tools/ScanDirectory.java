@@ -24,7 +24,6 @@ import com.frostwire.jlibtorrent.swig.create_torrent;
 import com.frostwire.jlibtorrent.swig.error_code;
 import com.frostwire.jlibtorrent.swig.file_storage;
 import com.frostwire.jlibtorrent.swig.libtorrent;
-import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song;
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
@@ -134,6 +133,9 @@ public class ScanDirectory {
 				try {
 				Tools.uploadTorrentInfoToTracker(track.toJson(false));
 				} catch(NoSuchElementException e) {
+					Tools.dbInit();
+					track.delete(); // delete the track from the db
+					Tools.dbClose();
 					si.setStatus(ScanStatus.UploadingError);
 				}
 
