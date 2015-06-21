@@ -8,9 +8,11 @@ import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.RandomAccessFile;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,12 +20,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
@@ -497,11 +502,13 @@ public class Platform {
 		            to = Integer.parseInt(ranges[1]);
 		        }
 			
+				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				
 				String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 				res.header("Accept-Ranges",  "bytes");
 				res.header("Content-Range", responseRange);
-
+				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+				
 //				return buildStream(mp3, range);
 
 				log.info("headers: " + req.headers());
