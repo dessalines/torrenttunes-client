@@ -484,9 +484,23 @@ public class Platform {
 				buf.close();
 				
 				String range = req.headers("Range");
-//				res.header("Range", "bytes=0-" + String.valueOf(mp3.length()));
-//				res.header("Content-Range", "bytes=0-" + String.valueOf(mp3.length()));
+				
+				String[] ranges = range.split("=")[1].split("-");
+				
+				Integer chunkSize = 1000000;
+				Integer from = Integer.parseInt(ranges[0]);
+				Integer to = chunkSize + from;
+		        if (to >= mp3.length()) {
+		            to = (int) (mp3.length() - 1);
+		        }
+		        if (ranges.length == 2) {
+		            to = Integer.parseInt(ranges[1]);
+		        }
 			
+				
+				String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
+				res.header("Accept-Ranges",  "bytes");
+				res.header("Content-Range", responseRange);
 
 //				return buildStream(mp3, range);
 
