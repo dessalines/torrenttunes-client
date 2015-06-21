@@ -22,6 +22,7 @@ public class TorrentStats {
 				torrent.getStatus().getNumSeeds() + "-" + 
 				torrent.getStatus().getNumComplete();
 		this.state = torrent.getStatus().getState().toString();
+		
 		this.name = torrent.getName();
 	}
 

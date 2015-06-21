@@ -451,7 +451,7 @@ public class Platform {
 				Tools.allowAllHeaders(req, res);
 
 				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
-				res.header("Content-Disposition", "attachment; filename=" + path);
+				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
 				
 				File mp3 = new File(path);				
 				

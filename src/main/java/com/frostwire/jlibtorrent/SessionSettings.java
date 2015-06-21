@@ -1513,6 +1513,36 @@ public final class SessionSettings {
     public void setAutoManagePreferSeeds(boolean value) {
         s.setAuto_manage_prefer_seeds(value);
     }
+    
+    
+    public void setAutoManageInterval(int value) {
+    	s.setAuto_manage_interval(value);
+    }
+    
+    public void setAutoScrapeInterval(int value) {
+    	s.setAuto_scrape_interval(value);
+    }
+    
+    public void setMinAnnounceInterval(int value) {
+    	s.setMin_announce_interval(value);
+    }
+    
+    public void setAnnounceToAllTrackers(boolean value) {
+    	s.setAnnounce_to_all_trackers(value);
+    }
+    
+    public void setDHTAnnounceInterval(int value) {
+    	s.setDht_announce_interval(value);
+    }
+    
+    public void setMaxAllowedInRequestQueue(int value) {
+    	s.setMax_allowed_in_request_queue(value);
+    }
+    
+    
+ 
+    
+
 
     // if true, torrents without any payload transfers are not subject to the
     // ``active_seeds`` and ``active_downloads`` limits. This is intended to

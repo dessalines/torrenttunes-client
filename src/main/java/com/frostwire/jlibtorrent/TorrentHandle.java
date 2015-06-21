@@ -578,6 +578,7 @@ public final class TorrentHandle {
     public void setDownloadLimit(int limit) {
         th.set_download_limit(limit);
     }
+    
 
     /**
      * Enables or disables *sequential download*.

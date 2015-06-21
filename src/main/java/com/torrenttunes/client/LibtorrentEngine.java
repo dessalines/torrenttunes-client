@@ -12,13 +12,16 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.LibTorrent;
 import com.frostwire.jlibtorrent.Session;
 import com.frostwire.jlibtorrent.SessionSettings;
 import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
+import com.frostwire.jlibtorrent.alerts.Alert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
+import com.frostwire.jlibtorrent.alerts.PeerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
 import com.torrenttunes.client.db.Tables.Library;
@@ -40,39 +43,50 @@ public enum LibtorrentEngine  {
 	private SessionSettings sessionSettings;
 	private Map<String, TorrentHandle> infoHashToTorrentMap;
 	
-
+	
 	private Set<ScanInfo> scanInfos;
 
 	private LibtorrentEngine() {
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 		session = new Session();
+	
 		sessionSettings = SessionSettings.newDefaults();
 //		sessionSettings = SessionSettings.newHighPerformanceSeed();
 
-		sessionSettings.setTorrentConnectBoost(5);
-		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(-1);
-		sessionSettings.setActiveLimit(-1);
-		sessionSettings.setActiveSeeds(-1);
-		sessionSettings.setActiveDHTLimit(-1);
-		sessionSettings.setMaxPeerlistSize(0);
-		sessionSettings.setMaxPausedPeerlistSize(0);
-		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
+//		sessionSettings.setTorrentConnectBoost(5);
+//		sessionSettings.setMinReconnectTime(1);
+		sessionSettings.setActiveDownloads(9999);
+		sessionSettings.setActiveLimit(9999);
+		sessionSettings.setActiveSeeds(9999);
+		sessionSettings.setActiveDHTLimit(9999);
+
+//		sessionSettings.setMaxPeerlistSize(0);
+//		sessionSettings.setMaxPausedPeerlistSize(0);
+//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 //		sessionSettings.setCacheSize(999999);
+		
 	
-		sessionSettings.setPeerConnectTimeout(35);
+//		sessionSettings.setPeerConnectTimeout(35);
 		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
 		sessionSettings.setConnectionsLimit(3000);
-		sessionSettings.setConnectionSpeed(9999);
-		sessionSettings.setUploadRateLimit(0);
-		sessionSettings.setDownloadRateLimit(0);
-	
-	
-//		sessionSettings.setUnchokeSlotsLimit(-1);
+		sessionSettings.setConnectionSpeed(600);
+		
+		
+		
+
+		
+//		sessionSettings.setAutoManageInterval(10);
+//		sessionSettings.setAutoScrapeInterval(5);
+//		sessionSettings.setMinAnnounceInterval(5);
+//		sessionSettings.setActiveTrackerLimit(9999);
+//		sessionSettings.setAnnounceToAllTrackers(true);
+//		sessionSettings.setDHTAnnounceInterval(5);
+		sessionSettings.setMaxAllowedInRequestQueue(9999);
+		sessionSettings.setUnchokeSlotsLimit(-1);
 		
 		
 		
@@ -80,17 +94,34 @@ public enum LibtorrentEngine  {
 
 //		sessionSettings.setSendBufferLowWatermark(50);
 	
+		session.setSettings(sessionSettings);
 
         
 		log.info("active seed limit: " + String.valueOf(session.getSettings().getActiveLimit()));
 
 		
-		session.setSettings(sessionSettings);
+		
 		
 		
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
 		this.infoHashToTorrentMap = new HashMap<String, TorrentHandle>();
 
+		
+		session.addListener(new AlertListener() {
+			
+			@Override
+			public int[] types() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void alert(Alert<?> alert) {
+                log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				
+			}
+		});
+		
 
 
 	}
@@ -109,7 +140,8 @@ public enum LibtorrentEngine  {
 			String filePath = track.getString("file_path");
 
 			File outputParent = new File(filePath).getParentFile();
-
+			
+			
 			addTorrent(outputParent, new File(torrentPath));
 
 			// Set up the scanInfo
@@ -120,6 +152,7 @@ public enum LibtorrentEngine  {
 		}
 
 		log.info("Done seeding library, total of " + session.getTorrents().size() + " torrents shared");
+
 
 	}
 
@@ -157,9 +190,8 @@ public enum LibtorrentEngine  {
 			
 			@Override
 			public void stateChanged(StateChangedAlert alert) {
-				TorrentStats ts = TorrentStats.create(torrent);
-				log.info(ts.toString());
 				super.stateChanged(alert);
+				log.info(alert.getMessage());
 			}
 			
 			@Override
@@ -173,6 +205,7 @@ public enum LibtorrentEngine  {
 //				TorrentStats ts = TorrentStats.create(torrent);
 //				log.info(ts.toString());
 				super.torrentFinished(alert);
+				
 			}
 			
 			
@@ -183,11 +216,8 @@ public enum LibtorrentEngine  {
 
 		});
 
-		
 		torrent.resume();
-		torrent.saveResumeData();
-		
-		torrent.forceRecheck();
+
 
 		
 		
