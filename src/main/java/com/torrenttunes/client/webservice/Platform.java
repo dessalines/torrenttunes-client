@@ -453,27 +453,13 @@ public class Platform {
 				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
 				res.header("Content-Disposition", "attachment; filename=" + path);
 				
-				File mp3 = new File(path);
-
-
-			
-				//				raw.getOutputStream().write(Files.readAllBytes(Paths.get(path)));
-				//				raw.getOutputStream().flush();
-				//				raw.getOutputStream().close();
-
-
-				//				BufferedOutputStream bos = new BufferedOutputStream(raw.getOutputStream(), 1024);
-				//				byte[] fileBytes = Files.readAllBytes(Paths.get(path));
-				//				bos.write(fileBytes);
-				//				bos.flush();
-				//				bos.close();
-				
+				File mp3 = new File(path);				
 				
 				// This one works, but doesn't stream
 				ServletOutputStream stream = raw.getOutputStream();
 				res.header("Content-Length", String.valueOf(mp3.length())); 
 				
-			
+				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 
 				FileInputStream input = new FileInputStream(mp3);
 				BufferedInputStream buf = new BufferedInputStream(input);
@@ -502,7 +488,7 @@ public class Platform {
 		            to = Integer.parseInt(ranges[1]);
 		        }
 			
-				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+
 				
 				String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 				res.header("Accept-Ranges",  "bytes");
