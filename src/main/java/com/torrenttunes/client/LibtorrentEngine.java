@@ -208,11 +208,7 @@ public enum LibtorrentEngine  {
 				
 			}
 			
-			
-			
-	
 
-			
 
 		});
 
