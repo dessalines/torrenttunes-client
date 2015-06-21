@@ -33,9 +33,7 @@ public class Actions {
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid, String album, String albumMbid,
-			String title, 
-			String albumCoverArtUrl, String albumCoverArtThumbnailLarge,
-			String albumCoverArtThumbnailSmall, Long durationMS, Integer trackNumber, String year) {
+			String title, Long durationMS, Integer trackNumber, String year) {
 
 
 		Library library = LIBRARY.create("mbid", mbid,
@@ -49,10 +47,7 @@ public class Actions {
 				"title", StringEscapeUtils.escapeHtml4(title),
 				"duration_ms", durationMS,
 				"track_number", trackNumber,
-				"year", year,
-				"album_coverart_url", albumCoverArtUrl,
-				"album_coverart_thumbnail_large", albumCoverArtThumbnailLarge,
-				"album_coverart_thumbnail_small", albumCoverArtThumbnailSmall);
+				"year", year);
 
 		library.saveIt();
 
@@ -132,9 +127,6 @@ public class Actions {
 		String artist = jsonNode.get("artist").asText();
 		String artistMbid = jsonNode.get("artist_mbid").asText();
 		String year = jsonNode.get("year").asText();
-		String coverArt = jsonNode.get("album_coverart_url").asText();
-		String thumbnailLarge = jsonNode.get("album_coverart_thumbnail_large").asText();
-		String thumbnailSmall = jsonNode.get("album_coverart_thumbnail_small").asText();
 
 
 
@@ -185,9 +177,6 @@ public class Actions {
 						album,
 						albumMbid,
 						songTitle, 
-						coverArt,
-						thumbnailLarge, 
-						thumbnailSmall,
 						duration,
 						trackNumber,
 						year);

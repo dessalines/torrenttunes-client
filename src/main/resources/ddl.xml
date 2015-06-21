@@ -10,7 +10,7 @@
             <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
             <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
         </group>
-    </datatypes><table x="160" y="7" name="settings">
+    </datatypes><table x="175" y="5" name="settings">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -30,7 +30,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="150" y="153" name="library">
+<table x="151" y="160" name="library">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -68,15 +68,6 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="year" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="album_coverart_url" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="album_coverart_thumbnail_large" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="album_coverart_thumbnail_small" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">

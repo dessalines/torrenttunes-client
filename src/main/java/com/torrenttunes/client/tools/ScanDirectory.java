@@ -83,15 +83,6 @@ public class ScanDirectory {
 				Song song = Song.fetchSong(si.getFile());
 				si.setMbid(song.getRecordingMBID());
 
-				// Fetch the cover art, not absolutely necessary
-				String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
-				try {
-					CoverArt coverArt = CoverArt.fetchCoverArt(song);
-					coverArtURL = coverArt.getImageURL();
-					coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
-					coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
-				} catch(NoSuchElementException e) {}
-
 
 				// Create a torrent for the file, put it in the /.app/torrents dir
 				si.setStatus(ScanStatus.CreatingTorrent);
@@ -128,11 +119,8 @@ public class ScanDirectory {
 							song.getArtist(), 
 							song.getArtistMBID(),
 							song.getRelease(),
-							song.getReleaseMBID(),
+							song.getReleaseGroupMBID(),
 							song.getRecording(), 
-							coverArtURL,
-							coverArtLargeThumbnail, 
-							coverArtSmallThumbnail,
 							song.getDuration(),
 							song.getTrackNumber(),
 							song.getYear());

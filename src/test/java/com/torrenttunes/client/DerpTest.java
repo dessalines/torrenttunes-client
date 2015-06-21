@@ -1,31 +1,23 @@
 package com.torrenttunes.client;
 
+import static com.torrenttunes.client.db.Tables.LIBRARY;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
+import junit.framework.TestCase;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.esotericsoftware.minlog.Log;
-import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
-import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
-import com.frostwire.jlibtorrent.alerts.StatsAlert;
 import com.musicbrainz.mp3.tagger.Tools.Song;
-import com.musicbrainz.mp3.tagger.Tools.Tagger.MusicBrainzQuery;
+import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
-import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
-
-import static com.torrenttunes.client.db.Tables.*;
-import junit.framework.TestCase;
 
 public class DerpTest extends TestCase {
 	
