@@ -15,20 +15,16 @@ import org.slf4j.LoggerFactory;
 import com.frostwire.jlibtorrent.LibTorrent;
 import com.frostwire.jlibtorrent.Session;
 import com.frostwire.jlibtorrent.SessionSettings;
-import com.frostwire.jlibtorrent.SessionSettings.DiskCacheAlgo;
+import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
-import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
-import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
-import com.frostwire.jlibtorrent.alerts.StatsAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
-import com.frostwire.jlibtorrent.swig.session_settings;
 import com.torrenttunes.client.db.Tables.Library;
-import com.torrenttunes.client.tools.Tools;
 import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
+import com.torrenttunes.client.tools.Tools;
 
 
 public enum LibtorrentEngine  {
@@ -53,6 +49,7 @@ public enum LibtorrentEngine  {
 		session = new Session();
 		sessionSettings = SessionSettings.newDefaults();
 //		sessionSettings = SessionSettings.newHighPerformanceSeed();
+
 		sessionSettings.setTorrentConnectBoost(5);
 		sessionSettings.setMinReconnectTime(1);
 		sessionSettings.setActiveDownloads(-1);
@@ -62,21 +59,20 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMaxPeerlistSize(0);
 		sessionSettings.setMaxPausedPeerlistSize(0);
 		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
-		sessionSettings.setCacheSize(999999);
+//		sessionSettings.setCacheSize(999999);
 	
-//		sessionSettings.setPeerConnectTimeout(35);
+		sessionSettings.setPeerConnectTimeout(35);
 		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
 		sessionSettings.setConnectionsLimit(3000);
 		sessionSettings.setConnectionSpeed(9999);
-//		sessionSettings.setUnchokeSlotsLimit(-1);
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
 	
 	
-	
+//		sessionSettings.setUnchokeSlotsLimit(-1);
 		
 		
 		
@@ -145,6 +141,7 @@ public enum LibtorrentEngine  {
 
 	private void shareTorrent(TorrentHandle torrent) {
 
+	
 
 
 		// Add the listeners
@@ -178,6 +175,8 @@ public enum LibtorrentEngine  {
 				super.torrentFinished(alert);
 			}
 			
+			
+			
 	
 
 			
@@ -186,7 +185,9 @@ public enum LibtorrentEngine  {
 
 		
 		torrent.resume();
+		torrent.saveResumeData();
 		
+		torrent.forceRecheck();
 
 		
 		
