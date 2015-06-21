@@ -123,7 +123,7 @@ public class Actions {
 		Long duration = jsonNode.get("duration_ms").asLong();
 		Integer trackNumber = jsonNode.get("track_number").asInt();
 		String album = jsonNode.get("album").asText();
-		String albumMbid = jsonNode.get("release_mbid").asText();
+		String albumMbid = jsonNode.get("release_group_mbid").asText();
 		String artist = jsonNode.get("artist").asText();
 		String artistMbid = jsonNode.get("artist_mbid").asText();
 		String year = jsonNode.get("year").asText();
