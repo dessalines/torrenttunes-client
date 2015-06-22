@@ -147,12 +147,12 @@
                         {{/album_coverart_thumbnail_small}}
                         <div class="spacer"></div>
                         <div class="text-overflow">
-                          <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal"><b>{{{artist_name}}}</b></a>
+                          <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-muted"><b>{{{artist_name}}}</b></a>
                         </div>
                         <div class="text-overflow">
-                          <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><i>{{{title}}}</i></a>
+                          <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><i>{{{title}}}</i></a>
                         </div>
-                        <p class="text-muted">{{year}} &middot; {{number_of_songs}} songs
+                        <p class="text-normal">{{year}} &middot; {{number_of_songs}} songs
                         </p>
                       </div>
                       {{/.}} {{^.}}
@@ -246,20 +246,20 @@
                         <div class="row">
                           <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
                           <div class="text-center">
-                            <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank"><i class="fa fa-download fa-6"></i></a>
+                            <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank"><i class="fa fa-download fa-6"></i></a>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">
                             <h2 class="text-center">
-                        <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">Download</a>
+                        <a href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank">Download</a>
                       </h2>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">
                             <h5 class="text-center text-muted"> <br>
-                          <a class="text-muted" href="" target="_blank"><img class="logo" src="../image/cd_icon_white_512.png" /> Install the TorrentTunes client</a><br>&nbsp;</h5>
+                          <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank"><img class="logo" src="../image/cd_icon_white_512.png" /> Install the TorrentTunes client</a><br>&nbsp;</h5>
                           </div>
                         </div>
                       </div>
@@ -316,7 +316,7 @@
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
                   <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> Top Albums </a></h4>
-                  <hr>
+                  <br>
                   <div id="top_artist_albums_div">
                     <script id="top_artist_albums_template" type="x-tmpl-mustache">
                       <div class="row">
@@ -329,9 +329,9 @@
                           {{/album_coverart_thumbnail_small}}
                           <div class="spacer"></div>
                           <div class="text-overflow">
-                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><b>{{{title}}}</b></a>
+                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><b>{{{title}}}</b></a>
                           </div>
-                          <p class="text-muted">{{year}} &middot; {{number_of_songs}} songs
+                          <p class="text-normal">{{year}} &middot; {{number_of_songs}} songs
                           </p>
                         </div>
                         {{/.}} {{^.}}
@@ -339,6 +339,7 @@
                       </div>
                     </script>
                   </div>
+                  <br>
                   <div class="row">
                     <div class="col-md-12">
                       <h4><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Top Songs</a></h4>

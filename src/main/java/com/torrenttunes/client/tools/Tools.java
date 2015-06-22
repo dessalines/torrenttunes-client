@@ -5,12 +5,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -197,7 +199,11 @@ public class Tools {
 
 		String zipFile = null;
 
-		if (copyAnyway || !new File(DataSources.SOURCE_CODE_HOME()).exists()) {
+		String foundVersion = readFile(DataSources.INSTALLED_VERSION_FILE()).trim();
+		
+		if (copyAnyway || 
+				!new File(DataSources.SOURCE_CODE_HOME()).exists() || 
+				!foundVersion.equals(DataSources.VERSION)) {
 
 
 			log.info("Copying resources to  ~/." + DataSources.APP_NAME + " dirs");
@@ -239,6 +245,17 @@ public class Tools {
 				Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
 				new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
 //			}
+				
+				// Update the version number
+				PrintWriter writer;
+				try {
+					writer = new PrintWriter(DataSources.INSTALLED_VERSION_FILE(), "UTF-8");
+					writer.println(DataSources.VERSION);
+					writer.close();
+
+				} catch (FileNotFoundException | UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 
 			Tools.installShortcuts();
 			//		new Tools().copyJarResourcesRecursively("src", configHome);

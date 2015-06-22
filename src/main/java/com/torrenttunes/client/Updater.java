@@ -27,10 +27,10 @@ public class Updater {
 //		log.info(htmlStr);
 
 		String tagName = htmlStr.split("/tchoulihan/torrenttunes-client/releases/tag/")[1].split("\"")[0];
-		log.info("Current Tag #: " + DataSources.TAG_NAME);
+		log.info("Current Tag #: " + DataSources.VERSION);
 		log.info("Latest Tag #: " + tagName);
 			
-		if (!DataSources.TAG_NAME.equals(tagName)) {
+		if (!DataSources.VERSION.equals(tagName)) {
 			downloadAndInstallJar(tagName);
 
 		} else {

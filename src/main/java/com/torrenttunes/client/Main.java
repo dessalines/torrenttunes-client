@@ -60,7 +60,7 @@ public class Main {
 		Tools.setupDirectories();
 
 		// set recopy to default
-		Tools.copyResourcesToHomeDir(true);
+		Tools.copyResourcesToHomeDir(recopy);
 
 
 

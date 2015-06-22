@@ -17,7 +17,7 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-client";
 	
-	public static String TAG_NAME = "0.1.0";
+	public static String VERSION = "0.1.0";
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
@@ -186,5 +186,7 @@ public class DataSources {
 	}
 
 	public static String TEMP_JAR_PATH() {return System.getProperty("user.home") + "/" + APP_NAME + ".jar";}
+
+	public static String INSTALLED_VERSION_FILE() {return SOURCE_CODE_HOME() + "/version";}
 	
 }

@@ -2,7 +2,7 @@
  position: relative;
  display: inline-block;
  width: 100%;
- font-family: helvetica, arial, verdana, sans-serif;
+ font-family: "Raleway", helvetica, arial, verdana, sans-serif;
  font-weight: normal;
  /* prevent background border bleed */
  -webkit-background-clip: padding-box;
