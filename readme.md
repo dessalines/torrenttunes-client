@@ -11,6 +11,8 @@ TorrentTunes works on Windows, Mac OS X, and Linux.
 
 Suggest features or post bugs [here](https://github.com/tchoulihan/torrenttunes/issues/), or on the subreddit [r/torrenttunes](http://www.reddit.com/r/torrenttunes).
 
+[Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar)
+
 ## Features include
 * A complete music streaming application including Artist and album pages, playlists, and settings.
 * Fully categorized songs based on IDv3 tags and song duration with [MusicBrainz](http://musicbrainz.org/), with the [Musicbrainz-tagger](https://github.com/tchoulihan/musicbrainz-tagger).
@@ -42,12 +44,12 @@ git clone https://github.com/tchoulihan/torrenttunes-client
 cd torrenttunes-client
 chmod +x install.sh
 
-# This script does a git pull, maven install, and java -jar command
+# This script does a maven install, and java -jar command
 ./install.sh
 ```
 
 ## Support 
-If you'd like to help fund me to keep developing torrenttunes, you can donate directly here:
+If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.tk), you can donate directly here:
 
 [bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL](bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL)
 
