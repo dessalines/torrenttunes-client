@@ -326,14 +326,14 @@ body.modal-open {
 
 @media (min-width: 768px) and (max-width: 991px) {
   #searchbar > .navbar-form {
-    width: 205px;
+    width: 425px;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   #searchbar > .navbar-form,
   .navbar-form .input-group {
-    width: 425px !important;
+    width: 500px !important;
   }
 }
 
