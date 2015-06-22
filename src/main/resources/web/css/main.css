@@ -539,7 +539,11 @@ body.modal-open {
 }
 
 .navbar-top {
+
   border-radius: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-top-width: 0px;
 }
 
 .breadcrumb-small {
@@ -834,7 +838,7 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
 }
 /* Hide for mobile, show later */
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   /*  .affix,.affix-top,#midCol.affix,#midCol.affix-top {
     position:static;
     }*/
