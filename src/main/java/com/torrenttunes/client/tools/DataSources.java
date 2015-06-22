@@ -60,7 +60,15 @@ public class DataSources {
 	
 	public static final String SHADED_JAR_FILE = CODE_DIR + "/target/" + APP_NAME + ".jar";
 
-	public static final String SHADED_JAR_FILE_2 = CODE_DIR + "/" + APP_NAME + ".jar";
+	public static final String SHADED_JAR_FILE_2() {
+		try {
+			return DataSources.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	

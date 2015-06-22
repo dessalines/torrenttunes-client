@@ -208,10 +208,10 @@ public class Tools {
 							StandardCopyOption.REPLACE_EXISTING);
 					zipFile = DataSources.SHADED_JAR_FILE;
 
-				} else if (new File(DataSources.SHADED_JAR_FILE_2).exists()) {
-					java.nio.file.Files.copy(Paths.get(DataSources.SHADED_JAR_FILE_2), Paths.get(DataSources.ZIP_FILE()),
+				} else if (new File(DataSources.SHADED_JAR_FILE_2()).exists()) {
+					java.nio.file.Files.copy(Paths.get(DataSources.SHADED_JAR_FILE_2()), Paths.get(DataSources.ZIP_FILE()),
 							StandardCopyOption.REPLACE_EXISTING);
-					zipFile = DataSources.SHADED_JAR_FILE_2;
+					zipFile = DataSources.SHADED_JAR_FILE_2();
 				} else {
 					log.info("you need to build the project first");
 				}

@@ -451,15 +451,21 @@ public class Platform {
 				Tools.allowAllHeaders(req, res);
 
 				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
-				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
+
 				
 				File mp3 = new File(path);				
+
+
+				String range = req.headers("Range");
+				
+				res.header("Content-Length", String.valueOf(mp3.length())); 
+				res.header("Accept-Ranges",  "bytes");
+				res.header("Content-Range", contentRangeByteString(mp3, range));
+				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
 				
 				// This one works, but doesn't stream
 				ServletOutputStream stream = raw.getOutputStream();
-				res.header("Content-Length", String.valueOf(mp3.length())); 
-				
-				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 
 				FileInputStream input = new FileInputStream(mp3);
 				BufferedInputStream buf = new BufferedInputStream(input);
@@ -474,36 +480,10 @@ public class Platform {
 				stream.close();
 				buf.close();
 				
-				String range = req.headers("Range");
-				
-				String[] ranges = range.split("=")[1].split("-");
-				
-				Integer chunkSize = 1000000;
-				Integer from = Integer.parseInt(ranges[0]);
-				Integer to = chunkSize + from;
-		        if (to >= mp3.length()) {
-		            to = (int) (mp3.length() - 1);
-		        }
-		        if (ranges.length == 2) {
-		            to = Integer.parseInt(ranges[1]);
-		        }
-			
 
-				
-				String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
-				res.header("Accept-Ranges",  "bytes");
-				res.header("Content-Range", responseRange);
-				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+
 				
 //				return buildStream(mp3, range);
-
-				log.info("headers: " + req.headers());
-				Iterator<String> it = req.headers().iterator();
-				while (it.hasNext()) {
-					String h = it.next();
-					log.info("Header: " + h + " = " + req.headers(h));
-				}
-
 
 				return res.raw();
 
@@ -654,6 +634,27 @@ public class Platform {
 //    }
 //	
 
+	
+	public static String contentRangeByteString(File mp3, String range) {
+
+		
+		String[] ranges = range.split("=")[1].split("-");
+		
+		Integer chunkSize = 1000000;
+		Integer from = Integer.parseInt(ranges[0]);
+		Integer to = chunkSize + from;
+        if (to >= mp3.length()) {
+            to = (int) (mp3.length() - 1);
+        }
+        if (ranges.length == 2) {
+            to = Integer.parseInt(ranges[1]);
+        }
+        
+		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
+		
+		return responseRange;
+	
+	}
 }
 
 
