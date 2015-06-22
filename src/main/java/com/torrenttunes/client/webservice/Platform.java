@@ -441,58 +441,7 @@ public class Platform {
 
 		});
 
-		get("/get_audio_file/:encodedPath", (req, res) -> {
-			res.type("audio/mpeg");
-			//			res.header("Content-Disposition", "filename=\"music.mp3\"");
-			
-			HttpServletResponse raw = res.raw();
-			
-			try {
-				Tools.allowAllHeaders(req, res);
-
-				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
-
-				
-				File mp3 = new File(path);				
-
-
-				String range = req.headers("Range");
-				
-				res.header("Content-Length", String.valueOf(mp3.length())); 
-				res.header("Accept-Ranges",  "bytes");
-				res.header("Content-Range", contentRangeByteString(mp3, range));
-				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
-				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
-				
-				// This one works, but doesn't stream
-				ServletOutputStream stream = raw.getOutputStream();
-
-				FileInputStream input = new FileInputStream(mp3);
-				BufferedInputStream buf = new BufferedInputStream(input);
-				int readBytes = 0;
-				
-				//read from the file; write to the ServletOutputStream
-				while ((readBytes = buf.read()) != -1) {
-					stream.write(readBytes);
-				}
-
-
-				stream.close();
-				buf.close();
-				
-
-
-				
-//				return buildStream(mp3, range);
-
-				return res.raw();
-
-			} catch (Exception e) {
-				res.status(666);
-				e.printStackTrace();
-				return e.getMessage();
-			} 
-		});
+		
 
 		post("/save_settings", (req, res) -> {
 			try {
@@ -634,27 +583,7 @@ public class Platform {
 //    }
 //	
 
-	
-	public static String contentRangeByteString(File mp3, String range) {
 
-		
-		String[] ranges = range.split("=")[1].split("-");
-		
-		Integer chunkSize = 1000000;
-		Integer from = Integer.parseInt(ranges[0]);
-		Integer to = chunkSize + from;
-        if (to >= mp3.length()) {
-            to = (int) (mp3.length() - 1);
-        }
-        if (ranges.length == 2) {
-            to = Integer.parseInt(ranges[1]);
-        }
-        
-		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
-		
-		return responseRange;
-	
-	}
 }
 
 
