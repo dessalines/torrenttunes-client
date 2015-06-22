@@ -59,7 +59,8 @@ public class Main {
 		// Install Shortcuts
 		Tools.setupDirectories();
 
-		Tools.copyResourcesToHomeDir(recopy);
+		// set recopy to default
+		Tools.copyResourcesToHomeDir(true);
 
 
 
