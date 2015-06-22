@@ -117,7 +117,7 @@ public enum LibtorrentEngine  {
 			
 			@Override
 			public void alert(Alert<?> alert) {
-                log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+                log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 				
 			}
 		});
