@@ -17,13 +17,15 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 import com.musicbrainz.mp3.tagger.Tools.Song;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 
 public class DerpTest extends TestCase {
 	
 	static final Logger log = LoggerFactory.getLogger(DerpTest.class);
 
-	public void testDerp() throws JsonGenerationException, JsonMappingException, IOException {
+	public void derp() throws JsonGenerationException, JsonMappingException, IOException {
 //		TorrentClient tc = TorrentClient.start();
 //		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), tc);
 
@@ -48,7 +50,7 @@ public class DerpTest extends TestCase {
 		
 	}
 	
-	public void testDerp2() throws InterruptedException {
+	public void derp2() throws InterruptedException {
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 		
 		Tools.dbInit();
@@ -75,7 +77,7 @@ public class DerpTest extends TestCase {
 		Thread.sleep(10000);
 	}
 	
-	public void testDerp3() {
+	public void derp3() {
 		log.info("Checking for update...");
 		String htmlStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
 		log.info(DataSources.FETCH_LATEST_RELEASE_URL());
@@ -91,5 +93,17 @@ public class DerpTest extends TestCase {
 			log.info("No updates found");
 
 		}
+	}
+	
+	public void testDerp4() {
+
+		ScanInfo si = ScanInfo.create(new File(DataSources.SAMPLE_SONG));
+		
+		Song song = Song.fetchSong(si.getFile());
+		si.setMbid(song.getRecordingMBID());
+		
+		ScanDirectory.createAndSaveTorrent(si, song);
+		
+	
 	}
 }

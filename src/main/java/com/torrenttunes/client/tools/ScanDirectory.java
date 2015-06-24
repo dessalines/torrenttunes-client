@@ -174,7 +174,7 @@ public class ScanDirectory {
 
 
 
-	private File createAndSaveTorrent(ScanInfo si, Song song) {
+	public static File createAndSaveTorrent(ScanInfo si, Song song) {
 
 		String torrentFileName = Tools.constructTrackTorrentFilename(
 				si.getFile(), song.getRecordingMBID());
@@ -190,8 +190,8 @@ public class ScanDirectory {
 		//		fs.add_file(DataSources.SAMPLE_TORRENT.getAbsolutePath(), DataSources.SAMPLE_TORRENT.getAbsolutePath().length());
 		//		libtorrent.add_files(fs, DataSources.SAMPLE_TORRENT.getAbsolutePath());
 
-		//		fs.set_name(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
-		//				+ "- tt[" + torrentFileName + "]");
+//				fs.set_name(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+//						+ "- tt[" + torrentFileName + "]");
 
 
 

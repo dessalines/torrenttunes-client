@@ -9,9 +9,9 @@ Each individual song is tagged using [MusicBrainz](http://musicbrainz.org/), and
 
 TorrentTunes works on Windows, Mac OS X, and Linux.
 
-Suggest features or post bugs [here](https://github.com/tchoulihan/torrenttunes/issues/), or on the subreddit [r/torrenttunes](http://www.reddit.com/r/torrenttunes).
+Suggest features or post bugs [here](https://github.com/tchoulihan/torrenttunes-client/issues/), or on the subreddit [r/torrenttunes](http://www.reddit.com/r/torrenttunes).
 
-[Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar)
+[:arrow_down: Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar)
 
 ## Features include
 * A complete music streaming application including Artist and album pages, playlists, and settings.

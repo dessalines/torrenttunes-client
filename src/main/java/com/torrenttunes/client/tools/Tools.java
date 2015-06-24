@@ -199,7 +199,10 @@ public class Tools {
 
 		String zipFile = null;
 
-		String foundVersion = readFile(DataSources.INSTALLED_VERSION_FILE()).trim();
+		String foundVersion = "";
+		try {
+			foundVersion = readFile(DataSources.INSTALLED_VERSION_FILE()).trim();
+		} catch (Exception e) {}
 		
 		if (copyAnyway || 
 				!new File(DataSources.SOURCE_CODE_HOME()).exists() || 
