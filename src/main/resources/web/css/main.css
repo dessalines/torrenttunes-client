@@ -22,6 +22,10 @@
 }
 */
 
+.col-xs-3:nth-child(4n+1){
+    clear: left;
+}
+
 #home_page_loading_div {
   min-height: 100%;
   /* Fallback for browsers do NOT support vh unit */

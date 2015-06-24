@@ -80,8 +80,9 @@ public class ScanDirectory {
 				si.setStatus(ScanStatus.Scanning);
 				si.setStatus(ScanStatus.FetchingMusicBrainzId);
 				Song song = Song.fetchSong(si.getFile());
+				log.info("MusicBrainz query: " + song.getQuery());
 				si.setMbid(song.getRecordingMBID());
-
+				
 
 				// Create a torrent for the file, put it in the /.app/torrents dir
 				si.setStatus(ScanStatus.CreatingTorrent);
