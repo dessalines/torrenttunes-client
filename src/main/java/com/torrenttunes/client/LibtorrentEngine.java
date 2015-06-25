@@ -69,7 +69,7 @@ public enum LibtorrentEngine  {
 
 		sessionSettings.setTorrentConnectBoost(5);
 //		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(10);
+		sessionSettings.setActiveDownloads(-1);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
 		sessionSettings.setActiveDHTLimit(-1);
@@ -77,11 +77,11 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setMaxPeerlistSize(0);
 //		sessionSettings.setMaxPausedPeerlistSize(0);
 //		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
-//		sessionSettings.setCacheSize(999999);
+		sessionSettings.setCacheSize(999999);
 	
 		
 	
-//		sessionSettings.setPeerConnectTimeout(35);
+		sessionSettings.setPeerConnectTimeout(35);
 		
 //		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
@@ -102,7 +102,7 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setAnnounceToAllTrackers(false);
 //		sessionSettings.setDHTAnnounceInterval(5);
 //		sessionSettings.setMaxAllowedInRequestQueue(9999);
-//		sessionSettings.setUnchokeSlotsLimit(800);
+		sessionSettings.setUnchokeSlotsLimit(800);
 		sessionSettings.setCacheExpiry(9999);
 //		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
 
@@ -209,76 +209,88 @@ public enum LibtorrentEngine  {
 			
 			@Override
 			public void stateChanged(StateChangedAlert alert) {
-				super.stateChanged(alert);
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
-				log.info(alert.getMessage());
+								log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 				
 			}
 			@Override
 			public void blockDownloading(BlockDownloadingAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void peerConnect(PeerConnectAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			@Override
 			public void peerSnubbed(PeerSnubbedAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void peerDisconnected(PeerDisconnectedAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 			
 			@Override
 			public void peerBan(PeerBanAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void peerError(PeerErrorAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void peerBlocked(PeerBlockedAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void trackerAnnounce(TrackerAnnounceAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void trackerReply(TrackerReplyAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void trackerWarning(TrackerWarningAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 			@Override
 			public void trackerError(TrackerErrorAlert alert) {
-				log.info(alert.getMessage());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 			
 
