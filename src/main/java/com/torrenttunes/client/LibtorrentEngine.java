@@ -23,9 +23,15 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.Alert;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
+import com.frostwire.jlibtorrent.alerts.PeerBlockedAlert;
+import com.frostwire.jlibtorrent.alerts.PeerConnectAlert;
 import com.frostwire.jlibtorrent.alerts.PeerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
+import com.frostwire.jlibtorrent.alerts.TrackerAnnounceAlert;
+import com.frostwire.jlibtorrent.alerts.TrackerErrorAlert;
+import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
+import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
@@ -53,8 +59,8 @@ public enum LibtorrentEngine  {
 
 		session = new Session();
 	
-//		sessionSettings = SessionSettings.newDefaults();
-		sessionSettings = SessionSettings.newMinMemoryUsage();
+		sessionSettings = SessionSettings.newDefaults();
+//		sessionSettings = SessionSettings.newMinMemoryUsage();
 //		sessionSettings = SessionSettings.newHighPerformanceSeed();
 
 //		sessionSettings.setTorrentConnectBoost(5);
@@ -89,12 +95,13 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setAutoScrapeInterval(5);
 //		sessionSettings.setMinAnnounceInterval(5);
 //		sessionSettings.setActiveTrackerLimit(9999);
-		sessionSettings.setAnnounceToAllTrackers(true);
+//		sessionSettings.setAnnounceToAllTrackers(false);
 //		sessionSettings.setDHTAnnounceInterval(5);
 //		sessionSettings.setMaxAllowedInRequestQueue(9999);
 //		sessionSettings.setUnchokeSlotsLimit(800);
 		sessionSettings.setCacheExpiry(9999);
 		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
+
 		
 		
 		
@@ -215,6 +222,43 @@ public enum LibtorrentEngine  {
 			public void blockDownloading(BlockDownloadingAlert alert) {
 				log.info(alert.getMessage());
 			}
+			
+			@Override
+			public void peerConnect(PeerConnectAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void peerError(PeerErrorAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void peerBlocked(PeerBlockedAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void trackerAnnounce(TrackerAnnounceAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void trackerReply(TrackerReplyAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void trackerWarning(TrackerWarningAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void trackerError(TrackerErrorAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+
 			
 
 
