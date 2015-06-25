@@ -152,12 +152,12 @@ public class DataSources {
 //				new URI("udp://9.rarbg.me:2710/announce"),
 //				new URI("udp://coppersurfer.tk:6969/announce"),
 //				new URI("udp://exodus.desync.com:6969/announce"),
-//				new URI("udp://open.demonii.com:1337/announce"),
+				new URI("udp://open.demonii.com:1337/announce"));
 //				new URI("udp://tracker.btzoo.eu:80/announce"),
 //				new URI("udp://tracker.istole.it:80/announce"),
 //				new URI("udp://tracker.openbittorrent.com:80/announce"),
 //				new URI("udp://tracker.prq.to/announce"),
-				new URI("udp://tracker.publicbt.com:80/announce"));
+//				new URI("udp://tracker.publicbt.com:80/announce"));
 		} catch (URISyntaxException e) {}
 		
 		return list;
