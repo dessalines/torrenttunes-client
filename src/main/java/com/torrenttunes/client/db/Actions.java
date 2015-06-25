@@ -29,7 +29,7 @@ public class Actions {
 
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
 
-	public static final Integer DOWNLOAD_TIMEOUT = 120000;
+	public static final Integer DOWNLOAD_TIMEOUT = 300000;
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid, String album, String albumMbid,
