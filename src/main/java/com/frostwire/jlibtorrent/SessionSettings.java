@@ -1539,6 +1539,10 @@ public final class SessionSettings {
     	s.setMax_allowed_in_request_queue(value);
     }
     
+    public void setCacheExpiry(int value) {
+    	s.setCache_expiry(value);
+    }
+    
     
  
     

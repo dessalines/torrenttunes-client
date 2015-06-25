@@ -70,6 +70,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.musicbrainz.mp3.tagger.Tools.Song;
 
 public class Tools {
 
@@ -203,7 +204,7 @@ public class Tools {
 		try {
 			foundVersion = readFile(DataSources.INSTALLED_VERSION_FILE()).trim();
 		} catch (Exception e) {}
-		
+
 		if (copyAnyway || 
 				!new File(DataSources.SOURCE_CODE_HOME()).exists() || 
 				!foundVersion.equals(DataSources.VERSION)) {
@@ -237,28 +238,28 @@ public class Tools {
 				if (!jarFile.equals(currentJar)) {
 					jarFile.delete();
 				}
-				
-			
+
+
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-//			if (!new File(DataSources.JAR_FILE()).exists()) {
-				Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
-				new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
-//			}
-				
-				// Update the version number
-				PrintWriter writer;
-				try {
-					writer = new PrintWriter(DataSources.INSTALLED_VERSION_FILE(), "UTF-8");
-					writer.println(DataSources.VERSION);
-					writer.close();
 
-				} catch (FileNotFoundException | UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
+			//			if (!new File(DataSources.JAR_FILE()).exists()) {
+			Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
+			new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
+			//			}
+
+			// Update the version number
+			PrintWriter writer;
+			try {
+				writer = new PrintWriter(DataSources.INSTALLED_VERSION_FILE(), "UTF-8");
+				writer.println(DataSources.VERSION);
+				writer.close();
+
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 
 			Tools.installShortcuts();
 			//		new Tools().copyJarResourcesRecursively("src", configHome);
@@ -356,8 +357,12 @@ public class Tools {
 		new DB("ttc").close();
 	}
 
-	public static String constructTrackTorrentFilename(File file, String mbid) {
-		return mbid.toLowerCase() + "_" + sha2FileChecksum(file);
+	public static String constructTrackTorrentFilename(File file, Song song) {
+
+		return song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+				+ " - tt[mbid-" + song.getRecordingMBID().toLowerCase()
+				+ "_sha2-" + sha2FileChecksum(file) + "]";
+
 	}
 
 
@@ -734,16 +739,16 @@ public class Tools {
 			// Run the shortcut install script
 			String cmd = "osacompile -o " + DataSources.MAC_APP_LOCATION() + " " + 
 					DataSources.MAC_INSTALL_APPLESCRIPT();
-			
+
 			log.info("osacompile cmd : " + cmd);
 			Process p = Runtime.getRuntime().exec(cmd);
 			p.waitFor();
-			
+
 			// Replace the icon:
 			java.nio.file.Files.copy(Paths.get(DataSources.ICON_MAC_LOCATION()), 
 					Paths.get(DataSources.MAC_ICON_APPLET()),
 					StandardCopyOption.REPLACE_EXISTING);
-			
+
 			// Touch the app folder: 
 			new File(DataSources.MAC_APP_LOCATION()).setLastModified(System.currentTimeMillis());
 
@@ -803,7 +808,7 @@ public class Tools {
 					"Categories=Audio;Music;Player;AudioVideo\n"+
 					"GenericName=Music Player";
 
-//			log.info(s);
+			//			log.info(s);
 
 			File desktopFile = new File(DataSources.LINUX_DESKTOP_FILE());
 			if (desktopFile.exists()) {
@@ -822,7 +827,7 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void restartApplication() throws URISyntaxException, IOException {
 		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
 		final File currentJar = new File(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI());

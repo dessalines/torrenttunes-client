@@ -50,6 +50,9 @@ $(document).ready(function() {
   setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
+  setupUploadForm();
+  setupUploadTable();
+
   setupSettingsTab();
   setupPlaylistForm();
   setupDonate();
@@ -99,8 +102,7 @@ function setupTabs() {
     } else if (tabId == "#libraryTab") {
       setupLibrary();
     } else if (tabId == "#uploadTab") {
-      setupUploadForm();
-      setupUploadTable();
+
     } else if (tabId == "#playlistTab") {
       setupPlaylistTab();
     } else if (tabId == "#playlistPageTab") {

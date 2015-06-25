@@ -19,9 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.frostwire.jlibtorrent.Entry;
+import com.frostwire.jlibtorrent.FileStorage;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.swig.create_torrent;
 import com.frostwire.jlibtorrent.swig.error_code;
+import com.frostwire.jlibtorrent.swig.file_entry;
 import com.frostwire.jlibtorrent.swig.file_storage;
 import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.musicbrainz.mp3.tagger.Tools.Song;
@@ -178,23 +180,53 @@ public class ScanDirectory {
 	public static File createAndSaveTorrent(ScanInfo si, Song song) {
 
 		String torrentFileName = Tools.constructTrackTorrentFilename(
-				si.getFile(), song.getRecordingMBID());
+				si.getFile(), song);
 		File torrentFile = new File(DataSources.TORRENTS_DIR() + "/" + torrentFileName + ".torrent");
 
-
-
+//
+//
 		file_storage fs = new file_storage();
+//		
+//		FileStorage ffs = new FileStorage(fs);
+////		ffs.addFile(si.getFileName(), si.getFile().length());
+//
+//		
+//		File fakeMulti = new File(si.getFile().getParent() + "/t");
+//		try {
+//			fakeMulti.createNewFile();
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		System.out.println(si.getFile().getParent());
+//		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
+//		libtorrent.add_files(fs, fakeMulti.getAbsolutePath());
+//		
+////		fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
+////		fs.add_file(fakeMulti.getAbsolutePath(), fakeMulti.length());
+//		
+////		ffs.setName(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+////				+ " - tt[" + torrentFileName + "]");
+//	
+////		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
+////		fs.set_name(si.getFile().getParent());
+//		
+//	
+//		
+//		
+		
+
 
 		// Add the file
 		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
-		//		fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
+
+//				fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
 		//		fs.add_file(DataSources.SAMPLE_TORRENT.getAbsolutePath(), DataSources.SAMPLE_TORRENT.getAbsolutePath().length());
 		//		libtorrent.add_files(fs, DataSources.SAMPLE_TORRENT.getAbsolutePath());
 
-//				fs.set_name(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+		
+//				ffs.setName(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
 //						+ "- tt[" + torrentFileName + "]");
-
-
 
 
 		create_torrent t = new create_torrent(fs);
@@ -212,7 +244,8 @@ public class ScanDirectory {
 
 
 		// reads the files and calculates the hashes
-		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
+//		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
+		libtorrent.set_piece_hashes(t, ".", ec);
 
 		if (ec.value() != 0) {
 			log.info(ec.message());

@@ -16,10 +16,12 @@ import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.LibTorrent;
 import com.frostwire.jlibtorrent.Session;
 import com.frostwire.jlibtorrent.SessionSettings;
+import com.frostwire.jlibtorrent.SessionSettings.BandwidthMixedAlgo;
 import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.Alert;
+import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
@@ -51,42 +53,48 @@ public enum LibtorrentEngine  {
 
 		session = new Session();
 	
-		sessionSettings = SessionSettings.newDefaults();
+//		sessionSettings = SessionSettings.newDefaults();
+		sessionSettings = SessionSettings.newMinMemoryUsage();
 //		sessionSettings = SessionSettings.newHighPerformanceSeed();
 
 //		sessionSettings.setTorrentConnectBoost(5);
 //		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(9999);
-		sessionSettings.setActiveLimit(9999);
-		sessionSettings.setActiveSeeds(9999);
-		sessionSettings.setActiveDHTLimit(9999);
-
+		sessionSettings.setActiveDownloads(10);
+		sessionSettings.setActiveLimit(-1);
+		sessionSettings.setActiveSeeds(-1);
+//		sessionSettings.setActiveDHTLimit(30);
+		
 //		sessionSettings.setMaxPeerlistSize(0);
 //		sessionSettings.setMaxPausedPeerlistSize(0);
 //		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 //		sessionSettings.setCacheSize(999999);
+	
 		
 	
 //		sessionSettings.setPeerConnectTimeout(35);
+		
 		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
+		sessionSettings.setPeerTimeout(15);
+		sessionSettings.setInactivityTimeout(30);
 		sessionSettings.setDownloadRateLimit(0);
-		sessionSettings.setConnectionsLimit(3000);
+		sessionSettings.setConnectionsLimit(100000);
+		sessionSettings.setHalgOpenLimit(5);
 		sessionSettings.setConnectionSpeed(600);
+	
 		
-		
-		
-
 		
 //		sessionSettings.setAutoManageInterval(10);
 //		sessionSettings.setAutoScrapeInterval(5);
 //		sessionSettings.setMinAnnounceInterval(5);
 //		sessionSettings.setActiveTrackerLimit(9999);
-//		sessionSettings.setAnnounceToAllTrackers(true);
+		sessionSettings.setAnnounceToAllTrackers(true);
 //		sessionSettings.setDHTAnnounceInterval(5);
-		sessionSettings.setMaxAllowedInRequestQueue(9999);
-		sessionSettings.setUnchokeSlotsLimit(-1);
+//		sessionSettings.setMaxAllowedInRequestQueue(9999);
+//		sessionSettings.setUnchokeSlotsLimit(800);
+		sessionSettings.setCacheExpiry(9999);
+		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
 		
 		
 		
@@ -196,16 +204,16 @@ public enum LibtorrentEngine  {
 			
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
-//				TorrentStats ts = TorrentStats.create(torrent);
-//				log.info(ts.toString());
-				super.blockFinished(alert);
+				log.info(alert.getMessage());
 			}
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
-//				TorrentStats ts = TorrentStats.create(torrent);
-//				log.info(ts.toString());
-				super.torrentFinished(alert);
+				log.info(alert.getMessage());
 				
+			}
+			@Override
+			public void blockDownloading(BlockDownloadingAlert alert) {
+				log.info(alert.getMessage());
 			}
 			
 
