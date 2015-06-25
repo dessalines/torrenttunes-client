@@ -23,9 +23,13 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.Alert;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
+import com.frostwire.jlibtorrent.alerts.PeerBanAlert;
 import com.frostwire.jlibtorrent.alerts.PeerBlockedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerConnectAlert;
+import com.frostwire.jlibtorrent.alerts.PeerDisconnectedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerErrorAlert;
+import com.frostwire.jlibtorrent.alerts.PeerSnubbedAlert;
+import com.frostwire.jlibtorrent.alerts.PeerUnsnubbedAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerAnnounceAlert;
@@ -225,6 +229,25 @@ public enum LibtorrentEngine  {
 			
 			@Override
 			public void peerConnect(PeerConnectAlert alert) {
+				log.info(alert.getMessage());
+			}
+			@Override
+			public void peerSnubbed(PeerSnubbedAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void peerDisconnected(PeerDisconnectedAlert alert) {
+				log.info(alert.getMessage());
+			}
+			
+			@Override
+			public void peerBan(PeerBanAlert alert) {
 				log.info(alert.getMessage());
 			}
 			
