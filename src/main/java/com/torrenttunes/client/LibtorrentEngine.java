@@ -67,7 +67,7 @@ public enum LibtorrentEngine  {
 //		sessionSettings = SessionSettings.newMinMemoryUsage();
 //		sessionSettings = SessionSettings.newHighPerformanceSeed();
 
-		sessionSettings.setTorrentConnectBoost(5);
+//		sessionSettings.setTorrentConnectBoost(5);
 //		sessionSettings.setMinReconnectTime(1);
 		sessionSettings.setActiveDownloads(-1);
 		sessionSettings.setActiveLimit(-1);
@@ -79,18 +79,17 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 		sessionSettings.setCacheSize(999999);
 	
-		
-	
+
 		sessionSettings.setPeerConnectTimeout(35);
 		
-//		sessionSettings.allowMultipleConnectionsPerIp(true);
+		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
 //		sessionSettings.setPeerTimeout(15);
 //		sessionSettings.setInactivityTimeout(30);
 		sessionSettings.setDownloadRateLimit(0);
 		sessionSettings.setConnectionsLimit(100000);
-		sessionSettings.setHalgOpenLimit(5);
+//		sessionSettings.setHalgOpenLimit(5);
 		sessionSettings.setConnectionSpeed(3000);
 	
 		
@@ -102,8 +101,8 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setAnnounceToAllTrackers(false);
 //		sessionSettings.setDHTAnnounceInterval(5);
 //		sessionSettings.setMaxAllowedInRequestQueue(9999);
-		sessionSettings.setUnchokeSlotsLimit(800);
-		sessionSettings.setCacheExpiry(9999);
+//		sessionSettings.setUnchokeSlotsLimit(800);
+//		sessionSettings.setCacheExpiry(9999);
 //		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
 
 		
