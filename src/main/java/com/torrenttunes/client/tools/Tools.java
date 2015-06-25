@@ -359,9 +359,12 @@ public class Tools {
 
 	public static String constructTrackTorrentFilename(File file, Song song) {
 
-		return song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+		String fileName = song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
 				+ " - tt[mbid-" + song.getRecordingMBID().toLowerCase()
 				+ "_sha2-" + sha2FileChecksum(file) + "]";
+		fileName = fileName.replaceAll("/", "-");
+		
+		return fileName;
 
 	}
 

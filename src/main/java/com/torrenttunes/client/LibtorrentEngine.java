@@ -100,7 +100,7 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setMaxAllowedInRequestQueue(9999);
 //		sessionSettings.setUnchokeSlotsLimit(800);
 		sessionSettings.setCacheExpiry(9999);
-		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
+//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
 
 		
 		
