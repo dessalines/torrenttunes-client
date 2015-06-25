@@ -23,6 +23,7 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.Alert;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
+import com.frostwire.jlibtorrent.alerts.DhtReplyAlert;
 import com.frostwire.jlibtorrent.alerts.PeerBanAlert;
 import com.frostwire.jlibtorrent.alerts.PeerBlockedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerConnectAlert;
@@ -91,6 +92,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.setConnectionsLimit(100000);
 		sessionSettings.setHalgOpenLimit(5);
 		sessionSettings.setConnectionSpeed(3000);
+		sessionSettings.setTrackerBackoff(3000);
+
 	
 		
 		
@@ -167,6 +170,7 @@ public enum LibtorrentEngine  {
 			si.setStatus(ScanStatus.Seeding);
 			si.setMbid(track.getString("mbid"));
 			scanInfos.add(si);
+			
 		}
 
 		log.info("Done seeding library, total of " + session.getTorrents().size() + " torrents shared");
@@ -293,7 +297,10 @@ public enum LibtorrentEngine  {
 			}
 			
 
-			
+			@Override
+			public void dhtReply(DhtReplyAlert alert) {
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			}
 
 
 		});

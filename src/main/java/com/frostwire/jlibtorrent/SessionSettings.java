@@ -1543,6 +1543,10 @@ public final class SessionSettings {
     	s.setCache_expiry(value);
     }
     
+    public void setTrackerBackoff(int value) {
+    	s.setTracker_backoff(value);
+    }
+    
     
  
     
