@@ -231,21 +231,21 @@ public class ScanDirectory {
 
 		create_torrent t = new create_torrent(fs);
 
+
 		// Add trackers in tiers
 		for (URI announce : DataSources.ANNOUNCE_LIST()) {
 			t.add_tracker(announce.toASCIIString());
 		}
 
 
-
+		t.set_priv(false);
 		t.set_creator(System.getProperty("user.name"));
 
 		error_code ec = new error_code();
 
 
 		// reads the files and calculates the hashes
-//		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
-		libtorrent.set_piece_hashes(t, ".", ec);
+		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
 
 		if (ec.value() != 0) {
 			log.info(ec.message());
