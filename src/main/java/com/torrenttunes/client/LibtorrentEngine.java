@@ -76,8 +76,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.allowMultipleConnectionsPerIp(true);
 		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
-		sessionSettings.setPeerTimeout(15);
-		sessionSettings.setInactivityTimeout(30);
+//		sessionSettings.setPeerTimeout(15);
+//		sessionSettings.setInactivityTimeout(30);
 		sessionSettings.setDownloadRateLimit(0);
 		sessionSettings.setConnectionsLimit(100000);
 		sessionSettings.setHalgOpenLimit(5);
