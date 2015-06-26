@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,15 +71,19 @@ public enum LibtorrentEngine  {
 
 //		sessionSettings.setTorrentConnectBoost(5);
 //		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(-1);
+		sessionSettings.setActiveDownloads(10);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
 		sessionSettings.setActiveDHTLimit(-1);
-		
-//		sessionSettings.setMaxPeerlistSize(0);
+
+//		sessionSettings.setActiveTrackerLimit(5);
+//		sessionSettings.setTrackerBackoff(3000);
+//		sessionSettings.setTrackerReceiveTimeout(35);
+	
+		sessionSettings.setMaxPeerlistSize(10);
 //		sessionSettings.setMaxPausedPeerlistSize(0);
 //		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
-		sessionSettings.setCacheSize(999999);
+//		sessionSettings.setCacheSize(999999);
 	
 
 		sessionSettings.setPeerConnectTimeout(35);
@@ -89,10 +94,10 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setPeerTimeout(15);
 //		sessionSettings.setInactivityTimeout(30);
 		sessionSettings.setDownloadRateLimit(0);
-		sessionSettings.setConnectionsLimit(100000);
+//		sessionSettings.setConnectionsLimit(100000);
 		sessionSettings.setHalgOpenLimit(5);
-		sessionSettings.setConnectionSpeed(3000);
-		sessionSettings.setTrackerBackoff(3000);
+//		sessionSettings.setConnectionSpeed(3000);
+
 
 	
 		
@@ -100,7 +105,7 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setAutoManageInterval(10);
 //		sessionSettings.setAutoScrapeInterval(5);
 //		sessionSettings.setMinAnnounceInterval(5);
-//		sessionSettings.setActiveTrackerLimit(9999);
+
 //		sessionSettings.setAnnounceToAllTrackers(false);
 //		sessionSettings.setDHTAnnounceInterval(5);
 //		sessionSettings.setMaxAllowedInRequestQueue(9999);
@@ -156,20 +161,41 @@ public enum LibtorrentEngine  {
 		Tools.dbClose();
 
 		// start sharing them
-		for (Library track : library) {
+		Integer i = 0;
+		while (i < library.size()) {
+			log.info(i.toString());
+			Library track = library.get(i);
 			String torrentPath = track.getString("torrent_path");
 			String filePath = track.getString("file_path");
 
 			File outputParent = new File(filePath).getParentFile();
 			
 			
-			addTorrent(outputParent, new File(torrentPath));
+			TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
 
 			// Set up the scanInfo
 			ScanInfo si = ScanInfo.create(new File(filePath));
 			si.setStatus(ScanStatus.Seeding);
 			si.setMbid(track.getString("mbid"));
 			scanInfos.add(si);
+			
+			final CountDownLatch signal = new CountDownLatch(1);
+		
+			// only go to next track once this one has received a tracker reply
+			session.addListener(new TorrentAlertAdapter(torrent) {
+				public void trackerReply(TrackerReplyAlert alert) {
+					signal.countDown();
+				}
+			});
+			try {
+				signal.await();
+				i++;
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		
 			
 		}
 
@@ -305,6 +331,7 @@ public enum LibtorrentEngine  {
 
 		});
 
+	
 		torrent.resume();
 
 
