@@ -33,21 +33,20 @@ function setupSearch() {
 
   var songURL = externalSparkService + 'song_search/%QUERY';
   var songList = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('search'),
-    // datumTokenizer: Bloodhound.tokenizers.whitespace,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
     // prefetch: '../data/films/post_1960.json',
     remote: {
       url: songURL,
-      wildcard: '%QUERY'
-    }
+      wildcard: '%QUERY',
+    },
+    // local: ['dog', 'pig', 'moose', 'dog2', 'dog4'],
   });
 
   var artistURL = externalSparkService + 'artist_search/%QUERY';
   var artistList = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('search'),
-    // datumTokenizer: Bloodhound.tokenizers.whitespace,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
     // prefetch: '../data/films/post_1960.json',
     remote: {
       url: artistURL,
@@ -57,9 +56,8 @@ function setupSearch() {
 
   var albumURL = externalSparkService + 'album_search/%QUERY';
   var albumList = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('search'),
-    // datumTokenizer: Bloodhound.tokenizers.whitespace,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
     // prefetch: '../data/films/post_1960.json',
     remote: {
       url: albumURL,
@@ -75,43 +73,43 @@ function setupSearch() {
   var typeAhead = $('#search_box .typeahead').typeahead({
     hint: true,
     highlight: true,
-    minLength: 1,
+    minLength: 3,
   }, {
     name: 'song_list',
-    // display: 'song',
-    displayKey: 'search',
+    displayKey: 'search_song',
     source: songList,
     templates: {
       header: '<h3 class="search-set">Songs</h3>',
-      suggestion: function(context) {
-        var ret = Mustache.render(songPlayerTemplate, context);
-        setupTrackSelect();
-        $('a', ret).on('click', function() {
-          alert('derp');
-        });
-        return ret;
+      // suggestion: function(context) {
+      //   var ret = Mustache.render(songPlayerTemplate, context);
+      //   // setupTrackSelect();
+      //   // $('a', ret).on('click', function() {
+      //   //   alert('derp');
+      //   // });
+      //   return ret;
+      // }
+        suggestion: function(context) {
+        return Mustache.render('<div>{{{search_song}}} </div>', context);
       }
     }
   }, {
     name: 'artist_list',
-    // display: 'song',
-    displayKey: 'search',
+    displayKey: 'search_artist',
     source: artistList,
     templates: {
       header: '<h3 class="search-set">Artists</h3>',
       suggestion: function(context) {
-        return Mustache.render('<div>{{{search}}} </div>', context);
+        return Mustache.render('<div>{{{search_artist}}} </div>', context);
       }
     }
   }, {
     name: 'album_list',
-    // display: 'song',
-    displayKey: 'search',
+    displayKey: 'search_album',
     source: albumList,
     templates: {
       header: '<h3 class="search-set">Albums</h3>',
       suggestion: function(context) {
-        return Mustache.render('<div>{{{search}}} </div>', context);
+        return Mustache.render('<div>{{{search_album}}} </div>', context);
       }
     }
 
@@ -348,7 +346,7 @@ function setupPlaylistTrackDelete() {
     simplePost('remove_from_playlist/' + playlistPageTabID + "/" + playlistId, null, null, function() {
       console.log('Track ' + infoHash + ' removed from playlist');
       $('wrapper').tooltip('hide');
-       setupPlaylistPageTab();
+      setupPlaylistPageTab();
     });
 
   });
