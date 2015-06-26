@@ -78,18 +78,18 @@ public enum LibtorrentEngine  {
 
 //		sessionSettings.setActiveTrackerLimit(5);
 //		sessionSettings.setTrackerBackoff(3000);
-//		sessionSettings.setTrackerReceiveTimeout(35);
+//		sessionSettings.setTrackerReceiveTimeout(1);
 	
-		sessionSettings.setMaxPeerlistSize(10);
+//		sessionSettings.setMaxPeerlistSize(10);
 //		sessionSettings.setMaxPausedPeerlistSize(0);
 //		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 //		sessionSettings.setCacheSize(999999);
 	
 
-		sessionSettings.setPeerConnectTimeout(35);
+//		sessionSettings.setPeerConnectTimeout(35);
 		
 //		sessionSettings.allowMultipleConnectionsPerIp(true);
-		sessionSettings.announceDoubleNAT(true);
+//		sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
 //		sessionSettings.setPeerTimeout(15);
 //		sessionSettings.setInactivityTimeout(30);
@@ -179,21 +179,22 @@ public enum LibtorrentEngine  {
 			si.setMbid(track.getString("mbid"));
 			scanInfos.add(si);
 			
-			final CountDownLatch signal = new CountDownLatch(1);
-		
-			// only go to next track once this one has received a tracker reply
-			session.addListener(new TorrentAlertAdapter(torrent) {
-				public void trackerReply(TrackerReplyAlert alert) {
-					signal.countDown();
-				}
-			});
-			try {
-				signal.await();
-				i++;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			final CountDownLatch signal = new CountDownLatch(1);
+//		
+//			// only go to next track once this one has received a tracker reply
+//			session.addListener(new TorrentAlertAdapter(torrent) {
+//				public void trackerReply(TrackerReplyAlert alert) {
+//					signal.countDown();
+//				}
+//			});
+//			try {
+//				signal.await();
+//				i++;
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			i++;
 			
 		
 			
@@ -223,7 +224,7 @@ public enum LibtorrentEngine  {
 	private void shareTorrent(TorrentHandle torrent) {
 
 	
-
+	
 
 		// Add the listeners
 		session.addListener(new TorrentAlertAdapter(torrent) {
@@ -331,8 +332,13 @@ public enum LibtorrentEngine  {
 
 		});
 
-	
+		
+//		torrent.forceReannounce();
+
+		torrent.setAutoManaged(true);
+		torrent.saveResumeData();
 		torrent.resume();
+	
 
 
 		
