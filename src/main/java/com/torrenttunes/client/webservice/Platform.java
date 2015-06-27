@@ -9,6 +9,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,8 +22,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 
+import java.util.Set;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 
 
 import org.codehaus.jackson.JsonNode;
@@ -30,11 +34,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.ScanDirectory;
+import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.tools.Tools;
 
 
@@ -304,7 +310,11 @@ public class Platform {
 			try {
 				Tools.allowAllHeaders(req, res);
 
-				String json = Tools.MAPPER.writeValueAsString(LibtorrentEngine.INSTANCE.getScanInfos());
+				Set<ScanInfo> sis = LibtorrentEngine.INSTANCE.getScanInfos();
+				String json = null;
+				synchronized(sis) {
+					json = Tools.MAPPER.writeValueAsString(sis);
+				}
 
 				return json;
 

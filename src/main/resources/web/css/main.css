@@ -22,7 +22,7 @@
 }
 */
 
-.col-xs-3:nth-child(4n+1){
+.col-xs-3:nth-child(4n+1), .col-md-2:nth-child(6n+1){
     clear: left;
 }
 

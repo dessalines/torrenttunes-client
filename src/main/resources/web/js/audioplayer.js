@@ -827,6 +827,9 @@
 
       var sound = soundManager.createSound({
 
+        autoPlay: false,
+        autoLoad: true,
+        stream: true,
         url: url,
 
         volume: defaultVolume,

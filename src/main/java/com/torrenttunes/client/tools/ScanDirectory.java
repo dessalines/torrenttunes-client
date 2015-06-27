@@ -286,7 +286,7 @@ public class ScanDirectory {
 	public enum ScanStatus {
 		Pending(" "), 
 		Scanning("Scanning"), 
-		FetchingMusicBrainzId("Found MusicBrainz ID"), 
+		FetchingMusicBrainzId("Fetching MusicBrainz ID"), 
 		MusicBrainzError("Couldn't Find MusicBrainz ID"),
 		CreatingTorrent("Creating a torrent file"),
 		AlreadyUploaded("Already uploaded"),

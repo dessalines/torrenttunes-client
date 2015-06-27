@@ -82,7 +82,7 @@ public enum LibtorrentEngine  {
 
 		// These worked great!
 		sessionSettings.setActiveTrackerLimit(5);
-				sessionSettings.setTrackerBackoff(3000);
+//				sessionSettings.setTrackerBackoff(3000);
 //		sessionSettings.setTrackerReceiveTimeout(1);
 //		sessionSettings.setTrackerCompletionTimeout(1);
 //		sessionSettings.setStopTrackerTimeout(1);
@@ -369,7 +369,6 @@ public enum LibtorrentEngine  {
 
 		torrent.setAutoManaged(true);
 		torrent.resume();
-		torrent.saveResumeData();
 
 
 
