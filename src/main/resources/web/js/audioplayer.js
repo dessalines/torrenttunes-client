@@ -829,7 +829,8 @@
 
         autoPlay: false,
         autoLoad: true,
-        stream: true,
+        // stream: true,
+        bufferTime: 3,
         url: url,
 
         volume: defaultVolume,
