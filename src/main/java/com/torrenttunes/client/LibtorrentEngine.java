@@ -78,19 +78,21 @@ public enum LibtorrentEngine  {
 		sessionSettings.setActiveDownloads(10);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
-		sessionSettings.setActiveDHTLimit(-1);
+		sessionSettings.setActiveDHTLimit(5);
 
 		// These worked great!
 		sessionSettings.setActiveTrackerLimit(5);
-		//		sessionSettings.setTrackerBackoff(99999);
-		sessionSettings.setTrackerReceiveTimeout(5);
-		sessionSettings.setTrackerCompletionTimeout(5);
+				sessionSettings.setTrackerBackoff(3000);
+//		sessionSettings.setTrackerReceiveTimeout(1);
+//		sessionSettings.setTrackerCompletionTimeout(1);
+//		sessionSettings.setStopTrackerTimeout(1);
+		
 
-		//		sessionSettings.setPeerConnectTimeout(5);
+//				sessionSettings.setPeerConnectTimeout(5);
 		//		sessionSettings.setPeerTimeout(5);
 		//		sessionSettings.setInactivityTimeout(5);
 
-		//		sessionSettings.setMaxPeerlistSize(10);
+				sessionSettings.setMaxPeerlistSize(10);
 		//		sessionSettings.setMaxPausedPeerlistSize(0);
 		//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 		//		sessionSettings.setCacheSize(999999);
@@ -260,7 +262,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
+				torrent.saveResumeData();
 
 			}
 			@Override
@@ -342,6 +344,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				torrent.saveResumeData();
 			}
 			
 			@Override
@@ -365,8 +368,8 @@ public enum LibtorrentEngine  {
 		//		torrent.forceReannounce();
 
 		torrent.setAutoManaged(true);
-		torrent.saveResumeData();
 		torrent.resume();
+		torrent.saveResumeData();
 
 
 
