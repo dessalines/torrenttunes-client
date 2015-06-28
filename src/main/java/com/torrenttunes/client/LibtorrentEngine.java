@@ -24,6 +24,7 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.Alert;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
+import com.frostwire.jlibtorrent.alerts.DhtAnnounceAlert;
 import com.frostwire.jlibtorrent.alerts.DhtReplyAlert;
 import com.frostwire.jlibtorrent.alerts.PeerBanAlert;
 import com.frostwire.jlibtorrent.alerts.PeerBlockedAlert;
@@ -304,6 +305,7 @@ public enum LibtorrentEngine  {
 
 			}
 
+			
 			@Override
 			public void peerBlocked(PeerBlockedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
@@ -367,6 +369,9 @@ public enum LibtorrentEngine  {
 
 		torrent.setAutoManaged(true);
 		torrent.resume();
+		
+		torrent.forceDHTAnnounce();
+		torrent.forceReannounce();
 
 
 

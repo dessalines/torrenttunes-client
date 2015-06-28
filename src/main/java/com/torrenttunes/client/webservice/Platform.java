@@ -344,7 +344,7 @@ public class Platform {
 
 				if (track != null) {
 					json = track.toJson(false);					
-
+					Tools.dbClose();
 				}
 				// If it doesn't exist, download the torrent to the cache dir
 				else {

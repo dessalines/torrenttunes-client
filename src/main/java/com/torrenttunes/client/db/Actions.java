@@ -167,6 +167,7 @@ public class Actions {
 
 
 				// Save the track to your DB
+				try {
 				Tools.dbInit();
 				Library newTrack = Actions.saveSongToLibrary(songMbid, 
 						torrentPath, 
@@ -182,7 +183,11 @@ public class Actions {
 						year);
 
 				newTrack.saveIt();
-				Tools.dbClose();
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					Tools.dbClose();
+				}
 
 				TorrentStats ts = TorrentStats.create(torrent);
 				log.info(ts.toString());
