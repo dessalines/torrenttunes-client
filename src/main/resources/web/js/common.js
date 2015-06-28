@@ -318,9 +318,9 @@ function setupTrackDelete() {
     console.log(infoHash);
 
     simplePost('delete_song/' + infoHash, null, null, function() {
-      $('wrapper').tooltip('hide');
+    
       $('[name=' + name).closest("tr").remove();
-      $('wrapper').tooltip('hide');
+      $('wrapper').tooltip('destroy');
     });
 
   });
