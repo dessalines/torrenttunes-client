@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.client.HttpResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,6 +140,7 @@ public class ScanDirectory {
 				try {
 					Tools.uploadTorrentInfoToTracker(track.toJson(false));
 				} catch(NoSuchElementException e) {
+					e.printStackTrace();
 					Tools.dbInit();
 					track.delete(); // delete the track from the db
 					Tools.dbClose();

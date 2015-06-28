@@ -42,7 +42,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -405,18 +407,23 @@ public class Tools {
 		String message = "";
 		try {
 
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-
-
+			RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).build();
+			CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();			
+			
+		
 			HttpPost httpPost = new HttpPost(postURL);
 			httpPost.setEntity(new StringEntity(jsonInfo));
+			
 
+			
 			//			httpPost.setEntity(new StringEntity("L"));
 
 			ResponseHandler<String> handler = new BasicResponseHandler();
 
 
 			CloseableHttpResponse response = httpClient.execute(httpPost);
+			
+		
 
 			message = handler.handleResponse(response);
 
@@ -425,7 +432,7 @@ public class Tools {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new NoSuchElementException("Couldn't save the torrent info");
-		} 
+		}
 
 		message = "Rqlite write status : " + message;
 		log.info(message);
