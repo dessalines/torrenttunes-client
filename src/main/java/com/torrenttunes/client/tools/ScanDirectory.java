@@ -112,8 +112,9 @@ public class ScanDirectory {
 
 				// Save it to the DB
 				Library track = null;
-				Tools.dbInit();
+				
 				try {
+					Tools.dbInit();
 					track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
 							torrentFile.getAbsolutePath(), 
 							torrent.getInfoHash().toHex(),
@@ -129,12 +130,14 @@ public class ScanDirectory {
 				} catch(Exception e) {
 					si.setStatus(ScanStatus.DBError);
 					continue;
+				} finally {
+					Tools.dbClose();
 				}
 
-				Tools.dbClose();
+				
 
 				try {
-				Tools.uploadTorrentInfoToTracker(track.toJson(false));
+					Tools.uploadTorrentInfoToTracker(track.toJson(false));
 				} catch(NoSuchElementException e) {
 					Tools.dbInit();
 					track.delete(); // delete the track from the db

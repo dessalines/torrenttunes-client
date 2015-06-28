@@ -346,7 +346,7 @@ function setupPlaylistTrackDelete() {
     var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
     simplePost('remove_from_playlist/' + playlistPageTabID + "/" + playlistId, null, null, function() {
       console.log('Track ' + infoHash + ' removed from playlist');
-      $('wrapper').tooltip('hide');
+      $('wrapper').tooltip('destroy');
       setupPlaylistPageTab();
     });
 

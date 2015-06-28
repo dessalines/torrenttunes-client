@@ -92,7 +92,9 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setPeerTimeout(5);
 		//		sessionSettings.setInactivityTimeout(5);
 
-				sessionSettings.setMaxPeerlistSize(10);
+//				sessionSettings.setMaxPeerlistSize(10);
+				
+				
 		//		sessionSettings.setMaxPausedPeerlistSize(0);
 		//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 		//		sessionSettings.setCacheSize(999999);
