@@ -129,6 +129,7 @@ public class ScanDirectory {
 							song.getTrackNumber(),
 							song.getYear());
 				} catch(Exception e) {
+					e.printStackTrace();
 					si.setStatus(ScanStatus.DBError);
 					continue;
 				} finally {
@@ -154,7 +155,7 @@ public class ScanDirectory {
 
 			// Couldn't find the song
 			catch (NoSuchElementException e) {
-				e.printStackTrace();
+				log.error("Couldn't Find MusicBrainz ID for File: " + file.getAbsolutePath());
 				si.setStatus(ScanStatus.MusicBrainzError);
 				continue;
 			}
