@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  // setupWindowClose();
+  setupWindowClose();
 
 });
 
@@ -320,6 +320,7 @@ function setupTrackDelete() {
     simplePost('delete_song/' + infoHash, null, null, function() {
       $('wrapper').tooltip('hide');
       $('[name=' + name).closest("tr").remove();
+      $('wrapper').tooltip('hide');
     });
 
   });
