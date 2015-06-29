@@ -82,7 +82,7 @@ public enum LibtorrentEngine  {
 
 		//		sessionSettings.setTorrentConnectBoost(5);
 		//		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(10);
+		sessionSettings.setActiveDownloads(-1);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
 		sessionSettings.setActiveDHTLimit(5);
@@ -390,7 +390,7 @@ public enum LibtorrentEngine  {
 
 		//		torrent.forceReannounce();
 
-		torrent.setAutoManaged(true);
+//		torrent.setAutoManaged(true);
 		torrent.resume();
 		
 		
