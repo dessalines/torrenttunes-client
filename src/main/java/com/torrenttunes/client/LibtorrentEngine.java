@@ -76,13 +76,13 @@ public enum LibtorrentEngine  {
 
 		//		sessionSettings.setTorrentConnectBoost(5);
 		//		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(10);
+		sessionSettings.setActiveDownloads(100);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
-		sessionSettings.setActiveDHTLimit(5);
+		sessionSettings.setActiveDHTLimit(15);
 
 		// These worked great!
-		sessionSettings.setActiveTrackerLimit(5);
+		sessionSettings.setActiveTrackerLimit(15);
 //				sessionSettings.setTrackerBackoff(3000);
 //		sessionSettings.setTrackerReceiveTimeout(1);
 //		sessionSettings.setTrackerCompletionTimeout(1);
@@ -114,6 +114,9 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setConnectionSpeed(3000);
 
 
+		// Performance settings
+		sessionSettings.useReadCache(false);
+		sessionSettings.setMaxPeerlistSize(500);
 
 
 
