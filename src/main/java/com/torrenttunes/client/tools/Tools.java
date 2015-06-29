@@ -407,14 +407,15 @@ public class Tools {
 		String message = "";
 		try {
 
-			RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).build();
+			RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).
+					build();
 			CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();			
 			
 		
 			HttpPost httpPost = new HttpPost(postURL);
-			httpPost.setEntity(new StringEntity(jsonInfo));
+			httpPost.setEntity(new StringEntity(jsonInfo, "UTF-8"));
 			
-
+			
 			
 			//			httpPost.setEntity(new StringEntity("L"));
 

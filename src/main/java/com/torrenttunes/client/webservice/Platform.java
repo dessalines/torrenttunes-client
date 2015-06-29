@@ -10,6 +10,7 @@ import static spark.Spark.post;
 
 
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,8 +21,6 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-
 import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
@@ -29,9 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 
@@ -312,9 +314,10 @@ public class Platform {
 
 				Set<ScanInfo> sis = LibtorrentEngine.INSTANCE.getScanInfos();
 				String json = null;
-				synchronized(sis) {
+				try {
 					json = Tools.MAPPER.writeValueAsString(sis);
-				}
+				} catch(JsonMappingException e1) {}
+				
 
 				return json;
 
@@ -344,7 +347,6 @@ public class Platform {
 
 				if (track != null) {
 					json = track.toJson(false);					
-					Tools.dbClose();
 				}
 				// If it doesn't exist, download the torrent to the cache dir
 				else {

@@ -343,7 +343,6 @@ public enum LibtorrentEngine  {
 			@Override
 			public void trackerReply(TrackerReplyAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-				torrent.saveResumeData();
 			}
 
 			@Override
@@ -367,6 +366,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				torrent.saveResumeData();
 				torrent.resume();
 			}
 			

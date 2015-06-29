@@ -79,8 +79,6 @@ function errorTest() {
 
 function setupTabs() {
 
-$('.add_to_playlist_class').addClass("hide");
-
   $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
     var tabId = $(e.target).attr("href");
     console.log(tabId);
@@ -424,7 +422,7 @@ function addPlaylistDropdowns() {
     console.log(playlists);
     // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
     if (playlists.length > 0) {
-      $('.add_to_playlist_class').removeClass("hide");
+    
       Mustache.parse(addToPlaylistTemplate);
       var rendered = Mustache.render(addToPlaylistTemplate, playlists);
       $(rendered).appendTo(".add_to_playlist_class");
