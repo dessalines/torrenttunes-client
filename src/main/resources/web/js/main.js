@@ -199,7 +199,7 @@ function setupSettingsTab() {
   });
 
   $('#uninstall_button').click(function() {
-    simplePost('uninstall', null, false, null, true, false);
+    simplePost('uninstall', null, false, null, null, false, '#uninstall_button');
   });
 
 
