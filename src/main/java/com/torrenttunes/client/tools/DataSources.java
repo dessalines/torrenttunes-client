@@ -21,6 +21,8 @@ public class DataSources {
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
+	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
+	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");

@@ -112,7 +112,7 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setPeerConnectTimeout(35);
 
 		//		sessionSettings.allowMultipleConnectionsPerIp(true);
-		//		sessionSettings.announceDoubleNAT(true);
+				sessionSettings.announceDoubleNAT(true);
 		sessionSettings.setUploadRateLimit(0);
 		//		sessionSettings.setPeerTimeout(15);
 		//		sessionSettings.setInactivityTimeout(30);
@@ -205,21 +205,6 @@ public enum LibtorrentEngine  {
 			si.setMbid(track.getString("mbid"));
 			scanInfos.add(si);
 
-			//			final CountDownLatch signal = new CountDownLatch(1);
-			//		
-			//			// only go to next track once this one has received a tracker reply
-			//			session.addListener(new TorrentAlertAdapter(torrent) {
-			//				public void trackerReply(TrackerReplyAlert alert) {
-			//					signal.countDown();
-			//				}
-			//			});
-			//			try {
-			//				signal.await();
-			//				i++;
-			//			} catch (InterruptedException e) {
-			//				// TODO Auto-generated catch block
-			//				e.printStackTrace();
-			//			}
 			i++;
 
 
@@ -234,9 +219,8 @@ public enum LibtorrentEngine  {
 
 	public TorrentHandle addTorrent(File outputParent, File torrentFile) {
 		TorrentHandle torrent = session.addTorrent(torrentFile, outputParent);
-		//		torrent.setAutoManaged(true);
-		//		torrent.queuePositionTop();
-		log.info("added torrent " + torrent.getName());
+
+		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath());
 
 		shareTorrent(torrent);
 		infoHashToTorrentMap.put(torrent.getInfoHash().toString().toLowerCase(), torrent);
@@ -388,16 +372,12 @@ public enum LibtorrentEngine  {
 		});
 
 
-		//		torrent.forceReannounce();
+
 
 		torrent.setAutoManaged(true);
 		torrent.resume();
 		
 		
-//		torrent.forceDHTAnnounce();
-//		torrent.forceReannounce();
-
-//		torrent.sa
 
 
 

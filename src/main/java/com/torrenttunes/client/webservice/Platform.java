@@ -316,7 +316,9 @@ public class Platform {
 				String json = null;
 				try {
 					json = Tools.MAPPER.writeValueAsString(sis);
-				} catch(JsonMappingException e1) {}
+				} catch(JsonMappingException e1) {
+					json = " ";
+				}
 				
 
 				return json;

@@ -4,6 +4,9 @@ import static com.torrenttunes.client.db.Tables.LIBRARY;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import junit.framework.TestCase;
 
@@ -22,12 +25,12 @@ import com.torrenttunes.client.tools.Tools;
 import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 
 public class DerpTest extends TestCase {
-	
+
 	static final Logger log = LoggerFactory.getLogger(DerpTest.class);
 
 	public void derp() throws JsonGenerationException, JsonMappingException, IOException {
-//		TorrentClient tc = TorrentClient.start();
-//		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), tc);
+		//		TorrentClient tc = TorrentClient.start();
+		//		ScanDirectory.start(new File(DataSources.SAMPLE_MUSIC_DIR), tc);
 
 		// List all the music files in the sub or sub directories
 		//		String[] types = {"mp3"};
@@ -43,40 +46,40 @@ public class DerpTest extends TestCase {
 		//		
 		//		String json = Tools.MAPPER.writeValueAsString(scanInfos);
 		//		System.out.println(json);
-		
-		
+
+
 		Song song = Song.fetchSong(new File("/home/tyler/.torrenttunes-client/cache/1-06 Raconte-Moi Une Histoire.mp3"));
 		System.out.println(song.getRecording());
-		
+
 	}
-	
+
 	public void derp2() throws InterruptedException {
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
-		
+
 		Tools.dbInit();
 		Library track = LIBRARY.findById(1);
-		
-		
-		
+
+
+
 		TorrentHandle torrent = lte.addTorrent(
 				new File(DataSources.DEFAULT_MUSIC_STORAGE_PATH()), new File(track.getString("torrent_path")));
-		
-		
+
+
 		ObjectNode on = Tools.MAPPER.valueToTree(Tools.jsonToNode(track.toJson(false)));
-		
+
 		System.out.println(torrent.getStatus().getConnectCandidates());
 		System.out.println(torrent.getStatus().getListPeers());
 		System.out.println(torrent.getStatus().getListSeeds());
 		on.put("seeders", torrent.getStatus().getConnectCandidates());
-		
+
 		String json = Tools.nodeToJson(on);
 		Tools.dbClose();
-		
+
 		System.out.println(json);
-		
+
 		Thread.sleep(10000);
 	}
-	
+
 	public void derp3() {
 		log.info("Checking for update...");
 		String htmlStr = Tools.httpGetString(DataSources.FETCH_LATEST_RELEASE_URL());
@@ -85,25 +88,49 @@ public class DerpTest extends TestCase {
 
 		String tagName = htmlStr.split("/tchoulihan/torrenttunes-client/releases/tag/")[1].split("\"")[0];
 		log.info("Latest Tag #: " + tagName);
-			
+
 		if (!DataSources.VERSION.equals(tagName)) {
-//			downloadAndInstallJar(tagName);
+			//			downloadAndInstallJar(tagName);
 
 		} else {
 			log.info("No updates found");
 
 		}
 	}
-	
+
 	public void testDerp4() {
 
 		ScanInfo si = ScanInfo.create(new File(DataSources.SAMPLE_SONG));
-		
+
 		Song song = Song.fetchSong(si.getFile());
 		si.setMbid(song.getRecordingMBID());
-		
+
 		ScanDirectory.createAndSaveTorrent(si, song);
-		
-	
+
+
 	}
+
+	public void testDerp5() throws UnknownHostException {
+		scan(InetAddress.getByName(DataSources.EXTERNAL_IP));
+	}
+
+	public static void scan(final InetAddress remote) {
+
+
+		int port=0;
+		String hostname = remote.getHostName();
+
+		for ( port = 3000; port < 65536; port++) {
+			try {
+				Socket s = new Socket(remote,port);
+				System.out.println("Server is listening on port " + port+ " of " + hostname);
+				s.close();
+			}
+			catch (IOException ex) {
+				// The remote host is not listening on this port
+//				System.out.println("Server is not listening on port " + port+ " of " + hostname);
+			}
+		}
+	}
+
 }

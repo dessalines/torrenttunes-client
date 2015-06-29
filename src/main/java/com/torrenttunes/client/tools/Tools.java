@@ -61,6 +61,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.DBException;
+import org.javalite.http.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -723,7 +724,13 @@ public class Tools {
 
 
 	public static void uninstallMacShortcuts() {
-		// TODO Auto-generated method stub
+		try {
+			FileUtils.deleteDirectory(new File(DataSources.MAC_APP_LOCATION()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 	}
 

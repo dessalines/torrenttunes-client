@@ -156,6 +156,7 @@ public class ScanDirectory {
 			// Couldn't find the song
 			catch (NoSuchElementException e) {
 				log.error("Couldn't Find MusicBrainz ID for File: " + file.getAbsolutePath());
+				
 				si.setStatus(ScanStatus.MusicBrainzError);
 				continue;
 			}
