@@ -463,7 +463,7 @@ public class Tools {
 
 		try {
 			FileUtils.deleteDirectory(new File(DataSources.HOME_DIR()));
-
+			
 
 			Tools.uninstallShortcuts();
 
