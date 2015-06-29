@@ -69,6 +69,7 @@ public enum LibtorrentEngine  {
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 		session = new Session();
+	
 
 		sessionSettings = SessionSettings.newDefaults();
 		//		sessionSettings = SessionSettings.newMinMemoryUsage();
@@ -76,20 +77,20 @@ public enum LibtorrentEngine  {
 
 		//		sessionSettings.setTorrentConnectBoost(5);
 		//		sessionSettings.setMinReconnectTime(1);
-		sessionSettings.setActiveDownloads(100);
+		sessionSettings.setActiveDownloads(10);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
-		sessionSettings.setActiveDHTLimit(15);
+		sessionSettings.setActiveDHTLimit(5);
 
 		// These worked great!
-		sessionSettings.setActiveTrackerLimit(15);
+		sessionSettings.setActiveTrackerLimit(5);
 //				sessionSettings.setTrackerBackoff(3000);
 //		sessionSettings.setTrackerReceiveTimeout(1);
 //		sessionSettings.setTrackerCompletionTimeout(1);
 //		sessionSettings.setStopTrackerTimeout(1);
 		
 
-//				sessionSettings.setPeerConnectTimeout(5);
+				sessionSettings.setPeerConnectTimeout(25);
 		//		sessionSettings.setPeerTimeout(5);
 		//		sessionSettings.setInactivityTimeout(5);
 
@@ -220,6 +221,7 @@ public enum LibtorrentEngine  {
 
 		log.info("Done seeding library, total of " + session.getTorrents().size() + " torrents shared");
 
+		
 
 	}
 
@@ -373,9 +375,11 @@ public enum LibtorrentEngine  {
 		torrent.setAutoManaged(true);
 		torrent.resume();
 		
-		torrent.forceDHTAnnounce();
-		torrent.forceReannounce();
+		
+//		torrent.forceDHTAnnounce();
+//		torrent.forceReannounce();
 
+//		torrent.sa
 
 
 
