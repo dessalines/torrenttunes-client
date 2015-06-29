@@ -13,6 +13,7 @@ import java.util.concurrent.CountDownLatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.Address;
 import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.LibTorrent;
 import com.frostwire.jlibtorrent.Session;
@@ -33,6 +34,8 @@ import com.frostwire.jlibtorrent.alerts.PeerDisconnectedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.PeerSnubbedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerUnsnubbedAlert;
+import com.frostwire.jlibtorrent.alerts.SaveResumeDataAlert;
+import com.frostwire.jlibtorrent.alerts.SaveResumeDataFailedAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentErrorAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
@@ -43,6 +46,8 @@ import com.frostwire.jlibtorrent.alerts.TrackerAnnounceAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
+import com.frostwire.jlibtorrent.swig.address;
+import com.frostwire.jlibtorrent.swig.ip_filter;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
@@ -83,11 +88,13 @@ public enum LibtorrentEngine  {
 		sessionSettings.setActiveDHTLimit(5);
 
 		// These worked great!
-		sessionSettings.setActiveTrackerLimit(5);
+//		sessionSettings.setActiveTrackerLimit(5);
 //				sessionSettings.setTrackerBackoff(3000);
 //		sessionSettings.setTrackerReceiveTimeout(1);
 //		sessionSettings.setTrackerCompletionTimeout(1);
 //		sessionSettings.setStopTrackerTimeout(1);
+		
+		
 		
 
 				sessionSettings.setPeerConnectTimeout(25);
@@ -292,6 +299,16 @@ public enum LibtorrentEngine  {
 			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
+			
+			@Override
+			public void saveResumeData(SaveResumeDataAlert alert) {
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			}
+			
+			@Override
+			public void saveResumeDataFailed(SaveResumeDataFailedAlert alert) {
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			}
 
 			@Override
 			public void peerDisconnected(PeerDisconnectedAlert alert) {
@@ -350,6 +367,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				torrent.resume();
 			}
 			
 			@Override

@@ -421,15 +421,15 @@ function addPlaylistDropdowns() {
     var playlists = JSON.parse(e);
     console.log(playlists);
     // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
-    if (playlists.length > 0) {}
-    Mustache.parse(addToPlaylistTemplate);
-    var rendered = Mustache.render(addToPlaylistTemplate, playlists);
-    $(rendered).appendTo(".add_to_playlist_class");
+    if (playlists.length > 0) {
+      Mustache.parse(addToPlaylistTemplate);
+      var rendered = Mustache.render(addToPlaylistTemplate, playlists);
+      $(rendered).appendTo(".add_to_playlist_class");
 
-    setupAddToPlaylist();
-  } else {
-    $('.add_to_playlist_class').addClass("hide");
-  }
+      setupAddToPlaylist();
+    } else {
+      $('.add_to_playlist_class').addClass("hide");
+    }
 
   });
 
@@ -660,8 +660,8 @@ function buildLiFromTrackObject(trackObj) {
 
 
   var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
-     htmlDecode(htmlDecode(trackObj['artist'])) + '</b> - ' + 
-       htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
+    htmlDecode(htmlDecode(trackObj['artist'])) + '</b> - ' +
+    htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
 
   console.log(li);
   // console.log(encodedAudioFilePath);
