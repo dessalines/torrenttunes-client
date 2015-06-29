@@ -201,6 +201,7 @@ function setupSettingsTab() {
   $('#uninstall_button').click(function() {
     simplePost('uninstall', null, false, null, true, false, '#uninstall_button');
     toastr.error("TorrentTunes Uninstalled");
+    open(location, '_self').close();
   });
 
 
