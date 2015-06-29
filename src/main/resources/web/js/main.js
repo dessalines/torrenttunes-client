@@ -198,6 +198,11 @@ function setupSettingsTab() {
 
   });
 
+  $('#uninstall_button').click(function() {
+    simplePost('uninstall', null, false, null, true, false);
+  });
+
+
 }
 
 

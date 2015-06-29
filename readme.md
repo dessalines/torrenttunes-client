@@ -1,9 +1,9 @@
-[TorrentTunes](http://torrenttunes.tk) &mdash; A free, BitTorrent-based music streaming service.
+[TorrentTunes](http://torrenttunes.ml) &mdash; A free, BitTorrent-based music streaming service.
 ==========
 ![](http://img.shields.io/version/0.1.0.png?color=green)
 
 
-[TorrentTunes](http://torrenttunes.tk) is an open-source, [BitTorrent-based](https://en.wikipedia.org/wiki/BitTorrent) music service, like Rdio or Spotify, where you can stream any music, or share your own library of music with others.
+[TorrentTunes](http://torrenttunes.ml) is an open-source, [BitTorrent-based](https://en.wikipedia.org/wiki/BitTorrent) music service, like Rdio or Spotify, where you can stream any music, or share your own library of music with others.
 
 Each individual song is tagged using [MusicBrainz](http://musicbrainz.org/), and shared as a *.torrent* file using the client's built-in, [LibTorrent-based](http://www.libtorrent.org/) BitTorrent client, on publicly available trackers.
 
@@ -49,7 +49,7 @@ chmod +x install.sh
 ```
 
 ## Support 
-If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.tk), you can donate directly here:
+If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.ml), you can donate directly here:
 
 [bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL](bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL)
 

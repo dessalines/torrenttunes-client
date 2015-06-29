@@ -396,6 +396,20 @@ public class Platform {
 			}
 
 		});
+		
+		post("/uninstall", (req, res) -> {
+			try {
+
+				log.info("Uninstalling torrenttunes");
+				Tools.uninstall();
+				return "TorrentTunes Uninstalled";
+
+			} catch (Exception e) {
+				res.status(666);
+				return e.getMessage();
+			}
+
+		});
 
 		get("/error_test", (req, res) -> {
 
