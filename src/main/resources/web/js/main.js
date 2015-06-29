@@ -201,7 +201,11 @@ function setupSettingsTab() {
   $('#uninstall_button').click(function() {
     simplePost('uninstall', null, false, null, true, false, '#uninstall_button');
     toastr.error("TorrentTunes Uninstalled");
-    open(location, '_self').close();
+    setTimeout(function() {
+      open(location, '_self').close();
+
+    }, 2000);
+
   });
 
 
@@ -429,7 +433,7 @@ function addPlaylistDropdowns() {
     console.log(playlists);
     // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
     if (playlists.length > 0) {
-    
+
       Mustache.parse(addToPlaylistTemplate);
       var rendered = Mustache.render(addToPlaylistTemplate, playlists);
       $(rendered).appendTo(".add_to_playlist_class");
