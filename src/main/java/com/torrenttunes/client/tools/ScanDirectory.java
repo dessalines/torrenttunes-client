@@ -83,6 +83,7 @@ public class ScanDirectory {
 				si.setStatus(ScanStatus.Scanning);
 				si.setStatus(ScanStatus.FetchingMusicBrainzId);
 				Song song = Song.fetchSong(si.getFile());
+				log.info("Querying file: " + file.getAbsolutePath());
 				log.info("MusicBrainz query: " + song.getQuery());
 				si.setMbid(song.getRecordingMBID());
 				
@@ -122,12 +123,8 @@ public class ScanDirectory {
 							si.getFile().getAbsolutePath(), 
 							song.getArtist(), 
 							song.getArtistMBID(),
-							song.getRelease(),
-							song.getReleaseGroupMBID(),
 							song.getRecording(), 
-							song.getDuration(),
-							song.getTrackNumber(),
-							song.getYear());
+							song.getDuration());
 				} catch(Exception e) {
 					e.printStackTrace();
 					si.setStatus(ScanStatus.DBError);
@@ -139,8 +136,9 @@ public class ScanDirectory {
 				
 
 				try {
-					Tools.uploadTorrentInfoToTracker(track.toJson(false));
-				} catch(NoSuchElementException e) {
+					String songUploadJson = Tools.MAPPER.writeValueAsString(song);
+					Tools.uploadTorrentInfoToTracker(songUploadJson);
+				} catch(NoSuchElementException | IOException e) {
 					e.printStackTrace();
 					Tools.dbInit();
 					track.delete(); // delete the track from the db

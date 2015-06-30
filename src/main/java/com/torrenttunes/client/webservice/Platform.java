@@ -11,6 +11,7 @@ import static spark.Spark.post;
 
 
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +20,7 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -29,10 +31,12 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 
@@ -312,7 +316,8 @@ public class Platform {
 			try {
 				Tools.allowAllHeaders(req, res);
 
-				Set<ScanInfo> sis = LibtorrentEngine.INSTANCE.getScanInfos();
+				List<ScanInfo> sis = LibtorrentEngine.INSTANCE.getScanInfosLastForty();
+				
 				String json = null;
 				try {
 					json = Tools.MAPPER.writeValueAsString(sis);

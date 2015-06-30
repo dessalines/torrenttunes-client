@@ -32,8 +32,8 @@ public class Actions {
 	public static final Integer DOWNLOAD_TIMEOUT = 300000;
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
-			String filePath, String artist, String artistMbid, String album, String albumMbid,
-			String title, Long durationMS, Integer trackNumber, String year) {
+			String filePath, String artist, String artistMbid,
+			String title, Long durationMS) {
 
 
 		Library library = LIBRARY.create("mbid", mbid,
@@ -42,12 +42,8 @@ public class Actions {
 				"file_path", filePath,
 				"artist", StringEscapeUtils.escapeHtml4(artist),
 				"artist_mbid", artistMbid,
-				"album", StringEscapeUtils.escapeHtml4(album),
-				"album_mbid", albumMbid,
 				"title", StringEscapeUtils.escapeHtml4(title),
-				"duration_ms", durationMS,
-				"track_number", trackNumber,
-				"year", year);
+				"duration_ms", durationMS);
 
 		library.saveIt();
 
@@ -175,12 +171,8 @@ public class Actions {
 						audioFilePath, 
 						artist, 
 						artistMbid,
-						album,
-						albumMbid,
 						songTitle, 
-						duration,
-						trackNumber,
-						year);
+						duration);
 
 				newTrack.saveIt();
 				} catch(Exception e) {

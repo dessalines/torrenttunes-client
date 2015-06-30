@@ -95,7 +95,7 @@
 		<dependency>
 			<groupId>com.github.tchoulihan</groupId>
 			<artifactId>musicbrainz-tagger</artifactId>
-			<version>1.1.7</version>
+			<version>1.1.10</version>
 		</dependency>
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>

@@ -3,6 +3,7 @@ package com.torrenttunes.client;
 import static com.torrenttunes.client.db.Tables.LIBRARY;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -48,6 +49,8 @@ import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.swig.address;
 import com.frostwire.jlibtorrent.swig.ip_filter;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
@@ -392,6 +395,12 @@ public enum LibtorrentEngine  {
 
 	public Set<ScanInfo> getScanInfos() {
 		return scanInfos;
+	}
+	
+	public List<ScanInfo> getScanInfosLastForty() {
+		int size = scanInfos.size();
+		List<ScanInfo> subset =  new ArrayList<ScanInfo>(scanInfos).subList(size-40, size);
+		return subset;
 	}
 
 

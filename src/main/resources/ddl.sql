@@ -18,11 +18,7 @@ CREATE TABLE 'library' (
 'title' TEXT DEFAULT NULL,
 'artist' TEXT DEFAULT NULL,
 'artist_mbid' TEXT DEFAULT NULL,
-'album' TEXT DEFAULT NULL,
-'album_mbid' TEXT DEFAULT NULL,
 'duration_ms' INTEGER NOT NULL  DEFAULT NULL,
-'track_number' INTEGER DEFAULT NULL,
-'year' TEXT DEFAULT NULL,
 UNIQUE (torrent_path)
 );
 
