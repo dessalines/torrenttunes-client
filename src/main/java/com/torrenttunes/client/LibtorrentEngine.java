@@ -51,6 +51,7 @@ import com.frostwire.jlibtorrent.swig.address;
 import com.frostwire.jlibtorrent.swig.ip_filter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
@@ -399,13 +400,14 @@ public enum LibtorrentEngine  {
 	
 	public List<ScanInfo> getScanInfosLastForty() {
 		int size = scanInfos.size();
+		
 		List<ScanInfo> subset = new ArrayList<ScanInfo>(scanInfos);
 		
 		if (size > 40) {
 			subset =  subset.subList(size-40, size);
 		}
-
-		return subset;
+		
+		return Lists.reverse(subset);
 	}
 
 
