@@ -45,7 +45,7 @@ soundManager.onready(function() {
 
 $(document).ready(function() {
   keyboardShortcuts();
-
+  
 
   setupPlaylistLeftTab();
   setupPlayQueueBtn();
@@ -65,6 +65,18 @@ $(document).ready(function() {
 
 
 });
+
+function setupClickableArtistPlaying() {
+  $('.artist_playing_clickable').click(function(e) {
+
+    var mbid = $(this).attr('name');
+    console.log(e);
+    console.log(mbid);
+
+    showArtistPageV2(mbid);
+
+  });
+}
 
 function errorTest() {
   getJson('error_test').done(function(e) {
@@ -424,6 +436,7 @@ function keyboardShortcuts() {
     }
   });
 
+
 }
 
 function addPlaylistDropdowns() {
@@ -656,7 +669,7 @@ function playNow(trackObj) {
     // player.actions.play(); 
   }
   // player.actions.play();
-
+  setupClickableArtistPlaying();
 }
 
 function buildLiFromTrackObject(trackObj) {
@@ -670,10 +683,12 @@ function buildLiFromTrackObject(trackObj) {
 
 
   var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
-    htmlDecode(htmlDecode(trackObj['artist'])) + '</b> - ' +
+    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
+    htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
     htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
 
   console.log(li);
+  console.log(trackObj);
   // console.log(encodedAudioFilePath);
 
 

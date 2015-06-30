@@ -61,7 +61,8 @@ public class ScanDirectory {
 		}
 
 		// Remove all that aren't already in the library(you don't need to upload or seed them)
-		Set<File> torrentDBFiles = loadTorrentsFromDB();
+		Set<File> dbFilePaths = loadFilePathsFromDB();
+		files.removeAll(dbFilePaths);
 
 		log.info("New torrent files: " + files);
 
@@ -82,6 +83,7 @@ public class ScanDirectory {
 				// Fetch the song MBID
 				si.setStatus(ScanStatus.Scanning);
 				si.setStatus(ScanStatus.FetchingMusicBrainzId);
+				
 				Song song = Song.fetchSong(si.getFile());
 				log.info("Querying file: " + file.getAbsolutePath());
 				log.info("MusicBrainz query: " + song.getQuery());
@@ -93,7 +95,7 @@ public class ScanDirectory {
 				File torrentFile = createAndSaveTorrent(si, song);
 
 				// If that file already exists in the DB, you don't need to do anything to it
-				if (torrentDBFiles.contains(torrentFile)) {
+				if (dbFilePaths.contains(torrentFile)) {
 					log.info(torrentFile + " was already in the DB");
 					si.setStatus(ScanStatus.AlreadyUploaded);
 					continue;
@@ -167,13 +169,13 @@ public class ScanDirectory {
 
 	}
 
-	private static Set<File> loadTorrentsFromDB() {
+	private static Set<File> loadFilePathsFromDB() {
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
 		library.isEmpty();
 		Set<File> libraryFiles = new HashSet<File>();
 		for (Library track : library) {
-			libraryFiles.add(new File(track.getString("torrent_path")));
+			libraryFiles.add(new File(track.getString("file_path")));
 		}
 		Tools.dbClose();
 

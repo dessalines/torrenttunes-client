@@ -399,7 +399,12 @@ public enum LibtorrentEngine  {
 	
 	public List<ScanInfo> getScanInfosLastForty() {
 		int size = scanInfos.size();
-		List<ScanInfo> subset =  new ArrayList<ScanInfo>(scanInfos).subList(size-40, size);
+		List<ScanInfo> subset = new ArrayList<ScanInfo>(scanInfos);
+		
+		if (size > 40) {
+			subset =  subset.subList(size-40, size);
+		}
+
 		return subset;
 	}
 

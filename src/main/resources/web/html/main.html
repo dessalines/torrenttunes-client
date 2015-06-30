@@ -661,22 +661,19 @@
                     <script id="upload_info_template" type="x-tmpl-mustache">
                       <table class="table table-hover table-striped tablesorter table-overflow">
                         <colgroup>
-                          <col style="width:50%">
-                            <col style="width:25%">
+                          <col style="width:75%">
                               <col style="width:25%">
                         </colgroup>
                         <thead>
                           <tr>
                             <th>File</th>
-                            <th>MusicBrainz ID</th>
                             <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
                           {{#.}}
                           <tr>
-                            <td class="text-overflow"><span>{{fileName}}</span></td>
-                            <td class="text-overflow"><span>{{mbid}}</span></td>
+                            <td class="text-overflow"><span><small>{{file}}</small></span></td>
                             <td class="text-overflow"><span>{{statusString}}</span></td>
                           </tr>
                           {{/.}}
