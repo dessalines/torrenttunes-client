@@ -31,17 +31,7 @@ function setupWindowClose() {
 function setupSearch() {
 
 
-  var songURL = externalSparkService + 'song_search/%QUERY';
-  var songList = new Bloodhound({
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    datumTokenizer: Bloodhound.tokenizers.whitespace,
-    // prefetch: '../data/films/post_1960.json',
-    remote: {
-      url: songURL,
-      wildcard: '%QUERY',
-    },
-    // local: ['dog', 'pig', 'moose', 'dog2', 'dog4'],
-  });
+
 
   var artistURL = externalSparkService + 'artist_search/%QUERY';
   var artistList = new Bloodhound({
@@ -65,33 +55,28 @@ function setupSearch() {
     }
   });
 
-  songList.initialize();
+  var songURL = externalSparkService + 'song_search/%QUERY';
+  var songList = new Bloodhound({
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
+    // prefetch: '../data/films/post_1960.json',
+    remote: {
+      url: songURL,
+      wildcard: '%QUERY',
+    },
+    // local: ['dog', 'pig', 'moose', 'dog2', 'dog4'],
+  });
+
+
   artistList.initialize();
   albumList.initialize();
+  songList.initialize();
 
 
   var typeAhead = $('#search_box .typeahead').typeahead({
     hint: true,
     highlight: true,
     minLength: 3,
-  }, {
-    name: 'song_list',
-    displayKey: 'search_song',
-    source: songList,
-    templates: {
-      header: '<h3 class="search-set">Songs</h3>',
-      // suggestion: function(context) {
-      //   var ret = Mustache.render(songPlayerTemplate, context);
-      //   // setupTrackSelect();
-      //   // $('a', ret).on('click', function() {
-      //   //   alert('derp');
-      //   // });
-      //   return ret;
-      // }
-        suggestion: function(context) {
-        return Mustache.render('<div>{{{search_song}}} </div>', context);
-      }
-    }
   }, {
     name: 'artist_list',
     displayKey: 'search_artist',
@@ -111,6 +96,25 @@ function setupSearch() {
       suggestion: function(context) {
         return Mustache.render('<div>{{{search_album}}} </div>', context);
       }
+    }
+  }, {
+    name: 'song_list',
+    displayKey: 'search_song',
+    source: songList,
+    templates: {
+      header: '<h3 class="search-set">Songs</h3>',
+      // suggestion: function(context) {
+      //   var ret = Mustache.render(songPlayerTemplate, context);
+      //   // setupTrackSelect();
+      //   // $('a', ret).on('click', function() {
+      //   //   alert('derp');
+      //   // });
+      //   return ret;
+      // }
+      suggestion: function(context) {
+        return Mustache.render('<div>{{{search_song}}} </div>', context);
+      }
+
     }
 
 
@@ -223,11 +227,11 @@ function showArtistPage() {
 
 
   // $('a[href="#artistcatalogTab"]').hide();
-      $('#left_tab li.active').removeClass('active');
-      $('#artistcatalogTab').removeClass('active');
+  $('#left_tab li.active').removeClass('active');
+  $('#artistcatalogTab').removeClass('active');
 
-      $('a[href="#artistcatalogTab"]').tab('show');
-      $('a[href="#artistcatalog_main"]').tab('show');
+  $('a[href="#artistcatalogTab"]').tab('show');
+  $('a[href="#artistcatalog_main"]').tab('show');
 
 
 }
@@ -327,7 +331,7 @@ function setupTrackDelete() {
     console.log(infoHash);
 
     simplePost('delete_song/' + infoHash, null, null, function() {
-    
+
       $('[name=' + name).closest("tr").remove();
       $('wrapper').tooltip('destroy');
     });
