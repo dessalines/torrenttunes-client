@@ -362,10 +362,14 @@ public class Tools {
 
 	public static String constructTrackTorrentFilename(File file, Song song) {
 
-		String fileName = song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
+		
+		String fileName = song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording()
 				+ " - tt[mbid-" + song.getRecordingMBID().toLowerCase()
 				+ "_sha2-" + sha2FileChecksum(file) + "]";
+		
 		fileName = fileName.replaceAll("/", "-");
+		
+		fileName = String.format("%1.231s", fileName);
 		
 		return fileName;
 
@@ -393,8 +397,7 @@ public class Tools {
 			log.info(response.toString());
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new NoSuchElementException("Filename too long.");
 		}
 
 

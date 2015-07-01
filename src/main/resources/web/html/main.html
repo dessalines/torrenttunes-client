@@ -90,7 +90,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a class="text-normal" href="#" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-fw"></i></a></li>
+            <li><a class="text-normal" href="javascript:void(0);" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-fw"></i></a></li>
             <li><a href="#settingsTab" data-toggle="tab"><i class="fa fa-fw fa-cog"></i></a></li>
           </ul>
         </div>
@@ -106,7 +106,7 @@
           <ul id="left_tab" class="nav nav-sidebar main-sidebar" role="tablist">
             <li class="active"><a href="#homeTab" data-toggle="tab">Home</a></li>
             <li><a href="#browseTab" data-toggle="tab">Browse</a></li>
-            <li><a id="play_queue_btn" href="#">Play Queue</a></li>
+            <li><a id="play_queue_btn" href="javascript:void(0);">Play Queue</a></li>
             <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#settingsTab" data-toggle="tab">Settings</a></li>
             <li><a href="#uploadTab" data-toggle="tab">Share</a></li>
@@ -118,7 +118,7 @@
             <div id="playlist_left_tab_div"> </div>
             <script id="playlist_left_tab_template" type="x-tmpl-mustache">
               {{#.}}
-              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{id}}');" href="#">{{name}}</a></li> {{/.}}
+              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{id}}');" href="javascript:void(0);">{{name}}</a></li> {{/.}}
             </script>
           </ul>
         </div>
@@ -141,16 +141,16 @@
                       {{#.}}
                       <div class="col-xs-3">
                         {{#album_coverart_thumbnail_small}}
-                        <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
+                        <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                         {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
-                        <a a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
+                        <a a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
                         {{/album_coverart_thumbnail_small}}
                         <div class="spacer"></div>
                         <div class="text-overflow">
-                          <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-muted"><b>{{{artist_name}}}</b></a>
+                          <a href="javascript:void(0);" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-muted"><b>{{{artist_name}}}</b></a>
                         </div>
                         <div class="text-overflow">
-                          <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><i>{{{title}}}</i></a>
+                          <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><i>{{{title}}}</i></a>
                         </div>
                         <p class="text-normal">{{year}} &middot; {{number_of_songs}} songs
                         </p>
@@ -272,19 +272,19 @@
                           <div class="row">
                             <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
                             <div class="text-center">
-                              <a class="text-normal" href="#" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-6"></i></a>
+                              <a class="text-normal" href="javascript:void(0);" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-6"></i></a>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12">
                               <h2 class="text-center">
-                        <a href="#" data-toggle="modal" data-target="#donateModal">Free</a>
+                        <a href="javascript:void(0);" data-toggle="modal" data-target="#donateModal">Free</a>
                       </h2>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12">
-                              <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but you can support it by donating bitcoin <a href="#" class="text-normal" data-toggle="modal" data-target="#donateModal">here</a>.
+                              <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but you can support it by donating bitcoin <a href="javascript:void(0);" class="text-normal" data-toggle="modal" data-target="#donateModal">here</a>.
                           </h5>
                             </div>
                           </div>
@@ -375,13 +375,13 @@
                         {{#.}}
                         <div class="col-xs-3">
                           {{#album_coverart_thumbnail_small}}
-                          <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
+                          <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                           {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
-                          <a a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
+                          <a a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
                           {{/album_coverart_thumbnail_small}}
                           <div class="spacer"></div>
                           <div class="text-overflow">
-                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><b>{{{title}}}</b></a>
+                            <a a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><b>{{{title}}}</b></a>
                           </div>
                           <p class="text-normal">{{year}} &middot; {{number_of_songs}} songs
                           </p>
@@ -420,7 +420,7 @@
                                   <span>
                         <div class="btn-group text-normal">
                               <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a> 
-                              <a class="text-normal" data-toggle="dropdown" href="#">
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
                                   <ul class="dropdown-menu add_to_playlist_class" role="menu">
                                     <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
@@ -433,7 +433,7 @@
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>
                                 <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                                <td class="text-overflow"> <a href="#" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
+                                <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
                                 </td>
                                 <td class="text-overflow" align="right"> <span>{{plays}}</span>
                                 </td>
@@ -462,11 +462,11 @@
                   <div class="row">
                     <div class="col-md-6">
                       {{#album_coverart_url}}
-                      <a class="text-normal" onclick="showArtistPage();" href="#">
+                      <a class="text-normal" onclick="showArtistPage();" href="javascript:void(0);">
                         <img class="img-responsive center-block" src="{{album_coverart_url}}" />
                       </a>
                       {{/album_coverart_url}} {{^album_coverart_url}}
-                      <a a href="#" onclick="showArtistPage();"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
+                      <a a href="javascript:void(0);" onclick="showArtistPage();"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
                       {{/album_coverart_url}}
                     </div>
                     <div class="col-md-6">
@@ -477,7 +477,7 @@
                     </small>
                        
                       <br><small>
-                      <a onclick="showArtistPage();" href="#">{{{artist_name}}}
+                      <a onclick="showArtistPage();" href="javascript:void(0);">{{{artist_name}}}
                        </a>
                       </small>
                       </h1>
@@ -518,7 +518,7 @@
                       <span>
                         <div class="btn-group text-normal">
                               <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
-                              <a class="text-normal" data-toggle="dropdown" href="#">
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu add_to_playlist_class" role="menu">
                       <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
@@ -544,12 +544,12 @@
                     {{#.}}
                     <div class="col-md-2">
                       {{#image_url}}
-                      <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="{{image_url}}" /></a>
+                      <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);"><img class="img-responsive center-block" src="{{image_url}}" /></a>
                       {{/image_url}} {{^image_url}}
-                      <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#"><img class="img-responsive center-block" src="../image/music_333333_300.png" /></a>
+                      <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);"><img class="img-responsive center-block" src="../image/music_333333_300.png" /></a>
                       {{/image_url}}
                       <h4>
-                   <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="#">{{{name}}}</a>
+                   <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);">{{{name}}}</a>
                   
                   </h4>
                     </div>
@@ -564,7 +564,7 @@
               <div id="playlist_home_div">
                 <script id="playlist_home_template" type="x-tmpl-mustache">
                   {{#.}}
-                  <h3><a class="text-normal" onclick="showPlaylist('{{id}}');" href="#">{{name}}</a>
+                  <h3><a class="text-normal" onclick="showPlaylist('{{id}}');" href="javascript:void(0);">{{name}}</a>
                   <small> 
                   <a name="delete-playlist_{{id}}" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
                   </small>
@@ -610,7 +610,7 @@
                           <span>
                         <div class="btn-group text-normal">
                               <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
-                              <a class="text-normal" data-toggle="dropdown" href="#">
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
                       <ul class="dropdown-menu add_to_playlist_class" role="menu">
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
@@ -629,9 +629,9 @@
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>
-                        <td class="text-overflow"><a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal">{{{artist}}}</a></td>
+                        <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal">{{{artist}}}</a></td>
                         <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                        <td class="text-overflow"> <a href="#" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
+                        <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
                         </td>
                       </tr>
                       {{/.}}
@@ -748,7 +748,7 @@
                           <span>
                         <div class="btn-group text-normal">
                               <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
-                              <a class="text-normal" data-toggle="dropdown" href="#">
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
                       <ul class="dropdown-menu add_to_playlist_class" role="menu">
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
@@ -767,9 +767,9 @@
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>
-                        <td class="text-overflow"><a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal">{{{artist}}}</a></td>
+                        <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal">{{{artist}}}</a></td>
                         <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                        <td class="text-overflow"> <a href="#" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
+                        <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
                         </td>
                       </tr>
                       {{/.}}
@@ -782,7 +782,7 @@
             <div class="row-fluid">
               <hr class="featurette-divider">
               <footer>
-                <p class="pull-right"><a href="#">Back to top</a>
+                <p class="pull-right"><a href="javascript:void(0);">Back to top</a>
                 </p>
                 <p>&copy; 2015 TorrentTunes, Inc. &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">About</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">Contact</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">Support</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">Github</a>
                   <br>
@@ -880,7 +880,7 @@
       <div class="btn-group text-normal">
         {{{search}}}
         <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
-        <a class="text-normal" data-toggle="dropdown" href="#">
+        <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
           <i class="fa fa-angle-down"></i></a>
         <ul class="dropdown-menu add_to_playlist_class" role="menu">
           <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
