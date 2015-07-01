@@ -1,0 +1,27 @@
+a
+
+http://musicbrainz.org/ws/2/recording/?query=recording:%22Mr.bojangles%22%20AND%20artist:%22Bob+Dylan%22%20AND%20dur:[330386%20TO%20340386]%20AND%20number:5%20AND%20release:%22Dylan%22&limit=1&fmt=json
+
+http://musicbrainz.org/ws/2/recording/?query=recording:%22Mr.+Bojangles%22%20AND%20artist:%22Bob+Dylan%22%20AND%20dur:[330386%20TO%20340386]%20AND%20number:5%20AND%20release:%22Dylan%22
+
+http://musicbrainz.org/ws/2/recording/?query=recording:%22The+Lonesome+Death+Of+Hattie+C%22%20AND%20artist:%22Bob+Dylan%22%20AND%20dur:[344048%20TO%20354048]%20AND%20number:9%20AND%20release:%22The+Times+They+Are+A-Changin%27%22&
+
+http://musicbrainz.org/ws/2/recording/?query=recording:%22The+Lonesome+Death+Of+Hattie+C%22%20AND%20artist:%22Bob+Dylan%22%20AND%20dur:[344048%20TO%20354048]%20AND%20number:9%20AND%20release:%22The+Times+They+Are+A-Changin%27%22&
+
+
+curl -L -O -H "Cookie: oraclelicense=accept-securebackup-cookie" -k "https://edelivery.oracle.com/otn-pub/java/jdk/8u20-b26/jdk-8u20-linux-i586.tar.gz"
+
+sudo mount -t ntfs-3g /dev/sdd1 /media/tyler/Tyhous_HD/
+sudo mount -t ntfs-3g /dev/sdo1 /media/tyler/Tyhous_HD/
+
+/media/tyler/Tyhous_HD/Music/Led Zeppelin
+/media/tyler/Tyhous_HD/Music/Weezer [Discography]
+
+/media/tyler/Tyhous_HD/Music/Bob Dylan - Studio Discography [1962 - 2015]
+/media/tyler/Tyhous_HD/Music/Bob Marley & The Wailers - Studio Discography [VBR]
+/media/tyler/Tyhous_HD/Music/Death Cab for Cutie - Discography/4. 7 Inch Singles
+/media/tyler/Tyhous_HD/Music/Arcade Fire - Discography 2001-2013 (By Jamal The Moroccan)/Albums/2010 - The Suburbs [Deluxe Edition]/
+
+ killit java; pushd ../torrenttunes-client/; git pull; mvn clean install -DskipTests; popd; git pull;  mvn clean install -DskipTests; nohup ./run.sh &>log.out &; tail -f log.out
+
+
