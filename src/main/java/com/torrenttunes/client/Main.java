@@ -13,7 +13,6 @@ import ch.qos.logback.classic.Logger;
 
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.tools.DataSources;
-import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
 import com.torrenttunes.client.webservice.WebService;
 

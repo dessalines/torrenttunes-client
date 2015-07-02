@@ -52,9 +52,9 @@ import com.frostwire.jlibtorrent.swig.ip_filter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.torrenttunes.client.ScanDirectory.ScanInfo;
+import com.torrenttunes.client.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.db.Tables.Library;
-import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
-import com.torrenttunes.client.tools.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.tools.Tools;
 
 

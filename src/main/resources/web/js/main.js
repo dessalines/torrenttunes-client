@@ -319,7 +319,7 @@ function setupArtistCatalogAlbumTab() {
 // and all albums and songs
 function setupArtistCatalogTab() {
 
-
+  
 
   getJson('get_artist/' + artistCatalogMBID, null, true).done(function(e) {
     var artistCatalog = JSON.parse(e);

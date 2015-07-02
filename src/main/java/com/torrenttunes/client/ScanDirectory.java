@@ -1,4 +1,4 @@
-package com.torrenttunes.client.tools;
+package com.torrenttunes.client;
 
 import static com.torrenttunes.client.db.Tables.LIBRARY;
 
@@ -29,9 +29,10 @@ import com.frostwire.jlibtorrent.swig.file_entry;
 import com.frostwire.jlibtorrent.swig.file_storage;
 import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.musicbrainz.mp3.tagger.Tools.Song;
-import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;
+import com.torrenttunes.client.tools.DataSources;
+import com.torrenttunes.client.tools.Tools;
 
 
 public class ScanDirectory {
@@ -49,23 +50,13 @@ public class ScanDirectory {
 		scan();
 	}
 
+
+
 	private void scan() {
 
-		// List all the music files in the sub or sub directories
-		String[] types = {"mp3"};
+		Collection<File> files = fetchUntaggedSongsFromDir(dir);
 
-		Collection<File> files = null;
-		try {
-			files = FileUtils.listFiles(dir, types , true);
-		} catch(java.lang.IllegalArgumentException e) {
-			throw new NoSuchElementException("Couldn't find directory: " + dir);
-		}
-
-		// Remove all that aren't already in the library(you don't need to upload or seed them)
-		Set<File> dbFilePaths = loadFilePathsFromDB();
-		files.removeAll(dbFilePaths);
-
-		log.info("New torrent files: " + files);
+		log.info("New mp3 files: " + files);
 
 		Set<ScanInfo> scanInfos = LibtorrentEngine.INSTANCE.getScanInfos();
 		// Use ScanInfo to keep track of operations and messages while you're doing them
@@ -107,13 +98,6 @@ public class ScanDirectory {
 			// Create a torrent for the file, put it in the /.app/torrents dir
 			si.setStatus(ScanStatus.CreatingTorrent);
 			File torrentFile = createAndSaveTorrent(si, song);
-
-			// If that file already exists in the DB, you don't need to do anything to it
-			if (dbFilePaths.contains(torrentFile)) {
-				log.info(torrentFile + " was already in the DB");
-				si.setStatus(ScanStatus.AlreadyUploaded);
-				continue;
-			}
 
 			// Upload the torrent to the tracker
 			try {
@@ -179,7 +163,25 @@ public class ScanDirectory {
 
 	}
 
-	private static Set<File> loadFilePathsFromDB() {
+	public static Collection<File> fetchUntaggedSongsFromDir(File dir) {
+		// List all the music files in the sub or sub directories
+		String[] types = {"mp3"};
+
+		Collection<File> files = null;
+		try {
+			files = FileUtils.listFiles(dir, types , true);
+		} catch(java.lang.IllegalArgumentException e) {
+			throw new NoSuchElementException("Couldn't find directory: " + dir);
+		}
+
+		// Remove all that aren't already in the library(you don't need to upload or seed them)
+		Set<File> dbFilePaths = loadFilePathsFromDB();
+		files.removeAll(dbFilePaths);
+
+		return files;
+	}
+	
+	public static Set<File> loadFilePathsFromDB() {
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
 		library.isEmpty();

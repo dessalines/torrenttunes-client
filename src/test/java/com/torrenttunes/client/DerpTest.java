@@ -18,11 +18,10 @@ import org.slf4j.LoggerFactory;
 
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.musicbrainz.mp3.tagger.Tools.Song;
+import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.tools.DataSources;
-import com.torrenttunes.client.tools.ScanDirectory;
 import com.torrenttunes.client.tools.Tools;
-import com.torrenttunes.client.tools.ScanDirectory.ScanInfo;
 
 public class DerpTest extends TestCase {
 
