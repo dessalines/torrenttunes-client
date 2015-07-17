@@ -88,25 +88,45 @@ public enum LibtorrentEngine  {
 
 		//		sessionSettings.setTorrentConnectBoost(5);
 		//		sessionSettings.setMinReconnectTime(1);
-//		session.stopDHT();
-		
+		//		session.stopDHT();
+
 		sessionSettings.setActiveDownloads(5);
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
-		sessionSettings.setActiveDHTLimit(5);
+//		sessionSettings.setActiveDHTLimit(5);
+//		sessionSettings.setActiveTrackerLimit(5);
+
+		sessionSettings.setUploadRateLimit(0);
+		sessionSettings.setDownloadRateLimit(0);
 
 		// These worked great!
-//		sessionSettings.setActiveTrackerLimit(1);
-		//				sessionSettings.setTrackerBackoff(3000);
+//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PEER_PROPORTIONAL);
+		session.stopLSD();
+		session.stopDHT();
+		sessionSettings.announceDoubleNAT(true);
+		sessionSettings.setPeerConnectTimeout(25);
+		
+		sessionSettings.useReadCache(false);
+		sessionSettings.setMaxPeerlistSize(500);
+//		sessionSettings.setMaxPeerlistSize(20);
+		sessionSettings.setHalgOpenLimit(5);
+		
+	
+		sessionSettings.setDHTAnnounceInterval(3600);
+		sessionSettings.setMinAnnounceInterval(3600);
+		sessionSettings.setLocalServiceAnnounceInterval(3600);
+
+		
+						sessionSettings.setTrackerBackoff(3000);
 		//		sessionSettings.setTrackerReceiveTimeout(1);
 		//		sessionSettings.setTrackerCompletionTimeout(1);
 		//		sessionSettings.setStopTrackerTimeout(1);
-//		sessionSettings.setActiveLsdLimit(1);
+		//		sessionSettings.setActiveLsdLimit(1);
 
 
 
 
-		sessionSettings.setPeerConnectTimeout(25);
+
 		//		sessionSettings.setPeerTimeout(5);
 		//		sessionSettings.setInactivityTimeout(5);
 
@@ -114,26 +134,24 @@ public enum LibtorrentEngine  {
 
 
 		//		sessionSettings.setMaxPausedPeerlistSize(0);
-		//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
+//				sessionSettings.setChokingAlgorithm(ChokingAlgorithm.RATE_BASED_CHOKER);
 		//		sessionSettings.setCacheSize(999999);
 
 
 		//		sessionSettings.setPeerConnectTimeout(35);
 
 		//		sessionSettings.allowMultipleConnectionsPerIp(true);
-		sessionSettings.announceDoubleNAT(true);
-		sessionSettings.setUploadRateLimit(0);
+
 		//		sessionSettings.setPeerTimeout(15);
 		//		sessionSettings.setInactivityTimeout(30);
-		sessionSettings.setDownloadRateLimit(0);
+
 		//		sessionSettings.setConnectionsLimit(100000);
-		sessionSettings.setHalgOpenLimit(5);
+
 		//		sessionSettings.setConnectionSpeed(3000);
 
 
 		// Performance settings
-		sessionSettings.useReadCache(false);
-		sessionSettings.setMaxPeerlistSize(500);
+
 
 
 
@@ -146,7 +164,7 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setMaxAllowedInRequestQueue(9999);
 		//		sessionSettings.setUnchokeSlotsLimit(800);
 		//		sessionSettings.setCacheExpiry(9999);
-		//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
+			
 
 
 
@@ -197,8 +215,8 @@ public enum LibtorrentEngine  {
 
 		// start sharing them
 		Integer i = 0;
-		while (i < 200) {
-			log.info(i.toString());
+		while (i < library.size()) {
+			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			String torrentPath = track.getString("torrent_path");
 			String filePath = track.getString("file_path");
@@ -208,12 +226,41 @@ public enum LibtorrentEngine  {
 
 			TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
 
-			
+
 			// Set up the scanInfo
 			ScanInfo si = ScanInfo.create(new File(filePath));
 			si.setStatus(ScanStatus.Seeding);
 			si.setMbid(track.getString("mbid"));
 			scanInfos.add(si);
+
+			// Do increments of every x, but only after the x'th torrent announce was a success
+			if (i % 10 == 0) {
+//				log.info("active torrents:" + session.getStatus().get)
+				try {
+					torrent.forceReannounce();
+					torrent.forceDHTAnnounce();
+					final CountDownLatch signal = new CountDownLatch(1);
+
+					session.addListener(new TorrentAlertAdapter(torrent) {
+						@Override
+						public void trackerReply(TrackerReplyAlert alert) {
+							log.info("Tracked reply received for torrent " + torrent.getName());
+							signal.countDown();
+						}
+						
+						@Override
+						public void dhtReply(DhtReplyAlert alert) {
+							log.info("DHT reply received for torrent " + torrent.getName());
+							signal.countDown();
+						}
+					});
+
+					signal.await();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 
 			i++;
 
@@ -225,6 +272,13 @@ public enum LibtorrentEngine  {
 
 
 
+	}
+	
+	public Integer getActiveTorrents() {
+		for (TorrentHandle t : session.getTorrents()) {
+		
+		}
+		return 0;
 	}
 
 	public TorrentHandle addTorrent(File outputParent, File torrentFile) {
@@ -268,12 +322,13 @@ public enum LibtorrentEngine  {
 			public void blockFinished(BlockFinishedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
+
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//				torrent.saveResumeData();
-//				torrent.forceDHTAnnounce();
-//				torrent.forceReannounce();
+				//				torrent.saveResumeData();
+				//				torrent.forceDHTAnnounce();
+				//				torrent.forceReannounce();
 			}
 
 			@Override
@@ -341,6 +396,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void trackerReply(TrackerReplyAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//				torrent.setAutoManaged(true);
 			}
 
 			@Override
@@ -359,13 +415,15 @@ public enum LibtorrentEngine  {
 			@Override
 			public void dhtReply(DhtReplyAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//				torrent.setAutoManaged(true);
 			}
 
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//				torrent.saveResumeData();
-//				torrent.resume();
+
+				//				torrent.saveResumeData();
+				//				torrent.resume();
 			}
 
 			@Override
@@ -392,15 +450,15 @@ public enum LibtorrentEngine  {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
-			
-			
+
+
 		});
 
 
 
 
-//		torrent.setAutoManaged(true);
-
+//				torrent.setAutoManaged(true);
+		
 		torrent.resume();
 
 

@@ -728,6 +728,8 @@ public final class TorrentHandle {
     public void addTracker(AnnounceEntry tracker) {
         th.add_tracker(tracker.getSwig());
     }
+    
+
 
     // ``add_url_seed()`` adds another url to the torrent's list of url
     // seeds. If the given url already exists in that list, the call has no

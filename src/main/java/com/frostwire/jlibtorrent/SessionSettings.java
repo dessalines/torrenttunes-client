@@ -1547,6 +1547,10 @@ public final class SessionSettings {
     	s.setTracker_backoff(value);
     }
     
+    public void setLocalServiceAnnounceInterval(int value) {
+    	s.setLocal_service_announce_interval(value);
+    }
+    
     
  
     
