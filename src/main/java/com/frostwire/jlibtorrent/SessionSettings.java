@@ -1551,6 +1551,10 @@ public final class SessionSettings {
     	s.setLocal_service_announce_interval(value);
     }
     
+    public void setNoConnectPrivilegedPorts(boolean value) {
+    	s.setNo_connect_privileged_ports(value);
+    }
+    
     
  
     

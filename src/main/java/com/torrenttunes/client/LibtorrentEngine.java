@@ -94,17 +94,17 @@ public enum LibtorrentEngine  {
 		sessionSettings.setActiveLimit(-1);
 		sessionSettings.setActiveSeeds(-1);
 //		sessionSettings.setActiveDHTLimit(5);
-//		sessionSettings.setActiveTrackerLimit(5);
+//		sessionSettings.setActiveTrackerLimit(30);
 
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
 
 		// These worked great!
-//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PEER_PROPORTIONAL);
+//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.);
 		session.stopLSD();
 		session.stopDHT();
 		sessionSettings.announceDoubleNAT(true);
-		sessionSettings.setPeerConnectTimeout(25);
+		sessionSettings.setPeerConnectTimeout(240);
 		
 		sessionSettings.useReadCache(false);
 		sessionSettings.setMaxPeerlistSize(500);
@@ -116,8 +116,9 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMinAnnounceInterval(3600);
 		sessionSettings.setLocalServiceAnnounceInterval(3600);
 
+//		sessionSettings.setNoConnectPrivilegedPorts(true);
 		
-						sessionSettings.setTrackerBackoff(3000);
+//						sessionSettings.setTrackerBackoff(3000);
 		//		sessionSettings.setTrackerReceiveTimeout(1);
 		//		sessionSettings.setTrackerCompletionTimeout(1);
 		//		sessionSettings.setStopTrackerTimeout(1);
@@ -234,11 +235,10 @@ public enum LibtorrentEngine  {
 			scanInfos.add(si);
 
 			// Do increments of every x, but only after the x'th torrent announce was a success
-			if (i % 10 == 0) {
+			if (i % 25 == 0) {
 //				log.info("active torrents:" + session.getStatus().get)
 				try {
 					torrent.forceReannounce();
-					torrent.forceDHTAnnounce();
 					final CountDownLatch signal = new CountDownLatch(1);
 
 					session.addListener(new TorrentAlertAdapter(torrent) {
@@ -247,12 +247,7 @@ public enum LibtorrentEngine  {
 							log.info("Tracked reply received for torrent " + torrent.getName());
 							signal.countDown();
 						}
-						
-						@Override
-						public void dhtReply(DhtReplyAlert alert) {
-							log.info("DHT reply received for torrent " + torrent.getName());
-							signal.countDown();
-						}
+
 					});
 
 					signal.await();
