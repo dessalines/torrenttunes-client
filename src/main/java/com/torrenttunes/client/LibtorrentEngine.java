@@ -91,34 +91,38 @@ public enum LibtorrentEngine  {
 		//		session.stopDHT();
 
 		sessionSettings.setActiveDownloads(5);
-		sessionSettings.setActiveLimit(-1);
-		sessionSettings.setActiveSeeds(-1);
-//		sessionSettings.setActiveDHTLimit(5);
-//		sessionSettings.setActiveTrackerLimit(30);
+		sessionSettings.setActiveLimit(30);
+		sessionSettings.setActiveSeeds(20);
+		//		sessionSettings.setActiveDHTLimit(5);
+		//		sessionSettings.setActiveTrackerLimit(30);
 
-		sessionSettings.setUploadRateLimit(0);
-		sessionSettings.setDownloadRateLimit(0);
+		sessionSettings.setUploadRateLimit(4000000);
+		sessionSettings.setDownloadRateLimit(4000000);
 
 		// These worked great!
-//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.);
+		//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.);
 		session.stopLSD();
 		session.stopDHT();
 		sessionSettings.announceDoubleNAT(true);
-		sessionSettings.setPeerConnectTimeout(240);
-		
+		sessionSettings.setPeerConnectTimeout(60);
+
 		sessionSettings.useReadCache(false);
 		sessionSettings.setMaxPeerlistSize(500);
-//		sessionSettings.setMaxPeerlistSize(20);
+		//		sessionSettings.setMaxPeerlistSize(20);
 		sessionSettings.setHalgOpenLimit(5);
-		
-	
-		sessionSettings.setDHTAnnounceInterval(3600);
-		sessionSettings.setMinAnnounceInterval(3600);
-		sessionSettings.setLocalServiceAnnounceInterval(3600);
 
-//		sessionSettings.setNoConnectPrivilegedPorts(true);
-		
-//						sessionSettings.setTrackerBackoff(3000);
+
+
+		//		sessionSettings.setDHTAnnounceInterval(3600);
+		sessionSettings.setMinAnnounceInterval(3600);
+		//		sessionSettings.setLocalServiceAnnounceInterval(3600);
+
+
+		//		sessionSettings.setNoConnectPrivilegedPorts(true);
+
+		sessionSettings.setTrackerBackoff(10);
+		sessionSettings.setAutoManageInterval(600);
+		sessionSettings.setRateLimitIPOverhead(true);
 		//		sessionSettings.setTrackerReceiveTimeout(1);
 		//		sessionSettings.setTrackerCompletionTimeout(1);
 		//		sessionSettings.setStopTrackerTimeout(1);
@@ -135,7 +139,7 @@ public enum LibtorrentEngine  {
 
 
 		//		sessionSettings.setMaxPausedPeerlistSize(0);
-//				sessionSettings.setChokingAlgorithm(ChokingAlgorithm.RATE_BASED_CHOKER);
+		//				sessionSettings.setChokingAlgorithm(ChokingAlgorithm.RATE_BASED_CHOKER);
 		//		sessionSettings.setCacheSize(999999);
 
 
@@ -144,11 +148,11 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.allowMultipleConnectionsPerIp(true);
 
 		//		sessionSettings.setPeerTimeout(15);
-		//		sessionSettings.setInactivityTimeout(30);
+		//				sessionSettings.setInactivityTimeout(30);
 
-		//		sessionSettings.setConnectionsLimit(100000);
+		//				sessionSettings.setConnectionsLimit(100000);
 
-		//		sessionSettings.setConnectionSpeed(3000);
+		//				sessionSettings.setConnectionSpeed(3000);
 
 
 		// Performance settings
@@ -165,7 +169,7 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setMaxAllowedInRequestQueue(9999);
 		//		sessionSettings.setUnchokeSlotsLimit(800);
 		//		sessionSettings.setCacheExpiry(9999);
-			
+
 
 
 
@@ -197,7 +201,7 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public void alert(Alert<?> alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 		});
@@ -236,9 +240,11 @@ public enum LibtorrentEngine  {
 
 			// Do increments of every x, but only after the x'th torrent announce was a success
 			if (i % 25 == 0) {
-//				log.info("active torrents:" + session.getStatus().get)
+				//				log.info("active torrents:" + session.getStatus().get)
+				torrent.setAutoManaged(false);
+				torrent.resume();
+				torrent.forceReannounce();
 				try {
-					torrent.forceReannounce();
 					final CountDownLatch signal = new CountDownLatch(1);
 
 					session.addListener(new TorrentAlertAdapter(torrent) {
@@ -246,6 +252,14 @@ public enum LibtorrentEngine  {
 						public void trackerReply(TrackerReplyAlert alert) {
 							log.info("Tracked reply received for torrent " + torrent.getName());
 							signal.countDown();
+							torrent.setAutoManaged(true);
+						}
+						
+						@Override
+						public void peerConnect(PeerConnectAlert alert) {
+							log.info("Peer connect alert received for torrent " + torrent.getName());
+							signal.countDown();
+							torrent.setAutoManaged(true);
 						}
 
 					});
@@ -268,10 +282,10 @@ public enum LibtorrentEngine  {
 
 
 	}
-	
+
 	public Integer getActiveTorrents() {
 		for (TorrentHandle t : session.getTorrents()) {
-		
+
 		}
 		return 0;
 	}
@@ -309,140 +323,138 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public void stateChanged(StateChangedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-				//				torrent.saveResumeData();
-				//				torrent.forceDHTAnnounce();
-				//				torrent.forceReannounce();
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+
 			}
 
 			@Override
 			public void blockDownloading(BlockDownloadingAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void peerConnect(PeerConnectAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 			@Override
 			public void peerSnubbed(PeerSnubbedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 			@Override
 			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void saveResumeData(SaveResumeDataAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 
 			@Override
 			public void saveResumeDataFailed(SaveResumeDataFailedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void peerDisconnected(PeerDisconnectedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void peerBan(PeerBanAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 			@Override
 			public void peerError(PeerErrorAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 
 			@Override
 			public void peerBlocked(PeerBlockedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 			@Override
 			public void trackerAnnounce(TrackerAnnounceAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 			@Override
 			public void trackerReply(TrackerReplyAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//				torrent.setAutoManaged(true);
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				torrent.setAutoManaged(true);
 			}
 
 			@Override
 			public void trackerWarning(TrackerWarningAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 			@Override
 			public void trackerError(TrackerErrorAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
 
 			@Override
 			public void dhtReply(DhtReplyAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//				torrent.setAutoManaged(true);
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				//				torrent.setAutoManaged(true);
 			}
 
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
-				//				torrent.saveResumeData();
+				//								torrent.saveResumeData();
 				//				torrent.resume();
 			}
 
 			@Override
 			public void torrentError(TorrentErrorAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void torrentResumed(TorrentResumedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void torrentUpdate(TorrentUpdateAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
 			public void torrentChecked(TorrentCheckedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 			@Override
 			public void fastresumeRejected(FastresumeRejectedAlert alert) {
-				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 			}
 
@@ -452,8 +464,9 @@ public enum LibtorrentEngine  {
 
 
 
-//				torrent.setAutoManaged(true);
-		
+
+
+
 		torrent.resume();
 
 

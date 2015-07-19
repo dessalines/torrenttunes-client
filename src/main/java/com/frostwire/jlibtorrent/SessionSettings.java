@@ -1555,6 +1555,10 @@ public final class SessionSettings {
     	s.setNo_connect_privileged_ports(value);
     }
     
+    public void setRateLimitIPOverhead(boolean value) {
+    	s.setRate_limit_ip_overhead(value);
+    }
+    
     
  
     
