@@ -1,1 +1,1 @@
-java -jar target/torrenttunes-client.jar $@
+java -jar target/torrenttunes-client-dev.jar $@

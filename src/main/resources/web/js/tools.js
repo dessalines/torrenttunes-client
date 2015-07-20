@@ -1,5 +1,5 @@
 var localSparkService = 'http://localhost:4568/';
-var externalSparkService = 'http://torrenttunes.ml/';
+var externalSparkService = 'http://torrenttunes.ml:4567/';
 
 // var externalSparkService = 'http://127.0.0.1:4567/';
 
