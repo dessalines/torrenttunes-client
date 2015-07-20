@@ -1559,6 +1559,10 @@ public final class SessionSettings {
     	s.setRate_limit_ip_overhead(value);
     }
     
+    public void setOptimizeHashingForSpeed(boolean value) {
+    	s.setOptimize_hashing_for_speed(value);
+    }
+    
     
  
     

@@ -90,14 +90,14 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setMinReconnectTime(1);
 		//		session.stopDHT();
 
-		sessionSettings.setActiveDownloads(5);
-		sessionSettings.setActiveLimit(30);
-		sessionSettings.setActiveSeeds(20);
+		sessionSettings.setActiveDownloads(15);
+		sessionSettings.setActiveLimit(-1);
+		sessionSettings.setActiveSeeds(-1);
 		//		sessionSettings.setActiveDHTLimit(5);
 		//		sessionSettings.setActiveTrackerLimit(30);
 
-		sessionSettings.setUploadRateLimit(4000000);
-		sessionSettings.setDownloadRateLimit(4000000);
+//		sessionSettings.setUploadRateLimit(4000000);
+//		sessionSettings.setDownloadRateLimit(4000000);
 
 		// These worked great!
 		//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.);
@@ -107,11 +107,11 @@ public enum LibtorrentEngine  {
 		sessionSettings.setPeerConnectTimeout(60);
 
 		sessionSettings.useReadCache(false);
-		sessionSettings.setMaxPeerlistSize(500);
+		sessionSettings.setMaxPeerlistSize(200);
 		//		sessionSettings.setMaxPeerlistSize(20);
 		sessionSettings.setHalgOpenLimit(5);
 
-
+		
 
 		//		sessionSettings.setDHTAnnounceInterval(3600);
 		sessionSettings.setMinAnnounceInterval(3600);
@@ -123,8 +123,9 @@ public enum LibtorrentEngine  {
 		sessionSettings.setTrackerBackoff(10);
 		sessionSettings.setAutoManageInterval(600);
 		sessionSettings.setRateLimitIPOverhead(true);
-		//		sessionSettings.setTrackerReceiveTimeout(1);
-		//		sessionSettings.setTrackerCompletionTimeout(1);
+//				sessionSettings.setTrackerReceiveTimeout(30);
+//				sessionSettings.setTrackerCompletionTimeout(30);
+				sessionSettings.setOptimizeHashingForSpeed(false);
 		//		sessionSettings.setStopTrackerTimeout(1);
 		//		sessionSettings.setActiveLsdLimit(1);
 
@@ -140,7 +141,7 @@ public enum LibtorrentEngine  {
 
 		//		sessionSettings.setMaxPausedPeerlistSize(0);
 		//				sessionSettings.setChokingAlgorithm(ChokingAlgorithm.RATE_BASED_CHOKER);
-		//		sessionSettings.setCacheSize(999999);
+				sessionSettings.setCacheSize(0);
 
 
 		//		sessionSettings.setPeerConnectTimeout(35);
