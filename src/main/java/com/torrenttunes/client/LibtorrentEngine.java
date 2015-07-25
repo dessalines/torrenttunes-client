@@ -256,7 +256,7 @@ public enum LibtorrentEngine  {
 
 		// start sharing them
 		Integer i = 0;
-		while (i < library.size()) {
+		while (i < 500) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			String torrentPath = track.getString("torrent_path");
