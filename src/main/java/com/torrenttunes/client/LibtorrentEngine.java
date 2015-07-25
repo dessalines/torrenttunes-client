@@ -267,7 +267,7 @@ public enum LibtorrentEngine  {
 			TorrentHandle torrent = addTorrent(outputFile, new File(torrentPath));
 
 			torrents.add(torrent);
-//			addDefaultListeners(torrent);
+			addDefaultListeners(torrent);
 
 			torrent.resume();
 			
