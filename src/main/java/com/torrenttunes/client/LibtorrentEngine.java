@@ -262,9 +262,10 @@ public enum LibtorrentEngine  {
 			String torrentPath = track.getString("torrent_path");
 			String filePath = track.getString("file_path");
 
-			File outputFile = new File(filePath);
 
-			TorrentHandle torrent = addTorrent(outputFile, new File(torrentPath));
+			File outputParent = new File(filePath).getParentFile();
+			
+			TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
 
 			torrents.add(torrent);
 			addDefaultListeners(torrent);
@@ -383,12 +384,12 @@ public enum LibtorrentEngine  {
 
 	}
 
-	public TorrentHandle addTorrent(File outputFile, File torrentFile) {
+	public TorrentHandle addTorrent(File outputParent, File torrentFile) {
 
-		File outputParent = outputFile.getParentFile();
+
 
 		// Check to see if saveResume data exists:
-		File saveResumeData = constructSaveResumeFile(outputFile);
+		File saveResumeData = constructSaveResumeFile(torrentFile);
 		if (saveResumeData.exists()) {
 			log.info("Save resume data found: " + saveResumeData.getAbsolutePath());
 		}
@@ -397,8 +398,7 @@ public enum LibtorrentEngine  {
 				: session.addTorrent(torrentFile, outputParent);
 
 
-		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath() + 
-				" , output file: " + outputFile.getAbsolutePath());
+		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath());
 
 		shareTorrent(torrent);
 		
