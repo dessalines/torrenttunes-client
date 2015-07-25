@@ -268,7 +268,7 @@ public enum LibtorrentEngine  {
 			TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
 
 			torrents.add(torrent);
-			addDefaultListeners(torrent);
+
 
 
 			
@@ -401,6 +401,7 @@ public enum LibtorrentEngine  {
 		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath());
 
 		shareTorrent(torrent);
+		addDefaultListeners(torrent);
 		
 		infoHashToTorrentMap.put(torrent.getInfoHash().toString().toLowerCase(), torrent);
 
