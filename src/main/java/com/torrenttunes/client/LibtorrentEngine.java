@@ -269,7 +269,7 @@ public enum LibtorrentEngine  {
 			torrents.add(torrent);
 			addDefaultListeners(torrent);
 
-			torrent.resume();
+
 			
 
 
@@ -352,7 +352,7 @@ public enum LibtorrentEngine  {
 
 		log.info("Done seeding library, total of " + session.getTorrents().size() + " torrents shared");
 
-		session.resume();
+//		session.resume();
 		int j = 0;
 		for (TorrentHandle t : session.getTorrents()) {
 
@@ -400,7 +400,7 @@ public enum LibtorrentEngine  {
 		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath() + 
 				" , output file: " + outputFile.getAbsolutePath());
 
-//		shareTorrent(torrent);
+		shareTorrent(torrent);
 		
 		infoHashToTorrentMap.put(torrent.getInfoHash().toString().toLowerCase(), torrent);
 
@@ -658,6 +658,7 @@ public enum LibtorrentEngine  {
 
 	private void shareTorrent(TorrentHandle torrent) {
 		torrent.setAutoManaged(false);
+		torrent.resume();
 //		
 	}
 
