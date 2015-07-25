@@ -1559,6 +1559,30 @@ public final class SessionSettings {
     	s.setRate_limit_ip_overhead(value);
     }
     
+    public void setFileChecksDelayPerBlock(int value) {
+    	s.setFile_checks_delay_per_block(value);
+    }
+    
+    public void setFilePoolSize(int value) {
+    	s.setFile_pool_size(value);
+    }
+    
+    public void setOptimizeHashingForSpeed(boolean value) {
+    	s.setOptimize_hashing_for_speed(value);
+    }
+    
+    public void setOptimisticDiskRetry(int value) {
+    	s.setOptimistic_disk_retry(value);
+    }
+    
+    public void setFreeTorrentHashes(boolean value) {
+    	s.setFree_torrent_hashes(value);
+    }
+    
+    public void setIncomingStartsQueuedTorrents(boolean value) {
+    	s.setIncoming_starts_queued_torrents(value);
+    }
+    
     
  
     

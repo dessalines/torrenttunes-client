@@ -1,2 +1,2 @@
 mvn clean install -DskipTests
-java -jar target/torrenttunes-client.jar $@
+java -Xmx1024m -jar target/torrenttunes-client.jar $@
