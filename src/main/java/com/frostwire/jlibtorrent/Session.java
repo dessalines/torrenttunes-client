@@ -333,6 +333,7 @@ public final class Session {
         return new SessionProxy(s.abort());
     }
 
+    
     /**
      * Pausing the session has the same effect as pausing every torrent in
      * it, except that torrents will not be resumed by the auto-manage

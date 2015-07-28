@@ -28,6 +28,7 @@ import com.frostwire.jlibtorrent.SessionSettings;
 import com.frostwire.jlibtorrent.SessionSettings.BandwidthMixedAlgo;
 import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
 import com.frostwire.jlibtorrent.SessionSettings.DiskCacheAlgo;
+import com.frostwire.jlibtorrent.SessionSettings.SeedChokingAlgorithm;
 import com.frostwire.jlibtorrent.SessionSettings.SuggestMode;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
@@ -114,13 +115,13 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setMinReconnectTime(1);
 		session.stopDHT();
 
-		//		sessionSettings.setActiveDownloads(10);
-		sessionSettings.setActiveLimit(-1);
-		sessionSettings.setActiveSeeds(-1);
+				sessionSettings.setActiveDownloads(10);
+		sessionSettings.setActiveLimit(999999);
+		sessionSettings.setActiveSeeds(999999);
+	
 
-
-		//				sessionSettings.setActiveDHTLimit(5);
-		//				sessionSettings.setActiveTrackerLimit(10);
+//						sessionSettings.setActiveDHTLimit(5);
+						sessionSettings.setActiveTrackerLimit(-1);
 
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
@@ -133,11 +134,14 @@ public enum LibtorrentEngine  {
 		sessionSettings.setPeerConnectTimeout(60);
 
 		sessionSettings.useReadCache(false);
-		//		sessionSettings.setMaxPeerlistSize(500);
-		//		sessionSettings.setMaxPeerlistSize(20);
+				sessionSettings.setMaxPeerlistSize(500);
+//				sessionSettings.setMaxPeerlistSize(20);
+//		sessionSettings.setSeedChokingAlgorithm(SeedChokingAlgorithm.ROUND_ROBIN);
+//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
 		sessionSettings.setHalgOpenLimit(5);
+		
 
-
+		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PREFER_TCP);
 
 //		//		sessionSettings.setDHTAnnounceInterval(3600);
 //				sessionSettings.setMinAnnounceInterval(3600);
@@ -256,7 +260,7 @@ public enum LibtorrentEngine  {
 
 		// start sharing them
 		Integer i = 0;
-		while (i < 500) {
+		while (i < 7000) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			String torrentPath = track.getString("torrent_path");
@@ -359,7 +363,9 @@ public enum LibtorrentEngine  {
 
 			log.info("Setting torrent# " + j++ +  " "  + t.getName() + " to automanage" );
 //			t.setAutoManaged(true);
+			t.flushCache();
 			t.resume();
+		
 		}
 		
 //		for (TorrentHandle t : infoHashToTorrentMap.values()) {
