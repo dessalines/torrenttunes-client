@@ -1583,6 +1583,10 @@ public final class SessionSettings {
     	s.setIncoming_starts_queued_torrents(value);
     }
     
+    public void setSeedTimeLimit(int value) {
+    	s.setSeed_time_limit(value);
+    }
+    
 
     
     
