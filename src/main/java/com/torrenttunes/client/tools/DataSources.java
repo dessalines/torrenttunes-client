@@ -15,7 +15,7 @@ public class DataSources {
 	
 	static final Logger log = LoggerFactory.getLogger(DataSources.class);
 
-	public static String APP_NAME = "torrenttunes-client";
+	public static String APP_NAME = "torrenttunes-client-dev";
 	
 	public static String VERSION = "0.1.0";
 	
@@ -24,6 +24,14 @@ public class DataSources {
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
+	
+	public static final String TRACKER_IP = "torrenttunes.ml";
+//	public static final String TRACKER_IP = "127.0.0.1";
+	
+	public static final String TRACKER_WEB_PORT = "4567";// Main is 80, dev is 4567
+	
+	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/";
+	
 	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
@@ -93,12 +101,7 @@ public class DataSources {
 	}
 	
 	
-	public static final String TRACKER_IP = "torrenttunes.ml";
-//	public static final String TRACKER_IP = "127.0.0.1";
-	
-	public static final String TRACKER_WEB_PORT = "80";
-	
-	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/";
+
 	
 	public static final String TORRENT_UPLOAD_URL = TRACKER_URL + "torrent_upload";
 	

@@ -1559,6 +1559,7 @@ public final class SessionSettings {
     	s.setRate_limit_ip_overhead(value);
     }
     
+
     public void setFileChecksDelayPerBlock(int value) {
     	s.setFile_checks_delay_per_block(value);
     }
@@ -1587,6 +1588,8 @@ public final class SessionSettings {
     	s.setSeed_time_limit(value);
     }
     
+
+
 
     
     

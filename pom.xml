@@ -58,7 +58,7 @@
 
 								</transformer>
 							</transformers>
-							<outputFile>target/${project.artifactId}.jar</outputFile>
+							<outputFile>target/${project.artifactId}-dev.jar</outputFile>
 						</configuration>
 					</execution>
 				</executions>
@@ -95,7 +95,7 @@
 		<dependency>
 			<groupId>com.github.tchoulihan</groupId>
 			<artifactId>musicbrainz-tagger</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>

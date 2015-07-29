@@ -101,7 +101,10 @@ function setupTabs() {
     } else if (tabId == "#artistcatalog_album") {
       setupArtistCatalogAlbumTab();
 
-    } else if (tabId == "#artistcatalog_song") {
+    } else if (tabId == "#artistcatalog_compilation") {
+      setupArtistCatalogCompilationTab();
+
+    }else if (tabId == "#artistcatalog_song") {
       setupArtistCatalogSongTab();
 
     } else if (tabId == "#albumcatalogTab") {
@@ -311,6 +314,15 @@ function setupArtistCatalogAlbumTab() {
     console.log(allArtistAlbums);
 
     fillMustacheWithJson(allArtistAlbums, topArtistAlbumsTemplate, '#all_artist_albums_div');
+  });
+}
+
+function setupArtistCatalogCompilationTab() {
+  getJson('get_all_compilations/' + artistCatalogMBID, null, true).done(function(e) {
+    var allArtistAlbums = JSON.parse(e);
+    console.log(allArtistAlbums);
+
+    fillMustacheWithJson(allArtistAlbums, topArtistAlbumsTemplate, '#all_artist_compilations_div');
   });
 }
 
