@@ -58,7 +58,7 @@
 
 								</transformer>
 							</transformers>
-							<outputFile>target/${project.artifactId}-dev.jar</outputFile>
+							<outputFile>target/${project.artifactId}.jar</outputFile>
 						</configuration>
 					</execution>
 				</executions>

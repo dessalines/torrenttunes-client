@@ -15,7 +15,7 @@ public class DataSources {
 	
 	static final Logger log = LoggerFactory.getLogger(DataSources.class);
 
-	public static String APP_NAME = "torrenttunes-client-dev";
+	public static String APP_NAME = "torrenttunes-client";
 	
 	public static String VERSION = "0.1.0";
 	
