@@ -28,7 +28,7 @@ public class DataSources {
 	public static final String TRACKER_IP = "torrenttunes.ml";
 //	public static final String TRACKER_IP = "127.0.0.1";
 	
-	public static final String TRACKER_WEB_PORT = "4567";// Main is 80, dev is 4567
+	public static final String TRACKER_WEB_PORT = "80";// Main is 80, dev is 4567
 	
 	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/";
 	
