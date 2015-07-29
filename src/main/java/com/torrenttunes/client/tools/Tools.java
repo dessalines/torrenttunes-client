@@ -567,6 +567,8 @@ public class Tools {
 
 
 	public static final void httpSaveFile(String urlString, String savePath) throws IOException {
+		log.info("url string = " + urlString);
+		
 		URL url = new URL(urlString);
 
 		URLConnection uc = url.openConnection();
