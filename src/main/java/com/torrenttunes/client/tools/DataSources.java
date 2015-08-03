@@ -136,6 +136,8 @@ public class DataSources {
 		} else if (osName.contains("mac")) {
 			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.dylib";
 		}
+		
+		log.info("Using libtorrent @" + ret);
 		return ret;
 	}
 	

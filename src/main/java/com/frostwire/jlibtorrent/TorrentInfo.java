@@ -444,14 +444,14 @@ public final class TorrentInfo {
     }
 
     public static TorrentInfo bdecode(byte[] data) {
-        lazy_entry n = new lazy_entry();
+        bdecode_node n = new bdecode_node();
         error_code ec = new error_code();
-        int ret = lazy_entry.bdecode(Vectors.bytes2char_vector(data), n, ec);
+        int ret = bdecode_node.bdecode(Vectors.bytes2char_vector(data), n, ec);
 
         if (ret == 0) {
             return new TorrentInfo(new torrent_info(n));
         } else {
-            throw new IllegalArgumentException("Can't decode data");
+            throw new IllegalArgumentException("Can't decode data: " + ec.message());
         }
     }
 }

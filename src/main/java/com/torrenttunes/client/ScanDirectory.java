@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -47,16 +49,21 @@ public class ScanDirectory {
 
 	private ScanDirectory(File dir) {
 		this.dir = dir;
+		LibtorrentEngine.INSTANCE.getSession().pause();
 		scan();
+		LibtorrentEngine.INSTANCE.getSession().resume();
 	}
 
 
 
 	private void scan() {
 
-		Collection<File> files = fetchUntaggedSongsFromDir(dir);
+		List<File> files = fetchUntaggedSongsFromDir(dir);
 
-		log.info("New mp3 files: " + files);
+		log.info("New mp3 files: ");
+		for (File file : files) {
+			log.info(file.getAbsolutePath());
+		};
 
 		Set<ScanInfo> scanInfos = LibtorrentEngine.INSTANCE.getScanInfos();
 		// Use ScanInfo to keep track of operations and messages while you're doing them
@@ -115,8 +122,20 @@ public class ScanDirectory {
 			log.info(si.getFile().getParentFile().getAbsolutePath());
 			TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
 					torrentFile);
+//			torrent.pause();
 
 
+			// upload it to the server
+			try {
+				String songUploadJson = Tools.MAPPER.writeValueAsString(song);
+				Tools.uploadTorrentInfoToTracker(songUploadJson);
+			} catch(NoSuchElementException | IOException | NullPointerException e) {
+
+				e.printStackTrace();
+				si.setStatus(ScanStatus.UploadingError);
+				continue;
+			}
+			
 
 			// Save it to the DB
 			Library track = null;
@@ -141,16 +160,7 @@ public class ScanDirectory {
 
 
 
-			try {
-				String songUploadJson = Tools.MAPPER.writeValueAsString(song);
-				Tools.uploadTorrentInfoToTracker(songUploadJson);
-			} catch(NoSuchElementException | IOException | NullPointerException e) {
-				e.printStackTrace();
-				Tools.dbInit();
-				track.delete(); // delete the track from the db
-				Tools.dbClose();
-				si.setStatus(ScanStatus.UploadingError);
-			}
+
 
 			// Set it as scanned
 			si.setScanned(true);
@@ -163,7 +173,7 @@ public class ScanDirectory {
 
 	}
 
-	public static Collection<File> fetchUntaggedSongsFromDir(File dir) {
+	public static List<File> fetchUntaggedSongsFromDir(File dir) {
 		// List all the music files in the sub or sub directories
 		String[] types = {"mp3"};
 
@@ -174,13 +184,19 @@ public class ScanDirectory {
 			throw new NoSuchElementException("Couldn't find directory: " + dir);
 		}
 
+
+
 		// Remove all that aren't already in the library(you don't need to upload or seed them)
 		Set<File> dbFilePaths = loadFilePathsFromDB();
 		files.removeAll(dbFilePaths);
 
-		return files;
+		// sort the files
+		List<File> sortedFiles = new ArrayList<File>(files);
+		Collections.sort(sortedFiles);
+
+		return sortedFiles;
 	}
-	
+
 	public static Set<File> loadFilePathsFromDB() {
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
@@ -194,7 +210,9 @@ public class ScanDirectory {
 		return libraryFiles;
 	}
 
-
+	
+	
+	
 
 	public static File createAndSaveTorrent(ScanInfo si, Song song) {
 
@@ -202,9 +220,10 @@ public class ScanDirectory {
 				si.getFile(), song);
 		File torrentFile = new File(DataSources.TORRENTS_DIR() + "/" + torrentFileName + ".torrent");
 
+		return Tools.createAndSaveTorrent(torrentFile, si.getFile());
 		//
 		//
-		file_storage fs = new file_storage();
+
 		//		
 		//		FileStorage ffs = new FileStorage(fs);
 		////		ffs.addFile(si.getFileName(), si.getFile().length());
@@ -236,8 +255,7 @@ public class ScanDirectory {
 
 
 
-		// Add the file
-		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
+
 
 		//				fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
 		//		fs.add_file(DataSources.SAMPLE_TORRENT.getAbsolutePath(), DataSources.SAMPLE_TORRENT.getAbsolutePath().length());
@@ -248,50 +266,7 @@ public class ScanDirectory {
 		//						+ "- tt[" + torrentFileName + "]");
 
 
-		create_torrent t = new create_torrent(fs);
-
-
-		// Add trackers in tiers
-		for (URI announce : DataSources.ANNOUNCE_LIST()) {
-			t.add_tracker(announce.toASCIIString());
-		}
-
-
-		t.set_priv(false);
-		t.set_creator(System.getProperty("user.name"));
-
-		error_code ec = new error_code();
-
-
-		// reads the files and calculates the hashes
-		libtorrent.set_piece_hashes(t, si.getFile().getParent(), ec);
-
-		if (ec.value() != 0) {
-			log.info(ec.message());
-		}
-
-		// Get the bencode and write the file
-		Entry entry =  new Entry(t.generate());
-
-		Map<String, Entry> entryMap = entry.dictionary();
-		Entry entryFromUpdatedMap = Entry.fromMap(entryMap);
-		final byte[] bencode = entryFromUpdatedMap.bencode();
-
-		try {
-			FileOutputStream fos;
-
-			fos = new FileOutputStream(torrentFile);
-
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			bos.write(bencode);
-			bos.flush();
-			bos.close();
-		} catch (IOException e) {
-			log.error("Couldn't write file");
-			e.printStackTrace();
-		}
-
-		return torrentFile;
+		
 
 	}
 

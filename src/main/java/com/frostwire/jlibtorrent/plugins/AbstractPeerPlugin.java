@@ -1,7 +1,7 @@
 package com.frostwire.jlibtorrent.plugins;
 
 import com.frostwire.jlibtorrent.*;
-import com.frostwire.jlibtorrent.swig.lazy_entry;
+import com.frostwire.jlibtorrent.swig.bdecode_node;
 
 /**
  * @author gubatron
@@ -40,7 +40,7 @@ public abstract class AbstractPeerPlugin implements PeerPlugin {
     }
 
     @Override
-    public boolean onExtensionHandshake(lazy_entry n) {
+    public boolean onExtensionHandshake(bdecode_node n) {
         return true;
     }
 

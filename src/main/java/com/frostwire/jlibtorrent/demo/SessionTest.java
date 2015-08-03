@@ -19,8 +19,6 @@ public final class SessionTest {
             public int[] types() {
                 return null;
             }
-            
-            
 
             @Override
             public void alert(Alert<?> alert) {

@@ -68,18 +68,8 @@ public final class TorrentStatus {
      *
      * @return
      */
-    public PosixTimeDuration getNextAnnounce() {
-        return new PosixTimeDuration(ts.getNext_announce());
-    }
-
-    /**
-     * The time the tracker want us to wait until we announce our self
-     * again the next time.
-     *
-     * @return
-     */
-    public PosixTimeDuration getAnnounceInterval() {
-        return new PosixTimeDuration(ts.getAnnounce_interval());
+    public Duration nextAnnounce() {
+        return new Duration(ts.getNext_announce());
     }
 
     /**
@@ -682,8 +672,7 @@ public final class TorrentStatus {
      */
     public enum State {
 
-        //UNUSED_ENUM_FOR_BACKWARDS_COMPATIBILITY(torrent_status.state_t.unused_enum_for_backwards_compatibility.swigValue()),
-        QUEUED_FOR_CHECKING(torrent_status.state_t.queued_for_checking.swigValue()),
+        UNUSED_ENUM_FOR_BACKWARDS_COMPATIBILITY(torrent_status.state_t.unused_enum_for_backwards_compatibility.swigValue()),
 
         /**
          * The torrent has not started its download yet, and is
@@ -736,7 +725,9 @@ public final class TorrentStatus {
         /**
          *
          */
-        UNKNOWN(-1);
+        UNKNOWN(-1),
+
+        QUEUED_FOR_CHECKING(torrent_status.state_t.unused_enum_for_backwards_compatibility.swigValue());
 
         private State(int swigValue) {
             this.swigValue = swigValue;

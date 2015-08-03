@@ -21,9 +21,9 @@ public final class UrlSeedAlert extends TorrentAlert<url_seed_alert> {
      *
      * @return
      */
-//    public ErrorCode error() {
-//        return new ErrorCode(alert.getError());
-//    }
+    public ErrorCode error() {
+        return new ErrorCode(alert.getError());
+    }
 
     /**
      * The URL the error is associated with.
@@ -31,7 +31,7 @@ public final class UrlSeedAlert extends TorrentAlert<url_seed_alert> {
      * @return
      */
     public String serverUrl() {
-        return alert.getUrl();
+        return alert.server_url();
     }
 
     /**
@@ -41,6 +41,6 @@ public final class UrlSeedAlert extends TorrentAlert<url_seed_alert> {
      * @return
      */
     public String errorMessage() {
-        return alert.getMsg();
+        return alert.error_message();
     }
 }

@@ -108,15 +108,24 @@ public final class Alerts {
         CAST_ALERT_METHOD(incoming_connection_alert.class, map);
         CAST_ALERT_METHOD(add_torrent_alert.class, map);
         CAST_ALERT_METHOD(state_update_alert.class, map);
+        CAST_ALERT_METHOD(mmap_cache_alert.class, map);
+        CAST_ALERT_METHOD(session_stats_alert.class, map);
         CAST_ALERT_METHOD(torrent_update_alert.class, map);
         CAST_ALERT_METHOD(dht_error_alert.class, map);
         CAST_ALERT_METHOD(dht_immutable_item_alert.class, map);
         CAST_ALERT_METHOD(dht_mutable_item_alert.class, map);
         CAST_ALERT_METHOD(dht_put_alert.class, map);
         CAST_ALERT_METHOD(i2p_alert.class, map);
-
+        CAST_ALERT_METHOD(dht_outgoing_get_peers_alert.class, map);
+        CAST_ALERT_METHOD(log_alert.class, map);
+        CAST_ALERT_METHOD(torrent_log_alert.class, map);
+        CAST_ALERT_METHOD(peer_log_alert.class, map);
+        CAST_ALERT_METHOD(lsd_error_alert.class, map);
+        CAST_ALERT_METHOD(dht_stats_alert.class, map);
+        CAST_ALERT_METHOD(incoming_request_alert.class, map);
+        CAST_ALERT_METHOD(dht_log_alert.class, map);
+        CAST_ALERT_METHOD(dht_pkt_alert.class, map);
         CAST_ALERT_METHOD(dht_get_peers_reply_alert.class, map);
-        CAST_ALERT_METHOD(set_piece_hashes_alert.class, map);
 
         return Collections.unmodifiableMap(map);
     }

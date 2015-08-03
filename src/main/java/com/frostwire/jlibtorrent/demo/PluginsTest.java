@@ -85,7 +85,7 @@ public final class PluginsTest {
 
             @Override
             public boolean onUnknownTorrent(Sha1Hash infoHash, PeerConnection pc, AddTorrentParams p) {
-                System.out.println(infoHash + ", pc: " + pc.pid());
+                System.out.println(infoHash + ", pc: " + pc.preferContiguousBlocks());
                 return false;
             }
 

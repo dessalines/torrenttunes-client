@@ -5,6 +5,7 @@ import com.frostwire.jlibtorrent.alerts.DhtGetPeersReplyAlert;
 import com.frostwire.jlibtorrent.alerts.DhtImmutableItemAlert;
 import com.frostwire.jlibtorrent.swig.char_vector;
 import com.frostwire.jlibtorrent.swig.dht_item;
+import com.frostwire.jlibtorrent.swig.settings_pack;
 import com.frostwire.jlibtorrent.swig.sha1_hash;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public final class DHT {
                 // ignore
             }
 
-            ready = s.getStatus().getDHTNodes() > nodes;
+            ready = s.getDHTStats().totalNodes() > nodes;
         }
     }
 
@@ -67,7 +68,7 @@ public final class DHT {
     }
 
     public long totalNodes() {
-        return s.getStatus().getDHTNodes();
+        return s.getDHTStats().totalNodes();
     }
 
     public void get(String sha1) {
@@ -137,8 +138,8 @@ public final class DHT {
             public void alert(Alert<?> alert) {
                 if (alert instanceof DhtGetPeersReplyAlert) {
                     DhtGetPeersReplyAlert replyAlert = (DhtGetPeersReplyAlert) alert;
-                    if (target.equals(replyAlert.getInfoHash())) {
-                        result[0] = replyAlert.getPeers();
+                    if (target.equals(replyAlert.infoHash())) {
+                        result[0] = replyAlert.peers();
                         signal.countDown();
                     }
                 }
@@ -169,11 +170,9 @@ public final class DHT {
     }
 
     private void toggleDHT(boolean on) {
-        if (on) {
-            s.startDHT();
-        } else {
-            s.stopDHT();
-        }
+        SettingsPack pack = new SettingsPack();
+        pack.setBoolean(settings_pack.bool_types.enable_dht.swigValue(), on);
+        s.applySettings(pack);
     }
 
     /**

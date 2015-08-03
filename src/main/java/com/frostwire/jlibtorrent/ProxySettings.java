@@ -1,6 +1,6 @@
 package com.frostwire.jlibtorrent;
 
-import com.frostwire.jlibtorrent.swig.proxy_settings;
+import com.frostwire.jlibtorrent.swig.settings_pack;
 
 /**
  * The ``proxy_settings`` structs contains the information needed to
@@ -11,13 +11,13 @@ import com.frostwire.jlibtorrent.swig.proxy_settings;
  */
 public final class ProxySettings {
 
-    private final proxy_settings s;
+    private final settings_pack s;
 
-    public ProxySettings(proxy_settings s) {
+    public ProxySettings(settings_pack s) {
         this.s = s;
     }
 
-    public proxy_settings getSwig() {
+    public settings_pack getSwig() {
         return s;
     }
 
@@ -29,7 +29,7 @@ public final class ProxySettings {
      * @return
      */
     public String getHostname() {
-        return s.getHostname();
+        return s.get_str(settings_pack.string_types.proxy_hostname.swigValue());
     }
 
     /**
@@ -40,7 +40,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setHostname(String value) {
-        s.setHostname(value);
+        s.set_str(settings_pack.string_types.proxy_hostname.swigValue(), value);
     }
 
     /**
@@ -50,7 +50,7 @@ public final class ProxySettings {
      * @return
      */
     public String getUsername() {
-        return s.getUsername();
+        return s.get_str(settings_pack.string_types.proxy_username.swigValue());
     }
 
     /**
@@ -60,7 +60,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setUsername(String value) {
-        s.setUsername(value);
+        s.set_str(settings_pack.string_types.proxy_username.swigValue(), value);
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ProxySettings {
      * @return
      */
     public String getPassword() {
-        return s.getPassword();
+        return s.get_str(settings_pack.string_types.proxy_password.swigValue());
     }
 
     /**
@@ -80,7 +80,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setPassword(String value) {
-        s.setPassword(value);
+        s.set_str(settings_pack.string_types.proxy_password.swigValue(), value);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class ProxySettings {
      * @return
      */
     public ProxyType getType() {
-        return ProxyType.fromSwig(s.getType());
+        return ProxyType.fromSwig(s.get_int(settings_pack.int_types.proxy_type.swigValue()));
     }
 
     /**
@@ -100,7 +100,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setType(ProxyType value) {
-        s.setType((short) value.getSwig());
+        s.set_int(settings_pack.int_types.proxy_type.swigValue(), value.getSwig());
     }
 
     /**
@@ -109,7 +109,7 @@ public final class ProxySettings {
      * @return
      */
     public int getPort() {
-        return s.getPort();
+        return s.get_int(settings_pack.int_types.proxy_port.swigValue());
     }
 
     /**
@@ -118,7 +118,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setPort(int value) {
-        s.setPort(value);
+        s.set_int(settings_pack.int_types.proxy_port.swigValue(), value);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class ProxySettings {
      * @return
      */
     public boolean getProxyHostnames() {
-        return s.getProxy_hostnames();
+        return s.get_bool(settings_pack.bool_types.proxy_hostnames.swigValue());
     }
 
     /**
@@ -140,7 +140,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setProxyHostnames(boolean value) {
-        s.setProxy_hostnames(value);
+        s.set_bool(settings_pack.bool_types.proxy_hostnames.swigValue(), value);
     }
 
     /**
@@ -151,7 +151,7 @@ public final class ProxySettings {
      * @return
      */
     public boolean getProxyPeerConnections() {
-        return s.getProxy_peer_connections();
+        return s.get_bool(settings_pack.bool_types.proxy_peer_connections.swigValue());
     }
 
     /**
@@ -162,7 +162,7 @@ public final class ProxySettings {
      * @param value
      */
     public void setProxyPeerConnections(boolean value) {
-        s.setProxy_peer_connections(value);
+        s.set_bool(settings_pack.bool_types.proxy_peer_connections.swigValue(), value);
     }
 
     /**
@@ -175,7 +175,7 @@ public final class ProxySettings {
          * This is the default, no proxy server is used, all other fields are
          * ignored.
          */
-        NONE(proxy_settings.proxy_type.none.swigValue()),
+        NONE(settings_pack.proxy_type_t.none.swigValue()),
 
         /**
          * The server is assumed to be a `SOCKS4 server`_ that requires a
@@ -183,7 +183,7 @@ public final class ProxySettings {
          * <p/>
          * .. _`SOCKS4 server`: http://www.ufasoft.com/doc/socks4_protocol.htm
          */
-        SOCKS4(proxy_settings.proxy_type.socks4.swigValue()),
+        SOCKS4(settings_pack.proxy_type_t.socks4.swigValue()),
 
         /**
          * The server is assumed to be a SOCKS5 server (`RFC 1928`_) that does
@@ -192,7 +192,7 @@ public final class ProxySettings {
          * <p/>
          * .. _`RFC 1928`: http://www.faqs.org/rfcs/rfc1928.html
          */
-        SOCKS5(proxy_settings.proxy_type.socks5.swigValue()),
+        SOCKS5(settings_pack.proxy_type_t.socks5.swigValue()),
 
         /**
          * The server is assumed to be a SOCKS5 server that supports plain
@@ -202,7 +202,7 @@ public final class ProxySettings {
          * <p/>
          * .. _`RFC 1929`: http://www.faqs.org/rfcs/rfc1929.html
          */
-        SOCKS5_PW(proxy_settings.proxy_type.socks5_pw.swigValue()),
+        SOCKS5_PW(settings_pack.proxy_type_t.socks5_pw.swigValue()),
 
         /**
          * The server is assumed to be an HTTP proxy. If the transport used
@@ -213,18 +213,18 @@ public final class ProxySettings {
          * <p/>
          * .. _CONNECT: http://tools.ietf.org/html/draft-luotonen-web-proxy-tunneling-01
          */
-        HTTP(proxy_settings.proxy_type.http.swigValue()),
+        HTTP(settings_pack.proxy_type_t.http.swigValue()),
 
         /**
          * The server is assumed to be an HTTP proxy that requires user
          * authorization. The username and password will be sent to the proxy.
          */
-        HTTP_PW(proxy_settings.proxy_type.http_pw.swigValue()),
+        HTTP_PW(settings_pack.proxy_type_t.http_pw.swigValue()),
 
         /**
          * route through a i2p SAM proxy
          */
-        I2P_PROXY(proxy_settings.proxy_type.i2p_proxy.swigValue()),
+        I2P_PROXY(settings_pack.proxy_type_t.i2p_proxy.swigValue()),
 
         /**
          *

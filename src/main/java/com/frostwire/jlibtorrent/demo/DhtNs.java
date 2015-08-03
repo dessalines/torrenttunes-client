@@ -4,6 +4,7 @@ import com.frostwire.jlibtorrent.*;
 import com.frostwire.jlibtorrent.alerts.*;
 import com.frostwire.jlibtorrent.swig.char_vector;
 import com.frostwire.jlibtorrent.swig.entry;
+import com.frostwire.jlibtorrent.swig.settings_pack;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -279,19 +280,27 @@ public class DhtNs {
     }
 
     private static void stopDHT(Session s) {
-        s.stopDHT();
+        SettingsPack pack = new SettingsPack();
+        pack.setBoolean(settings_pack.bool_types.enable_dht.swigValue(), false);
+        s.applySettings(pack);
     }
 
     private static void stopLSD(Session s) {
-        s.stopLSD();
+        SettingsPack pack = new SettingsPack();
+        pack.setBoolean(settings_pack.bool_types.enable_lsd.swigValue(), false);
+        s.applySettings(pack);
     }
 
     private static void stopNATPMP(Session s) {
-        s.stopNATPMP();
+        SettingsPack pack = new SettingsPack();
+        pack.setBoolean(settings_pack.bool_types.enable_natpmp.swigValue(), false);
+        s.applySettings(pack);
     }
 
     private static void startUPnP(Session s) {
-        s.startUPnP();
+        SettingsPack pack = new SettingsPack();
+        pack.setBoolean(settings_pack.bool_types.enable_upnp.swigValue(), true);
+        s.applySettings(pack);
     }
 
     private static class KeyPair {

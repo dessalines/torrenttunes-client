@@ -2,7 +2,7 @@ package com.frostwire.jlibtorrent.plugins;
 
 import com.frostwire.jlibtorrent.*;
 import com.frostwire.jlibtorrent.alerts.Alert;
-import com.frostwire.jlibtorrent.swig.lazy_entry;
+import com.frostwire.jlibtorrent.swig.bdecode_node;
 
 /**
  * This is the base class for a session plugin. One primary feature
@@ -83,7 +83,7 @@ public interface Plugin {
      *
      * @param n
      */
-    void loadState(lazy_entry n);
+    void loadState(bdecode_node n);
 
     enum Operation {
         NEW_TORRENT,

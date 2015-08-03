@@ -1,6 +1,6 @@
 package com.frostwire.jlibtorrent;
 
-import com.frostwire.jlibtorrent.swig.policy;
+import com.frostwire.jlibtorrent.swig.torrent_peer;
 
 /**
  * @author gubatron
@@ -8,21 +8,21 @@ import com.frostwire.jlibtorrent.swig.policy;
  */
 public final class TorrentPeer {
 
-    private final policy.peer p;
+    private final torrent_peer p;
 
-    public TorrentPeer(policy.peer p) {
+    public TorrentPeer(torrent_peer p) {
         this.p = p;
     }
 
-    public policy.peer getSwig() {
+    public torrent_peer getSwig() {
         return p;
     }
 
     public long totalDownload() {
-        return p.total_download();
+        return p.total_download().longValue();
     }
 
     public long totalUpload() {
-        return p.total_upload();
+        return p.total_upload().longValue();
     }
 }

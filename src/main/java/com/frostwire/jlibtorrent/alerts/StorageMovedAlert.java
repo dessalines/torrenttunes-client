@@ -18,6 +18,6 @@ public final class StorageMovedAlert extends TorrentAlert<storage_moved_alert> {
     }
 
     public String storagePath() {
-        return alert.getPath();
+        return alert.storage_path();
     }
 }

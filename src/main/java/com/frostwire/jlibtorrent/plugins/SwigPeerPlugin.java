@@ -70,7 +70,7 @@ public final class SwigPeerPlugin extends swig_peer_plugin {
     }
 
     @Override
-    public boolean on_extension_handshake(lazy_entry n) {
+    public boolean on_extension_handshake(bdecode_node n) {
         try {
             if (p.handleOperation(PeerPlugin.Operation.ON_EXTENSION_HANDSHAKE)) {
                 return p.onExtensionHandshake(n);

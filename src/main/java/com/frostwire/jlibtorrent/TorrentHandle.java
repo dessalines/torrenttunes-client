@@ -172,7 +172,10 @@ public final class TorrentHandle {
     }
 
     /**
-     * returns the info-hash for the torrent.
+     * Returns the info-hash for the torrent.
+     * <p/>
+     * If this handle is to a torrent that hasn't loaded yet (for instance by being added)
+     * by a URL, the returned value is undefined.
      *
      * @return
      */
@@ -578,7 +581,6 @@ public final class TorrentHandle {
     public void setDownloadLimit(int limit) {
         th.set_download_limit(limit);
     }
-    
 
     /**
      * Enables or disables *sequential download*.
@@ -728,8 +730,6 @@ public final class TorrentHandle {
     public void addTracker(AnnounceEntry tracker) {
         th.add_tracker(tracker.getSwig());
     }
-    
-
 
     // ``add_url_seed()`` adds another url to the torrent's list of url
     // seeds. If the given url already exists in that list, the call has no

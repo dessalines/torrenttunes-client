@@ -2,7 +2,6 @@ package com.frostwire.jlibtorrent.demo;
 
 import com.frostwire.jlibtorrent.LibTorrent;
 import com.frostwire.jlibtorrent.Sha1Hash;
-import com.frostwire.jlibtorrent.Utils;
 import com.frostwire.jlibtorrent.Vectors;
 import com.frostwire.jlibtorrent.swig.*;
 
@@ -26,9 +25,9 @@ public final class LazyRead {
         byte[] data = Utils.readFileToByteArray(torrentFile);
 
         char_vector buffer = Vectors.bytes2char_vector(data);
-        lazy_entry e = new lazy_entry();
+        bdecode_node e = new bdecode_node();
         error_code ec = new error_code();
-        int ret = lazy_entry.bdecode(buffer, e, ec);
+        int ret = bdecode_node.bdecode(buffer, e, ec);
 
         if (ret != 0) {
             System.out.println("failed to decode torrent: " + ec.message());

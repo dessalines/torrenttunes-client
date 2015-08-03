@@ -18,13 +18,13 @@ public class PeerConnection<T extends peer_connection> {
         return pc;
     }
 
-//    public TorrentPeer peerInfo() {
-//        return new TorrentPeer(pc.getpeer_info_struct());
-//    }
+    public TorrentPeer peerInfo() {
+        return new TorrentPeer(pc.peer_info_struct());
+    }
 
-//    public int preferContiguousBlocks() {
-//        return pc.prefer_contiguous_blocks();
-//    }
+    public int preferContiguousBlocks() {
+        return pc.prefer_contiguous_blocks();
+    }
 
     public boolean onParole() {
         return pc.on_parole();
@@ -58,7 +58,7 @@ public class PeerConnection<T extends peer_connection> {
         return new TcpEndpoint(pc.remote());
     }
 
-//    public TcpEndpoint localEndpoint() {
-//        return new TcpEndpoint(pc.local_endpoint());
-//    }
+    public TcpEndpoint localEndpoint() {
+        return new TcpEndpoint(pc.local_endpoint());
+    }
 }

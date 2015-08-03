@@ -1,7 +1,7 @@
 package com.frostwire.jlibtorrent.plugins;
 
 import com.frostwire.jlibtorrent.*;
-import com.frostwire.jlibtorrent.swig.lazy_entry;
+import com.frostwire.jlibtorrent.swig.bdecode_node;
 
 /**
  * peer plugins are associated with a specific peer. A peer could be
@@ -73,7 +73,7 @@ public interface PeerPlugin {
      * @param n
      * @return
      */
-    boolean onExtensionHandshake(lazy_entry n);
+    boolean onExtensionHandshake(bdecode_node n);
 
     // returning true from any of the message handlers
     // indicates that the plugin has handeled the message.

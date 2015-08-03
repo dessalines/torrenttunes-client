@@ -125,6 +125,9 @@ public abstract class TorrentAlertAdapter implements AlertListener {
     public void stateChanged(StateChangedAlert alert) {
     }
 
+    public void sessionStats(SessionStatsAlert alert) {
+    }
+
     public void dhtReply(DhtReplyAlert alert) {
     }
 
@@ -204,6 +207,15 @@ public abstract class TorrentAlertAdapter implements AlertListener {
     }
 
     public void unwantedBlock(UnwantedBlockAlert alert) {
+    }
+
+    public void torrentLog(TorrentLogAlert alert) {
+    }
+
+    public void peerLog(PeerLogAlert alert) {
+    }
+
+    public void incomingRequest(IncomingRequestAlert alert) {
     }
 
     public void torrentPrioritize(TorrentPrioritizeAlert alert) {

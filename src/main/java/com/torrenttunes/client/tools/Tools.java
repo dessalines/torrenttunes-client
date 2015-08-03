@@ -2,6 +2,7 @@ package com.torrenttunes.client.tools;
 
 import java.awt.Desktop;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,6 +69,11 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 
+import com.frostwire.jlibtorrent.Entry;
+import com.frostwire.jlibtorrent.swig.create_torrent;
+import com.frostwire.jlibtorrent.swig.error_code;
+import com.frostwire.jlibtorrent.swig.file_storage;
+import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
@@ -362,15 +368,15 @@ public class Tools {
 
 	public static String constructTrackTorrentFilename(File file, Song song) {
 
-		
-		String songName = String.format("%1.125s", song.getRecording());
+
+		String songName = String.format("%1.80s", song.getRecording());
 		String fileName = song.getArtist() + " - " + song.getRelease() + " - " + songName
 				+ " - tt[mbid-" + song.getRecordingMBID().toLowerCase()
 				+ "_sha2-" + sha2FileChecksum(file) + "]";
-		
+
 		fileName = fileName.replaceAll("/", "-");
-		
-		
+
+
 		return fileName;
 
 	}
@@ -414,21 +420,21 @@ public class Tools {
 			RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).
 					build();
 			CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();			
-			
-		
+
+
 			HttpPost httpPost = new HttpPost(postURL);
 			httpPost.setEntity(new StringEntity(jsonInfo, "UTF-8"));
-			
-			
-			
+
+
+
 			//			httpPost.setEntity(new StringEntity("L"));
 
 			ResponseHandler<String> handler = new BasicResponseHandler();
 
 
 			CloseableHttpResponse response = httpClient.execute(httpPost);
-			
-		
+
+
 
 			message = handler.handleResponse(response);
 
@@ -466,7 +472,7 @@ public class Tools {
 
 		try {
 			FileUtils.deleteDirectory(new File(DataSources.HOME_DIR()));
-			
+
 
 			Tools.uninstallShortcuts();
 
@@ -568,7 +574,7 @@ public class Tools {
 
 	public static final void httpSaveFile(String urlString, String savePath) throws IOException {
 		log.info("url string = " + urlString);
-		
+
 		URL url = new URL(urlString);
 
 		URLConnection uc = url.openConnection();
@@ -735,7 +741,7 @@ public class Tools {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 
 	}
 
@@ -868,6 +874,59 @@ public class Tools {
 		final ProcessBuilder builder = new ProcessBuilder(command);
 		builder.start();
 		System.exit(0);
+	}
+
+	public static File createAndSaveTorrent(File torrentFile, File inputFileOrDir) {
+
+		file_storage fs = new file_storage();
+
+		// Add the file
+		libtorrent.add_files(fs, inputFileOrDir.getAbsolutePath());
+
+		create_torrent t = new create_torrent(fs);
+
+
+		// Add trackers in tiers
+		for (URI announce : DataSources.ANNOUNCE_LIST()) {
+			t.add_tracker(announce.toASCIIString());
+		}
+
+
+		t.set_priv(false);
+		t.set_creator(System.getProperty("user.name"));
+
+		error_code ec = new error_code();
+
+
+		// reads the files and calculates the hashes
+		libtorrent.set_piece_hashes(t, inputFileOrDir.getParent(), ec);
+
+		if (ec.value() != 0) {
+			log.info(ec.message());
+		}
+
+		// Get the bencode and write the file
+		Entry entry =  new Entry(t.generate());
+
+		Map<String, Entry> entryMap = entry.dictionary();
+		Entry entryFromUpdatedMap = Entry.fromMap(entryMap);
+		final byte[] bencode = entryFromUpdatedMap.bencode();
+
+		try {
+			FileOutputStream fos;
+
+			fos = new FileOutputStream(torrentFile);
+
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			bos.write(bencode);
+			bos.flush();
+			bos.close();
+		} catch (IOException e) {
+			log.error("Couldn't write file");
+			e.printStackTrace();
+		}
+
+		return torrentFile;
 	}
 
 }

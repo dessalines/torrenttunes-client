@@ -89,8 +89,6 @@ public enum LibtorrentEngine  {
 
 	INSTANCE;
 
-
-
 	private final Logger log = LoggerFactory.getLogger(LibtorrentEngine.class);
 
 
@@ -104,10 +102,8 @@ public enum LibtorrentEngine  {
 	private LibtorrentEngine() {
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
+		
 		session = new Session();
-
-
-
 		sessionSettings = SessionSettings.newDefaults();
 		//		sessionSettings = SessionSettings.newMinMemoryUsage();
 		//		sessionSettings = SessionSettings.newHighPerformanceSeed();
@@ -231,23 +227,7 @@ public enum LibtorrentEngine  {
 		this.infoHashToTorrentMap = new HashMap<String, TorrentHandle>();
 
 
-		session.addListener(new AlertListener() {
-
-			@Override
-			public int[] types() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public void alert(Alert<?> alert) {
-				//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-
-			}
-
-		});
-
+		
 
 
 	}
@@ -263,7 +243,7 @@ public enum LibtorrentEngine  {
 		// start sharing them
 		Integer i = 0;
 		// working at 7k
-		while (i < library.size()) {
+		while (i < 7000) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			String torrentPath = track.getString("torrent_path");
@@ -314,7 +294,7 @@ public enum LibtorrentEngine  {
 						@Override
 						public void torrentChecked(TorrentCheckedAlert alert) {
 							log.info("torrent checked received for torrent " + torrent.getName());
-							signal.countDown();
+//							signal.countDown();
 						}
 
 						@Override
@@ -369,7 +349,7 @@ public enum LibtorrentEngine  {
 
 			log.info("Setting torrent# " + j++ +  " "  + t.getName() + " to automanage" );
 //			t.setAutoManaged(true);
-			t.flushCache();
+//			t.flushCache();
 						t.resume();
 
 		}
