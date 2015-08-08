@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -231,7 +232,7 @@ public enum LibtorrentEngine  {
 
 
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
-		this.infoHashToTorrentMap = new HashMap<String, TorrentHandle>();
+		this.infoHashToTorrentMap = new ConcurrentHashMap<String, TorrentHandle>();
 
 
 
@@ -250,7 +251,7 @@ public enum LibtorrentEngine  {
 		// start sharing them
 		Integer i = 0;
 		// working at 7k
-		while (i < 7000) {
+		while (i < 100) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			String torrentPath = track.getString("torrent_path");
@@ -262,10 +263,6 @@ public enum LibtorrentEngine  {
 			TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
 
 			torrents.add(torrent);
-
-
-
-
 
 
 			// Set up the scanInfo

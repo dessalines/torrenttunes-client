@@ -340,6 +340,8 @@ public class Platform {
 
 
 		});
+		
+
 
 		get("/fetch_or_download_song/:infoHash", (req, res) -> {
 
@@ -354,7 +356,7 @@ public class Platform {
 				Tools.dbInit();
 				Library track = LIBRARY.findFirst("info_hash = ?", infoHash);
 				Tools.dbClose();
-
+				
 				if (track != null) {
 					json = track.toJson(false);					
 				}
@@ -387,6 +389,26 @@ public class Platform {
 
 
 
+		});
+		
+		get("/get_torrent_progress/:infoHash", (req, res) -> {
+			try {
+
+				Tools.allowAllHeaders(req, res);
+				
+				String infoHash = req.params(":infoHash");
+				
+				float progress = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash).
+						getStatus().getProgress();
+				
+				return progress;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} 
+			
 		});
 
 		post("/power_off", (req, res) -> {

@@ -98,6 +98,7 @@ public class Actions {
 
 	public static String downloadTorrent(String infoHash) throws IOException, InterruptedException {
 
+		log.info("Downloading infohash: " + infoHash);
 
 		String json = null;
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
