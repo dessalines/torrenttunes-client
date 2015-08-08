@@ -70,6 +70,20 @@
 
 	<dependencies>
 
+		<!-- <dependency> <groupId>com.frostwire</groupId> <artifactId>jlibtorrent</artifactId> 
+			<version>1.1.0.1</version> </dependency> -->
+
+		<dependency>
+			<groupId>com.frostwire</groupId>
+			<artifactId>jlibtorrent</artifactId>
+			<version>1.1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.frostwire</groupId>
+			<artifactId>jlibtorrent-linux</artifactId>
+			<version>1.1.0.2</version>
+		</dependency>
 
 
 		<dependency>

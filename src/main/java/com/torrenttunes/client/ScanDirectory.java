@@ -2,34 +2,21 @@ package com.torrenttunes.client;
 
 import static com.torrenttunes.client.db.Tables.LIBRARY;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.http.client.HttpResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frostwire.jlibtorrent.Entry;
-import com.frostwire.jlibtorrent.FileStorage;
 import com.frostwire.jlibtorrent.TorrentHandle;
-import com.frostwire.jlibtorrent.swig.create_torrent;
-import com.frostwire.jlibtorrent.swig.error_code;
-import com.frostwire.jlibtorrent.swig.file_entry;
-import com.frostwire.jlibtorrent.swig.file_storage;
-import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.musicbrainz.mp3.tagger.Tools.Song;
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.Tables.Library;

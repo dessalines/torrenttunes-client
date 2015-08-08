@@ -21,15 +21,11 @@ import org.slf4j.LoggerFactory;
 
 import com.frostwire.jlibtorrent.Address;
 import com.frostwire.jlibtorrent.AlertListener;
+import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
 import com.frostwire.jlibtorrent.LibTorrent;
 import com.frostwire.jlibtorrent.Session;
-import com.frostwire.jlibtorrent.SessionSettings;
-import com.frostwire.jlibtorrent.SessionSettings.BandwidthMixedAlgo;
-import com.frostwire.jlibtorrent.SessionSettings.ChokingAlgorithm;
-import com.frostwire.jlibtorrent.SessionSettings.DiskCacheAlgo;
-import com.frostwire.jlibtorrent.SessionSettings.SeedChokingAlgorithm;
-import com.frostwire.jlibtorrent.SessionSettings.SuggestMode;
+import com.frostwire.jlibtorrent.SettingsPack;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.AddTorrentAlert;
@@ -75,6 +71,7 @@ import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
 import com.frostwire.jlibtorrent.swig.address;
 import com.frostwire.jlibtorrent.swig.ip_filter;
+import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -93,18 +90,23 @@ public enum LibtorrentEngine  {
 
 
 	private Session session;
-	private SessionSettings sessionSettings;
+	private SettingsPack sessionSettings;
 	private Map<String, TorrentHandle> infoHashToTorrentMap;
 	private List<TorrentHandle> torrents = new ArrayList<TorrentHandle>();
 
 	private Set<ScanInfo> scanInfos;
 
 	private LibtorrentEngine() {
+		
+//		System.load(DataSources.LIBTORRENT_OS_LIBRARY_PATH());
+		System.out.println("java library path: " + System.getProperty("java.library.path"));
+		
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
-		
+
 		session = new Session();
-		sessionSettings = SessionSettings.newDefaults();
+		sessionSettings = new SettingsPack();
+		//		sessionSettings = SessionSettings.newDefaults();
 		//		sessionSettings = SessionSettings.newMinMemoryUsage();
 		//		sessionSettings = SessionSettings.newHighPerformanceSeed();
 
@@ -113,42 +115,47 @@ public enum LibtorrentEngine  {
 		//		session.stopDHT();
 
 		sessionSettings.setActiveDownloads(10);
-		sessionSettings.setActiveLimit(999999);
+		//		sessionSettings.setActiveLimit(999999);
 		sessionSettings.setActiveSeeds(999999);
 
 
 		//						sessionSettings.setActiveDHTLimit(5);
-		sessionSettings.setActiveTrackerLimit(999999);
+		//		sessionSettings.setActiveTrackerLimit(999999);
 
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
 
 		// These worked great!
 		//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.);
-		session.stopLSD();
-		session.stopDHT();
-		sessionSettings.announceDoubleNAT(true);
-		sessionSettings.setPeerConnectTimeout(60);
+		//		session.stopLSD();
+		//		session.stopDHT();
+		DHT dht = new DHT(session);
+		dht.stop();
+		sessionSettings.broadcastLSD(false);
+		//		sessionSettings.announceDoubleNAT(true);
+		//		sessionSettings.setPeerConnectTimeout(60);
 
-		sessionSettings.useReadCache(false);
+		//		sessionSettings.useReadCache(false);
 		sessionSettings.setMaxPeerlistSize(500);
+
 		//				sessionSettings.setMaxPeerlistSize(20);
 		//		sessionSettings.setSeedChokingAlgorithm(SeedChokingAlgorithm.ROUND_ROBIN);
 		//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
-		sessionSettings.setHalgOpenLimit(5);
+		//		sessionSettings.setHalgOpenLimit(5);
 
 
-		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PEER_PROPORTIONAL);
+		//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PEER_PROPORTIONAL);
 
 		//		//		sessionSettings.setDHTAnnounceInterval(3600);
-						sessionSettings.setMinAnnounceInterval(1740);
+		//						sessionSettings.setMinAnnounceInterval(1740);
+		sessionSettings.getSwig().set_int(int_types.min_announce_interval.swigValue(), 1740);
 
 		//		sessionSettings.setLocalServiceAnnounceInterval(3600);
 
 
 		//		sessionSettings.setNoConnectPrivilegedPorts(true);
 
-//		sessionSettings.setTrackerBackoff(10);
+		//		sessionSettings.setTrackerBackoff(10);
 
 
 		//		sessionSettings.setAutoManageInterval(600);
@@ -156,14 +163,14 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setFreeTorrentHashes(true);
 		//		sessionSettings.setFileChecksDelayPerBlock(1000);
 		//		sessionSettings.setSuggestMode(SuggestMode.SUGGEST_READ_CACHE);
-		sessionSettings.setFilePoolSize(200000);
+		//		sessionSettings.setFilePoolSize(200000);
 		//		sessionSettings.setOptimizeHashingForSpeed(false);
 		//		sessionSettings.setOptimisticDiskRetry(5);
 		//		sessionSettings.setDiskCacheAlgorithm(DiskCacheAlgo.LRU);
-		sessionSettings.setIncomingStartsQueuedTorrents(true);
-//		sessionSettings.setSeedTimeLimit(360);
+		//		sessionSettings.setIncomingStartsQueuedTorrents(true);
+		//		sessionSettings.setSeedTimeLimit(360);
 		//		sessionSettings.setTrackerReceiveTimeout(1);
-		sessionSettings.setTrackerCompletionTimeout(10);
+		//		sessionSettings.setTrackerCompletionTimeout(10);
 		//		sessionSettings.setStopTrackerTimeout(1);
 		//		sessionSettings.setActiveLsdLimit(1);
 
@@ -217,17 +224,17 @@ public enum LibtorrentEngine  {
 
 		//		sessionSettings.setSendBufferLowWatermark(50);
 
-		session.setSettings(sessionSettings);
+		//		session.setSettings(sessionSettings);
+		session.applySettings(sessionSettings);
 
-
-		log.info("active seed limit: " + String.valueOf(session.getSettings().getActiveLimit()));
+		//		log.info("active seed limit: " + String.valueOf(session.getact);
 
 
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
 		this.infoHashToTorrentMap = new HashMap<String, TorrentHandle>();
 
 
-		
+
 
 
 	}
@@ -275,7 +282,7 @@ public enum LibtorrentEngine  {
 				//				log.info("status : " + getActiveTorrents());
 				//				torrent.setAutoManaged(false);
 				//				torrent.resume();
-//				torrent.queuePositionTop();
+				//				torrent.queuePositionTop();
 				//				torrent.forceReannounce();
 				//							torrent.forceRecheck();
 
@@ -290,11 +297,11 @@ public enum LibtorrentEngine  {
 						//							signal.countDown();
 						//						}
 						//						
-						
+
 						@Override
 						public void torrentChecked(TorrentCheckedAlert alert) {
 							log.info("torrent checked received for torrent " + torrent.getName());
-//							signal.countDown();
+							//							signal.countDown();
 						}
 
 						@Override
@@ -348,9 +355,9 @@ public enum LibtorrentEngine  {
 		for (TorrentHandle t : session.getTorrents()) {
 
 			log.info("Setting torrent# " + j++ +  " "  + t.getName() + " to automanage" );
-//			t.setAutoManaged(true);
-//			t.flushCache();
-						t.resume();
+			//			t.setAutoManaged(true);
+			//			t.flushCache();
+			t.resume();
 
 		}
 
@@ -425,12 +432,12 @@ public enum LibtorrentEngine  {
 			public void stateChanged(StateChangedAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
-			
+
 			@Override
 			public void scrapeFailed(ScrapeFailedAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
-			
+
 
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
@@ -685,12 +692,12 @@ public enum LibtorrentEngine  {
 		return session;
 	}
 
-	public SessionSettings getSessionSettings() {
+	public SettingsPack getSessionSettings() {
 		return sessionSettings;
 	}
 
 	public void updateSettings() {
-		session.setSettings(sessionSettings);
+		session.applySettings(sessionSettings);
 		log.info("Libtorrent settings updated");
 	}
 

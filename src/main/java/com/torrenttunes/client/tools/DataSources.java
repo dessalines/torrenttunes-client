@@ -130,7 +130,8 @@ public class DataSources {
 		
 		String ret = null;
 		if (osName.contains("linux")) {
-			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
+//			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
+			ret = SOURCE_CODE_HOME() + "/lib/x86_64/libjlibtorrent.so";
 		} else if (osName.contains("windows")) {
 			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
 		} else if (osName.contains("mac")) {
