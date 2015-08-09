@@ -71,6 +71,7 @@ import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
 import com.frostwire.jlibtorrent.swig.address;
+import com.frostwire.jlibtorrent.swig.default_storage;
 import com.frostwire.jlibtorrent.swig.ip_filter;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
 import com.google.common.collect.ImmutableSet;
@@ -101,6 +102,8 @@ public enum LibtorrentEngine  {
 		
 //		System.load(DataSources.LIBTORRENT_OS_LIBRARY_PATH());
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
+		
+		default_storage.disk_write_access_log(true);
 		
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
@@ -149,7 +152,7 @@ public enum LibtorrentEngine  {
 
 		//		//		sessionSettings.setDHTAnnounceInterval(3600);
 		//						sessionSettings.setMinAnnounceInterval(1740);
-		sessionSettings.getSwig().set_int(int_types.min_announce_interval.swigValue(), 1740);
+		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
 		//		sessionSettings.setLocalServiceAnnounceInterval(3600);
 
