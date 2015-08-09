@@ -8,6 +8,7 @@
 	<properties>
 		<java.library.path>${basedir}/src/main/resources/lib</java.library.path>
 		<main.class>com.torrenttunes.client.Main</main.class>
+		<jlibtorrent.version>1.1.0.2</jlibtorrent.version>
 	</properties>
 
 
@@ -76,13 +77,25 @@
 		<dependency>
 			<groupId>com.frostwire</groupId>
 			<artifactId>jlibtorrent</artifactId>
-			<version>1.1.0.2</version>
+			<version>${jlibtorrent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.frostwire</groupId>
+			<artifactId>jlibtorrent-windows</artifactId>
+			<version>${jlibtorrent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.frostwire</groupId>
+			<artifactId>jlibtorrent-macosx</artifactId>
+			<version>${jlibtorrent.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.frostwire</groupId>
 			<artifactId>jlibtorrent-linux</artifactId>
-			<version>1.1.0.2</version>
+			<version>${jlibtorrent.version}</version>
 		</dependency>
 
 

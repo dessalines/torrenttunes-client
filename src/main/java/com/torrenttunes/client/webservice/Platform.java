@@ -402,10 +402,12 @@ public class Platform {
 				
 				String infoHash = req.params(":infoHash");
 				
+				
 				float progress = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash).
 						getStatus().getProgress();
 				
 				return progress;
+				
 
 			} catch (Exception e) {
 				res.status(666);

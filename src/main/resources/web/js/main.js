@@ -556,7 +556,7 @@ function updateDownloadStatusBar(infoHash) {
   // console.log(tableRows);
 
 
-  getJson('get_torrent_progress/' + infoHash).done(function(percentageFloat) {
+  getJson('get_torrent_progress/' + infoHash, true).done(function(percentageFloat) {
 
     var percentage = parseInt(percentageFloat * 100) + '%';
     console.log('percentage = ' + percentage);
@@ -603,6 +603,9 @@ function updateDownloadStatusBar(infoHash) {
 
 
 
+  }).error(function(err) {
+    // Stop going for it
+    clearInterval(downloadStatusMap[infoHash]);
   });
 
   // get the percentage: 

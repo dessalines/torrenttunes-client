@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
 import com.frostwire.jlibtorrent.LibTorrent;
@@ -25,7 +26,10 @@ import com.frostwire.jlibtorrent.Session;
 import com.frostwire.jlibtorrent.SettingsPack;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
+import com.frostwire.jlibtorrent.alerts.AbstractAlert;
 import com.frostwire.jlibtorrent.alerts.AddTorrentAlert;
+import com.frostwire.jlibtorrent.alerts.Alert;
+import com.frostwire.jlibtorrent.alerts.AlertType;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.BlockTimeoutAlert;
@@ -46,6 +50,7 @@ import com.frostwire.jlibtorrent.alerts.SaveResumeDataAlert;
 import com.frostwire.jlibtorrent.alerts.SaveResumeDataFailedAlert;
 import com.frostwire.jlibtorrent.alerts.ScrapeFailedAlert;
 import com.frostwire.jlibtorrent.alerts.ScrapeReplyAlert;
+import com.frostwire.jlibtorrent.alerts.SessionStatsAlert;
 import com.frostwire.jlibtorrent.alerts.StateChangedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentAddedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentCheckedAlert;
@@ -228,9 +233,32 @@ public enum LibtorrentEngine  {
 		this.infoHashToTorrentMap = new ConcurrentHashMap<String, TorrentHandle>();
 
 
+		addDefaultSessionAlerts();
 
 
 
+	}
+
+
+	private void addDefaultSessionAlerts() {
+		session.addListener(new AlertListener() {
+			
+			@Override
+			public int[] types() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void alert(Alert<?> alert) {
+				if (alert.getType() == AlertType.SESSION_STATS) {
+					log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				}
+				
+			}
+		});
+	
+		
 	}
 
 
@@ -407,6 +435,7 @@ public enum LibtorrentEngine  {
 	private void addDefaultListeners(TorrentHandle torrent) {
 
 
+		
 		// Add the listeners
 		session.addListener(new TorrentAlertAdapter(torrent) {
 
@@ -640,6 +669,8 @@ public enum LibtorrentEngine  {
 			public void unwantedBlock(UnwantedBlockAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
+			
+
 
 
 		});
