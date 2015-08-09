@@ -17,7 +17,7 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-client";
 	
-	public static String VERSION = "0.1.0";
+	public static String VERSION = "0.2.0";
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	

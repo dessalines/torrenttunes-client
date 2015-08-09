@@ -1,8 +1,14 @@
 package com.torrenttunes.client.db;
-import static com.torrenttunes.client.db.Tables.*;
+import static com.torrenttunes.client.db.Tables.LIBRARY;
+import static com.torrenttunes.client.db.Tables.PLAYLIST;
+import static com.torrenttunes.client.db.Tables.PLAYLIST_TRACK;
+import static com.torrenttunes.client.db.Tables.PLAYLIST_TRACK_VIEW;
+import static com.torrenttunes.client.db.Tables.QUEUE_TRACK;
+import static com.torrenttunes.client.db.Tables.SETTINGS;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,7 +16,6 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.JsonNode;
-import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +23,12 @@ import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
 import com.torrenttunes.client.LibtorrentEngine;
-import com.torrenttunes.client.TorrentStats;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.ScanDirectory.ScanStatus;
+import com.torrenttunes.client.TorrentStats;
 import com.torrenttunes.client.db.Tables.Library;
+import com.torrenttunes.client.db.Tables.Playlist;
+import com.torrenttunes.client.db.Tables.PlaylistTrackView;
 import com.torrenttunes.client.db.Tables.Settings;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
@@ -315,6 +322,34 @@ public class Actions {
 		PLAYLIST_TRACK.findFirst("id = ?",	playlistTrackId).delete();
 
 		return "Track removed from playlist";
+	}
+	
+	public static String removeArtist(String artistMBID) {
+		
+		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
+
+
+		List<Library> songs = LIBRARY.find("artist_mbid = ?", artistMBID);
+
+		for (Library song : songs) {
+			
+			// remove the infohash from the session
+			String infoHash = song.getString("info_hash");
+			try {
+				lt.getSession().removeTorrent(lt.getInfoHashToTorrentMap().get(infoHash));
+			} catch(NullPointerException e) {
+				log.error("Torrent infohash " + infoHash + " was not in Libtorrent Session");
+			}
+			
+			// delete the torrent file
+			new File(song.getString("torrent_path")).delete();
+			
+		
+		}
+		
+		LIBRARY.delete("artist_mbid = ?", artistMBID);
+		
+		return "Artist : " + artistMBID + " deleted from library";
 	}
 
 

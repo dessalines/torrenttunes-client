@@ -51,10 +51,6 @@ public class Main {
 
 		log.setLevel(Level.toLevel(loglevel));
 
-		if (!installOnly) {
-//			Updater.checkForUpdate();
-		}
-
 		// Install Shortcuts
 		Tools.setupDirectories();
 
