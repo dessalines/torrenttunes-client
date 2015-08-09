@@ -57,8 +57,6 @@ public class Main {
 		// set recopy to default
 		Tools.copyResourcesToHomeDir(recopy);
 
-
-
 		Tools.addExternalWebServiceVarToTools();
 
 		InitializeTables.initializeTables();

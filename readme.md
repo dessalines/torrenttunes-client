@@ -1,6 +1,6 @@
 [TorrentTunes](http://torrenttunes.ml) &mdash; A free, BitTorrent-based music streaming service.
 ==========
-![](http://img.shields.io/version/0.1.0.png?color=green)
+![](http://img.shields.io/version/0.2.0.png?color=green)
 
 
 [TorrentTunes](http://torrenttunes.ml) is an open-source, [BitTorrent-based](https://en.wikipedia.org/wiki/BitTorrent) music service, like Rdio or Spotify, where you can stream any music, or share your own library of music with others.
@@ -11,7 +11,7 @@ TorrentTunes works on Windows, Mac OS X, and Linux.
 
 Suggest features or post bugs [here](https://github.com/tchoulihan/torrenttunes-client/issues/), or on the subreddit [r/torrenttunes](http://www.reddit.com/r/torrenttunes).
 
-[:arrow_down: Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar)
+[:arrow_down: Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
 
 ## Features include
 * A complete music streaming application including Artist and album pages, playlists, and settings.
@@ -32,7 +32,7 @@ Suggest features or post bugs [here](https://github.com/tchoulihan/torrenttunes-
 - Java 8
 - If behind a router, make sure bittorrent has enough open ports forwarded to your local IP address.
 
-Download and double click the jar, located [here](https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar)
+Download and double click the jar, located [here](https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
 
 Torrenttunes will install, create system shortcuts for Windows, Mac, or Debian-based Linux distributions, and load up in a browser window.
 
