@@ -17,6 +17,8 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-client";
 	
+	public static String LAUNCHER_NAME = "torrenttunes-launcher";
+	
 	public static String VERSION = "0.2.0";
 	
 	public static Integer SPARK_WEB_PORT = 4568;
@@ -84,6 +86,8 @@ public class DataSources {
 	
 	public static final String JAR_FILE() {return HOME_DIR() + "/" + APP_NAME + ".jar";}
 	
+	public static final String LAUNCHER_FILE() {return HOME_DIR() + "/" + LAUNCHER_NAME + ".jar";}
+	
 	public static final String TOOLS_JS() {return SOURCE_CODE_HOME() + "/web/js/tools.js";}
 
 	// Web pages
@@ -138,7 +142,7 @@ public class DataSources {
 			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.dylib";
 		}
 		
-		log.info("Using libtorrent @" + ret);
+		log.info("Using libtorrent @ " + ret);
 		return ret;
 	}
 	

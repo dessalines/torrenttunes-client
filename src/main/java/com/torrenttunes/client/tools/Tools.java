@@ -758,7 +758,7 @@ public class Tools {
 		log.info("Installing mac shortcuts...");
 
 		try {
-			String s = "do shell script \"java -jar " + DataSources.JAR_FILE() + "\"";
+			String s = "do shell script \"java -jar " + DataSources.LAUNCHER_FILE() + "\"";
 			java.nio.file.Files.write(Paths.get(DataSources.MAC_INSTALL_APPLESCRIPT()), s.getBytes());
 
 			File appDir = new File(DataSources.MAC_APP_LOCATION());
@@ -798,7 +798,7 @@ public class Tools {
 					"sLinkFile = \"" + DataSources.WINDOWS_SHORTCUT_LINK() + "\"\n"+
 					"Set oLink = oWS.CreateShortcut(sLinkFile)\n"+
 					"oLink.TargetPath = \"" + System.getProperty("java.home") + "/bin/javaw.exe \"\n" +
-					"oLink.Arguments = \"-jar " +  DataSources.JAR_FILE() + "\"\n"+
+					"oLink.Arguments = \"-jar " +  DataSources.LAUNCHER_FILE() + "\"\n"+
 					"oLink.Description = \"Torrent Tunes\" \n"+
 					"\' oLink.HotKey = \"ALT+CTRL+F\"\n"+
 					"oLink.IconLocation = \"" + DataSources.ICON_LOCATION() + "\"\n"+
@@ -830,7 +830,7 @@ public class Tools {
 					"Encoding=UTF-8\n"+
 					"Name=Torrent Tunes\n"+
 					"Comment=A sample application\n"+
-					"Exec=java -jar " + DataSources.JAR_FILE() + "\n"+
+					"Exec=java -jar " + DataSources.LAUNCHER_FILE() + "\n"+
 					"Path=" + DataSources.HOME_DIR() + "\n" + 
 					"Icon=" + DataSources.ICON_LOCATION() + "\n"+
 					"Terminal=false\n"+

@@ -3,12 +3,10 @@ package com.torrenttunes.client;
 import static com.torrenttunes.client.db.Tables.LIBRARY;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frostwire.jlibtorrent.Address;
-import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
 import com.frostwire.jlibtorrent.LibTorrent;
@@ -30,12 +26,9 @@ import com.frostwire.jlibtorrent.SettingsPack;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.alerts.AddTorrentAlert;
-import com.frostwire.jlibtorrent.alerts.Alert;
-import com.frostwire.jlibtorrent.alerts.AlertType;
 import com.frostwire.jlibtorrent.alerts.BlockDownloadingAlert;
 import com.frostwire.jlibtorrent.alerts.BlockFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.BlockTimeoutAlert;
-import com.frostwire.jlibtorrent.alerts.DhtAnnounceAlert;
 import com.frostwire.jlibtorrent.alerts.DhtReplyAlert;
 import com.frostwire.jlibtorrent.alerts.FastresumeRejectedAlert;
 import com.frostwire.jlibtorrent.alerts.FileErrorAlert;
@@ -70,12 +63,8 @@ import com.frostwire.jlibtorrent.alerts.TrackerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
-import com.frostwire.jlibtorrent.swig.address;
 import com.frostwire.jlibtorrent.swig.default_storage;
-import com.frostwire.jlibtorrent.swig.ip_filter;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.ScanDirectory.ScanStatus;
@@ -100,7 +89,8 @@ public enum LibtorrentEngine  {
 
 	private LibtorrentEngine() {
 		
-//		System.load(DataSources.LIBTORRENT_OS_LIBRARY_PATH());
+		System.load(DataSources.LIBTORRENT_OS_LIBRARY_PATH());
+		
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
 		
 		default_storage.disk_write_access_log(true);

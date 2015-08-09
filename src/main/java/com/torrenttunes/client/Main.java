@@ -40,6 +40,8 @@ public class Main {
 
 
 	public void doMain(String[] args) {
+		
+
 
 		log.info(Arrays.toString(args));
 		parseArguments(args);
