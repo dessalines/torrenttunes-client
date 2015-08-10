@@ -107,7 +107,7 @@ public enum LibtorrentEngine  {
 
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
 
-		default_storage.disk_write_access_log(true);
+//		default_storage.disk_write_access_log(true);
 
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
@@ -128,6 +128,105 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMaxPeerlistSize(500);
 		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
+		
+		//		sessionSettings = SessionSettings.newDefaults();
+		//		sessionSettings = SessionSettings.newMinMemoryUsage();
+		//		sessionSettings = SessionSettings.newHighPerformanceSeed();
+		//				sessionSettings.setTorrentConnectBoost(5);
+		//		sessionSettings.setMinReconnectTime(1);
+		//		session.stopDHT();
+		//		sessionSettings.setActiveLimit(999999);
+		//						sessionSettings.setActiveDHTLimit(5);
+		//		sessionSettings.setActiveTrackerLimit(999999);
+		
+		//		sessionSettings.announceDoubleNAT(true);
+		//		sessionSettings.setPeerConnectTimeout(60);
+		//		sessionSettings.useReadCache(false);
+		//				sessionSettings.setMaxPeerlistSize(20);
+		//		sessionSettings.setSeedChokingAlgorithm(SeedChokingAlgorithm.ROUND_ROBIN);
+		//		sessionSettings.setChokingAlgorithm(ChokingAlgorithm.AUTO_EXPAND_CHOKER);
+		//		sessionSettings.setHalgOpenLimit(5);
+		//		sessionSettings.setMixedModeAlgorithm(BandwidthMixedAlgo.PEER_PROPORTIONAL);
+
+		//		//		sessionSettings.setDHTAnnounceInterval(3600);
+		//						sessionSettings.setMinAnnounceInterval(1740);
+
+		//		sessionSettings.setLocalServiceAnnounceInterval(3600);
+
+
+		//		sessionSettings.setNoConnectPrivilegedPorts(true);
+
+		//		sessionSettings.setTrackerBackoff(10);
+
+
+		//		sessionSettings.setAutoManageInterval(600);
+		//		sessionSettings.setRateLimitIPOverhead(true);
+		//		sessionSettings.setFreeTorrentHashes(true);
+		//		sessionSettings.setFileChecksDelayPerBlock(1000);
+		//		sessionSettings.setSuggestMode(SuggestMode.SUGGEST_READ_CACHE);
+		//		sessionSettings.setFilePoolSize(200000);
+		//		sessionSettings.setOptimizeHashingForSpeed(false);
+		//		sessionSettings.setOptimisticDiskRetry(5);
+		//		sessionSettings.setDiskCacheAlgorithm(DiskCacheAlgo.LRU);
+		//		sessionSettings.setIncomingStartsQueuedTorrents(true);
+		//		sessionSettings.setSeedTimeLimit(360);
+		//		sessionSettings.setTrackerReceiveTimeout(1);
+		//		sessionSettings.setTrackerCompletionTimeout(10);
+		//		sessionSettings.setStopTrackerTimeout(1);
+		//		sessionSettings.setActiveLsdLimit(1);
+
+		//		sessionSettings.setPeerTimeout(5);
+		//		sessionSettings.setInactivityTimeout(5);
+
+		//				sessionSettings.setMaxPeerlistSize(10);
+
+
+		//		sessionSettings.setMaxPausedPeerlistSize(0);
+		//				sessionSettings.setChokingAlgorithm(ChokingAlgorithm.RATE_BASED_CHOKER);
+		//		sessionSettings.setCacheSize(999999);
+
+
+		//		sessionSettings.setPeerConnectTimeout(35);
+
+		//		sessionSettings.allowMultipleConnectionsPerIp(true);
+
+		//		sessionSettings.setPeerTimeout(15);
+		//				sessionSettings.setInactivityTimeout(30);
+
+		//				sessionSettings.setConnectionsLimit(100000);
+
+		//				sessionSettings.setConnectionSpeed(3000);
+
+
+		// Performance settings
+
+
+
+
+		//		sessionSettings.setAutoManageInterval(10);
+		//		sessionSettings.setAutoScrapeInterval(5);
+		//		sessionSettings.setMinAnnounceInterval(5);
+
+		//		sessionSettings.setAnnounceToAllTrackers(false);
+		//		sessionSettings.setDHTAnnounceInterval(5);
+		//		sessionSettings.setMaxAllowedInRequestQueue(9999);
+		//		sessionSettings.setUnchokeSlotsLimit(800);
+		//		sessionSettings.setCacheExpiry(9999);
+
+
+
+
+
+		//		sessionSettings.setAutoManagePreferSeeds(true);
+
+		//		sessionSettings.setSendBufferLowWatermark(50);
+
+		//		session.setSettings(sessionSettings);
+	
+
+
+
+		
 		session.applySettings(sessionSettings);
 
 
