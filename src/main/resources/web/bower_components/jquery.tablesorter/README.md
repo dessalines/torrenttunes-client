@@ -82,108 +82,138 @@ If you would like to contribute, please...
 
 View the [complete change log here](//github.com/Mottie/tablesorter/wiki/Changes).
 
-#### <a name="v2.22.1">Version 2.22.1</a> (5/17/2015)
+#### <a name="v2.22.5">Version 2.22.5</a> (7/28/2015)
 
-* Filter: fix issue with searches always looking for parsed content in numeric columns.
+* Overall:
+ * Set JSHint "undef" & "unused" options. Fixed issues.
+ * The math widget was throwing a javascript error after missing a changed variable name & JSHint wasn't catching it, until now.
 
-#### <a name="v2.22.0">Version 2.22.0</a> (5/17/2015)
+#### <a name="v2.22.4">Version 2.22.4</a> (7/28/2015)
 
+* Overall
+  * update debug logging. `console` is now called directly & includes grouping, tables, warning & errors.
+* Core
+  * Replace `tbody` placeholder use of a `<span>` with a `<colgroup>`. Attempt to resolve IE error reported in [issue #938](https://github.com/Mottie/tablesorter/issues/938).
+  * Fix `$.tablesorter.hasWidget` error introduced when fixing jscs issues.
+  * Fix `$.tablesorter.isProcessing` error introduced when fixing jscs issues.
+  * Update `isValueInArray` function to prevent js errors with invalid input.
 * Docs
-  * Lots of minor version updates, spelling corrections & clarifications in wording.
-  * Update box-sizing styles ([ref](http://www.paulirish.com/2012/box-sizing-border-box-ftw/)).
-  * Update `characterEquivalents` cross-reference to correctly match the code of the plugin.
-  * Add Build table widget example resulting HTML for the json example.
-* Grunt build
-  * `package.json` files now points to the entire "dist" folder. See [issue #881](https://github.com/Mottie/tablesorter/issues/881).
-  * Add `grunt quick` build to only update widget & parser files; it skips updating the dates in the widgets & combined files.
-* Core
-  * The `isDigit` function now reports `false` on empty strings. See [issue #865](https://github.com/Mottie/tablesorter/issues/865).
-  * Add pointer events options (`pointerClick`, `pointerDown` and `pointerUp`). Fixes [issue #885](https://github.com/Mottie/tablesorter/issues/885).
-  * Prevent js error when using the `computeColumnIndex` function on empty tables (used by the math widget). Fixes [issue #889](https://github.com/Mottie/tablesorter/issues/889).
-  * Prevent js error when `sortList` includes an out-of-bounds column. Fixes [issue #908](https://github.com/Mottie/tablesorter/issues/908).
-  * Centralize extractor & parser code; this code is used by the main build cache loop and the "addRows" & "updateCell" methods.
-  * Child row content is now properly stored in row data as an array of arrays.
-  * Add "o" to `sortLocaleCompare` replacement table & update docs.
-  * Replace all instances of using jQuery each with plain javascript. Fixes [issue #827](https://github.com/Mottie/tablesorter/issues/827).
-* Editable
-  * Modify `trimContent` option & use HTML to modify text. Fixes [issue #886](https://github.com/Mottie/tablesorter/issues/886).
-  * Fix `selectAll` & change `tbody` mouseleave to complete editing to `thead` mouseenter. Fixes [issue #848](https://github.com/Mottie/tablesorter/issues/848).
-  * Only make table cell child div/span contenteditable. See [issue #900](https://github.com/Mottie/tablesorter/issues/900).
-  * Add remove widget code & allow dynamic updating if the "no-edit" class changes. Fixes [issue #900](https://github.com/Mottie/tablesorter/issues/900).
+  * Remove duplicate section in math widget docs.
+  * Add resizable widget note about leaving `widthFixed` set to `false`. See [issue #958](https://github.com/Mottie/tablesorter/issues/958).
+  * Update to use jQuery v1.11.3.
+  * Change deprecated window load function.
+  * Improve [two-digit year parser demo](http://mottie.github.io/tablesorter/docs/example-parsers-dates.html).
+  * Minor updates.
 * Filter
-  * Regex filter searches now cache the created regex object for each query to optimize speed & a regex search now properly uses case-sensitive content
-  * Add `data` parameter to `filter_functions`. This is the same data used by the filter search type functions. See [issue #891](https://github.com/Mottie/tablesorter/issues/891).
-  * Any match searches which target specific columns will no longer save each filter to its respective column; see ["AnyMatch Searches"](http://mottie.github.io/tablesorter/docs/example-widget-filter-any-match.html#anymatch_searches) documentation.
-  * Operator filter searchs now ignore empty strings (because `"" < 10` is `true`).
-  * Clean up `parseFilter` function.
-  * Add `filter_childByColumn` option.
-    * Setting this to `true` allows searching through the child rows by column.
-    * When `false`, the search behaves as before and all child row content is included in the search of every column.
-    * See a [demo here](http://mottie.github.io/tablesorter/docs/example-child-rows-filtered.html#child-by-column).
-    * Fixes issues [#396](https://github.com/Mottie/tablesorter/issues/396) &amp; [#574](https://github.com/Mottie/tablesorter/issues/574).
-  * Code cleanup - added a bunch of whitespace & forced line wraps at around 120.
-  * Prevent setFilter function from setting the same filters after an update. Fixes issues [#903](https://github.com/Mottie/tablesorter/issues/903) &amp; [#733](https://github.com/Mottie/tablesorter/issues/733).
-* Grouping
-  * Add keyboard accessibility to group headers. See [issue #260](https://github.com/Mottie/tablesorter/issues/260).
+  * Prevent invalid RegExp errors which occur while typing in an incomplete query.
 * Math
-  * Fix issues with `isNaN('') // false`. See [issue #873](https://github.com/Mottie/tablesorter/issues/873).
-  * Reapply column indexing after updates & prevent js error on empty tables. Fixes [issue #889](https://github.com/Mottie/tablesorter/issues/889).
-  * Reduce update time to 20ms. See [issue #898](https://github.com/Mottie/tablesorter/issues/898).
-  * Exclude ignored cells even if `math_ignore` is empty. Fixes [issue #896](https://github.com/Mottie/tablesorter/issues/896).
+  * Ignored rows are now properly ignored in columns. Fixes [issue #976](https://github.com/Mottie/tablesorter/issues/976).
 * Output
-  * Add BOM back to downloaded file. Fixes [issue #862](https://github.com/Mottie/tablesorter/issues/862).
-  * Add `output_hiddenColumns` option. Fixes [issue #869](https://github.com/Mottie/tablesorter/issues/869).
-  * Add known issues section about downloading in Safari.
-* Pager (addon & widget)
-  * Replace all instances of using jQuery each with plain javascript. Fixes [issue #827](https://github.com/Mottie/tablesorter/issues/827).
-* Resizable
-  * Refreshing the widget will now preserve the storage. See [issue #874](https://github.com/Mottie/tablesorter/issues/874).
+  * Add `output_formatContent` callback - see [Stackoverflow](http://stackoverflow.com/q/31457323/145346).
+  * Make compatible with the scroller widget when it hides columns. See [pull #970](https://github.com/Mottie/tablesorter/pull/970), thanks [VictorT83](https://github.com/VictorT83)!
+* Pager
+  * Bind using unique event namespace. See [issue #961](https://github.com/Mottie/tablesorter/issues/961).
 * Scroller
-  * Set `overflow-x` auto & apply border-box to scroller. See [issue #135](https://github.com/Mottie/tablesorter/issues/135).
-  * Remove `pointer-events: none` from fixed column. See [issue #878](https://github.com/Mottie/tablesorter/issues/878).
-  * Hide fixed column scrollbar in IE9 & older. See [issue #135](https://github.com/Mottie/tablesorter/issues/135).
-  * Update `pointer-events` and tabbing accessibility. See [issue #135](https://github.com/Mottie/tablesorter/issues/135).
-  * `setFixedColumnSize` now properly updates with no set size.
-  * Add `scroller_addFixedOverlay`
-    * When `true`, a fixed column overlay is added for additional styling. See [issue #887](https://github.com/Mottie/tablesorter/issues/887).
-    * It includes css [`pointer-events`](http://caniuse.com/#search=pointer-events) set to `none` to allow interaction with elements underneath; make sure your browser supports it!
-  * Fix selector issue in the remove function.
-  * Properly refresh column size after an update. Fixes the third part of [issue #906](https://github.com/Mottie/tablesorter/issues/906).
+  * Prevent error on destroy when not applied. See [issue #965](https://github.com/Mottie/tablesorter/issues/965).
+  * Fix js error in old IE.
+  * Delay resize after updateAll.
+  * Include `sortEnd` in fixed column updates. See [issue #977](https://github.com/Mottie/tablesorter/issues/977).
+* Sort2Hash
+  * This widget updates the location hash based on the table sort, and sets the table sort on initialization. [demo](http://mottie.github.io/tablesorter/docs/example-widget-sort-to-hash.html).
+  * A user can share a link with others and have the table in the same sorted order.
+  * The hash can be set to use header text and any text to indicate an ascending or descending sort.
+  * Add text & saveSort override options. Fixes [issue #962](https://github.com/Mottie/tablesorter/issues/962).
+  * Other minor revisions.
 * Parsers
-  * Add "inputs-numeric" parser. Fixes [issue #888](https://github.com/Mottie/tablesorter/issues/888).
-  * Add [jQuery Globalize](https://github.com/jquery/globalize) [date](http://jsfiddle.net/Mottie/0j18Lw8r/) & [number](http://jsfiddle.net/Mottie/0j18Lw8r/) parsers.
-  * "namedNumbers" parser: ignores adjacent puncutation. Fixes [issue #890](https://github.com/Mottie/tablesorter/issues/890).
-  * input-select parsers:
-    * Clean up & add event namespaces.
-    * Now return an empty string if the value is empty; previously, it would return the cell text when the value was empty.
-  * Network "MAC" parser:
-    * Return the original string if the address is grossly invalid. Fixes [issue #895](https://github.com/Mottie/tablesorter/issues/895).
-    * No longer auto-detect as iPv6. See [issue #895](https://github.com/Mottie/tablesorter/issues/895).
-* Themes
-  * Declare font-weight separately. Thanks [nikolas](https://github.com/nikolas) ([pull #866](https://github.com/Mottie/tablesorter/pull/868))!
-  * Update Boostrap v2.x theme, and add a [Bootstrap v2.x demo](http://mottie.github.io/tablesorter/docs/example-widget-bootstrap-theme-v2.html).
+  * Checkbox in multiple columns now toggles the row class correctly.
+* Grunt build: Add jscs checking & fix reported style issues.
+* Testing
+  * Update QUnit to 1.18.0.
+  * Add `removeWidget` test.
+  * Add `isValueInArray` tests.
+  * Add `isProcessing` tests.
+* Extras - dropping support for [quicksearch](https://github.com/riklomas/quicksearch) plugin.
 
-#### <a name="v2.21.5">Version 2.21.5</a> (4/8/2015)
+#### <a name="v2.22.3">Version 2.22.3</a> (6/30/2015)
 
-* Filter
-  * Cache main loop variables - speed enhancement.
-  * Allow setting `filter_selectSource` along with `filter_functions` ([demo](http://jsfiddle.net/Mottie/856bzzeL/117/)).
-* Resizable
-  * Integrate with columnSelector. See [issue #859](https://github.com/Mottie/tablesorter/issues/859).
-  * Prevent javascript error.
-  * Resizable handles now properly align when the table is within a layout with margins. Fixes [issue #864](https://github.com/Mottie/tablesorter/issues/864).
-* Scroller
-  * Apply on initialization. Fixes [issue #860](https://github.com/Mottie/tablesorter/issues/860).
+* Scroller: fix javascript error `scroller_$fixedColumns` is undefined.
 
-#### <a name="v2.21.4">Version 2.21.4</a> (3/28/2015)
+#### <a name="v2.22.2">Version 2.22.2</a> (6/30/2015)
 
 * Core
-  * Add a utility [`$.tablesorter.getColumnText()` function](http://mottie.github.io/tablesorter/docs/#function-getcolumntext).
-    * This function will provide a centralized method of obtaining column data (raw & parsed text from cells) and allow processing cells.
-    * I plan to update all widgets that need to interact or obtain column data to use this function in v2.22.0.
-* Build
-  * The build process now includes selected parsers (added `parsers` option to build json).
-  * A new `jquery.tablesorter.combined.js` file is created which will contain the core plugin along with all selected widgets & parsers; a default build does not have any selected parsers.
-  * This will work around, but not resolve, [issue #855](https://github.com/Mottie/tablesorter/issues/855).
-* Extras
-  * Update `semver.js` & `semver-mod.js` to v4.3.3.
+  * Only use `preventDefault` in specific jQuery versions (v1.3.2 & older). Fixes [issue #911](https://github.com/Mottie/tablesorter/issues/911).
+  * The `"updateCache"` method now accepts a `tbody` object.
+  * Make `getParsedText` a public function.
+  * Allow empty string in textExtraction data-attribute. Fixes [issue #954](https://github.com/Mottie/tablesorter/issues/954).
+* Docs
+  * Update trigger sort method documentation.
+  * Update information about `cssIgnoreRow`. See [issue #911](https://github.com/Mottie/tablesorter/issues/911).
+  * Add requirement to include `.filter { display: none }` in custom themes.
+  * Improve Bootstrap example in column selector docs. See [pull #935](https://github.com/Mottie/tablesorter/pull/935), thanks [@Herst](https://github.com/Herst)!
+  * Clean up & corrections:
+    * Code examples in math & editing demos.
+    * Corrected comments in "Skip the parsing of column content" demo.
+    * Fix HTML validation issues.
+  * Add contributing.md link to [JSCS formatting file](https://gist.github.com/Herst/39263a478046a48f1860) by [@Herst](https://github.com/Herst).
+  * Update to Bootstrap v3.3.5.
+* Parsers
+  * Checkbox: add checkbox parser class name option (`config.checkboxClass`).
+  * Metric: Support metric base unit case insensitivity.
+* Editable
+  * Allow <kbd>Shift</kbd>+<kbd>Enter</kbd> to create a new line (even with `editable_enterToAccept` set as `true`).
+  * Update cache without requiring a hover over the `thead`; cache order now properly maintained on touch devices.
+* Filter
+  * Target last used filter properly. See [issue #920](https://github.com/Mottie/tablesorter/issues/920).
+  * `filter_selectSource` now ignores parsers, if none are set (empty or ajax tables). See [issue #934](https://github.com/Mottie/tablesorter/issues/934).
+  * Add support for nesting of "AND" & "OR" searches. Fixes issues [#891](https://github.com/Mottie/tablesorter/issues/891) & [#918](https://github.com/Mottie/tablesorter/issues/918).
+  * Filter row remains visible after focused when `filter_hideFilters` is set.
+  * Remove trailing comma in [pull #948](https://github.com/Mottie/tablesorter/pull/948), thanks [@Herst](https://github.com/Herst)!
+* Output
+  * Allow empty string data-attributes. See [issue #923](https://github.com/Mottie/tablesorter/issues/923).
+  * `output_saveRows` now accepts jQuery filter selectors. See [issue #923](https://github.com/Mottie/tablesorter/issues/923).
+  * Fix `hiddenColumns` option causing an empty output. Fixes [issue #923](https://github.com/Mottie/tablesorter/issues/923).
+  * Prevent javascript error when no row data is passed. See [issue #923](https://github.com/Mottie/tablesorter/issues/923).
+  * Remove `tfoot` clone, instead concat data to the end.
+  * Fix `colspan`s and hidden columns.
+  * Stop `outputTable` method propagation. Fixes [issue #944](https://github.com/Mottie/tablesorter/issues/944).
+* Pager
+  * Make `hasWidget` think the pager addon is a widget.
+  * Prevent adding a row if ajax returned JSON `totalrows` is zero. See [Stackoverflow](http://stackoverflow.com/q/30875583/145346).
+* RepeatHeaders
+  * use `selectorRemove` option setting.
+* Resizable
+  * Replace window resize trigger. See [issue #912](https://github.com/Mottie/tablesorter/issues/912).
+  * Resizing now works with overflow wrapped tables. Fixes [issue #953](https://github.com/Mottie/tablesorter/issues/953).
+* Scroller
+  * Fix added stylesheet error using "," instead of ";".
+  * Remove `colgroup` & hidden elements in fixed columns.
+  * Fix slow fixed column scrolling in Firefox. See [issue #135](https://github.com/Mottie/tablesorter/issues/135).
+  * Multiple `tbody` fix. See issues [#906](https://github.com/Mottie/tablesorter/issues/906) & [#913](https://github.com/Mottie/tablesorter/issues/913).
+  * Limit horizontal scrollbar to scrolling section.
+  * Removed `widthFixed` requirement.
+  * Update RTL support.
+  * Fix column alignment. Fixes [issue #913](https://github.com/Mottie/tablesorter/issues/913).
+  * Fix filter return zero to few rows.
+  * Reduce init lag & correct no fixed column tbody width. See [issue #906](https://github.com/Mottie/tablesorter/issues/906).
+  * Fix mousewheel scrolling on fixed columns.
+  * Cleanup & old IE fix.
+  * Fix column alignment issues [#940](https://github.com/Mottie/tablesorter/issues/940), [#937](https://github.com/Mottie/tablesorter/issues/937), [#931](https://github.com/Mottie/tablesorter/issues/931) & [#927](https://github.com/Mottie/tablesorter/issues/927).
+  * Throttle IE scrolling. Partially fixes [issue #928](https://github.com/Mottie/tablesorter/issues/928).
+  * Save scroll positioning. Fixes issues [#926](https://github.com/Mottie/tablesorter/issues/926) & [#932](https://github.com/Mottie/tablesorter/issues/932).
+  * Integrate with:
+    * pager. Fixes [issue #884](https://github.com/Mottie/tablesorter/issues/884).
+    * columnSelector. Fixes [issue #905](https://github.com/Mottie/tablesorter/issues/905).
+* SortTbodies (beta)
+  * Add new widget to allow the sorting of tbodies based on a primary row.
+  * Fixes [pull #195](https://github.com/Mottie/tablesorter/pull/195) & [issue #833](https://github.com/Mottie/tablesorter/issues/833).
+  * Documentation & demo page added: http://mottie.github.io/tablesorter/docs/example-widget-sort-tbodies.html
+* StickyHeaders
+  * Replace window resize trigger. See [issue #912](https://github.com/Mottie/tablesorter/issues/912).
+  * Fix javascript error. See [issue #920](https://github.com/Mottie/tablesorter/issues/920).
+* Zebra
+  * Target non-info block tbodies in extra tables.
+* Grunt
+  * Update grunt modules.
+  * Remove moot "version" property from bower.json. See [pull #941](https://github.com/Mottie/tablesorter/pull/941), thanks [@kkirsche](https://github.com/kkirsche)!
+  * Don't update bower.json in Gruntfile.js.
+  * Check for old IE issue in [pull #949](https://github.com/Mottie/tablesorter/pull/949), thanks [@Herst](https://github.com/Herst)!

@@ -1,7 +1,12 @@
 # Summernote
+
 Super simple WYSIWYG Editor using Bootstrap (3.0 and 2.x).
 
 [![Build Status](https://secure.travis-ci.org/summernote/summernote.png)](http://travis-ci.org/summernote/summernote)
+[![npm version](https://badge.fury.io/js/summernote.svg)](http://badge.fury.io/js/summernote)
+[![Dependency Status](https://gemnasium.com/summernote/summernote.svg)](https://gemnasium.com/summernote/summernote)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/summernoteis.svg)](https://saucelabs.com/u/summernoteis)
 
 ### Summernote
 Summernote is a JavaScript library that helps you create WYSIWYG editors online.
@@ -36,10 +41,10 @@ Include the following code in the `<head>` tag of your HTML:
 
 ```html
 <!-- include libraries(jQuery, bootstrap, fontawesome) -->
-<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.min.js"></script> 
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script> 
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
 
 <!-- include summernote css/js-->
 <link href="summernote.css" rel="stylesheet">
@@ -77,6 +82,10 @@ var sHTML = $('#summernote').code();
 ```javascript
 $('#summernote').destroy();
 ```
+
+#### Warning - code injection
+
+The code view allows the user to enter script contents. Make sure to filter/[sanitize the HTML on the server](https://github.com/search?l=JavaScript&q=sanitize+html). Otherwise, an attacker can inject arbitrary JavaScript code into clients.
 
 ### Supported platforms
 
@@ -152,8 +161,8 @@ grunt test
 #### start local server for developing summernote.
 run local server with connect and watch.
 ```bash
-# this will open a browser on http://localhost:3000.
 grunt server
+# Open a browser on http://localhost:3000.
 # If you change source code, automatically reload your page.
 ```
 
@@ -161,9 +170,14 @@ grunt server
 * JSHint: http://www.jshint.com/about/
 * JSHint rule: https://github.com/summernote/summernote/blob/master/.jshintrc
 
+#### Contribution guide
+* Please read [CONTRIBUTING.md](https://github.com/summernote/summernote/blob/develop/CONTRIBUTING.md) before sending pull requests.
+
 ### Contacts
 * Email: susukang98@gmail.com
 * Twitter: http://twitter.com/hackerwins
+* Chat with us:
+[![Join the chat at https://gitter.im/summernote/summernote](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/summernote/summernote?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### License
 summernote may be freely distributed under the MIT license.

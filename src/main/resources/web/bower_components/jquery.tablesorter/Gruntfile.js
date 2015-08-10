@@ -209,6 +209,26 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		jscs: {
+			src: [
+				'addons/pager/*.js',
+				'!addons/pager/*.min.js',
+				'js/jquery.*.js',
+				'js/**/*.js',
+				'!js/_test-*.js',
+				'!js/jquery.tablesorter.combined.js',
+				'!js/jquery.tablesorter.widgets.js',
+				'!js/extras/jquery.dragtable.mod.js', // indents with spaces; keeping original formatting to make diffs easier
+				'!js/extras/jquery.metadata.js', // phasing this one out anyway
+				'!js/**/_test-*.js',
+				'!js/*.min.js',
+				'!js/**/semver*.js'
+			],
+			options: {
+				config: '.jscsrc'
+			}
+		},
+
 		jshint: {
 			files: {
 				src: [
@@ -224,14 +244,20 @@ module.exports = function( grunt ) {
 			},
 			options: {
 				globals: {
+					'JSON': false,
 					'localStorage': false,
 					'navigator': false,
 					'console': false,
-					'alert': false
+					'require': false,
+					'define': false,
+					'module': false
 				},
 				'loopfunc': true,
 				'jquery': true,
-				'browser': true
+				'browser': true,
+				'es3': true,
+				'unused': true,
+				'undef': true
 			}
 		},
 
@@ -316,8 +342,9 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
+	grunt.loadNpmTasks( 'grunt-jscs' );
 
-	grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
+	grunt.registerTask( 'test', [ 'jscs', 'jshint', 'qunit' ] );
 
 	tasks = [
 		'clean:build',
@@ -383,7 +410,7 @@ module.exports = function( grunt ) {
 	// update bower.json & tablesorter.jquery.json file version numbers to match the package.json version
 	grunt.registerTask( 'updateManifest', function() {
 		var i, project,
-			projectFile = [ 'tablesorter.jquery.json', 'bower.json' ],
+			projectFile = [ 'tablesorter.jquery.json' ],
 			len = projectFile.length;
 		for ( i = 0; i < len; i++ ) {
 			if ( !grunt.file.exists( projectFile[ i ] ) ) {

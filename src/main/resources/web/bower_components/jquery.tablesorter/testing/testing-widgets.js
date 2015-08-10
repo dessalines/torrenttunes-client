@@ -1,5 +1,5 @@
 /*!
-* TableSorter QUnit Testing
+* TableSorter QUnit Testing - filter widget
 */
 /*jshint unused: false */
 /*global start: false, asyncTest: false, equal: false, $: false, expect: false, module: false,
@@ -148,7 +148,7 @@ $(function(){
 					wo = this.wo,
 					$table = this.$table,
 					table = this.table;
-			expect(27);
+			expect(33);
 
 			return QUnit.SequentialRunner(
 				function(actions, assertions) {
@@ -206,8 +206,26 @@ $(function(){
 				function(){ ts.setFilters( table, ['', 'br && cl'], true ); },
 				function(){ assert.cacheCompare( table, 1, ['Brandon Clark'], 'search and match; ensure search filtered gets cleared', true ); }
 			).nextTask(
+				function(){ ts.setFilters( table, ['', 'c* && l && a'], true ); },
+				function(){ assert.cacheCompare( table, 1, ['Brandon Clark', 'Clark'], 'search "c* && l && a"', true ); }
+			).nextTask(
+				function(){ ts.setFilters( table, ['', 'a && !o'], true ); },
+				function(){ assert.cacheCompare( table, 1, ['Clark', 'Alex', 'Brenda Dexter', 'Martha'], 'search "a && !o"', true ); }
+			).nextTask(
+				function(){ ts.setFilters( table, ['', '', '' , '>20 && <40'], true ); },
+				function(){ assert.cacheCompare( table, 3, [25, 28, 33, 24, 22, 25], 'search ">20 && <40"', true ); }
+			).nextTask(
+				function(){ ts.setFilters( table, ['', '', '' , '<10 or >40'], true ); },
+				function(){ assert.cacheCompare( table, 3, [51, 45, 65], 'search "<10 or >40"', true ); }
+			).nextTask(
 				function(){ ts.setFilters( table, ['', 'alex|br*'], true ); },
 				function(){ assert.cacheCompare( table, 1, ['Brandon Clark', 'Bruce', 'Alex', 'Bruce Lee', 'Brenda Dexter'], 'search OR match', true ); }
+			).nextTask(
+				function(){ ts.setFilters( table, ['', '/(Alex|Aar'], true ); },
+				function(){ assert.cacheCompare( table, 1, [], 'Partial OR match, but invalid regex', true ); }
+			).nextTask(
+				function(){ ts.setFilters( table, ['', '/(Alex && '], true ); },
+				function(){ assert.cacheCompare( table, 1, [], 'Partial AND match, and way messed up regex', true ); }
 			).nextTask(
 				function(){ ts.setFilters( table, ['', '', '', '', '5 - 10'], true ); },
 				function(){ assert.cacheCompare( table, 4, [5.95, 9.99, 5.29], 'search range', true ); }

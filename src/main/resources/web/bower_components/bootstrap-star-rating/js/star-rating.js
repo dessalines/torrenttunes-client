@@ -1,6 +1,6 @@
 /*!
  * @copyright &copy; Kartik Visweswaran, Krajee.com, 2013 - 2015
- * @version 3.5.2
+ * @version 3.5.3
  *
  * A simple yet powerful JQuery star rating plugin that allows rendering
  * fractional star ratings and supports Right to Left (RTL) input.
@@ -323,7 +323,7 @@
             html = self.fetchCaption(val);
             if (!isEmpty(self.$captionElement)) {
                 addCss(self.$captionElement, 'caption');
-                self.$captionElement.attr({"title": self.clearCaption}).html(html);
+                self.$captionElement.html(html);
                 return '';
             }
             return '<div class="caption">' + html + '</div>';

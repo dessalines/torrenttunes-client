@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -16,6 +19,8 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.LibTorrent;
+import com.frostwire.jlibtorrent.StatsMetric;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.musicbrainz.mp3.tagger.Tools.Song;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
@@ -97,7 +102,7 @@ public class DerpTest extends TestCase {
 		}
 	}
 
-	public void testDerp4() {
+	public void derp4() {
 
 		ScanInfo si = ScanInfo.create(new File(DataSources.SAMPLE_SONG));
 
@@ -109,7 +114,7 @@ public class DerpTest extends TestCase {
 
 	}
 
-	public void testDerp5() throws UnknownHostException {
+	public void derp5() throws UnknownHostException {
 		scan(InetAddress.getByName(DataSources.EXTERNAL_IP));
 	}
 
@@ -130,6 +135,11 @@ public class DerpTest extends TestCase {
 //				System.out.println("Server is not listening on port " + port+ " of " + hostname);
 			}
 		}
+	}
+	
+	public static void testDerp6() {
+
+		
 	}
 
 }

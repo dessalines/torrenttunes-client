@@ -99,6 +99,8 @@ public class DataSources {
 	
 	public static final String MAIN_PAGE_URL() {return "file://" + WEB_HTML() + "/main.html";}
 	
+	public static final String SESSION_STATS_FILE() {return CODE_DIR + "/session_stats.out";}
+	
 
 	public static final String PAGES(String pageName) {
 		return WEB_HTML() + "/" + pageName + ".html";
@@ -120,6 +122,8 @@ public class DataSources {
 	}
 	
 	public static final String TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
+
+
 
 	public static final String SEEDER_INFO_UPLOAD(String infoHash, String seeders) {
 		return TRACKER_URL + "seeder_upload/" + infoHash + "/" + seeders;

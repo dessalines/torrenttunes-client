@@ -33,35 +33,7 @@
 }
 */
 
-/*td { padding: 10px; }*/
 
-tr.progress-full td:first-child,
-tr.progress-half td:first-child,
-tr.progress-quarter td:first-child {
-    position: relative;
-}
-tr.progress-full td:first-child::before,
-tr.progress-half td:first-child::before,
-tr.progress-quarter td:first-child::before {
-    content: "";
-    /*position: absolute;*/
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background-color: red;
-    z-index: -1;
-}
-
-tr.progress-full td:first-child::before {
-    width: 100%;
-}
-tr.progress-half td:first-child::before {
-    width: 50%;
-}
-tr.progress-quarter td:first-child::before {
-    width: 25%;
-}
 
 .artist_playing_clickable {
   cursor: pointer;

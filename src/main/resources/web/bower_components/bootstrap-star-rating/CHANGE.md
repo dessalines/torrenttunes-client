@@ -1,3 +1,10 @@
+version 3.5.3
+=============
+**Date:** 18-Jun-2015
+
+1. (enh #58): Remove redundant tooltip title on hover of caption element.
+2. Fixes for composer.json dependencies.
+
 version 3.5.2
 =============
 **Date:** 10-May-2015
