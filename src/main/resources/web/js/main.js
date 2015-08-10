@@ -571,7 +571,7 @@ function updateDownloadStatusBar(infoHash) {
 
       $(tr).css({
         // 'background-image': 'url(../image/lblue.png)',
-        'background-color': 'rgba(255,0,0,1)' ,
+        'background-color': 'rgba(255,0,0,1)',
         'background-size': '1% 100%',
         // 'opacity': '0.6',
         /*your percentage is the first one (width), second one (100%) is for height*/
@@ -592,7 +592,7 @@ function updateDownloadStatusBar(infoHash) {
 
         $(tr).css({
           'background-image': 'none',
-          'background-color':'rgba(42,159,214,0.1)'
+          'background-color': 'rgba(42,159,214,0.1)'
         });
 
       }
@@ -601,27 +601,10 @@ function updateDownloadStatusBar(infoHash) {
     }
 
 
-
-
   }).error(function(err) {
     // Stop going for it
     clearInterval(downloadStatusMap[infoHash]);
   });
-
-  // get the percentage: 
-  // row[0].style.backgroundColor="yellow";
-
-  // Do this for all the tables, loop over the row length
-
-
-
-
-
-
-
-
-
-
 
 }
 

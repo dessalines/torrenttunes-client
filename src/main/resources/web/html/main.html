@@ -110,6 +110,7 @@
             <li><a href="#libraryTab" data-toggle="tab">Library</a></li>
             <li><a href="#settingsTab" data-toggle="tab">Settings</a></li>
             <li><a href="#uploadTab" data-toggle="tab">Share</a></li>
+            <li class="hide"><a href="#shareTab" data-toggle="tab">Share</a></li>
             <li class="hide"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
             <li class="hide"><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
             <li>
@@ -500,7 +501,6 @@
                 </script>
               </div>
             </div>
-
             <script id="album_catalog_songs_template" type="x-tmpl-mustache">
               <table id="album_catalog_songs_table" class="table table-hover table-striped tablesorter table-overflow">
                 <colgroup>
@@ -645,6 +645,27 @@
                   </table>
                 </script>
               </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="shareTab">
+              <h3> Install TorrentTunes</h3>
+              <p>If you'd like to share music on your computer, and help upload your library to the bittorrent network, install the <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank">TorrentTunes client</a>.
+                <br>
+                <br>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="panel">
+                      <div class="panel-body">
+                        <a href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank"><img class="logo pull-left" src="../image/cd_icon_white_512.png" /> Download TorrentTunes</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br> Requires:
+                <ul>
+                  <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html" target="_blank" class="text-normal">Java 8</a> </li>
+                  <li> Firewalls turned off(to allow torrenting)</li>
+                </ul>
+              </p>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="uploadTab">
               <form id="upload_form" class="form-horizontal" role="form">
