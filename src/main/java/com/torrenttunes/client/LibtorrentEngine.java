@@ -421,7 +421,7 @@ public enum LibtorrentEngine  {
 		// start sharing them
 		Integer i = 0;
 		// working at 7k
-		while (i < 100) {
+		while (i < 100 && !library.isEmpty()) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			TorrentHandle torrent = seedTorrent(track);
