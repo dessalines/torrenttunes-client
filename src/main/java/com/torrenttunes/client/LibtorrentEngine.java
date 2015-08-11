@@ -133,6 +133,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.setInteger(int_types.tracker_completion_timeout.swigValue(), 10);
 		sessionSettings.setBoolean(bool_types.incoming_starts_queued_torrents.swigValue(), true);
 		
+		sessionSettings.setInteger(int_types.peer_timeout.swigValue(), 20);
+		
 		
 
 		DHT dht = new DHT(session);
