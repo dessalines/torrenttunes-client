@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +24,9 @@ import org.slf4j.LoggerFactory;
 import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
+import com.frostwire.jlibtorrent.Fingerprint;
 import com.frostwire.jlibtorrent.LibTorrent;
+import com.frostwire.jlibtorrent.Pair;
 import com.frostwire.jlibtorrent.Session;
 import com.frostwire.jlibtorrent.SettingsPack;
 import com.frostwire.jlibtorrent.StatsMetric;
@@ -102,6 +105,7 @@ public enum LibtorrentEngine  {
 	private Set<ScanInfo> scanInfos;
 
 	private List<String> sessionStatsHeaders;
+	
 
 	private LibtorrentEngine() {
 
@@ -119,9 +123,14 @@ public enum LibtorrentEngine  {
 		
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
-
-		session = new Session();
+		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49152, 65535);
+		String iface = "0.0.0.0";
+		session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
+		
+		
 		sessionSettings = new SettingsPack();
+		
+
 		
 
 		sessionSettings.setActiveDownloads(10);
@@ -146,6 +155,8 @@ public enum LibtorrentEngine  {
 
 		DHT dht = new DHT(session);
 		dht.stop();
+		
+		
 		
 	
 
@@ -814,15 +825,15 @@ public enum LibtorrentEngine  {
 			public void unwantedBlock(UnwantedBlockAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
-			@Override
-			public void peerLog(PeerLogAlert alert) {
-				log.debug("peer log alert");
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-				log.debug(((PeerLogAlert) alert).eventType());
-				log.debug(((PeerLogAlert) alert).direction().toString());
-				log.debug(((PeerLogAlert) alert).getPeerId().toString());
-				log.debug(((PeerLogAlert) alert).getPeerIP().toString());
-			}
+//			@Override
+//			public void peerLog(PeerLogAlert alert) {
+//				log.debug("peer log alert");
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//				log.debug(((PeerLogAlert) alert).eventType());
+//				log.debug(((PeerLogAlert) alert).direction().toString());
+//				log.debug(((PeerLogAlert) alert).getPeerId().toString());
+//				log.debug(((PeerLogAlert) alert).getPeerIP().toString());
+//			}
 			
 
 
@@ -881,6 +892,15 @@ public enum LibtorrentEngine  {
 	public Map<String, TorrentHandle> getInfoHashToTorrentMap() {
 		return infoHashToTorrentMap;
 	}
+	
+    private static List<Pair<String, Integer>> defaultRouters() {
+        List<Pair<String, Integer>> list = new LinkedList<Pair<String, Integer>>();
+
+        list.add(new Pair<String, Integer>("router.bittorrent.com", 6881));
+        list.add(new Pair<String, Integer>("dht.transmissionbt.com", 6881));
+
+        return list;
+    }
 
 
 
