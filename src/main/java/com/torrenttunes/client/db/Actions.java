@@ -351,6 +351,30 @@ public class Actions {
 		
 		return "Artist : " + artistMBID + " deleted from library";
 	}
+	
+	/**
+	 * Warning, very fucking dangerous, it deletes the songs on the HD too
+	 * @return
+	 */
+	public static void clearLibrary() {
+		log.info("Deleting your local library...");
+		List<Library> tracks = LIBRARY.findAll();
+		
+		for (Library track : tracks) {
+			
+			// delete the torrent file
+			new File(track.getString("torrent_path")).delete();
+			
+			// delete the song
+			new File(track.getString("file_path")).delete();
+			
+			// delete the row
+			track.delete();
+		}
+		
+		log.info("Library deleted");
+		
+	}
 
 
 

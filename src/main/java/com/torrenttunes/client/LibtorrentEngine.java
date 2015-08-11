@@ -72,7 +72,9 @@ import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
 import com.frostwire.jlibtorrent.swig.default_storage;
 import com.frostwire.jlibtorrent.swig.session_stats_alert;
+import com.frostwire.jlibtorrent.swig.settings_pack.bool_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
+import com.frostwire.jlibtorrent.swig.settings_pack.string_types;
 import com.google.common.collect.Lists;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.ScanDirectory.ScanStatus;
@@ -117,9 +119,21 @@ public enum LibtorrentEngine  {
 
 		sessionSettings.setActiveDownloads(10);
 		sessionSettings.setActiveSeeds(999999);
+		sessionSettings.setInteger(int_types.active_limit.swigValue(), 999999);
+		sessionSettings.setInteger(int_types.active_tracker_limit.swigValue(), 999999);
 
 		sessionSettings.setUploadRateLimit(0);
 		sessionSettings.setDownloadRateLimit(0);
+		
+		sessionSettings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
+		sessionSettings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
+		
+		sessionSettings.setInteger(int_types.file_pool_size.swigValue(), 200000);
+		
+		sessionSettings.setInteger(int_types.tracker_completion_timeout.swigValue(), 10);
+		sessionSettings.setBoolean(bool_types.incoming_starts_queued_torrents.swigValue(), true);
+		
+		
 
 		DHT dht = new DHT(session);
 		dht.stop();
