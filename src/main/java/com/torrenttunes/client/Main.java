@@ -77,7 +77,7 @@ public class Main {
 			ScanDirectory.start(new File(shareDirectory));
 		}
 
-		LibtorrentEngine.INSTANCE.startSeedingLibrary();
+		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion2();
 
 
 

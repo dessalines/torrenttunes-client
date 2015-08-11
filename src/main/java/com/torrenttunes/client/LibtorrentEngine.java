@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import com.frostwire.jlibtorrent.alerts.PeerBlockedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerConnectAlert;
 import com.frostwire.jlibtorrent.alerts.PeerDisconnectedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerErrorAlert;
+import com.frostwire.jlibtorrent.alerts.PeerLogAlert;
 import com.frostwire.jlibtorrent.alerts.PeerSnubbedAlert;
 import com.frostwire.jlibtorrent.alerts.PeerUnsnubbedAlert;
 import com.frostwire.jlibtorrent.alerts.PerformanceAlert;
@@ -70,7 +72,9 @@ import com.frostwire.jlibtorrent.alerts.TrackerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
+import com.frostwire.jlibtorrent.swig.alert;
 import com.frostwire.jlibtorrent.swig.default_storage;
+import com.frostwire.jlibtorrent.swig.peer_log_alert;
 import com.frostwire.jlibtorrent.swig.session_stats_alert;
 import com.frostwire.jlibtorrent.swig.settings_pack.bool_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
@@ -106,16 +110,19 @@ public enum LibtorrentEngine  {
 		// Create a session stats file with headers
 		createSessionStatsFile();
 
+		
 
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
 
 //		default_storage.disk_write_access_log(true);
-
+		
+		
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 
 		session = new Session();
 		sessionSettings = new SettingsPack();
+		
 
 		sessionSettings.setActiveDownloads(10);
 		sessionSettings.setActiveSeeds(999999);
@@ -135,10 +142,12 @@ public enum LibtorrentEngine  {
 		
 		sessionSettings.setInteger(int_types.peer_timeout.swigValue(), 20);
 		
-		
+//		sessionSettings.setBoolean(bool_types.use_read_cache.swigValue(), false);
 
 		DHT dht = new DHT(session);
 		dht.stop();
+		
+	
 
 		sessionSettings.broadcastLSD(false);
 		sessionSettings.setMaxPeerlistSize(500);
@@ -246,6 +255,8 @@ public enum LibtorrentEngine  {
 		session.applySettings(sessionSettings);
 
 
+		log.info("Is DHT Running? " + session.isDHTRunning());
+		
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
 		this.infoHashToTorrentMap = new ConcurrentHashMap<String, TorrentHandle>();
 
@@ -273,23 +284,25 @@ public enum LibtorrentEngine  {
 			// fill with dummy values, have no idea how many
 			for (int i = 0; i < 400; i++) {sessionStatsHeaders.add(null);}
 
-
+		
+			sessionStatsHeaders.set(0, "seconds");
 			// Create the headers using set
 			for (int i = 0; i < ssm.length; i++) {
 				StatsMetric sm = ssm[i];
 				//				log.info("i = " + i + " valueindex = " + sm.valueIndex + " name = " + sm.name);
-				sessionStatsHeaders.set(sm.valueIndex, sm.name);
+				sessionStatsHeaders.set(sm.valueIndex+1, sm.name);
 			}
 
-
+	
+			String delim = "";
 			for (String header : sessionStatsHeaders) {
 
-				//				log.info(header);
-
 				if (header != null) {
-					String headerStr = header + "\t";
+					String headerStr = delim + header;
+
 					Files.write(Paths.get(file.getAbsolutePath()), 
 							headerStr.getBytes(), StandardOpenOption.APPEND);
+					delim = ":";
 				}
 
 			}
@@ -315,7 +328,8 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public int[] types() {
-				return new int[]{AlertType.SESSION_STATS.getSwig()};
+				return new int[]{AlertType.SESSION_STATS.getSwig(), AlertType.PEER_LOG.getSwig()};
+				
 			}
 
 			@Override
@@ -326,17 +340,19 @@ public enum LibtorrentEngine  {
 
 						File file = new File(DataSources.SESSION_STATS_FILE());
 
+						String secondsStr = String.valueOf(new Date().getTime());
+						Files.write(Paths.get(file.getAbsolutePath()), 
+								secondsStr.getBytes(), StandardOpenOption.APPEND);
+						
 						for (int i = 0; i < sessionStatsHeaders.size(); i++) {
 							String header = sessionStatsHeaders.get(i);
 
 							if (header != null) {
 								long val = ((SessionStatsAlert) alert).value(i);
-								String valStr = val + "\t";
+								String valStr = "\t" + val;
 
 								Files.write(Paths.get(file.getAbsolutePath()), 
 										valStr.getBytes(), StandardOpenOption.APPEND);
-
-
 
 							}
 						}
@@ -344,6 +360,13 @@ public enum LibtorrentEngine  {
 						Files.write(Paths.get(file.getAbsolutePath()), 
 								"\n".getBytes(), StandardOpenOption.APPEND);
 
+					} else if (alert instanceof PeerLogAlert) {
+						log.debug("peer log alert");
+						log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+						log.debug(((PeerLogAlert) alert).eventType());
+						log.debug(((PeerLogAlert) alert).direction().toString());
+						log.debug(((PeerLogAlert) alert).getPeerId().toString());
+						log.debug(((PeerLogAlert) alert).getPeerIP().toString());
 					}
 
 				} catch (IOException e) {
@@ -355,9 +378,29 @@ public enum LibtorrentEngine  {
 
 
 	}
+	
+	public void startSeedingLibraryVersion1() {
+		
+		Tools.dbInit();
+		List<Library> library = LIBRARY.findAll();
+		library.isEmpty();
+		Tools.dbClose();
+
+		// start sharing them
+		Integer i = 0;
+		
+		// working at 7k
+		while (i < library.size()) {
+			log.info("File #" + i + "/" + library.size() + " songs in library");
+			Library track = library.get(i++);
+			TorrentHandle torrent = seedTorrent(track);
+
+		}
+		log.info("Done seeding library, total of " + session.getTorrents().size() + " torrents shared");
+	}
 
 
-	public void startSeedingLibrary() {
+	public void startSeedingLibraryVersion2() {
 
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
@@ -370,22 +413,7 @@ public enum LibtorrentEngine  {
 		while (i < 100) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
-			String torrentPath = track.getString("torrent_path");
-			String filePath = track.getString("file_path");
-
-
-			File outputParent = new File(filePath).getParentFile();
-
-			TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
-
-			torrents.add(torrent);
-
-
-			// Set up the scanInfo
-			ScanInfo si = ScanInfo.create(new File(filePath));
-			si.setStatus(ScanStatus.Seeding);
-			si.setMbid(track.getString("mbid"));
-			scanInfos.add(si);
+			TorrentHandle torrent = seedTorrent(track);
 
 
 
@@ -467,7 +495,7 @@ public enum LibtorrentEngine  {
 		int j = 0;
 		for (TorrentHandle t : session.getTorrents()) {
 
-			log.info("Setting torrent# " + j++ +  " "  + t.getName() + " to automanage" );
+			log.info("Setting torrent# " + j++ +  " "  + t.getName() + " to resume" );
 			//			t.setAutoManaged(true);
 			//			t.flushCache();
 			t.resume();
@@ -481,6 +509,28 @@ public enum LibtorrentEngine  {
 
 
 
+	}
+
+
+	private TorrentHandle seedTorrent(Library track) {
+		String torrentPath = track.getString("torrent_path");
+		String filePath = track.getString("file_path");
+
+
+		File outputParent = new File(filePath).getParentFile();
+
+		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
+
+		torrents.add(torrent);
+
+
+		// Set up the scanInfo
+		ScanInfo si = ScanInfo.create(new File(filePath));
+		si.setStatus(ScanStatus.Seeding);
+		si.setMbid(track.getString("mbid"));
+		scanInfos.add(si);
+		
+		return torrent;
 	}
 
 	public String getActiveTorrents() {
@@ -764,6 +814,17 @@ public enum LibtorrentEngine  {
 			public void unwantedBlock(UnwantedBlockAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
+			@Override
+			public void peerLog(PeerLogAlert alert) {
+				log.debug("peer log alert");
+				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.debug(((PeerLogAlert) alert).eventType());
+				log.debug(((PeerLogAlert) alert).direction().toString());
+				log.debug(((PeerLogAlert) alert).getPeerId().toString());
+				log.debug(((PeerLogAlert) alert).getPeerIP().toString());
+			}
+			
+
 
 
 

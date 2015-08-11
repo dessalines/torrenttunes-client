@@ -99,7 +99,7 @@ public class DataSources {
 	
 	public static final String MAIN_PAGE_URL() {return "file://" + WEB_HTML() + "/main.html";}
 	
-	public static final String SESSION_STATS_FILE() {return CODE_DIR + "/session_stats.out";}
+	public static final String SESSION_STATS_FILE() {return CODE_DIR + "/session_stats.0000.log";}
 	
 
 	public static final String PAGES(String pageName) {
