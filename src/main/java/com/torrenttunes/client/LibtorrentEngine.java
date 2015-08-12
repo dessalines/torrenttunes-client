@@ -107,8 +107,12 @@ public enum LibtorrentEngine  {
 
 	private List<String> sessionStatsHeaders;
 	
+	private long startTime;
+	
 
 	private LibtorrentEngine() {
+		
+		startTime = System.nanoTime();
 
 		System.setProperty("jlibtorrent.jni.path", DataSources.LIBTORRENT_OS_LIBRARY_PATH());
 
@@ -166,8 +170,11 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMaxPeerlistSize(500);
 		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 		
-		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
-				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
+//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
+//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
+		
+		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
 //		sessionSettings.setInteger(int_types.bandwidth_mixed_algo_t., value);
 //		bandwidth_mixed_algo_t.prefer_tcp
@@ -358,9 +365,9 @@ public enum LibtorrentEngine  {
 
 						File file = new File(DataSources.SESSION_STATS_FILE());
 
-						String secondsStr = String.valueOf(new Date().getTime());
+						String timeElapsedStr = String.valueOf((System.nanoTime() - startTime)/1000);
 						Files.write(Paths.get(file.getAbsolutePath()), 
-								secondsStr.getBytes(), StandardOpenOption.APPEND);
+								timeElapsedStr.getBytes(), StandardOpenOption.APPEND);
 						
 						for (int i = 0; i < sessionStatsHeaders.size(); i++) {
 							String header = sessionStatsHeaders.get(i);
