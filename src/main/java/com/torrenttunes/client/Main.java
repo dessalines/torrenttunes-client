@@ -49,7 +49,9 @@ public class Main {
 			Tools.uninstall();
 		}
 
-		log.setLevel(Level.toLevel(loglevel));
+		log.setLevel(Level.toLevel(loglevel));		
+		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
+		log.getLoggerContext().getLogger("spark.webserver").setLevel(Level.OFF);
 
 		// Install Shortcuts
 		Tools.setupDirectories();

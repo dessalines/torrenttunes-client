@@ -139,8 +139,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.setInteger(int_types.active_limit.swigValue(), 999999);
 		sessionSettings.setInteger(int_types.active_tracker_limit.swigValue(), 999999);
 
-		sessionSettings.setUploadRateLimit(0);
-		sessionSettings.setDownloadRateLimit(0);
+		sessionSettings.setUploadRateLimit(999999);
+		sessionSettings.setDownloadRateLimit(999999);
 		
 		sessionSettings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
 		sessionSettings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
