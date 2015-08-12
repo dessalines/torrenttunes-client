@@ -79,6 +79,7 @@ import com.frostwire.jlibtorrent.swig.alert;
 import com.frostwire.jlibtorrent.swig.default_storage;
 import com.frostwire.jlibtorrent.swig.peer_log_alert;
 import com.frostwire.jlibtorrent.swig.session_stats_alert;
+import com.frostwire.jlibtorrent.swig.settings_pack.bandwidth_mixed_algo_t;
 import com.frostwire.jlibtorrent.swig.settings_pack.bool_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.string_types;
@@ -151,6 +152,7 @@ public enum LibtorrentEngine  {
 		
 		sessionSettings.setInteger(int_types.peer_timeout.swigValue(), 20);
 		
+		
 //		sessionSettings.setBoolean(bool_types.use_read_cache.swigValue(), false);
 
 		DHT dht = new DHT(session);
@@ -164,6 +166,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMaxPeerlistSize(500);
 		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
+//		sessionSettings.setInteger(int_types.bandwidth_mixed_algo_t., value);
+//		bandwidth_mixed_algo_t.prefer_tcp
 		
 		//		sessionSettings = SessionSettings.newDefaults();
 		//		sessionSettings = SessionSettings.newMinMemoryUsage();
@@ -296,7 +300,7 @@ public enum LibtorrentEngine  {
 			for (int i = 0; i < 400; i++) {sessionStatsHeaders.add(null);}
 
 		
-			sessionStatsHeaders.set(0, "seconds");
+			sessionStatsHeaders.set(0, "second");
 			// Create the headers using set
 			for (int i = 0; i < ssm.length; i++) {
 				StatsMetric sm = ssm[i];
@@ -372,12 +376,11 @@ public enum LibtorrentEngine  {
 								"\n".getBytes(), StandardOpenOption.APPEND);
 
 					} else if (alert instanceof PeerLogAlert) {
-						log.debug("peer log alert");
 						log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-						log.debug(((PeerLogAlert) alert).eventType());
-						log.debug(((PeerLogAlert) alert).direction().toString());
-						log.debug(((PeerLogAlert) alert).getPeerId().toString());
-						log.debug(((PeerLogAlert) alert).getPeerIP().toString());
+//						log.debug(((PeerLogAlert) alert).eventType());
+//						log.debug(((PeerLogAlert) alert).direction().toString());
+//						log.debug(((PeerLogAlert) alert).getPeerId().toString());
+//						log.debug(((PeerLogAlert) alert).getPeerIP().toString());
 					}
 
 				} catch (IOException e) {
@@ -825,15 +828,7 @@ public enum LibtorrentEngine  {
 			public void unwantedBlock(UnwantedBlockAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
-//			@Override
-//			public void peerLog(PeerLogAlert alert) {
-//				log.debug("peer log alert");
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//				log.debug(((PeerLogAlert) alert).eventType());
-//				log.debug(((PeerLogAlert) alert).direction().toString());
-//				log.debug(((PeerLogAlert) alert).getPeerId().toString());
-//				log.debug(((PeerLogAlert) alert).getPeerIP().toString());
-//			}
+
 			
 
 
