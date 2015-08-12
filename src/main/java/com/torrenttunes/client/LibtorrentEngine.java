@@ -109,7 +109,7 @@ public enum LibtorrentEngine  {
 
 	private LibtorrentEngine() {
 
-		System.load(DataSources.LIBTORRENT_OS_LIBRARY_PATH());
+		System.setProperty("jlibtorrent.jni.path", DataSources.LIBTORRENT_OS_LIBRARY_PATH());
 
 		// Create a session stats file with headers
 		createSessionStatsFile();

@@ -476,7 +476,7 @@ public class Tools {
 
 			Tools.uninstallShortcuts();
 
-			log.info("Torrenttunes-client uninstalled successfully.");
+			log.info(DataSources.APP_NAME + " uninstalled successfully.");
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();

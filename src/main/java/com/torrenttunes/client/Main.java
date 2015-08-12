@@ -42,8 +42,6 @@ public class Main {
 	public void doMain(String[] args) {
 		
 
-
-		log.info(Arrays.toString(args));
 		parseArguments(args);
 
 		// See if the user wants to uninstall it
@@ -127,7 +125,7 @@ public class Main {
 			// you'll get this exception. this will report
 			// an error message.
 			System.err.println(e.getMessage());
-			System.err.println("java -jar torrenttunes-client.jar [options...] arguments...");
+			System.err.println("java -jar " + DataSources.APP_NAME + ".jar [options...] arguments...");
 			// print the list of available options
 			parser.printUsage(System.err);
 			System.err.println();

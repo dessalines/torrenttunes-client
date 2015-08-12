@@ -37,7 +37,7 @@ public class DataSources {
 	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
-	// The path to the torrenttunes dir
+	// The path to the home dir
 	public static String HOME_DIR() {
 		String userHome = System.getProperty( "user.home" ) + "/." + APP_NAME;
 		return userHome;
@@ -138,7 +138,6 @@ public class DataSources {
 		
 		String ret = null;
 		if (osName.contains("linux")) {
-//			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.so";
 			ret = SOURCE_CODE_HOME() + "/lib/x86_64/libjlibtorrent.so";
 		} else if (osName.contains("windows")) {
 			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
