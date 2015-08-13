@@ -106,12 +106,12 @@ public enum LibtorrentEngine  {
 	private Set<ScanInfo> scanInfos;
 
 	private List<String> sessionStatsHeaders;
-	
+
 	private long startTime;
-	
+
 
 	private LibtorrentEngine() {
-		
+
 		startTime = System.nanoTime();
 
 		System.setProperty("jlibtorrent.jni.path", DataSources.LIBTORRENT_OS_LIBRARY_PATH());
@@ -119,24 +119,24 @@ public enum LibtorrentEngine  {
 		// Create a session stats file with headers
 		createSessionStatsFile();
 
-		
+
 
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
 
-//		default_storage.disk_write_access_log(true);
-		
-		
+		//		default_storage.disk_write_access_log(true);
+
+
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
 		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49152, 65535);
 		String iface = "0.0.0.0";
 		session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
-		
-		
-		sessionSettings = new SettingsPack();
-		
 
-		
+
+		sessionSettings = new SettingsPack();
+
+
+
 
 		sessionSettings.setActiveDownloads(10);
 		sessionSettings.setActiveSeeds(999999);
@@ -145,40 +145,36 @@ public enum LibtorrentEngine  {
 
 		sessionSettings.setUploadRateLimit(999999);
 		sessionSettings.setDownloadRateLimit(999999);
-		
+
 		sessionSettings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
 		sessionSettings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
-		
+
 		sessionSettings.setInteger(int_types.file_pool_size.swigValue(), 200000);
-		
+
 		sessionSettings.setInteger(int_types.tracker_completion_timeout.swigValue(), 10);
 		sessionSettings.setBoolean(bool_types.incoming_starts_queued_torrents.swigValue(), true);
-		
+
 		sessionSettings.setInteger(int_types.peer_timeout.swigValue(), 20);
-		
-		
-//		sessionSettings.setBoolean(bool_types.use_read_cache.swigValue(), false);
 
 		DHT dht = new DHT(session);
 		dht.stop();
-		
-		
-		
-	
+
 
 		sessionSettings.broadcastLSD(false);
 		sessionSettings.setMaxPeerlistSize(500);
 		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
-		
-//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
-//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
-		
-//		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
-//		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
-//		sessionSettings.setInteger(int_types.bandwidth_mixed_algo_t., value);
-//		bandwidth_mixed_algo_t.prefer_tcp
-		
+		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
+
+		//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
+		//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
+
+
+
+		//		sessionSettings.setInteger(int_types.bandwidth_mixed_algo_t., value);
+		//		bandwidth_mixed_algo_t.prefer_tcp
+
 		//		sessionSettings = SessionSettings.newDefaults();
 		//		sessionSettings = SessionSettings.newMinMemoryUsage();
 		//		sessionSettings = SessionSettings.newHighPerformanceSeed();
@@ -188,7 +184,7 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setActiveLimit(999999);
 		//						sessionSettings.setActiveDHTLimit(5);
 		//		sessionSettings.setActiveTrackerLimit(999999);
-		
+
 		//		sessionSettings.announceDoubleNAT(true);
 		//		sessionSettings.setPeerConnectTimeout(60);
 		//		sessionSettings.useReadCache(false);
@@ -272,16 +268,16 @@ public enum LibtorrentEngine  {
 		//		sessionSettings.setSendBufferLowWatermark(50);
 
 		//		session.setSettings(sessionSettings);
-	
 
 
 
-		
+
+
 		session.applySettings(sessionSettings);
 
 
 		log.info("Is DHT Running? " + session.isDHTRunning());
-		
+
 		this.scanInfos = new LinkedHashSet<ScanInfo>();
 		this.infoHashToTorrentMap = new ConcurrentHashMap<String, TorrentHandle>();
 
@@ -309,7 +305,7 @@ public enum LibtorrentEngine  {
 			// fill with dummy values, have no idea how many
 			for (int i = 0; i < 400; i++) {sessionStatsHeaders.add(null);}
 
-		
+
 			sessionStatsHeaders.set(0, "second");
 			// Create the headers using set
 			for (int i = 0; i < ssm.length; i++) {
@@ -318,7 +314,7 @@ public enum LibtorrentEngine  {
 				sessionStatsHeaders.set(sm.valueIndex+1, sm.name);
 			}
 
-	
+
 			String delim = "";
 			for (String header : sessionStatsHeaders) {
 
@@ -354,21 +350,21 @@ public enum LibtorrentEngine  {
 			@Override
 			public int[] types() {
 				return new int[]{AlertType.SESSION_STATS.getSwig(), AlertType.PEER_LOG.getSwig()};
-				
+
 			}
 
 			@Override
 			public void alert(Alert<?> alert) {
 				try {
 					if (alert instanceof SessionStatsAlert) {
-						log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+						//						log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 
 						File file = new File(DataSources.SESSION_STATS_FILE());
 
 						String timeElapsedStr = String.valueOf((System.nanoTime() - startTime)/1000);
 						Files.write(Paths.get(file.getAbsolutePath()), 
 								timeElapsedStr.getBytes(), StandardOpenOption.APPEND);
-						
+
 						for (int i = 0; i < sessionStatsHeaders.size(); i++) {
 							String header = sessionStatsHeaders.get(i);
 
@@ -387,10 +383,6 @@ public enum LibtorrentEngine  {
 
 					} else if (alert instanceof PeerLogAlert) {
 						log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//						log.debug(((PeerLogAlert) alert).eventType());
-//						log.debug(((PeerLogAlert) alert).direction().toString());
-//						log.debug(((PeerLogAlert) alert).getPeerId().toString());
-//						log.debug(((PeerLogAlert) alert).getPeerIP().toString());
 					}
 
 				} catch (IOException e) {
@@ -402,9 +394,9 @@ public enum LibtorrentEngine  {
 
 
 	}
-	
+
 	public void startSeedingLibraryVersion1() {
-		
+
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
 		library.isEmpty();
@@ -412,7 +404,7 @@ public enum LibtorrentEngine  {
 
 		// start sharing them
 		Integer i = 0;
-		
+
 		// working at 7k
 		while (i < library.size()) {
 			log.info("File #" + i + "/" + library.size() + " songs in library");
@@ -434,7 +426,7 @@ public enum LibtorrentEngine  {
 		// start sharing them
 		Integer i = 0;
 		// working at 7k
-		while (i < 100 && !library.isEmpty()) {
+		while (i < 100 && !library.isEmpty() && i < library.size()) {
 			log.info("File #" + i.toString() + "/" + library.size() + " songs in library");
 			Library track = library.get(i);
 			TorrentHandle torrent = seedTorrent(track);
@@ -553,7 +545,7 @@ public enum LibtorrentEngine  {
 		si.setStatus(ScanStatus.Seeding);
 		si.setMbid(track.getString("mbid"));
 		scanInfos.add(si);
-		
+
 		return torrent;
 	}
 
@@ -839,7 +831,7 @@ public enum LibtorrentEngine  {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-			
+
 
 
 
@@ -897,15 +889,15 @@ public enum LibtorrentEngine  {
 	public Map<String, TorrentHandle> getInfoHashToTorrentMap() {
 		return infoHashToTorrentMap;
 	}
-	
-    private static List<Pair<String, Integer>> defaultRouters() {
-        List<Pair<String, Integer>> list = new LinkedList<Pair<String, Integer>>();
 
-        list.add(new Pair<String, Integer>("router.bittorrent.com", 6881));
-        list.add(new Pair<String, Integer>("dht.transmissionbt.com", 6881));
+	private static List<Pair<String, Integer>> defaultRouters() {
+		List<Pair<String, Integer>> list = new LinkedList<Pair<String, Integer>>();
 
-        return list;
-    }
+		list.add(new Pair<String, Integer>("router.bittorrent.com", 6881));
+		list.add(new Pair<String, Integer>("dht.transmissionbt.com", 6881));
+
+		return list;
+	}
 
 
 
