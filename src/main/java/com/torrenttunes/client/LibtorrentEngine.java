@@ -173,8 +173,8 @@ public enum LibtorrentEngine  {
 //		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
 //				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
 		
-		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
-		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
+//		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+//		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
 //		sessionSettings.setInteger(int_types.bandwidth_mixed_algo_t., value);
 //		bandwidth_mixed_algo_t.prefer_tcp
