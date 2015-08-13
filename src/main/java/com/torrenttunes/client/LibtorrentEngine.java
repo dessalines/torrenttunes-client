@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.AddTorrentParams;
 import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
@@ -32,6 +33,8 @@ import com.frostwire.jlibtorrent.SettingsPack;
 import com.frostwire.jlibtorrent.StatsMetric;
 import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
+import com.frostwire.jlibtorrent.TorrentInfo;
+import com.frostwire.jlibtorrent.Vectors;
 import com.frostwire.jlibtorrent.alerts.AbstractAlert;
 import com.frostwire.jlibtorrent.alerts.AddTorrentAlert;
 import com.frostwire.jlibtorrent.alerts.Alert;
@@ -75,10 +78,12 @@ import com.frostwire.jlibtorrent.alerts.TrackerErrorAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
+import com.frostwire.jlibtorrent.swig.add_torrent_params;
 import com.frostwire.jlibtorrent.swig.alert;
 import com.frostwire.jlibtorrent.swig.default_storage;
 import com.frostwire.jlibtorrent.swig.peer_log_alert;
 import com.frostwire.jlibtorrent.swig.session_stats_alert;
+import com.frostwire.jlibtorrent.swig.storage_mode_t;
 import com.frostwire.jlibtorrent.swig.settings_pack.bandwidth_mixed_algo_t;
 import com.frostwire.jlibtorrent.swig.settings_pack.bool_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
@@ -535,7 +540,9 @@ public enum LibtorrentEngine  {
 
 		File outputParent = new File(filePath).getParentFile();
 
-		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath));
+		// Set the seed_mode flag
+		int flags = ~add_torrent_params.flags_t.flag_seed_mode.swigValue();
+		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath), true);
 
 		torrents.add(torrent);
 
@@ -562,7 +569,7 @@ public enum LibtorrentEngine  {
 
 	}
 
-	public TorrentHandle addTorrent(File outputParent, File torrentFile) {
+	public TorrentHandle addTorrent(File outputParent, File torrentFile, Boolean seedMode) {
 
 
 
@@ -572,8 +579,40 @@ public enum LibtorrentEngine  {
 			log.info("Save resume data found: " + saveResumeData.getAbsolutePath());
 		}
 
-		TorrentHandle torrent = (saveResumeData.exists()) ? session.addTorrent(torrentFile, outputParent, saveResumeData)
-				: session.addTorrent(torrentFile, outputParent);
+		//		TorrentHandle torrent = (saveResumeData.exists()) ? session.addTorrent(torrentFile, outputParent, saveResumeData)
+		//				: session.addTorrent(torrentFile, outputParent);
+
+		// always set automanage to false
+		add_torrent_params p = add_torrent_params.create_instance();
+		TorrentInfo ti = new TorrentInfo(torrentFile);
+		String savePath = outputParent.getAbsolutePath();
+		p.setTi(ti.getSwig().copy());
+		p.setSave_path(savePath);
+		p.setStorage_mode(storage_mode_t.storage_mode_sparse);
+		long flags = p.getFlags();
+		if (saveResumeData.exists()) {
+			byte[] data;
+			try {
+				data = Files.readAllBytes(Paths.get(saveResumeData.getAbsolutePath()));
+				p.setResume_data(Vectors.bytes2char_vector(data));
+				flags |= add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Set seed mode
+		if (seedMode) {
+			flags &= ~add_torrent_params.flags_t.flag_seed_mode.swigValue();
+		}
+
+		// Turn off automanage
+		flags &= add_torrent_params.flags_t.flag_auto_managed.swigValue();
+
+		p.setFlags(flags);
+		TorrentHandle torrent = new TorrentHandle(session.getSwig().add_torrent(p));
+
+
 
 
 		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath());
