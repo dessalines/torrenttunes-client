@@ -558,7 +558,13 @@ function updateDownloadStatusBar(infoHash) {
 
   getJson('get_torrent_progress/' + infoHash, true).done(function(percentageFloat) {
 
+
     var percentage = parseInt(percentageFloat * 100) + '%';
+
+    if (percentage == '0%') {
+      percentage = '1%';
+    }
+
     console.log('percentage = ' + percentage);
 
     var rows = $("tr[data-info_hash='" + infoHash + "']");
@@ -613,9 +619,10 @@ function downloadOrFetchTrackObj(infoHash, option) {
   var playButtonName = 'play-button_' + infoHash;
 
   // Updating the download status bar for that song
+  updateDownloadStatusBar(infoHash);
   downloadStatusMap[infoHash] = setInterval(function() {
     updateDownloadStatusBar(infoHash);
-  }, 2000);
+  }, 5000);
 
   getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
