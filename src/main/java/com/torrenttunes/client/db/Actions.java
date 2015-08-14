@@ -404,10 +404,11 @@ public class Actions {
 			}
 		}
 		
-		log.info("Songs cleared from cache: " + cachedTracks.size());
+		log.info("Songs removed from cache: " + cachedTracks.size());
 		
 		for (Library song : cachedTracks) {
 			log.info("Song removed from cache: " + song.getString("file_path"));
+			removeSong(song);
 		}
 		
 		
