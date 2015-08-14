@@ -130,7 +130,7 @@ public enum LibtorrentEngine  {
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
 
 		//		default_storage.disk_write_access_log(true);
-		libtorrent.set_utp_stream_logging(true);
+//		libtorrent.set_utp_stream_logging(true);
 
 
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
@@ -171,8 +171,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMaxPeerlistSize(500);
 		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
-//		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
-//		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
+		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
 		//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
 		//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
@@ -413,7 +413,7 @@ public enum LibtorrentEngine  {
 		Integer i = 0;
 
 		// working at 7k
-		while (i < 100) {
+		while (i < library.size()) {
 			log.info("File #" + i + "/" + library.size() + " songs in library");
 			Library track = library.get(i++);
 			TorrentHandle torrent = seedTorrent(track);
