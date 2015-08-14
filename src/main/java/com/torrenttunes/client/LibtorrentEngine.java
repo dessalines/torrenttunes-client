@@ -541,7 +541,6 @@ public enum LibtorrentEngine  {
 		File outputParent = new File(filePath).getParentFile();
 
 		// Set the seed_mode flag
-		int flags = ~add_torrent_params.flags_t.flag_seed_mode.swigValue();
 		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath), true);
 
 		torrents.add(torrent);
@@ -590,24 +589,32 @@ public enum LibtorrentEngine  {
 		p.setSave_path(savePath);
 		p.setStorage_mode(storage_mode_t.storage_mode_sparse);
 		long flags = p.getFlags();
+		
+//		log.info("flags = " + Long.toBinaryString(flags));
+		// default flags = 10001001110000
+		// Set seed mode
+		if (seedMode) {
+			flags += add_torrent_params.flags_t.flag_seed_mode.swigValue();
+		}
+
+		
+		// Turn off automanage
+		flags -= add_torrent_params.flags_t.flag_auto_managed.swigValue();
+
+		
 		if (saveResumeData.exists()) {
 			byte[] data;
 			try {
 				data = Files.readAllBytes(Paths.get(saveResumeData.getAbsolutePath()));
 				p.setResume_data(Vectors.bytes2char_vector(data));
-				flags |= add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
+				flags += add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
+				log.info("flags = " + flags);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
-		// Set seed mode
-		if (seedMode) {
-			flags &= ~add_torrent_params.flags_t.flag_seed_mode.swigValue();
-		}
-
-		// Turn off automanage
-		flags &= add_torrent_params.flags_t.flag_auto_managed.swigValue();
+//		log.info("flags final = " + Long.toBinaryString(flags));
 
 		p.setFlags(flags);
 		TorrentHandle torrent = new TorrentHandle(session.getSwig().add_torrent(p));
@@ -887,7 +894,7 @@ public enum LibtorrentEngine  {
 	}
 
 	private void shareTorrent(TorrentHandle torrent) {
-		torrent.setAutoManaged(false);
+//		torrent.setAutoManaged(false);
 		torrent.resume();
 		//		
 	}
