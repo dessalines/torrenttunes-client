@@ -577,7 +577,8 @@ function updateDownloadStatusBar(infoHash) {
 
       $(tr).css({
         // 'background-image': 'url(../image/lblue.png)',
-        'background-color': 'rgba(255,0,0,1)',
+        // 'background-image': 'none',
+        'background-color': 'rgba(0,0,255,0)',
         'background-size': '1% 100%',
         // 'opacity': '0.6',
         /*your percentage is the first one (width), second one (100%) is for height*/
