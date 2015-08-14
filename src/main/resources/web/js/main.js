@@ -561,9 +561,9 @@ function updateDownloadStatusBar(infoHash) {
 
     var percentage = parseInt(percentageFloat * 100) + '%';
 
-    if (percentage == '0%') {
-      percentage = '1%';
-    }
+    // if (percentage == '0%') {
+    //   percentage = '1%';
+    // }
 
     console.log('percentage = ' + percentage);
 
@@ -572,13 +572,14 @@ function updateDownloadStatusBar(infoHash) {
 
     var numberOfTables = rows['length'];
 
+
     for (var i = 0; i < numberOfTables; i++) {
       var tr = rows[i];
 
       $(tr).css({
-        // 'background-image': 'url(../image/lblue.png)',
+        'background-image': 'url(../image/lblue.png)',
         // 'background-image': 'none',
-        'background-color': 'rgba(0,0,255,0)',
+        // 'background-color': 'rgba(0,0,255,0)',
         'background-size': '1% 100%',
         // 'opacity': '0.6',
         /*your percentage is the first one (width), second one (100%) is for height*/
