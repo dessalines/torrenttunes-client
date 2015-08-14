@@ -81,6 +81,7 @@ import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
 import com.frostwire.jlibtorrent.swig.add_torrent_params;
 import com.frostwire.jlibtorrent.swig.alert;
 import com.frostwire.jlibtorrent.swig.default_storage;
+import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.frostwire.jlibtorrent.swig.peer_log_alert;
 import com.frostwire.jlibtorrent.swig.session_stats_alert;
 import com.frostwire.jlibtorrent.swig.storage_mode_t;
@@ -129,6 +130,7 @@ public enum LibtorrentEngine  {
 		System.out.println("java library path: " + System.getProperty("java.library.path"));
 
 		//		default_storage.disk_write_access_log(true);
+		libtorrent.set_utp_stream_logging(true);
 
 
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
@@ -411,7 +413,7 @@ public enum LibtorrentEngine  {
 		Integer i = 0;
 
 		// working at 7k
-		while (i < library.size()) {
+		while (i < 100) {
 			log.info("File #" + i + "/" + library.size() + " songs in library");
 			Library track = library.get(i++);
 			TorrentHandle torrent = seedTorrent(track);
