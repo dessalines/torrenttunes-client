@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frostwire.jlibtorrent.AddTorrentParams;
 import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
@@ -35,7 +33,6 @@ import com.frostwire.jlibtorrent.TorrentAlertAdapter;
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.TorrentInfo;
 import com.frostwire.jlibtorrent.Vectors;
-import com.frostwire.jlibtorrent.alerts.AbstractAlert;
 import com.frostwire.jlibtorrent.alerts.AddTorrentAlert;
 import com.frostwire.jlibtorrent.alerts.Alert;
 import com.frostwire.jlibtorrent.alerts.AlertType;
@@ -79,16 +76,9 @@ import com.frostwire.jlibtorrent.alerts.TrackerReplyAlert;
 import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
 import com.frostwire.jlibtorrent.swig.add_torrent_params;
-import com.frostwire.jlibtorrent.swig.alert;
-import com.frostwire.jlibtorrent.swig.default_storage;
-import com.frostwire.jlibtorrent.swig.libtorrent;
-import com.frostwire.jlibtorrent.swig.peer_log_alert;
-import com.frostwire.jlibtorrent.swig.session_stats_alert;
-import com.frostwire.jlibtorrent.swig.storage_mode_t;
-import com.frostwire.jlibtorrent.swig.settings_pack.bandwidth_mixed_algo_t;
 import com.frostwire.jlibtorrent.swig.settings_pack.bool_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
-import com.frostwire.jlibtorrent.swig.settings_pack.string_types;
+import com.frostwire.jlibtorrent.swig.storage_mode_t;
 import com.google.common.collect.Lists;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.ScanDirectory.ScanStatus;
@@ -105,9 +95,8 @@ public enum LibtorrentEngine  {
 
 
 	private Session session;
-	private SettingsPack sessionSettings;
+	private SettingsPack settings;
 	private Map<String, TorrentHandle> infoHashToTorrentMap;
-	private List<TorrentHandle> torrents = new ArrayList<TorrentHandle>();
 
 	private Set<ScanInfo> scanInfos;
 
@@ -140,39 +129,39 @@ public enum LibtorrentEngine  {
 		session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
 
 
-		sessionSettings = new SettingsPack();
+		settings = new SettingsPack();
 
 
 
 
-		sessionSettings.setActiveDownloads(10);
-		sessionSettings.setActiveSeeds(999999);
-		sessionSettings.setInteger(int_types.active_limit.swigValue(), 999999);
-		sessionSettings.setInteger(int_types.active_tracker_limit.swigValue(), 999999);
+		settings.setActiveDownloads(10);
+		settings.setActiveSeeds(999999);
+		settings.setInteger(int_types.active_limit.swigValue(), 999999);
+		settings.setInteger(int_types.active_tracker_limit.swigValue(), 999999);
 
-		sessionSettings.setUploadRateLimit(999999);
-		sessionSettings.setDownloadRateLimit(999999);
+		settings.setUploadRateLimit(0);
+		settings.setDownloadRateLimit(0);
 
-		sessionSettings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
-		sessionSettings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
+		settings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
+		settings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
 
-		sessionSettings.setInteger(int_types.file_pool_size.swigValue(), 200000);
+//		sessionSettings.setInteger(int_types.file_pool_size.swigValue(), 200000);
 
-		sessionSettings.setInteger(int_types.tracker_completion_timeout.swigValue(), 10);
-		sessionSettings.setBoolean(bool_types.incoming_starts_queued_torrents.swigValue(), true);
+		settings.setInteger(int_types.tracker_completion_timeout.swigValue(), 10);
+		settings.setBoolean(bool_types.incoming_starts_queued_torrents.swigValue(), true);
 
-		sessionSettings.setInteger(int_types.peer_timeout.swigValue(), 20);
+		settings.setInteger(int_types.peer_timeout.swigValue(), 20);
 
 		DHT dht = new DHT(session);
 		dht.stop();
 
 
-		sessionSettings.broadcastLSD(false);
-		sessionSettings.setMaxPeerlistSize(500);
-		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
+		settings.broadcastLSD(false);
+		settings.setMaxPeerlistSize(500);
+		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
-		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
-		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
+		settings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+		settings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
 		//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
 		//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
@@ -280,7 +269,7 @@ public enum LibtorrentEngine  {
 
 
 
-		session.applySettings(sessionSettings);
+		session.applySettings(settings);
 
 
 		log.info("Is DHT Running? " + session.isDHTRunning());
@@ -544,9 +533,6 @@ public enum LibtorrentEngine  {
 
 		// Set the seed_mode flag
 		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath), true);
-
-		torrents.add(torrent);
-
 
 		// Set up the scanInfo
 		ScanInfo si = ScanInfo.create(new File(filePath));
@@ -925,12 +911,12 @@ public enum LibtorrentEngine  {
 		return session;
 	}
 
-	public SettingsPack getSessionSettings() {
-		return sessionSettings;
+	public SettingsPack getSettings() {
+		return settings;
 	}
 
 	public void updateSettings() {
-		session.applySettings(sessionSettings);
+		session.applySettings(settings);
 		log.info("Libtorrent settings updated");
 	}
 

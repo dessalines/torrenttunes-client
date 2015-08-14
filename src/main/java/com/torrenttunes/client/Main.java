@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
+import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
@@ -77,6 +78,11 @@ public class Main {
 			ScanDirectory.start(new File(shareDirectory));
 		}
 
+		Tools.dbInit();
+		Actions.clearCache();
+		Tools.dbClose();
+		
+		
 		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion1();
 
 
@@ -89,27 +95,10 @@ public class Main {
 		Settings s = SETTINGS.findFirst("id = ?", 1);
 		Tools.dbClose();
 
-		setupMusicStoragePath(s);
-		setupLibTorrentSettings(s);
+		Actions.setupMusicStoragePath(s);
+		Actions.updateLibtorrentSettings(s);
 	}
 
-
-	public static void setupMusicStoragePath(Settings s) {
-		String storagePath = s.getString("storage_path");
-		DataSources.MUSIC_STORAGE_PATH = storagePath;
-		log.info("Storage path = " + DataSources.MUSIC_STORAGE_PATH);
-	}
-
-	private static void setupLibTorrentSettings(Settings s) {
-		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
-		Integer maxDownloadSpeed = s.getInteger("max_download_speed");
-		Integer maxUploadSpeed = s.getInteger("max_upload_speed");
-		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
-		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
-		//		lte.getSessionSettings().setDownloadRateLimit(1000 * maxDownloadSpeed);
-		//		lte.getSessionSettings().setUploadRateLimit(1000 * maxUploadSpeed);
-		//		lte.updateSettings();
-	}
 
 
 

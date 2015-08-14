@@ -370,6 +370,9 @@ public class Platform {
 					if (Actions.spaceFreeInStoragePath()) {
 						json = Actions.downloadTorrent(infoHash);
 					} else {
+						// TODO maybe clear cache
+						
+						
 						throw new NoSuchElementException("Not enough storage space, "
 								+ "change your cache size in settings,"
 								+ " or delete some songs from your library");
