@@ -169,8 +169,8 @@ public enum LibtorrentEngine  {
 		sessionSettings.setMaxPeerlistSize(500);
 		sessionSettings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
-		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
-		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
+//		sessionSettings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+//		sessionSettings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
 		//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
 		//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());

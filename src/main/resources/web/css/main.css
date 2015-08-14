@@ -32,13 +32,13 @@
     transition:left 1s;
 }
 */
-table {
+/*table {
   table-layout:fixed;
   max-width: none;
   min-width: 100%;
   width:1070px;
 
-}
+}*/
 
 .artist_playing_clickable {
   cursor: pointer;
