@@ -33,7 +33,7 @@
 }
 */
 
-
+table{border-collapse:collapse;}
 
 .artist_playing_clickable {
   cursor: pointer;
