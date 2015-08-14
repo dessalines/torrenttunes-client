@@ -34,7 +34,12 @@
 */
 table {
   table-layout:fixed;
+  max-width: none;
+  min-width: 100%;
+  width:auto;
+
 }
+
 .artist_playing_clickable {
   cursor: pointer;
 }
