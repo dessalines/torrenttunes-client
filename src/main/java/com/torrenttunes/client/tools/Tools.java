@@ -192,7 +192,7 @@ public class Tools {
 	}
 
 	public static void setupDirectories() {
-		if (!new File(DataSources.HOME_DIR()).exists()) {
+		if (!new File(DataSources.TORRENTS_DIR()).exists()) {
 			log.info("Setting up ~/." + DataSources.APP_NAME + " dirs");
 			new File(DataSources.HOME_DIR()).mkdirs();
 			new File(DataSources.TORRENTS_DIR()).mkdirs();
