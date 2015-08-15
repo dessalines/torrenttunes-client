@@ -659,7 +659,6 @@ function downloadOrFetchTrackObj(infoHash, option) {
   var playButtonName = 'play-button_' + infoHash;
 
   // Updating the download status bar for that song
-  updateDownloadStatusBar(infoHash);
   downloadStatusMap[infoHash] = setInterval(function() {
     updateDownloadStatusBar(infoHash);
   }, 5000);
