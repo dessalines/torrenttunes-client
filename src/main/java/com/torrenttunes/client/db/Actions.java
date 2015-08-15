@@ -206,6 +206,7 @@ public class Actions {
 
 				// Save the track to your DB
 				try {
+					Tools.dbInit();
 					Library newTrack = Actions.saveSongToLibrary(songMbid, 
 							torrentPath, 
 							infoHash,
@@ -218,7 +219,9 @@ public class Actions {
 					newTrack.saveIt();
 				} catch(Exception e) {
 					e.printStackTrace();
-				} 
+				} finally {
+					Tools.dbClose();
+				}
 
 				TorrentStats ts = TorrentStats.create(torrent);
 				log.info(ts.toString());
@@ -249,7 +252,9 @@ public class Actions {
 		signal.await();
 
 		// Get the json for the saved track
+		Tools.dbInit();
 		track = LIBRARY.findFirst("info_hash = ?", infoHash);
+		Tools.dbClose();
 
 		// if it wasn't successful(IE no peers found or > 40 seconds)
 		if (track == null) {
@@ -267,7 +272,9 @@ public class Actions {
 	public static Boolean spaceFreeInStoragePath() {
 
 		// Check to make sure you have space in the cache
+		Tools.dbInit();
 		Settings settings = SETTINGS.findFirst("id = ?", 1);
+		Tools.dbClose();
 
 		Integer settingsFreeSpaceMB = settings.getInteger("max_cache_size_mb");
 		settingsFreeSpaceMB = (settingsFreeSpaceMB != -1) ? settingsFreeSpaceMB : Integer.MAX_VALUE;

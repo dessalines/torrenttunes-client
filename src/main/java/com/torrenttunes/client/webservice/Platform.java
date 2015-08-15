@@ -370,7 +370,10 @@ public class Platform {
 					if (Actions.spaceFreeInStoragePath()) {
 						json = Actions.downloadTorrent(infoHash);
 					} else {
+						// TODO maybe clear cache
+						Tools.dbInit();
 						Actions.clearCache();
+						Tools.dbClose();
 						
 						throw new NoSuchElementException("Not enough storage space, "
 								+ "your cache has now been cleared");
