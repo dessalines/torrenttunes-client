@@ -388,7 +388,6 @@ public enum LibtorrentEngine  {
 					}
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -498,7 +497,6 @@ public enum LibtorrentEngine  {
 
 
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -549,18 +547,6 @@ public enum LibtorrentEngine  {
 		return torrent;
 	}
 
-	public String getActiveTorrents() {
-		try {
-			return Tools.MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(session.getStatus());
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-
-	}
 
 	public TorrentHandle addTorrent(File outputParent, File torrentFile, Boolean seedMode) {
 

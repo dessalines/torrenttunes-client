@@ -221,7 +221,6 @@ public class ScanDirectory {
 		//		try {
 		//			fakeMulti.createNewFile();
 		//		} catch (IOException e1) {
-		//			// TODO Auto-generated catch block
 		//			e1.printStackTrace();
 		//		}
 		//		System.out.println(si.getFile().getParent());
@@ -337,7 +336,6 @@ public class ScanDirectory {
 			try {
 				json = Tools.MAPPER.writeValueAsString(this);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

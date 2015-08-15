@@ -33,7 +33,7 @@ public class EmbeddedBrowserJavaFX extends Application implements Runnable {
 		stage.setScene(scene);
 		//        scene.getStylesheets().add("webviewsample/BrowserToolbar.css");  
 
-		// TODO set icon
+		// 
 		//        stage.getIcons().add(new Image("/path/to/stackoverflow.jpg"));
 
 

@@ -40,7 +40,7 @@ public class Actions {
 
 	// 15 minute download timeout
 	public static final Long DOWNLOAD_TIMEOUT = TimeUnit.MILLISECONDS.convert(15, TimeUnit.MINUTES);
-	
+
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid,
@@ -81,11 +81,23 @@ public class Actions {
 
 		// If storage path has changed, you need to move all the torrents in that cache directory,
 		// to wherever they want, and change their 
-		// TODO
 
 		String currentStoragePath = s.getString("storage_path");
 		if (!storagePath.equals(currentStoragePath)) {
 			message.append("Moved all music files from " + currentStoragePath  + " to " + storagePath);
+
+			s.set("storage_path", storagePath);
+			
+			for (Library track : getCachedTracks()) {
+				
+				File trackFile = new File(track.getString("file_path"));
+				
+				// moves the file to the new dir
+				trackFile.renameTo(new File(storagePath + "/" + trackFile.getName()));
+				
+				// Save its new directory
+				track.set("file_path", storagePath).saveIt();
+			}
 		}
 
 		s.set("max_download_speed", maxDownloadSpeed,
@@ -102,22 +114,23 @@ public class Actions {
 
 	}
 	
+
 	public static void updateLibtorrentSettings(Settings s) {
-		
+
 		log.info("Applying libtorrent Settings...");
 		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 		Integer maxDownloadSpeed = s.getInteger("max_download_speed");
 		Integer maxUploadSpeed = s.getInteger("max_upload_speed");
-		
+
 		maxDownloadSpeed = (maxDownloadSpeed != -1) ? maxDownloadSpeed : 0;
 		maxUploadSpeed = (maxUploadSpeed != -1) ? maxUploadSpeed : 0;
-		
+
 		lte.getSettings().setUploadRateLimit(maxUploadSpeed*1000);
 		lte.getSettings().setDownloadRateLimit(maxDownloadSpeed*1000);
 
 		lte.getSession().applySettings(lte.getSettings());
 	}
-	
+
 	public static void setupMusicStoragePath(Settings s) {
 		String storagePath = s.getString("storage_path");
 		DataSources.MUSIC_STORAGE_PATH = storagePath;
@@ -165,7 +178,7 @@ public class Actions {
 		ScanInfo si = ScanInfo.create(new File(audioFilePath));
 		si.setStatus(ScanStatus.Seeding);
 		si.setMbid(songMbid);
-		lte.getScanInfos().add(si); // TODO not sure about this one
+		lte.getScanInfos().add(si); 
 
 
 		// Need to add the # of peers, and block IO until download is done, or times out
@@ -193,22 +206,19 @@ public class Actions {
 
 				// Save the track to your DB
 				try {
-				Tools.dbInit();
-				Library newTrack = Actions.saveSongToLibrary(songMbid, 
-						torrentPath, 
-						infoHash,
-						audioFilePath, 
-						artist, 
-						artistMbid,
-						songTitle, 
-						duration);
+					Library newTrack = Actions.saveSongToLibrary(songMbid, 
+							torrentPath, 
+							infoHash,
+							audioFilePath, 
+							artist, 
+							artistMbid,
+							songTitle, 
+							duration);
 
-				newTrack.saveIt();
+					newTrack.saveIt();
 				} catch(Exception e) {
 					e.printStackTrace();
-				} finally {
-					Tools.dbClose();
-				}
+				} 
 
 				TorrentStats ts = TorrentStats.create(torrent);
 				log.info(ts.toString());
@@ -239,15 +249,13 @@ public class Actions {
 		signal.await();
 
 		// Get the json for the saved track
-		Tools.dbInit();
 		track = LIBRARY.findFirst("info_hash = ?", infoHash);
-		Tools.dbClose();
 
 		// if it wasn't successful(IE no peers found or > 40 seconds)
 		if (track == null) {
 			throw new NoSuchElementException("No peers found for " + 
 					artist + " - " + songTitle + ", or download took too long. Check to make sure your firewall"
-							+ " is turned off.");
+					+ " is turned off.");
 		} else {
 			json = track.toJson(false);
 		}
@@ -259,9 +267,7 @@ public class Actions {
 	public static Boolean spaceFreeInStoragePath() {
 
 		// Check to make sure you have space in the cache
-		Tools.dbInit();
 		Settings settings = SETTINGS.findFirst("id = ?", 1);
-		Tools.dbClose();
 
 		Integer settingsFreeSpaceMB = settings.getInteger("max_cache_size_mb");
 		settingsFreeSpaceMB = (settingsFreeSpaceMB != -1) ? settingsFreeSpaceMB : Integer.MAX_VALUE;
@@ -344,22 +350,22 @@ public class Actions {
 
 		return "Track removed from playlist";
 	}
-	
+
 	public static String removeArtist(String artistMBID) {
-		
+
 		List<Library> songs = LIBRARY.find("artist_mbid = ?", artistMBID);
 
 		for (Library song : songs) {
 			removeSong(song);
 		}
-				
+
 		return "Artist : " + artistMBID + " deleted from library";
 	}
-	
+
 	public static String removeSong(Library song) {
-		
+
 		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
-		
+
 		String songMBID = song.getString("mbid");
 
 		// remove the infohash from the session
@@ -369,59 +375,63 @@ public class Actions {
 		} catch(NullPointerException e) {
 			log.error("Torrent infohash " + infoHash + " was not in Libtorrent Session");
 		}
-		
+
 		// delete the torrent file
 		new File(song.getString("torrent_path")).delete();
-		
+
 		// delete the song
 		new File(song.getString("file_path")).delete();
-		
+
 		// delete the row
 		song.delete();
-		
+
 		return "Track : " + songMBID + " deleted from library.";
 	}
-	
-	
+
+
 	public static String clearCache() {
-		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
+
+		List<Library> cachedTracks = getCachedTracks();
+		
+		for (Library song : cachedTracks) {
+			log.info("Song removed from cache: " + song.getString("file_path"));
+			removeSong(song);
+		}
+
+		String msg = "Songs removed from cache: " + cachedTracks.size();
+		log.info(msg);
+
+		return msg;
+
+
+
+
+	}
+
+	public static List<Library> getCachedTracks() {
 
 		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
-		
+
 		log.info("cache dir = " + cacheDir);
-		
+
 		// remove the tracks that aren't in the cache directory from the list
 		List<Library> tracks = LIBRARY.findAll();
-		
+
 		List<Library> cachedTracks = new ArrayList<>();
-		
+
 		for (int i = 0; i < tracks.size(); i++) {
 			Library song = tracks.get(i);
 			File filePath = new File(song.getString("file_path"));
 			String parent = filePath.getParentFile().getAbsolutePath();
-			
+
 
 			// IE, if this is in the cache dir, this gets added
 			if (parent.equals(cacheDir)) {
 				cachedTracks.add(song);
 			}
 		}
-		
-		
-		
-		for (Library song : cachedTracks) {
-			log.info("Song removed from cache: " + song.getString("file_path"));
-			removeSong(song);
-		}
-		
-		String msg = "Songs removed from cache: " + cachedTracks.size();
-		log.info(msg);
-		
-		return msg;
-		
-		
-		
-		
+
+		return cachedTracks;
 	}
 
 

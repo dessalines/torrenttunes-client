@@ -359,7 +359,7 @@ public class Platform {
 				// Fetch the song by its info hash, and return that row
 				Tools.dbInit();
 				Library track = LIBRARY.findFirst("info_hash = ?", infoHash);
-				Tools.dbClose();
+			
 				
 				if (track != null) {
 					json = track.toJson(false);					
@@ -370,12 +370,10 @@ public class Platform {
 					if (Actions.spaceFreeInStoragePath()) {
 						json = Actions.downloadTorrent(infoHash);
 					} else {
-						// TODO maybe clear cache
-						
+						Actions.clearCache();
 						
 						throw new NoSuchElementException("Not enough storage space, "
-								+ "change your cache size in settings,"
-								+ " or delete some songs from your library");
+								+ "your cache has now been cleared");
 					}
 
 
@@ -391,7 +389,9 @@ public class Platform {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
-			} 
+			} finally {
+				Tools.dbClose();
+			}
 
 
 

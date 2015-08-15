@@ -250,7 +250,6 @@ public class Tools {
 
 
 			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -346,7 +345,6 @@ public class Tools {
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (IOException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -440,7 +438,6 @@ public class Tools {
 
 			httpClient.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new NoSuchElementException("Couldn't save the torrent info");
 		}
@@ -499,7 +496,6 @@ public class Tools {
 		try {
 			return Tools.MAPPER.writeValueAsString(a);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -509,7 +505,6 @@ public class Tools {
 		try {
 			return Tools.MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(a);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -636,14 +631,13 @@ public class Tools {
 
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
 	public static void pollAndOpenStartPage() {
-		// TODO poll some of the url's every .5 seconds, and load the page when they come back with a result
+		// poll some of the url's every .5 seconds, and load the page when they come back with a result
 		int i = 500;
 		int cTime = 0;
 		while (cTime < 30000) {
@@ -667,7 +661,6 @@ public class Tools {
 
 				}
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -677,10 +670,7 @@ public class Tools {
 		try {
 			URL url = new URL(urlString);
 			openWebpage(url.toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+		} catch (URISyntaxException | MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -738,7 +728,6 @@ public class Tools {
 		try {
 			FileUtils.deleteDirectory(new File(DataSources.MAC_APP_LOCATION()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -782,7 +771,6 @@ public class Tools {
 			new File(DataSources.MAC_APP_LOCATION()).setLastModified(System.currentTimeMillis());
 
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -815,7 +803,6 @@ public class Tools {
 
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -852,7 +839,6 @@ public class Tools {
 			//			Runtime.getRuntime().exec(cmd);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
