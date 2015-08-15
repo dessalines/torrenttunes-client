@@ -39,7 +39,7 @@ public class Actions {
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
 
 	// 15 minute download timeout
-	public static final Long DOWNLOAD_TIMEOUT = TimeUnit.MILLISECONDS.convert(15, TimeUnit.SECONDS);
+	public static final Long DOWNLOAD_TIMEOUT = TimeUnit.MILLISECONDS.convert(15, TimeUnit.MINUTES);
 	
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
