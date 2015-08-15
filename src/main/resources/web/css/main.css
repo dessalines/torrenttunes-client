@@ -51,14 +51,20 @@
 }
 
 #home_page_loading_div {
-  min-height: 100%;
-  /* Fallback for browsers do NOT support vh unit */
-  
-  min-height: 50vh;
-  /* These two lines are counted as one :-)       */
-  
-  display: flex;
   align-items: center;
+  display: flex;
+  justify-content: center;
+  height:100%;
+
+    /*background:red;*/
+  /*position:absolute;*/
+/*  color:#fff;
+  top:50%;
+  left:50%;
+  padding:15px;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);*/
 }
 
 .white {
