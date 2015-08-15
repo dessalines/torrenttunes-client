@@ -359,7 +359,7 @@ public class Platform {
 				// Fetch the song by its info hash, and return that row
 				Tools.dbInit();
 				Library track = LIBRARY.findFirst("info_hash = ?", infoHash);
-			
+				Tools.dbClose();
 				
 				if (track != null) {
 					json = track.toJson(false);					
@@ -392,9 +392,7 @@ public class Platform {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
-			} finally {
-				Tools.dbClose();
-			}
+			} 
 
 
 
