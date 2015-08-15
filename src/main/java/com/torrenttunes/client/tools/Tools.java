@@ -460,7 +460,7 @@ public class Tools {
 
 			s = new String(encoded, Charset.defaultCharset());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("file : " + path + " doesn't exist.");
 		}
 		return s;
 	}
