@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.JsonNode;
@@ -37,7 +38,9 @@ public class Actions {
 
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
 
-	public static final Integer DOWNLOAD_TIMEOUT = 300000;
+	// 15 minute download timeout
+	public static final Long DOWNLOAD_TIMEOUT = TimeUnit.MILLISECONDS.convert(15, TimeUnit.SECONDS);
+	
 
 	public static Library saveSongToLibrary(String mbid, String torrentPath, String infoHash,
 			String filePath, String artist, String artistMbid,
@@ -380,7 +383,7 @@ public class Actions {
 	}
 	
 	
-	public static void clearCache() {
+	public static String clearCache() {
 		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
 
 		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
@@ -404,12 +407,18 @@ public class Actions {
 			}
 		}
 		
-		log.info("Songs removed from cache: " + cachedTracks.size());
+		
 		
 		for (Library song : cachedTracks) {
 			log.info("Song removed from cache: " + song.getString("file_path"));
 			removeSong(song);
 		}
+		
+		String msg = "Songs removed from cache: " + cachedTracks.size();
+		log.info(msg);
+		
+		return msg;
+		
 		
 		
 		

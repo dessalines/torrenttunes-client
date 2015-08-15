@@ -421,6 +421,28 @@ public class Platform {
 			} 
 			
 		});
+		
+		get("/clear_cache", (req, res) -> {
+			try {
+
+				Tools.allowAllHeaders(req, res);
+
+				Tools.dbInit();
+				
+				String json = Actions.clearCache();
+				
+				return json;
+				
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+			
+		});
 
 		post("/power_off", (req, res) -> {
 			try {

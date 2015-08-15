@@ -580,9 +580,9 @@ function updateDownloadStatusBar(infoHash) {
         // 'display': 'inline-table',
         // 'float': 'left',
         // 'clear': 'both',
-        'height': '34px',
-        'line-height': '34px',
-        'white-space': 'nowrap',
+        // 'height': '34px',
+        // 'line-height': '34px',
+        // 'white-space': 'nowrap',
 
         // 'width': '1070px',
         // 'display': 'inline-table',

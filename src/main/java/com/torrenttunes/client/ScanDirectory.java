@@ -13,6 +13,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +38,7 @@ public class ScanDirectory {
 
 	private ScanDirectory(File dir) {
 		this.dir = dir;
-		LibtorrentEngine.INSTANCE.getSession().pause();
 		scan();
-		LibtorrentEngine.INSTANCE.getSession().resume();
 	}
 
 
@@ -59,98 +59,99 @@ public class ScanDirectory {
 		// The main scanning loop
 		for (File file : files) {
 
-			// Create a scanInfo from it
+			// Create a scanInfo from it, check if its a new one added
 			ScanInfo si = ScanInfo.create(file);
-			scanInfos.add(si);
+			boolean isNew = scanInfos.add(si);
+
+
+			if (isNew) {
+				
+				// Fetch the song MBID
+				si.setStatus(ScanStatus.Scanning);
+				si.setStatus(ScanStatus.FetchingMusicBrainzId);
+
+
+
+				log.info("Querying file: " + file.getAbsolutePath());
+				Song song = null;
+				try {
+					song = Song.fetchSong(si.getFile());
+					log.info("MusicBrainz query: " + song.getQuery());
+					si.setMbid(song.getRecordingMBID());
+				}
+				// Couldn't find the song
+				catch (NoSuchElementException | NullPointerException | NumberFormatException e) {
+					log.error("Couldn't Find MusicBrainz ID for File: " + file.getAbsolutePath());
+
+					si.setStatus(ScanStatus.MusicBrainzError);
+					continue;
+				}
+
+
+
+				// Create a torrent for the file, put it in the /.app/torrents dir
+				si.setStatus(ScanStatus.CreatingTorrent);
+				File torrentFile = createAndSaveTorrent(si, song);
+
+				// Upload the torrent to the tracker
+				try {
+					si.setStatus(ScanStatus.UploadingTorrent);
+					Tools.uploadFileToTracker(torrentFile); 
+				} catch(NoSuchElementException e) {
+					e.printStackTrace();
+					si.setStatus(ScanStatus.UploadingError);
+					continue;
+				}
+
+
+				// Start seeding it
+				si.setStatus(ScanStatus.Seeding);
+				log.info(si.getFile().getParentFile().getAbsolutePath());
+				TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
+						torrentFile, true);
+				//			torrent.pause();
+
+
+				// upload it to the server
+				try {
+					String songUploadJson = Tools.MAPPER.writeValueAsString(song);
+					Tools.uploadTorrentInfoToTracker(songUploadJson);
+				} catch(NoSuchElementException | IOException | NullPointerException e) {
+
+					e.printStackTrace();
+					si.setStatus(ScanStatus.UploadingError);
+					continue;
+				}
+
+
+				// Save it to the DB
+				Library track = null;
+
+				try {
+					Tools.dbInit();
+					track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
+							torrentFile.getAbsolutePath(), 
+							torrent.getInfoHash().toHex(),
+							si.getFile().getAbsolutePath(), 
+							song.getArtist(), 
+							song.getArtistMBID(),
+							song.getRecording(), 
+							song.getDuration());
+				} catch(Exception e) {
+					e.printStackTrace();
+					si.setStatus(ScanStatus.DBError);
+					continue;
+				} finally {
+					Tools.dbClose();
+				}
 
 
 
 
-			// Fetch the song MBID
-			si.setStatus(ScanStatus.Scanning);
-			si.setStatus(ScanStatus.FetchingMusicBrainzId);
 
-
-
-			log.info("Querying file: " + file.getAbsolutePath());
-			Song song = null;
-			try {
-				song = Song.fetchSong(si.getFile());
-				log.info("MusicBrainz query: " + song.getQuery());
-				si.setMbid(song.getRecordingMBID());
+				// Set it as scanned
+				si.setScanned(true);
 			}
-			// Couldn't find the song
-			catch (NoSuchElementException | NullPointerException | NumberFormatException e) {
-				log.error("Couldn't Find MusicBrainz ID for File: " + file.getAbsolutePath());
-
-				si.setStatus(ScanStatus.MusicBrainzError);
-				continue;
-			}
-
-
-
-			// Create a torrent for the file, put it in the /.app/torrents dir
-			si.setStatus(ScanStatus.CreatingTorrent);
-			File torrentFile = createAndSaveTorrent(si, song);
-
-			// Upload the torrent to the tracker
-			try {
-				si.setStatus(ScanStatus.UploadingTorrent);
-				Tools.uploadFileToTracker(torrentFile); 
-			} catch(NoSuchElementException e) {
-				e.printStackTrace();
-				si.setStatus(ScanStatus.UploadingError);
-				continue;
-			}
-
-
-			// Start seeding it
-			si.setStatus(ScanStatus.Seeding);
-			log.info(si.getFile().getParentFile().getAbsolutePath());
-			TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
-					torrentFile, true);
-//			torrent.pause();
-
-
-			// upload it to the server
-			try {
-				String songUploadJson = Tools.MAPPER.writeValueAsString(song);
-				Tools.uploadTorrentInfoToTracker(songUploadJson);
-			} catch(NoSuchElementException | IOException | NullPointerException e) {
-
-				e.printStackTrace();
-				si.setStatus(ScanStatus.UploadingError);
-				continue;
-			}
-			
-
-			// Save it to the DB
-			Library track = null;
-
-			try {
-				Tools.dbInit();
-				track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
-						torrentFile.getAbsolutePath(), 
-						torrent.getInfoHash().toHex(),
-						si.getFile().getAbsolutePath(), 
-						song.getArtist(), 
-						song.getArtistMBID(),
-						song.getRecording(), 
-						song.getDuration());
-			} catch(Exception e) {
-				e.printStackTrace();
-				si.setStatus(ScanStatus.DBError);
-				continue;
-			} finally {
-				Tools.dbClose();
-			}
-
-
-
-
-
-			// Set it as scanned
-			si.setScanned(true);
 
 		}
 
@@ -197,9 +198,9 @@ public class ScanDirectory {
 		return libraryFiles;
 	}
 
-	
-	
-	
+
+
+
 
 	public static File createAndSaveTorrent(ScanInfo si, Song song) {
 
@@ -253,7 +254,7 @@ public class ScanDirectory {
 		//						+ "- tt[" + torrentFileName + "]");
 
 
-		
+
 
 	}
 
@@ -352,7 +353,29 @@ public class ScanDirectory {
 		}
 
 
+		@Override
+		public int hashCode() {
+			return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+					// if deriving: appendSuper(super.hashCode()).
+					append(file).
+					append(mbid).
+					toHashCode();
+		}
 
+		@Override
+		public boolean equals(Object obj) {
+			if (!(obj instanceof ScanInfo))
+				return false;
+			if (obj == this)
+				return true;
+
+			ScanInfo rhs = (ScanInfo) obj;
+			return new EqualsBuilder().
+					// if deriving: appendSuper(super.equals(obj)).
+					append(file, rhs.file).
+					append(mbid, rhs.mbid).
+					isEquals();
+		}
 
 
 	}
