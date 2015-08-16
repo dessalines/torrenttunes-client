@@ -33,7 +33,7 @@ function setupSearch() {
 
 
 
-  var artistURL = externalSparkService + 'artist_search/%QUERY';
+  var artistURL = torrentTunesSparkService + 'artist_search/%QUERY';
   var artistList = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     datumTokenizer: Bloodhound.tokenizers.whitespace,
@@ -44,7 +44,7 @@ function setupSearch() {
     }
   });
 
-  var albumURL = externalSparkService + 'album_search/%QUERY';
+  var albumURL = torrentTunesSparkService + 'album_search/%QUERY';
   var albumList = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     datumTokenizer: Bloodhound.tokenizers.whitespace,
@@ -55,7 +55,7 @@ function setupSearch() {
     }
   });
 
-  var songURL = externalSparkService + 'song_search/%QUERY';
+  var songURL = torrentTunesSparkService + 'song_search/%QUERY';
   var songList = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     datumTokenizer: Bloodhound.tokenizers.whitespace,
