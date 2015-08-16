@@ -43,7 +43,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -56,13 +55,11 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.DBException;
-import org.javalite.http.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -620,11 +617,16 @@ public class Tools {
 			String interalServiceLine = "var localSparkService = '" + 
 					DataSources.WEB_SERVICE_URL + "';";
 
+			String torrentTunesServiceLine = "var torrentTunesSparkService ='" + 
+					DataSources.TORRENTTUNES_URL + "';";
+			
 			String externalServiceLine = "var externalSparkService ='" + 
-					DataSources.TRACKER_URL + "';";
+					DataSources.EXTERNAL_URL + "';";
 
 			lines.set(0, interalServiceLine);
-			lines.set(1, externalServiceLine);
+			lines.set(1, torrentTunesServiceLine);
+			lines.set(2, externalServiceLine);
+
 
 			java.nio.file.Files.write(Paths.get(DataSources.TOOLS_JS()), lines);
 			Files.touch(new File(DataSources.TOOLS_JS()));

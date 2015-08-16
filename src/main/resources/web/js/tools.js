@@ -1,16 +1,15 @@
 var localSparkService = 'http://localhost:4568/';
-var externalSparkService = 'http://torrenttunes.ml/';
+var torrentTunesSparkService = 'http://torrenttunes.ml/';
+var externalSparkService = 'http://derp:4568/';
 
 // var externalSparkService = 'http://127.0.0.1:4567/';
 
-
-var sparkService = localSparkService;
 // This means you are running a seller machine, and everything should be using localhost
 
 
 
 var sparkServiceObj = {
-  sparkUrl: sparkService
+  sparkUrl: localSparkService
 };
 
 
@@ -18,19 +17,16 @@ var pageNumbers = {};
 // var cookie_path_name = "/";
 
 
-function getJson(shortUrl, noToast, external, name) {
+
+function getJson(shortUrl, noToast, sparkService, name) {
   noToast = (typeof noToast === "undefined") ? false : noToast;
-  external = (typeof external === "undefined") ? false : external;
+  console.log('ss = ' + sparkService);
+  sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
   name = (typeof name === "undefined") ? null : name;
 
   var url;
 
-  if (external) {
-    url = externalSparkService + shortUrl;
-
-  } else {
-    url = sparkService + shortUrl;
-  }
+  url = sparkService + shortUrl;
 
   console.log(url);
   return simpleAjax(url, noToast, name);
@@ -87,7 +83,7 @@ function simpleAjax(url, noToast, name) {
 
 
 function fillSimpleText(url, divId) {
-  var url = sparkService + url // the script where you handle the form input.
+  var url = localSparkService + url // the script where you handle the form input.
   return $.ajax({
     type: "GET",
     url: url,
@@ -109,7 +105,7 @@ function fillSimpleText(url, divId) {
 }
 
 function fillStatusText(url, divId) {
-  var url = sparkService + url // the script where you handle the form input.
+  var url = localSparkService + url // the script where you handle the form input.
   var intervalID = setInterval(function() {
     $.ajax({
       type: "GET",
@@ -137,7 +133,7 @@ function fillStatusText(url, divId) {
 }
 
 function fillSendMoneyStatusText(url, divId) {
-  var url = sparkService + url // the script where you handle the form input.
+  var url = localSparkService + url // the script where you handle the form input.
   var intervalID = setInterval(function() {
     $.ajax({
       type: "GET",
@@ -164,7 +160,7 @@ function fillSendMoneyStatusText(url, divId) {
 }
 
 function fillProgressBar(url, divId) {
-  var url = sparkService + url // the script where you handle the form input.
+  var url = localSparkService + url // the script where you handle the form input.
   var intervalID = setInterval(function() {
     $.ajax({
       type: "GET",
@@ -195,7 +191,7 @@ function fillProgressBar(url, divId) {
   }, 100); // 1000 milliseconds = 1 second.
 }
 
-function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, noToast, clearForm, external, errorFunctions) {
+function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, noToast, clearForm, sparkService, errorFunctions) {
   // !!!!!!They must have names unfortunately
   // An optional arg
   modalId = (typeof modalId === "undefined") ? "defaultValue" : modalId;
@@ -206,7 +202,7 @@ function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, n
 
   clearForm = (typeof clearForm === "undefined") ? false : clearForm;
 
-  external = (typeof external === "undefined") ? false : external;
+  sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
 
 
 
@@ -219,11 +215,8 @@ function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, n
   // Loading
   btn.button('loading');
 
-  if (external) {
-    url = externalSparkService + shortUrl;
-  } else {
-    url = sparkService + shortUrl;
-  }
+  url = sparkService + shortUrl;
+
 
   console.log(url);
 
@@ -292,7 +285,7 @@ function standardFormPost(shortUrl, formId, modalId, reload, successFunctions, n
   // event.preventDefault();
 }
 
-function simplePost(shortUrl, postData, reload, successFunctions, noToast, external, btnId) {
+function simplePost(shortUrl, postData, reload, successFunctions, noToast, sparkService, btnId) {
 
 
   // !!!!!!They must have names unfortunately
@@ -302,16 +295,14 @@ function simplePost(shortUrl, postData, reload, successFunctions, noToast, exter
   reload = (typeof reload === "undefined") ? false : reload;
 
   noToast = (typeof noToast === "undefined") ? false : noToast;
-  external = (typeof external === "undefined") ? false : external;
+  sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
 
   btnId = (typeof btnId === "undefined") ? false : btnId;
 
   var url;
-  if (external) {
-    url = externalSparkService + shortUrl;
-  } else {
-    url = sparkService + shortUrl;
-  }
+
+  url = sparkService + shortUrl;
+
 
   // var btn = $("[type=submit]");
   // var btn = $(this).closest(".btn");
@@ -413,77 +404,77 @@ function setupPagedTable(shortUrl, templateHtml, divId, tableId) {
 }
 
 function fillTableFromMustache(url, templateHtml, divId, tableId) {
-    //         $.tablesorter.addParser({ 
-    //           id: 'my_date_column', 
-    //           is: function(s) { 
-    //       // return false so this parser is not auto detected 
-    //       return false; 
-    //     }, 
-    //     format: function(s) { 
-    //       console.log(s);
-    //       var timeInMillis = new Date.parse(s);
+  //         $.tablesorter.addParser({ 
+  //           id: 'my_date_column', 
+  //           is: function(s) { 
+  //       // return false so this parser is not auto detected 
+  //       return false; 
+  //     }, 
+  //     format: function(s) { 
+  //       console.log(s);
+  //       var timeInMillis = new Date.parse(s);
 
-    //       // var date = new Date(parseInt(s));
-    //       return date;         
-    //     }, 
-    //   // set type, either numeric or text 
-    //   type: 'numeric' 
-    // });
+  //       // var date = new Date(parseInt(s));
+  //       return date;         
+  //     }, 
+  //   // set type, either numeric or text 
+  //   type: 'numeric' 
+  // });
 
-    var url = sparkService + url // the script where you handle the form input.
-    $.ajax({
-      type: "GET",
-      url: url,
-      xhrFields: {
-        withCredentials: true
-      },
-      // data: seriesData, 
-      success: function(data, status, xhr) {
-        // console.log(data);
-        if (data[0] == '[') {
-          data = JSON.parse(data);
-        }
-
-        // JSON.useDateParser();
-        // var jsonObj = jQuery.parseJSON(data);
-        // JSON.useDateParser();
-        // var jsonObj = JSON.parseWithDate(data);
-
-
-
-        // console.log(data);
-        //formatting the dates
-        $.extend(data, standardDateFormatObj);
-
-
-
-
-        Mustache.parse(templateHtml); // optional, speeds up future uses
-        var rendered = Mustache.render(templateHtml, data);
-        $(divId).html(rendered);
-        $(tableId).tablesorter({
-          debug: false
-            // textExtraction: extractData
-            //     headers: { 
-            //   0: {       // Change this to your column position
-            //     sorter:'my_date_column' 
-            //   } 
-            // }
-        });
-        // console.log(jsonObj);
-        // console.log(templateHtml);
-        // console.log(rendered);
-
-
-      },
-      error: function(request, status, error) {
-
-        toastr.error(request.responseText);
+  var url = localSparkService + url // the script where you handle the form input.
+  $.ajax({
+    type: "GET",
+    url: url,
+    xhrFields: {
+      withCredentials: true
+    },
+    // data: seriesData, 
+    success: function(data, status, xhr) {
+      // console.log(data);
+      if (data[0] == '[') {
+        data = JSON.parse(data);
       }
-    });
 
-  }
-  // TODO
+      // JSON.useDateParser();
+      // var jsonObj = jQuery.parseJSON(data);
+      // JSON.useDateParser();
+      // var jsonObj = JSON.parseWithDate(data);
+
+
+
+      // console.log(data);
+      //formatting the dates
+      $.extend(data, standardDateFormatObj);
+
+
+
+
+      Mustache.parse(templateHtml); // optional, speeds up future uses
+      var rendered = Mustache.render(templateHtml, data);
+      $(divId).html(rendered);
+      $(tableId).tablesorter({
+        debug: false
+          // textExtraction: extractData
+          //     headers: { 
+          //   0: {       // Change this to your column position
+          //     sorter:'my_date_column' 
+          //   } 
+          // }
+      });
+      // console.log(jsonObj);
+      // console.log(templateHtml);
+      // console.log(rendered);
+
+
+    },
+    error: function(request, status, error) {
+
+      toastr.error(request.responseText);
+    }
+  });
+
+}
+// TODO
 function fillMustacheFromJson(url, templateHtml, divId) {
   //         $.tablesorter.addParser({ 
   //           id: 'my_date_column', 
@@ -502,7 +493,7 @@ function fillMustacheFromJson(url, templateHtml, divId) {
   //   type: 'numeric' 
   // });
 
-  var url = sparkService + url // the script where you handle the form input.
+  var url = localSparkService + url // the script where you handle the form input.
   return $.ajax({
     type: "GET",
     url: url,

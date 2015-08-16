@@ -23,16 +23,17 @@ public class DataSources {
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
-	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
-	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
-	public static final String TRACKER_IP = "torrenttunes.ml";
-//	public static final String TRACKER_IP = "127.0.0.1";
+	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
-	public static final String TRACKER_WEB_PORT = "80";// Main is 80, dev is 4567
+	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + SPARK_WEB_PORT + "/";
 	
-	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/";
+	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
+	
+	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
+	
+	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
 	
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
@@ -108,24 +109,24 @@ public class DataSources {
 	
 
 	
-	public static final String TORRENT_UPLOAD_URL = TRACKER_URL + "torrent_upload";
+	public static final String TORRENT_UPLOAD_URL = TORRENTTUNES_URL + "torrent_upload";
 	
-	public static final String TORRENT_INFO_UPLOAD_URL = TRACKER_URL + "torrent_info_upload";
+	public static final String TORRENT_INFO_UPLOAD_URL = TORRENTTUNES_URL + "torrent_info_upload";
 
 	public static final String TORRENT_DOWNLOAD_URL(String infoHash) {
-		return TRACKER_URL + "download_torrent/" + infoHash;
+		return TORRENTTUNES_URL + "download_torrent/" + infoHash;
 	}
 	
 	public static final String TORRENT_INFO_DOWNLOAD_URL(String infoHash) {
-		return TRACKER_URL + "download_torrent_info/" + infoHash;
+		return TORRENTTUNES_URL + "download_torrent_info/" + infoHash;
 	}
 	
-	public static final String TRACKER_ANNOUNCE = "http://" + TRACKER_IP + ":6969/announce";
+	public static final String TRACKER_ANNOUNCE = "http://" + TORRENTTUNES_IP + ":6969/announce";
 
 
 
 	public static final String SEEDER_INFO_UPLOAD(String infoHash, String seeders) {
-		return TRACKER_URL + "seeder_upload/" + infoHash + "/" + seeders;
+		return TORRENTTUNES_URL + "seeder_upload/" + infoHash + "/" + seeders;
 	}
 	
 	

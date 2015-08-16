@@ -64,94 +64,94 @@ public class ScanDirectory {
 			boolean isNew = scanInfos.add(si);
 
 
-			if (isNew) {
-				
-				// Fetch the song MBID
-				si.setStatus(ScanStatus.Scanning);
-				si.setStatus(ScanStatus.FetchingMusicBrainzId);
+			//			if (isNew) {
+
+			// Fetch the song MBID
+			si.setStatus(ScanStatus.Scanning);
+			si.setStatus(ScanStatus.FetchingMusicBrainzId);
 
 
 
-				log.info("Querying file: " + file.getAbsolutePath());
-				Song song = null;
-				try {
-					song = Song.fetchSong(si.getFile());
-					log.info("MusicBrainz query: " + song.getQuery());
-					si.setMbid(song.getRecordingMBID());
-				}
-				// Couldn't find the song
-				catch (NoSuchElementException | NullPointerException | NumberFormatException e) {
-					log.error("Couldn't Find MusicBrainz ID for File: " + file.getAbsolutePath());
-
-					si.setStatus(ScanStatus.MusicBrainzError);
-					continue;
-				}
-
-
-
-				// Create a torrent for the file, put it in the /.app/torrents dir
-				si.setStatus(ScanStatus.CreatingTorrent);
-				File torrentFile = createAndSaveTorrent(si, song);
-
-				// Upload the torrent to the tracker
-				try {
-					si.setStatus(ScanStatus.UploadingTorrent);
-					Tools.uploadFileToTracker(torrentFile); 
-				} catch(NoSuchElementException e) {
-					e.printStackTrace();
-					si.setStatus(ScanStatus.UploadingError);
-					continue;
-				}
-
-
-				// Start seeding it
-				si.setStatus(ScanStatus.Seeding);
-				log.info(si.getFile().getParentFile().getAbsolutePath());
-				TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
-						torrentFile, true);
-				//			torrent.pause();
-
-
-				// upload it to the server
-				try {
-					String songUploadJson = Tools.MAPPER.writeValueAsString(song);
-					Tools.uploadTorrentInfoToTracker(songUploadJson);
-				} catch(NoSuchElementException | IOException | NullPointerException e) {
-
-					e.printStackTrace();
-					si.setStatus(ScanStatus.UploadingError);
-					continue;
-				}
-
-
-				// Save it to the DB
-				Library track = null;
-
-				try {
-					Tools.dbInit();
-					track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
-							torrentFile.getAbsolutePath(), 
-							torrent.getInfoHash().toHex(),
-							si.getFile().getAbsolutePath(), 
-							song.getArtist(), 
-							song.getArtistMBID(),
-							song.getRecording(), 
-							song.getDuration());
-				} catch(Exception e) {
-					e.printStackTrace();
-					si.setStatus(ScanStatus.DBError);
-					continue;
-				} finally {
-					Tools.dbClose();
-				}
-
-
-
-
-
-				// Set it as scanned
-				si.setScanned(true);
+			log.info("Querying file: " + file.getAbsolutePath());
+			Song song = null;
+			try {
+				song = Song.fetchSong(si.getFile());
+				log.info("MusicBrainz query: " + song.getQuery());
+				si.setMbid(song.getRecordingMBID());
 			}
+			// Couldn't find the song
+			catch (NoSuchElementException | NullPointerException | NumberFormatException e) {
+				log.error("Couldn't Find MusicBrainz ID for File: " + file.getAbsolutePath());
+
+				si.setStatus(ScanStatus.MusicBrainzError);
+				continue;
+			}
+
+
+
+			// Create a torrent for the file, put it in the /.app/torrents dir
+			si.setStatus(ScanStatus.CreatingTorrent);
+			File torrentFile = createAndSaveTorrent(si, song);
+
+			// Upload the torrent to the tracker
+			try {
+				si.setStatus(ScanStatus.UploadingTorrent);
+				Tools.uploadFileToTracker(torrentFile); 
+			} catch(NoSuchElementException e) {
+				e.printStackTrace();
+				si.setStatus(ScanStatus.UploadingError);
+				continue;
+			}
+
+
+			// Start seeding it
+			si.setStatus(ScanStatus.Seeding);
+			log.info(si.getFile().getParentFile().getAbsolutePath());
+			TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
+					torrentFile, true);
+			//			torrent.pause();
+
+
+			// upload it to the server
+			try {
+				String songUploadJson = Tools.MAPPER.writeValueAsString(song);
+				Tools.uploadTorrentInfoToTracker(songUploadJson);
+			} catch(NoSuchElementException | IOException | NullPointerException e) {
+
+				e.printStackTrace();
+				si.setStatus(ScanStatus.UploadingError);
+				continue;
+			}
+
+
+			// Save it to the DB
+			Library track = null;
+
+			try {
+				Tools.dbInit();
+				track = Actions.saveSongToLibrary(song.getRecordingMBID(), 
+						torrentFile.getAbsolutePath(), 
+						torrent.getInfoHash().toHex(),
+						si.getFile().getAbsolutePath(), 
+						song.getArtist(), 
+						song.getArtistMBID(),
+						song.getRecording(), 
+						song.getDuration());
+			} catch(Exception e) {
+				e.printStackTrace();
+				si.setStatus(ScanStatus.DBError);
+				continue;
+			} finally {
+				Tools.dbClose();
+			}
+
+
+
+
+
+			// Set it as scanned
+			si.setScanned(true);
+			//			}
 
 		}
 
