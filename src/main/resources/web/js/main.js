@@ -66,7 +66,6 @@ $(document).ready(function() {
 
   // errorTest();
 
-  // goto correct URL
   setupPaths();
 
 
