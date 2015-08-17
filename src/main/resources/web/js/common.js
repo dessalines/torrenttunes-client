@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  setupWindowClose();
+  // setupWindowClose();
 
 });
 
@@ -223,6 +223,8 @@ function setSearchType(data) {
 
 function showArtistPage() {
 
+  replaceParams('artist', artistCatalogMBID);
+
   $('#artistcatalogTab').addClass('hide');
 
 
@@ -237,13 +239,16 @@ function showArtistPage() {
 }
 
 function showArtistPageV2(artistMBID) {
+
   artistCatalogMBID = artistMBID;
   console.log(artistCatalogMBID);
   showArtistPage();
 
+
 }
 
 function showAlbumPage(releaseMBID) {
+  replaceParams('album', releaseMBID);
   albumCatalogMBID = releaseMBID;
   $('#albumcatalogTab').addClass('hide');
   $('a[href="#albumcatalogTab"]').tab('show');

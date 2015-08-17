@@ -20,7 +20,6 @@ var pageNumbers = {};
 
 function getJson(shortUrl, noToast, sparkService, name) {
   noToast = (typeof noToast === "undefined") ? false : noToast;
-  console.log('ss = ' + sparkService);
   sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
   name = (typeof name === "undefined") ? null : name;
 
@@ -636,6 +635,51 @@ function getUrlPathArray() {
 function getLastUrlPath() {
   return getUrlPathArray().slice(-1)[0];
 
+}
+
+function insertParam(key, value) {
+  key = escape(key);
+  value = escape(value);
+
+  var kvp = document.location.search.substr(1).split('&');
+  if (kvp == '') {
+    document.location.search = '?' + key + '=' + value;
+  } else {
+
+    var i = kvp.length;
+    var x;
+    while (i--) {
+      x = kvp[i].split('=');
+
+      if (x[0] == key) {
+        x[1] = value;
+        kvp[i] = x.join('=');
+        break;
+      }
+    }
+
+    if (i < 0) {
+      kvp[kvp.length] = [key, value].join('=');
+    }
+    var newURL = kvp.join('&');
+    console.log(newURL);
+    // console.log(getLastUrlPath());
+
+    window.history.pushState({path:newURL}, 'TorrentTunes', getLastUrlPath() + '?' + newURL);
+  }
+
+}
+
+function replaceParams(key, value) {
+  var newURL = '?' + key + '=' + value;
+  window.history.pushState({path:newURL}, 'TorrentTunes', getLastUrlPath() + newURL);
+}
+
+function clearParams() {
+  var url = getLastUrlPath();
+  // window.history.pushState({path:url}, 'TorrentTunes', url);
+  // window.history.go(-window.history.length+1);
+  // window.history.go(window.history[0]);
 }
 
 

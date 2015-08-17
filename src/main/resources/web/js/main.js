@@ -47,6 +47,8 @@ soundManager.onready(function() {
 });
 
 $(document).ready(function() {
+
+
   keyboardShortcuts();
 
 
@@ -64,10 +66,41 @@ $(document).ready(function() {
 
   // errorTest();
 
-
+  // goto correct URL
+  setupPaths();
 
 
 });
+
+// test path : file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?artist=95e1ead9-4d31-4808-a7ac-32c3614c116b
+// file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?album=e8c09b4e-33ae-368b-8f70-24b4e14fb9ad
+// file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?song=23e0d0cc-f931-435e-8c53-8207dba4678a
+function setupPaths() {
+  // var url = getLastUrlPath();
+
+  var artistMBID = getUrlParameter('artist');
+  var albumMBID = getUrlParameter('album');
+  var songMBID = getUrlParameter('song');
+
+  if (artistMBID != null) {
+    showArtistPageV2(artistMBID);
+  } else if (albumMBID != null) {
+    showAlbumPage(albumMBID);
+  } else if (songMBID != null) {
+    soundManager.onready(function() {
+
+      getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
+        var track = JSON.parse(e);
+        var infoHash = track['info_hash'];
+
+        downloadOrFetchTrackObj(infoHash, 'play-now');
+        var albumMBID = track['release_group_mbid'];
+        showAlbumPage(albumMBID);
+      });
+    });
+  }
+
+}
 
 function setupClickableArtistPlaying() {
   $('.artist_playing_clickable').click(function(e) {
@@ -430,8 +463,8 @@ function setupUploadForm() {
 
         // reload the library page
         setupUploadTable();
-        setupLibrary();
-        setupPlayQueue();
+        // setupLibrary();
+        // setupPlayQueue();
 
 
 
@@ -443,7 +476,7 @@ function setupUploadForm() {
       // do polling of the information, post it to the front page
       uploadInterval = setInterval(function() {
         setupUploadTable();
-      }, 500);
+      }, 1000);
 
 
 
@@ -655,6 +688,10 @@ function updateDownloadStatusBar(infoHash) {
 }
 
 function downloadOrFetchTrackObj(infoHash, option) {
+
+
+
+
   // now fetch or download the song
   var playButtonName = 'play-button_' + infoHash;
 
@@ -664,7 +701,10 @@ function downloadOrFetchTrackObj(infoHash, option) {
   }, 5000);
 
   getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
+
     var trackObj = JSON.parse(e1);
+
+    replaceParams('song', trackObj['mbid']);
 
     // var id = parseInt(full[1]) - 1;
     var id = parseInt(trackObj['id']);
