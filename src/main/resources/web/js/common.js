@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  // setupWindowClose();
+  setupWindowClose();
 
 });
 
@@ -162,16 +162,13 @@ function setupSearch() {
     } else if ($(this).hasClass('artist-search-type')) {
       console.log('its a artist');
       artistCatalogMBID = searchId;
-
-
-      $('a[href="#artistcatalogTab"]').tab('show');
-      $('a[href="#artistcatalog_main"]').tab('show');
+      showArtistPage();
 
 
     } else if ($(this).hasClass('album-search-type')) {
       console.log('its a album');
       albumCatalogMBID = searchId;
-      $('a[href="#albumcatalogTab"]').tab('show');
+      showAlbumPage(albumCatalogMBID)
 
     }
     // console.log(searchString);
