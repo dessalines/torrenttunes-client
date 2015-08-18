@@ -122,7 +122,7 @@
 		<dependency>
 			<groupId>com.github.tchoulihan</groupId>
 			<artifactId>musicbrainz-tagger</artifactId>
-			<version>1.2.5</version>
+			<version>1.2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>

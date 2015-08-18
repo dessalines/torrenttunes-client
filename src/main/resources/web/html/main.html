@@ -548,16 +548,10 @@
                 <script id="browse_template" type="x-tmpl-mustache">
                   <div class="row">
                     {{#.}}
-                    <div class="col-md-2">
-                      {{#image_url}}
-                      <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);"><img class="img-responsive center-block" src="{{image_url}}" /></a>
-                      {{/image_url}} {{^image_url}}
-                      <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);"><img class="img-responsive center-block" src="../image/music_333333_300.png" /></a>
-                      {{/image_url}}
-                      <h4>
+                    <div class="col-md-3 text-overflow">
+                      
                    <a class="text-normal" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);">{{{name}}}</a>
-                  
-                  </h4>
+                 
                     </div>
                     {{/.}}
                   </div>
