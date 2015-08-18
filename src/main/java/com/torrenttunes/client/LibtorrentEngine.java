@@ -119,7 +119,7 @@ public enum LibtorrentEngine  {
 
 		log.info("Starting up libtorrent with version: " + LibTorrent.version());
 
-		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49152, 65535);
+		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49153, 65535);
 		String iface = "0.0.0.0";
 		session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
 
