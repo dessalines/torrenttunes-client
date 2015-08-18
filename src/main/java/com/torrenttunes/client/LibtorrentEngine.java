@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 import com.frostwire.jlibtorrent.AlertListener;
 import com.frostwire.jlibtorrent.DHT;
 import com.frostwire.jlibtorrent.Entry;
@@ -106,17 +108,12 @@ public enum LibtorrentEngine  {
 
 	private long startTime;
 	
-	private Boolean logging = false;
-
 
 	private LibtorrentEngine() {
 
 		startTime = System.nanoTime();
 
 		System.setProperty("jlibtorrent.jni.path", DataSources.LIBTORRENT_OS_LIBRARY_PATH());
-
-		
-		
 
 
 
@@ -126,7 +123,7 @@ public enum LibtorrentEngine  {
 		String iface = "0.0.0.0";
 		session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
 
-		if (logging) {
+		if (Main.log.getLevel().equals(Level.DEBUG)) {
 			// Create a session stats file with headers
 			createSessionStatsFile();
 			default_storage.disk_write_access_log(true);
@@ -407,7 +404,8 @@ public enum LibtorrentEngine  {
 		Integer i = 0;
 
 		// working at 7k
-		while (i < library.size()) {
+//		while (i < library.size()) {
+		while (i < 100) {
 			log.info("File #" + i + "/" + library.size() + " songs in library");
 			Library track = library.get(i++);
 			TorrentHandle torrent = seedTorrent(track);

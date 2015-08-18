@@ -22,7 +22,7 @@ import static com.torrenttunes.client.db.Tables.*;
 
 public class Main {
 
-	static Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+	public static Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
 	@Option(name="-uninstall",usage="Uninstall torrenttunes-client.(WARNING, this deletes your library)")
 	private boolean uninstall;

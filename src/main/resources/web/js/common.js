@@ -22,7 +22,7 @@ function setupWindowClose() {
     console.log('derp');
 
 
-    simplePost('power_off', null, false, null, true, false);
+    simplePost('power_off', null, false, null, true);
     return "TorrentTunes has been powered off.";
     // return null;
   };
