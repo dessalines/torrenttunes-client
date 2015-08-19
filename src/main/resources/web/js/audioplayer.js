@@ -1093,14 +1093,22 @@
             console.log('readystate = ' + soundObject.readyState);
             console.log('loaded = ' + soundObject.loaded);
             console.log('playState = ' + soundObject.playState);
+            console.log('buffered = ' + soundObject.buffered);
+            console.log('duration = ' + soundObject.duration);
            
           },
           onload: function(e) {
             console.log('onload = ' + e);
             if (e) {
-              soundObject.play();
+              // soundObject.play();
             }
-          }
+          },
+          whileloading: function(e) {
+           console.log('while loading = ' + e); 
+         },
+         onsuspend: function(e) {
+          console.log('on suspend = ' + e);
+         }
         });
 
       }
