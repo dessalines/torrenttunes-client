@@ -862,10 +862,10 @@
             utils.css.remove(dom.o, 'buffering');
           }
 
-         if (soundObject.duration > 1500) {
+          if (soundObject.duration > 1500) {
               soundObject.pause();
               soundObject.resume();
-            }
+          }
 
         },
 
