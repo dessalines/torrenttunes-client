@@ -826,7 +826,7 @@
 
       var sound = soundManager.createSound({
 
-        bufferTime: 3,
+        bufferTime: 10,
         url: url,
 
         volume: defaultVolume,
