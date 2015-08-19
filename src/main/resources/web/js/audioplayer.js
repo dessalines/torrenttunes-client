@@ -1097,7 +1097,7 @@
                soundObject.resume();
             }
            
-          }
+          },
           onload: function(e) {
             console.log('onload = ' + e);
           }
