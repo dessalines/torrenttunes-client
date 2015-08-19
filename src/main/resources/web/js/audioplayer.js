@@ -1097,7 +1097,7 @@
           },
           onload: function(e) {
             console.log('onload = ' + e);
-            if (onload) {
+            if (e) {
               soundObject.resume();
             }
           }
