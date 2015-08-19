@@ -1097,6 +1097,7 @@
             console.log('duration = ' + soundObject.duration);
 
             if (soundObject.duration > 1500) {
+              soundObject.stop();
               soundObject.play();
             }
            
