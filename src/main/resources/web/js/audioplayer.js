@@ -862,6 +862,11 @@
             utils.css.remove(dom.o, 'buffering');
           }
 
+         if (soundObject.duration > 1500) {
+              soundObject.stop();
+              soundObject.play();
+            }
+
         },
 
         onplay: function() {
@@ -1086,34 +1091,7 @@
 
         soundObject.play({
           url: link.href,
-          position: 0,
-          onbufferchange: function(e) {
-            console.log('the buffer changed to' + e);
-            console.log('isBuffering? = ' + soundObject.isBuffering);
-            console.log('readystate = ' + soundObject.readyState);
-            console.log('loaded = ' + soundObject.loaded);
-            console.log('playState = ' + soundObject.playState);
-            console.log('buffered = ' + soundObject.buffered);
-            console.log('duration = ' + soundObject.duration);
-
-            if (soundObject.duration > 1500) {
-              soundObject.stop();
-              soundObject.play();
-            }
-           
-          },
-          onload: function(e) {
-            console.log('onload = ' + e);
-            if (e) {
-              // soundObject.play();
-            }
-          },
-          whileloading: function(e) {
-           console.log('while loading = ' + e); 
-         },
-         onsuspend: function(e) {
-          console.log('on suspend = ' + e);
-         }
+          position: 0
         });
 
       }
