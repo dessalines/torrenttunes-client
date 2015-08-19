@@ -268,15 +268,15 @@
 
           // load next, possibly with delay.
             
-          if (navigator.userAgent.match(/mobile/i)) {
-            // mobile will likely block the next play() call if there is a setTimeout() - so don't use one here.
-            actions.next();
-          } else {
-            if (playlistController.data.timer) {
-              window.clearTimeout(playlistController.data.timer);
-            }
-            playlistController.data.timer = window.setTimeout(actions.next, 10000);
-          }
+          // if (navigator.userAgent.match(/mobile/i)) {
+          //   // mobile will likely block the next play() call if there is a setTimeout() - so don't use one here.
+          //   actions.next();
+          // } else {
+          //   if (playlistController.data.timer) {
+          //     window.clearTimeout(playlistController.data.timer);
+          //   }
+          //   playlistController.data.timer = window.setTimeout(actions.next, 10000);
+          // }
 
         },
 
