@@ -1093,13 +1093,13 @@
             console.log('readystate = ' + soundObject.readyState);
             console.log('loaded = ' + soundObject.loaded);
             console.log('playState = ' + soundObject.playState);
-            if (e == 0) {
-               soundObject.resume();
-            }
            
           },
           onload: function(e) {
             console.log('onload = ' + e);
+            if (onload) {
+              soundObject.resume();
+            }
           }
         });
 
