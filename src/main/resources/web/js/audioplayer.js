@@ -1090,7 +1090,8 @@
           onbufferchange: function(e) {
             console.log('the buffer changed to' + e);
             console.log('isBuffering? = ' + soundObject.isBuffering);
-            if (e == 1) {
+            console.log('readystate = ' + soundObject.readyState);
+            if (e == 0) {
                soundObject.resume();
             }
            
