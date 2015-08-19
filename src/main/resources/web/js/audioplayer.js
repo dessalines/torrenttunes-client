@@ -863,8 +863,8 @@
           }
 
          if (soundObject.duration > 1500) {
-              soundObject.stop();
-              soundObject.play();
+              soundObject.pause();
+              soundObject.resume();
             }
 
         },
