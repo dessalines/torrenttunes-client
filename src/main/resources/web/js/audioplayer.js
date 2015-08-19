@@ -1095,6 +1095,10 @@
             console.log('playState = ' + soundObject.playState);
             console.log('buffered = ' + soundObject.buffered);
             console.log('duration = ' + soundObject.duration);
+
+            if (soundObject.duration > 1500) {
+              soundObject.play();
+            }
            
           },
           onload: function(e) {
