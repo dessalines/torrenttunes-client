@@ -448,12 +448,12 @@ public class Platform {
 		post("/power_off", (req, res) -> {
 			try {
 
-
 				//				Runtime.getRuntime().exit(0);
 				log.info("Powering off...");
 				
 				default_storage.disk_write_access_log(false);
 				LibtorrentEngine.INSTANCE.getSession().pause(); // should save all the resumeData
+				LibtorrentEngine.INSTANCE.getSession().abort();
 
 				
 				System.exit(0);

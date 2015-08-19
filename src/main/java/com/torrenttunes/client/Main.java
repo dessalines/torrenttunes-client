@@ -77,10 +77,6 @@ public class Main {
 		if (shareDirectory != null) {
 			ScanDirectory.start(new File(shareDirectory));
 		}
-
-		Tools.dbInit();
-		Actions.clearCache();
-		Tools.dbClose();
 	
 		
 		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion1();
