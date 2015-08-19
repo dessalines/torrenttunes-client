@@ -1090,7 +1090,7 @@
           onbufferchange: function(e) {
             console.log('the buffer changed to' + e);
 
-            if (e == 0) {
+            if (e == 1) {
                soundObject.play();
             }
            
