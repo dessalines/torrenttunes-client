@@ -14,10 +14,10 @@
   "use strict";
 
   var Player,
-      players = [],
-      // CSS selector that will get us the top-level DOM node for the player UI.
-      playerSelector = '.sm2-bar-ui',
-      utils;
+    players = [],
+    // CSS selector that will get us the top-level DOM node for the player UI.
+    playerSelector = '.sm2-bar-ui',
+    utils;
 
   soundManager.setup({
     // trade-off: higher UI responsiveness (play/progress bar), but may use more CPU.
@@ -33,11 +33,11 @@
     nodes = utils.dom.getAll(playerSelector);
 
     if (nodes && nodes.length) {
-      for (i=0, j=nodes.length; i<j; i++) {
+      for (i = 0, j = nodes.length; i < j; i++) {
         players.push(new Player(nodes[i]));
       }
     }
-  
+
   });
 
   utils = {
@@ -69,7 +69,7 @@
         var i, j, temp;
 
         for (i = array.length - 1; i > 0; i--) {
-          j = Math.floor(Math.random() * (i+1));
+          j = Math.floor(Math.random() * (i + 1));
           temp = array[i];
           array[i] = array[j];
           array[j] = temp;
@@ -128,7 +128,7 @@
       function toggleClass(o, cStr) {
 
         var found,
-            method;
+          method;
 
         found = hasClass(o, cStr);
 
@@ -153,11 +153,11 @@
 
     dom: (function() {
 
-      function getAll(/* parentNode, selector */) {
+      function getAll( /* parentNode, selector */ ) {
 
         var node,
-            selector,
-            results;
+          selector,
+          results;
 
         if (arguments.length === 1) {
 
@@ -184,13 +184,13 @@
 
       }
 
-      function get(/* parentNode, selector */) {
+      function get( /* parentNode, selector */ ) {
 
         var results = getAll.apply(this, arguments);
 
         // hackish: if an array, return the last item.
         if (results && results.length) {
-          return results[results.length-1];
+          return results[results.length - 1];
         }
 
         // handle "not found" case
@@ -224,7 +224,7 @@
 
         } else if (o.x) {
 
-            curleft += o.x;
+          curleft += o.x;
 
         }
 
@@ -249,7 +249,7 @@
 
         } else if (o.y) {
 
-            curtop += o.y;
+          curtop += o.y;
 
         }
 
@@ -337,14 +337,14 @@
     features: (function() {
 
       var getAnimationFrame,
-          localAnimationFrame,
-            localFeatures,
-            prop,
-            styles,
-          testDiv,
-          transform;
+        localAnimationFrame,
+        localFeatures,
+        prop,
+        styles,
+        testDiv,
+        transform;
 
-        testDiv = document.createElement('div');
+      testDiv = document.createElement('div');
 
       /**
        * hat tip: paul irish
@@ -352,12 +352,7 @@
        * https://gist.github.com/838785
        */
 
-      localAnimationFrame = (window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
-        || window.oRequestAnimationFrame
-        || window.msRequestAnimationFrame
-        || null);
+      localAnimationFrame = (window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || null);
 
       // apply to window, avoid "illegal invocation" errors in Chrome
       getAnimationFrame = localAnimationFrame ? function() {
@@ -406,7 +401,7 @@
 
         try {
           testDiv.style[transform] = style;
-        } catch(e) {
+        } catch (e) {
           // that *definitely* didn't work.
           return false;
         }
@@ -510,7 +505,7 @@
       function getItem(offset) {
 
         var list,
-            item;
+          item;
 
         // given the current selection (or an offset), return the current item.
 
@@ -537,9 +532,9 @@
 
         // given an <li> item, find it in the playlist array and return the index.
         var list,
-            i,
-            j,
-            offset;
+          i,
+          j,
+          offset;
 
         offset = -1;
 
@@ -547,7 +542,7 @@
 
         if (list) {
 
-          for (i=0, j=list.length; i<j; i++) {
+          for (i = 0, j = list.length; i < j; i++) {
             if (list[i] === item) {
               offset = i;
               break;
@@ -620,11 +615,11 @@
 
         // remove UI highlight(s) on selected items.
         var items,
-            i, j;
+          i, j;
 
         items = utils.dom.getAll(dom.playlist, '.' + css.selected);
 
-        for (i=0, j=items.length; i<j; i++) {
+        for (i = 0, j = items.length; i < j; i++) {
           utils.css.remove(items[i], css.selected);
         }
 
@@ -633,11 +628,11 @@
       function select(item) {
 
         var offset,
-            itemTop,
-            itemBottom,
-            containerHeight,
-            scrollTop,
-            itemPadding;
+          itemTop,
+          itemBottom,
+          containerHeight,
+          scrollTop,
+          itemPadding;
 
         // remove last selected, if any
         resetLastSelected();
@@ -713,7 +708,7 @@
         offset = (offset || 0);
 
         item = getItem(offset);
-        
+
         if (item) {
           playLink(item.getElementsByTagName('a')[0]);
         }
@@ -726,7 +721,7 @@
         var item, url;
 
         item = getItem();
-      
+
         if (item) {
           url = item.getElementsByTagName('a')[0].href;
         }
@@ -792,14 +787,17 @@
 
       // convert milliseconds to hh:mm:ss, return as object literal or string
 
-      var nSec = Math.floor(msec/1000),
-          hh = Math.floor(nSec/3600),
-          min = Math.floor(nSec/60) - Math.floor(hh * 60),
-          sec = Math.floor(nSec -(hh*3600) -(min*60));
+      var nSec = Math.floor(msec / 1000),
+        hh = Math.floor(nSec / 3600),
+        min = Math.floor(nSec / 60) - Math.floor(hh * 60),
+        sec = Math.floor(nSec - (hh * 3600) - (min * 60));
 
       // if (min === 0 && sec === 0) return null; // return 0:00 as null
 
-      return (useString ? ((hh ? hh + ':' : '') + (hh && min < 10 ? '0' + min : min) + ':' + ( sec < 10 ? '0' + sec : sec ) ) : { 'min': min, 'sec': sec });
+      return (useString ? ((hh ? hh + ':' : '') + (hh && min < 10 ? '0' + min : min) + ':' + (sec < 10 ? '0' + sec : sec)) : {
+        'min': min,
+        'sec': sec
+      });
 
     }
 
@@ -836,17 +834,17 @@
         whileplaying: function() {
 
           var progressMaxLeft = 100,
-              left,
-              width;
-  
+            left,
+            width;
+
           left = Math.min(progressMaxLeft, Math.max(0, (progressMaxLeft * (this.position / this.durationEstimate)))) + '%';
           width = Math.min(100, Math.max(0, (100 * this.position / this.durationEstimate))) + '%';
-  
+
           if (this.duration) {
 
             dom.progress.style.left = left;
             dom.progressBar.style.width = width;
-              
+
             // TODO: only write changes
             dom.time.innerHTML = getTime(this.position, true);
 
@@ -854,20 +852,7 @@
 
         },
 
-        onbufferchange: function(isBuffering) {
 
-          if (isBuffering) {
-            utils.css.add(dom.o, 'buffering');
-          } else {
-            utils.css.remove(dom.o, 'buffering');
-          }
-
-          if (this.duration > 1500) {
-              // this.pause();
-              // this.resume();
-          }
-
-        },
 
         onplay: function() {
           utils.css.swap(dom.o, 'paused', 'playing');
@@ -916,7 +901,7 @@
             // playlistTarget.innerHTML = '<ul class="sm2-playlist-bd"><li>' + item.innerHTML + '</li></ul>';
 
             if (extras.loadFailedCharacter) {
-              dom.playlistTarget.innerHTML = dom.playlistTarget.innerHTML.replace('<li>' ,'<li>' + extras.loadFailedCharacter + ' ');
+              dom.playlistTarget.innerHTML = dom.playlistTarget.innerHTML.replace('<li>', '<li>' + extras.loadFailedCharacter + ' ');
               if (playlistController.data.playlist && playlistController.data.playlist[playlistController.data.selectedIndex]) {
                 element = playlistController.data.playlist[playlistController.data.selectedIndex].getElementsByTagName('a')[0];
                 html = element.innerHTML;
@@ -929,7 +914,7 @@
           }
 
           // load next, possibly with delay.
-            
+
           if (navigator.userAgent.match(/mobile/i)) {
             // mobile will likely block the next play() call if there is a setTimeout() - so don't use one here.
             actions.next();
@@ -973,12 +958,13 @@
               url: playlistController.getURL()
             });
 
-          }/* else {
+          }
+          /* else {
 
-            // explicitly stop?
-            // this.stop();
+                      // explicitly stop?
+                      // this.stop();
 
-          }*/
+                    }*/
 
         }
 
@@ -1025,7 +1011,7 @@
     function handleMouseDown(e) {
 
       var links,
-          target;
+        target;
 
       target = e.target || e.srcElement;
 
@@ -1091,7 +1077,21 @@
 
         soundObject.play({
           url: link.href,
-          position: 0
+          position: 0,
+          onbufferchange: function(isBuffering) {
+
+            if (isBuffering) {
+              utils.css.add(dom.o, 'buffering');
+            } else {
+              utils.css.remove(dom.o, 'buffering');
+            }
+
+            if (this.duration > 1500) {
+              this.pause();
+              this.resume();
+            }
+
+          },
         });
 
       }
@@ -1101,12 +1101,12 @@
     function handleClick(e) {
 
       var evt,
-          target,
-          offset,
-          targetNodeName,
-          methodName,
-          href,
-          handled;
+        target,
+        offset,
+        targetNodeName,
+        methodName,
+        href,
+        handled;
 
       evt = (e || window.event);
 
@@ -1162,7 +1162,7 @@
 
             if (offset !== -1) {
 
-              methodName = target.href.substr(offset+1);
+              methodName = target.href.substr(offset + 1);
 
               if (methodName && actions[methodName]) {
                 handled = true;
@@ -1277,7 +1277,7 @@
 
       playlistController.select(defaultItem);
 
-      if(defaultItem){
+      if (defaultItem) {
         setTitle(defaultItem);
       }
 
@@ -1326,8 +1326,8 @@
          */
 
         var target,
-            href,
-            e;
+          href,
+          e;
 
         if (eventOrOffset !== undefined && !isNaN(eventOrOffset)) {
           // smells like a number.
@@ -1390,7 +1390,7 @@
 
       },
 
-      next: function(/* e */) {
+      next: function( /* e */ ) {
 
         var item, lastIndex;
 
@@ -1411,7 +1411,7 @@
 
       },
 
-      prev: function(/* e */) {
+      prev: function( /* e */ ) {
 
         var item, lastIndex;
 
@@ -1481,10 +1481,10 @@
          */
 
         var backgroundMargin,
-            pixelMargin,
-            target,
-            value,
-            volume;
+          pixelMargin,
+          target,
+          value,
+          volume;
 
         value = 0;
 
@@ -1512,12 +1512,12 @@
         // relative position of mouse over element
         value = Math.max(0, Math.min(1, (e.clientX - actionData.volume.x) / actionData.volume.width));
 
-        target.style.clip = 'rect(0px, ' + (actionData.volume.width * value) + 'px, ' + actionData.volume.height + 'px, ' + (actionData.volume.width * (backgroundMargin/100)) + 'px)';
+        target.style.clip = 'rect(0px, ' + (actionData.volume.width * value) + 'px, ' + actionData.volume.height + 'px, ' + (actionData.volume.width * (backgroundMargin / 100)) + 'px)';
 
         // determine logical volume, including background margin
-        pixelMargin = ((backgroundMargin/100) * actionData.volume.width);
+        pixelMargin = ((backgroundMargin / 100) * actionData.volume.width);
 
-        volume = Math.max(0, Math.min(1, ((e.clientX - actionData.volume.x) - pixelMargin) / (actionData.volume.width - (pixelMargin*2)))) * 100;
+        volume = Math.max(0, Math.min(1, ((e.clientX - actionData.volume.x) - pixelMargin) / (actionData.volume.width - (pixelMargin * 2)))) * 100;
 
         // set volume
         if (soundObject) {
@@ -1530,7 +1530,7 @@
 
       },
 
-      releaseVolume: function(/* e */) {
+      releaseVolume: function( /* e */ ) {
 
         utils.events.remove(document, 'mousemove', actions.adjustVolume);
         utils.events.remove(document, 'mouseup', actions.releaseVolume);
@@ -1542,12 +1542,12 @@
         // set volume (0-100) and update volume slider UI.
 
         var backgroundSize,
-            backgroundMargin,
-            backgroundOffset,
-            pixelMargin,
-            target,
-            from,
-            to;
+          backgroundMargin,
+          backgroundOffset,
+          pixelMargin,
+          target,
+          from,
+          to;
 
         if (volume === undefined || isNaN(volume)) {
           return;
@@ -1565,10 +1565,10 @@
           backgroundMargin = (100 - backgroundSize) / 2;
 
           // margin as pixel value relative to width
-          backgroundOffset = actionData.volume.width * (backgroundMargin/100);
+          backgroundOffset = actionData.volume.width * (backgroundMargin / 100);
 
           from = backgroundOffset;
-          to = from + ((actionData.volume.width - (backgroundOffset*2)) * (volume/100));
+          to = from + ((actionData.volume.width - (backgroundOffset * 2)) * (volume / 100));
 
           target.style.clip = 'rect(0px, ' + to + 'px, ' + actionData.volume.height + 'px, ' + from + 'px)';
 
