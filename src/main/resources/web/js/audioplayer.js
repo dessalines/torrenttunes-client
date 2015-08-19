@@ -1089,9 +1089,9 @@
           position: 0,
           onbufferchange: function(e) {
             console.log('the buffer changed to' + e);
-
+            console.log('isBuffering? = ' + soundObject.isBuffering);
             if (e == 1) {
-               soundObject.play();
+               soundObject.resume();
             }
            
           }
