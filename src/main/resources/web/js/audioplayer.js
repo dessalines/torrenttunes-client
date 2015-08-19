@@ -1089,7 +1089,11 @@
           position: 0,
           onbufferchange: function(e) {
             console.log('the buffer changed to' + e);
-            // soundObject.play();
+
+            if (e == 0) {
+               soundObject.play();
+            }
+           
           }
         });
 
