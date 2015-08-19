@@ -1087,9 +1087,9 @@
         soundObject.play({
           url: link.href,
           position: 0,
-          onbufferchange: function() {
-            console.log('the buffer changed');
-            soundObject.play();
+          onbufferchange: function(e) {
+            console.log('the buffer changed to' + e);
+            // soundObject.play();
           }
         });
 
