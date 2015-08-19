@@ -1091,10 +1091,15 @@
             console.log('the buffer changed to' + e);
             console.log('isBuffering? = ' + soundObject.isBuffering);
             console.log('readystate = ' + soundObject.readyState);
+            console.log('loaded = ' + soundObject.loaded);
+            console.log('playState = ' + soundObject.playState);
             if (e == 0) {
                soundObject.resume();
             }
            
+          }
+          onload: function(e) {
+            console.log('onload = ' + e);
           }
         });
 
