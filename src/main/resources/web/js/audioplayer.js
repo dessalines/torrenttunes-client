@@ -1098,7 +1098,7 @@
           onload: function(e) {
             console.log('onload = ' + e);
             if (e) {
-              soundObject.resume();
+              soundObject.play();
             }
           }
         });
