@@ -826,7 +826,7 @@
 
       var sound = soundManager.createSound({
 
-        bufferTime: 10,
+        bufferTime: 6,
         url: url,
 
         volume: defaultVolume,
@@ -1086,7 +1086,7 @@
               utils.css.remove(dom.o, 'buffering');
             }
 
-            if (this.duration > 1500) {
+            if (this.duration > 5000) {
               this.pause();
               this.resume();
             }
