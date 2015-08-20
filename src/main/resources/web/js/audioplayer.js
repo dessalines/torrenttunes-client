@@ -922,7 +922,7 @@
             if (playlistController.data.timer) {
               window.clearTimeout(playlistController.data.timer);
             }
-            playlistController.data.timer = window.setTimeout(actions.next, 2000);
+            playlistController.data.timer = window.setTimeout(actions.next, 15000);
           }
 
         },

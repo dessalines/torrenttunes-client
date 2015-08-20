@@ -265,12 +265,13 @@ function setupSettingsTab() {
 
 
 function setupBrowseTab() {
+  $('#home_page_loading_div').removeClass('hide');
   getJson('get_artists', null, torrentTunesSparkService).done(function(e) {
     var artists = JSON.parse(e);
     console.log(artists);
 
-
     fillMustacheWithJson(artists, browseTemplate, '#browse_div');
+    $('#home_page_loading_div').addClass('hide');
   });
 }
 

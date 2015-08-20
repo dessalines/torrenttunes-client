@@ -294,6 +294,7 @@ function simplePost(shortUrl, postData, reload, successFunctions, noToast, spark
   reload = (typeof reload === "undefined") ? false : reload;
 
   noToast = (typeof noToast === "undefined") ? false : noToast;
+  
   sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
 
   btnId = (typeof btnId === "undefined") ? false : btnId;
@@ -1132,3 +1133,7 @@ Array.prototype.max = function() {
 Array.prototype.min = function() {
   return Math.min.apply(null, this);
 };
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
+}
