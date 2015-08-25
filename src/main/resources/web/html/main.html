@@ -140,7 +140,7 @@
                   <script id="trending_albums_template" type="x-tmpl-mustache">
                     <div class="row">
                       {{#.}}
-                      <div class="col-xs-3">
+                      <div class="col-md-3 col-xs-12">
                         {{#album_coverart_thumbnail_small}}
                         <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                         {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
@@ -375,7 +375,7 @@
                     <script id="top_artist_albums_template" type="x-tmpl-mustache">
                       <div class="row">
                         {{#.}}
-                        <div class="col-xs-3">
+                        <div class="col-md-3 col-xs-12">
                           {{#album_coverart_thumbnail_small}}
                           <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                           {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
@@ -548,7 +548,7 @@
                 <script id="browse_template" type="x-tmpl-mustache">
                   <div class="row">
                     {{#.}}
-                    <div class="col-md-3 text-overflow">
+                    <div class="col-md-3 col-xs-12 text-overflow">
                       
                    <a class="text-muted" onclick="showArtistPageV2('{{mbid}}');" href="javascript:void(0);">{{{name}}}</a>
                  

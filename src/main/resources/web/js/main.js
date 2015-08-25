@@ -57,6 +57,7 @@ $(document).ready(function() {
   setupHomeTab();
   setupUploadForm();
   setupUploadTable();
+  setupBrowseTab();
 
   setupSettingsTab();
   setupPlaylistForm();
@@ -146,7 +147,7 @@ function setupTabs() {
       setupAlbumCatalogTab();
 
     } else if (tabId == "#browseTab") {
-      setupBrowseTab();
+      // setupBrowseTab();
     } else if (tabId == "#homeTab") {
       setupHomeTab();
     } else if (tabId == "#libraryTab") {
