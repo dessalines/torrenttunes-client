@@ -850,6 +850,10 @@ function htmlDecode(value) {
   return $('<div/>').html(value.replace(/semicolon/g, ';')).text();
 }
 
+function htmlEncode(value) {
+  return $('<div/>').text(value).html();
+}
+
 if (typeof String.prototype.startsWith != 'function') {
   String.prototype.startsWith = function(str) {
     return this.slice(0, str.length) == str;

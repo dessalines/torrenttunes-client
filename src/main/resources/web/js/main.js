@@ -895,14 +895,19 @@ function setupPlaylistDelete() {
 
 function setupDonate() {
   var address = '14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX';
-  var btcText = "bitcoin:" + address;
+  var label = encodeURIComponent('TorrentTunes Donation');
+  var amount = '0.02'
+  var btcText = "bitcoin:" + address + '?label=' + label + '&amount=' + amount;
+  $('#qrcode_a').attr('href',btcText);
   $('#qrcode').html('');
   $('#qrcode').qrcode({
-    "width": 100,
+    "render": "canvas",
+    "width": 200,
     "height": 100,
     "fill": "#000",
     "background": "#FFF",
-    "text": btcText
+    "text": btcText,
   });
   $('#receive_address').html(address);
+
 }

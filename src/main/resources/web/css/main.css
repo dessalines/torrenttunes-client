@@ -40,6 +40,10 @@
 
 }*/
 
+#donateModal .modal-body {
+  background-color: #FFF;
+}
+
 .artist_playing_clickable {
   cursor: pointer;
 }
