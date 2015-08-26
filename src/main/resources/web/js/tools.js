@@ -22,7 +22,7 @@ function getJson(shortUrl, noToast, sparkService, name, async) {
   noToast = (typeof noToast === "undefined") ? false : noToast;
   sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
   name = (typeof name === "undefined") ? null : name;
-  async = (typeof async === "undefined") ? false : async;
+  async = (typeof async === "undefined") ? true : async;
 
 
   var url;
