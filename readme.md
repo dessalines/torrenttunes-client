@@ -51,9 +51,9 @@ chmod +x install.sh
 ## Support 
 If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.ml), you can donate directly here:
 
-[bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL](bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL)
+[bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX](bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX)
 
-![bitcoin:17N2wDi8Y6Cnrnrbzq5JsRcdjnW9DVyVhL](http://i.imgur.com/87N3QWu.png)
+![bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX](http://i.imgur.com/RRGOvl2.png)
 
 ## Bugs and feature requests
 Have a bug or a feature request? If your issue isn't [already listed](https://github.com/tchoulihan/torrenttunes-client/issues/), then open a [new issue here](https://github.com/tchoulihan/torrenttunes-client/issues/new).
