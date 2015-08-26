@@ -898,7 +898,7 @@ function setupDonate() {
   var label = encodeURIComponent('TorrentTunes Donation');
   var amount = '0.02'
   var btcText = "bitcoin:" + address + '?label=' + label + '&amount=' + amount;
-  $('#qrcode_a').attr('href',btcText);
+  $('.qrcode_a').attr('href',btcText);
   $('#qrcode').html('');
   $('#qrcode').qrcode({
     "render": "canvas",
