@@ -18,24 +18,22 @@ var pageNumbers = {};
 
 
 
-function getJson(shortUrl, noToast, sparkService, name, async) {
+function getJson(shortUrl, noToast, sparkService, name) {
   noToast = (typeof noToast === "undefined") ? false : noToast;
   sparkService = (typeof sparkService === "undefined" || sparkService == null) ? localSparkService : sparkService;
   name = (typeof name === "undefined") ? null : name;
-  async = (typeof async === "undefined") ? true : async;
-
 
   var url;
 
   url = sparkService + shortUrl;
 
   console.log(url);
-  return simpleAjax(url, noToast, name, async);
+  return simpleAjax(url, noToast, name);
 
 
 }
 
-function simpleAjax(url, noToast, name, async) {
+function simpleAjax(url, noToast, name) {
 
   if (name != null) {
     var btn = $('[name="' + name + '"]');
@@ -52,7 +50,6 @@ function simpleAjax(url, noToast, name, async) {
   return $.ajax({
     type: "GET",
     url: url,
-    async: async,
     xhrFields: {
       withCredentials: true
     },
