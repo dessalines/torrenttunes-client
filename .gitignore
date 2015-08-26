@@ -2,3 +2,12 @@
 /.classpath
 /.project
 /.settings/
+/core
+/file_access.log
+/peer_leeching.log
+/peer_seeding.log
+/session_stats.0000.log
+/utp_leeching.log
+/utp.log
+/log.out
+/untagged.out
