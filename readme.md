@@ -7,9 +7,9 @@
 
 Each individual song is tagged using [MusicBrainz](http://musicbrainz.org/), and shared as a *.torrent* file using the client's built-in, [LibTorrent-based](http://www.libtorrent.org/) BitTorrent client, on publicly available trackers.
 
-TorrentTunes works on Windows, Mac OS X, and Linux.
+TorrentTunes works on Windows, Mac OS X, and Linux, and also has a web client at [TorrentTunes.ml](http://torrenttunes.ml).
 
-Suggest features or post bugs [here](https://github.com/tchoulihan/torrenttunes-client/issues/), or on the subreddit [r/torrenttunes](http://www.reddit.com/r/torrenttunes).
+Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/torrenttunes-client/issues/), or on the subreddit [r/torrenttunes](http://www.reddit.com/r/torrenttunes).
 
 [:arrow_down: Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
 
