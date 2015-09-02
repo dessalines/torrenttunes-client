@@ -159,7 +159,7 @@ public enum LibtorrentEngine  {
 		dht.stop();
 
 
-		settings.broadcastLSD(false);
+//		settings.broadcastLSD(false);
 		settings.setMaxPeerlistSize(500);
 		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
@@ -648,7 +648,7 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override

@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  setupWindowClose();
+  // setupWindowClose();
 
 });
 
@@ -276,6 +276,7 @@ function setupTrackSelect() {
     console.log(option);
     console.log(infoHash);
 
+    radioMode.running = false;
     downloadOrFetchTrackObj(infoHash, option);
 
 
