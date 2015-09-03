@@ -14,6 +14,7 @@ import static spark.Spark.post;
 
 
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
@@ -47,6 +49,8 @@ import org.slf4j.LoggerFactory;
 
 
 
+
+import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.swig.default_storage;
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.ScanDirectory;
@@ -406,9 +410,10 @@ public class Platform {
 				
 				String infoHash = req.params(":infoHash");
 				
+				log.info("progress info hash: " + infoHash);
+				TorrentHandle th = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
 				
-				float progress = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash).
-						getStatus().getProgress();
+				float progress = th.getStatus().getProgress();
 				
 				String formattedProgress = Tools.NUMBER_FORMAT.format(progress);
 				
