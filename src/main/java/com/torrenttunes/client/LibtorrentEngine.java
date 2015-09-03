@@ -408,7 +408,6 @@ public enum LibtorrentEngine  {
 
 		// working at 7k
 		while (i < library.size()) {
-//		while (i < 100) {
 			log.info("File #" + i + "/" + library.size() + " songs in library");
 			Library track = library.get(i++);
 			TorrentHandle torrent = seedTorrent(track);
