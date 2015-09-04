@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.JsonNode;
+import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ import com.torrenttunes.client.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.TorrentStats;
 import com.torrenttunes.client.db.Tables.Library;
 import com.torrenttunes.client.db.Tables.Playlist;
+import com.torrenttunes.client.db.Tables.PlaylistTrack;
 import com.torrenttunes.client.db.Tables.PlaylistTrackView;
 import com.torrenttunes.client.db.Tables.Settings;
 import com.torrenttunes.client.tools.DataSources;
@@ -331,8 +333,18 @@ public class Actions {
 		// Find the library id for an infohash
 		String libraryId = LIBRARY.findFirst("info_hash = ?", infoHash).getString("id");
 
-		PLAYLIST_TRACK.createIt("playlist_id", playlistId,
-				"library_id", libraryId);
+		
+
+		// Check to see if that track isn't already in the playlist
+		PlaylistTrack pt = PLAYLIST_TRACK.findFirst("playlist_id = ? and library_id = ?", playlistId, libraryId);
+		if (pt != null) {
+			throw new NoSuchElementException("Didn't add, track was already in playlist");
+		} 
+		// Otherwise, add it
+		else {
+			PLAYLIST_TRACK.createIt("playlist_id", playlistId,
+					"library_id", libraryId);
+		}
 
 
 		return "Added to playlist";
