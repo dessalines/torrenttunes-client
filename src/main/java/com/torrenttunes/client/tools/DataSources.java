@@ -9,8 +9,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.torrenttunes.client.webservice.Platform;
-
 public class DataSources {
 	
 	static final Logger log = LoggerFactory.getLogger(DataSources.class);
@@ -75,8 +73,14 @@ public class DataSources {
 
 	public static final String SHADED_JAR_FILE_2() {
 		try {
-			return DataSources.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			String path = DataSources.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			if (System.getProperty("os.name").contains("indow")) {
+				path = path.substring(1);
+			}
+			
+			return path;
 		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
