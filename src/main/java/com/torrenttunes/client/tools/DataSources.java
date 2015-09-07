@@ -144,7 +144,7 @@ public class DataSources {
 		if (osName.contains("linux")) {
 			ret = SOURCE_CODE_HOME() + "/lib/x86_64/libjlibtorrent.so";
 		} else if (osName.contains("windows")) {
-			ret = SOURCE_CODE_HOME() + "/lib/jlibtorrent.dll";
+			ret = SOURCE_CODE_HOME() + "/lib/x86/jlibtorrent.dll";
 		} else if (osName.contains("mac")) {
 			ret = SOURCE_CODE_HOME() + "/lib/libjlibtorrent.dylib";
 		}
