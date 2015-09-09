@@ -222,13 +222,12 @@ function showArtistPage() {
 
   replaceParams('artist', artistCatalogMBID);
 
-  $('#artistcatalogTab').addClass('hide');
-
 
   // $('a[href="#artistcatalogTab"]').hide();
   $('#left_tab li.active').removeClass('active');
   $('#artistcatalogTab').removeClass('active');
 
+  $('#artistcatalogTab').addClass('hide');
   $('a[href="#artistcatalogTab"]').tab('show');
   $('a[href="#artistcatalog_main"]').tab('show');
 
@@ -236,12 +235,8 @@ function showArtistPage() {
 }
 
 function showArtistPageV2(artistMBID) {
-
   artistCatalogMBID = artistMBID;
-  console.log(artistCatalogMBID);
   showArtistPage();
-
-
 }
 
 function showAlbumPage(releaseMBID) {

@@ -34,7 +34,6 @@ var library, playQueue = [];
 // The radio station
 var radioMode = {};
 
-
 // the Upload polling var
 var uploadInterval;
 
@@ -53,6 +52,7 @@ soundManager.onready(function() {
   // player.actions.play()
   setupPlayQueue();
   setCurrentTrackObj();
+  setupPaths();
 });
 
 $(document).ready(function() {
@@ -75,8 +75,6 @@ $(document).ready(function() {
   setupTabs();
 
   // errorTest();
-
-  setupPaths();
 
   setupUploadDownloadTotals();
 
@@ -115,19 +113,26 @@ function setupPaths() {
   } else if (albumMBID != null) {
     showAlbumPage(albumMBID);
   } else if (songMBID != null) {
-    soundManager.onready(function() {
 
-      getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
-        var track = JSON.parse(e);
-        var infoHash = track['info_hash'];
 
-        downloadOrFetchTrackObj(infoHash, 'play-now');
-        var albumMBID = track['release_group_mbid'];
-        showAlbumPage(albumMBID);
-      });
+    getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
+      var track = JSON.parse(e);
+      var infoHash = track['info_hash'];
+
+      downloadOrFetchTrackObj(infoHash, 'play-now');
+      var albumMBID = track['release_group_mbid'];
+      showAlbumPage(albumMBID);
+
     });
+
   }
 
+}
+
+function errorTest() {
+  getJson('error_test').done(function(e) {
+
+  });
 }
 
 function setupClickableArtistPlaying() {
@@ -141,17 +146,6 @@ function setupClickableArtistPlaying() {
 
   });
 }
-
-function errorTest() {
-  getJson('error_test').done(function(e) {
-
-  });
-}
-
-
-
-
-
 
 function setupTabs() {
 
@@ -857,7 +851,7 @@ function playNow(trackObj) {
   // var item = player.playlistController.getItem(0);
   // console.log(item);
   // player.playlistController.select(item);
-  // player.playlistController.refresh();
+  player.playlistController.refresh();
   // player.actions.stop();
 
   // add it to the queue
@@ -871,7 +865,15 @@ function playNow(trackObj) {
     player.playlistController.playItemByOffset(index);
   } else {
     player.actions.prev();
-    // player.actions.play(); 
+
+    // Mobile play can only be started by touch(mobile rules of iOS and android)
+    if (isMobile()) {
+
+      delay(function() {
+        player.actions.pause();
+      }, 3000);
+
+    }
   }
   // player.actions.play();
   setupClickableArtistPlaying();
