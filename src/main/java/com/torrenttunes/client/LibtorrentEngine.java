@@ -159,7 +159,7 @@ public enum LibtorrentEngine  {
 		dht.stop();
 
 
-		settings.broadcastLSD(false);
+//		settings.broadcastLSD(false);
 		settings.setMaxPeerlistSize(500);
 		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
@@ -408,7 +408,6 @@ public enum LibtorrentEngine  {
 
 		// working at 7k
 		while (i < library.size()) {
-//		while (i < 100) {
 			log.info("File #" + i + "/" + library.size() + " songs in library");
 			Library track = library.get(i++);
 			TorrentHandle torrent = seedTorrent(track);
@@ -648,7 +647,7 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public void blockFinished(BlockFinishedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
 			@Override
