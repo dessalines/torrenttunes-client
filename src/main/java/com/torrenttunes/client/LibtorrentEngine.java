@@ -92,7 +92,7 @@ import com.torrenttunes.client.tools.Tools;
 
 
 public enum LibtorrentEngine  {
-
+	
 	INSTANCE;
 
 	private final Logger log = LoggerFactory.getLogger(LibtorrentEngine.class);
@@ -923,6 +923,19 @@ public enum LibtorrentEngine  {
 		list.add(new Pair<String, Integer>("dht.transmissionbt.com", 6881));
 
 		return list;
+	}
+	
+	public String getUploadDownloadTotals() {
+		long uploadPayloadBytes = session.getStats().uploadPayload();
+		long downloadPayloadBytes = session.getStats().downloadPayload();
+		
+		StringBuilder s = new StringBuilder();
+		
+		s.append("Uploaded:   " + Tools.humanReadableByteCount(uploadPayloadBytes, true) + "\n");
+		s.append("Downloaded: " + Tools.humanReadableByteCount(downloadPayloadBytes, true));
+		
+		return s.toString();
+
 	}
 
 

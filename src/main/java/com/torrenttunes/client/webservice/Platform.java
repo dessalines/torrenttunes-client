@@ -542,6 +542,27 @@ public class Platform {
 			}
 
 		});
+		
+		get("/get_upload_download_totals", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+				
+				String json = LibtorrentEngine.INSTANCE.getUploadDownloadTotals();
+
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			}
+
+
+
+
+		});
 
 		
 

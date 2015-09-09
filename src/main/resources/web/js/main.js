@@ -78,8 +78,27 @@ $(document).ready(function() {
 
   setupPaths();
 
+  setupUploadDownloadTotals();
+
 
 });
+
+
+function setupUploadDownloadTotals() {
+  setUploadDownloadTotals();
+  // fetch every minute
+  setInterval(function() {
+    setUploadDownloadTotals();
+  }, 60000);
+
+}
+
+function setUploadDownloadTotals() {
+  console.log('Fetching upload/download totals');
+  getJson('get_upload_download_totals').done(function(e) {
+    $("#upload_download_totals").data('bs.tooltip').options.title = e;
+  });
+}
 
 // test path : file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?artist=95e1ead9-4d31-4808-a7ac-32c3614c116b
 // file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?album=e8c09b4e-33ae-368b-8f70-24b4e14fb9ad
@@ -680,6 +699,7 @@ function updateDownloadStatusBar(infoHash) {
       if (percentage == '100%') {
         console.log('Download finished');
         clearInterval(downloadStatusMap[infoHash]);
+        setUploadDownloadTotals();
 
         $(tr).css({
           'background-image': 'none',
@@ -712,7 +732,7 @@ function downloadOrFetchTrackObj(infoHash, option, successFunctions) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  return getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
+  getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
 
     var trackObj = JSON.parse(e1);
 
@@ -963,7 +983,7 @@ function createRadioStation(trackObj) {
         // radioMode.queue.push(song); this won't trigger a change for some reason
         // temp.push(song);
         downloadOrFetchTrackObj(song['info_hash'], 'play-last', function() {
-          
+
           radioMode.queue.push(song);
         });
 
