@@ -28,7 +28,7 @@ var hrefToTrackObjMap = {};
 
 // The browser playlists object
 // The schema is {id: ,{name: , tracks:[]}, {}, ...}
-var playlists = [];
+var playlists;
 
 // the play queue
 var library, playQueue = [];
@@ -243,7 +243,7 @@ function setupPlaylistPageTab() {
 
   setupPlaylistPlaySelect(playlist);
 
-  $('#playlist_page_div tbody').sortable();
+  // $('#playlist_page_div tbody').sortable();
   setupPlaylistTrackDelete();
 
   // @deprecated
@@ -298,6 +298,8 @@ function setupPlaylistForm() {
         setupPlaylistTab();
 
         savePlaylistsToCookie();
+
+        addPlaylistDropdowns();
 
 
 
@@ -697,19 +699,21 @@ function setupAlbumPlaySelect(albumSongs) {
   });
 }
 
-function setupPlaylistPlaySelect(playlistSongs) {
+function setupPlaylistPlaySelect(playlist) {
   $('.play-playlist').click(function(e) {
 
+    console.log(playlist);
+    var tracks = playlist['tracks'];
 
     // for the first one, play now
-    var trackInfoFirst = playlistSongs[0];
+    var trackInfoFirst = tracks[0];
     var infoHashFirst = trackInfoFirst['info_hash'];
 
     downloadOrFetchTrackObj(infoHashFirst, 'play-now');
 
     // All the others, download them, but add them to the queue at the last
-    for (var z = 1; z < playlistSongs.length; z++) {
-      var trackInfo = playlistSongs[z];
+    for (var z = 1; z < tracks.length; z++) {
+      var trackInfo = tracks[z];
       var infoHash = trackInfo['info_hash'];
 
       downloadOrFetchTrackObj(infoHash, 'play-last');
@@ -1175,6 +1179,7 @@ function setupPlaylistDelete() {
 
     $('[name=' + name).parent().parent().remove();
     setupPlaylistLeftTab();
+    addPlaylistDropdowns();
 
 
     // @deprecated
@@ -1211,7 +1216,13 @@ function setupDonate() {
 
 function loadPlaylistsFromCookie() {
   // Load the playlists object from the cookies
-  playlists = JSON.parse(getCookie('playlists'));
+  if (playlists != null) {
+    playlists = JSON.parse(getCookie('playlists'));
+  } else {
+    console.log('set playlists');
+    playlists = [];
+  }
+
 
 }
 

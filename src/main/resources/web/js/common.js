@@ -299,7 +299,21 @@ function setupAddToPlaylist() {
     var option = full[0];
     var playlistName = full[1];
 
-    var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
+    var closest = $(this).closest('td').find('.track-select');
+
+    // The vars from those fields
+    var infoHash = closest.attr('info_hash');
+    var song_mbid = closest.attr('song_mbid');
+    var file_path = closest.attr('file_path');
+    var title = closest.attr('title');
+    var artist_mbid = closest.attr('artist_mbid');
+    var artist = closest.attr('artist');
+    var duration_ms = closest.attr('duration_ms');
+    var release_group_mbid = closest.attr('release_group_mbid');
+    var album = closest.attr('album');
+    var seeders = closest.attr('seeders');
+
+
 
     var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
     console.log('playlist index = ' + playlistIndex);
@@ -312,7 +326,16 @@ function setupAddToPlaylist() {
 
     if (trackIndex == null) {
       var playlistTrackObj = {
-        info_hash: infoHash
+        info_hash: infoHash,
+        song_mbid: song_mbid,
+        file_path: file_path,
+        title: title,
+        artist_mbid: artist_mbid,
+        artist: artist,
+        duration_ms: duration_ms,
+        release_group_mbid: release_group_mbid,
+        album: album,
+        seeders: seeders
       };
 
       tracks.push(playlistTrackObj);
@@ -372,17 +395,37 @@ function setupPlaylistTrackDelete() {
 
     console.log(full);
     var option = full[0];
-    var playlistId = full[1];
+    var playlistName = full[1];
 
     console.log(option);
-    console.log(playlistId);
+    console.log(playlistName);
 
     var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
-    simplePost('remove_from_playlist/' + playlistPageTabID + "/" + playlistId, null, null, function() {
-      console.log('Track ' + infoHash + ' removed from playlist');
-      $('wrapper').tooltip('destroy');
-      setupPlaylistPageTab();
-    });
+
+    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+    console.log('playlist index = ' + playlistIndex);
+
+    var playlist = playlists[playlistIndex];
+    var tracks = playlist['tracks'];
+
+    var trackIndex = findIndexInArray(tracks, 'info_hash', infoHash);
+
+    tracks.splice(trackIndex, 1);
+
+    $('.tooltip').tooltip('destroy');
+    $('[data-info_hash="' + infoHash + '"').remove();
+
+
+    savePlaylistsToCookie();
+
+    toastr.success('Track Removed');
+
+    // @deprecated
+    // simplePost('remove_from_playlist/' + playlistPageTabID + "/" + playlistId, null, null, function() {
+    //   console.log('Track ' + infoHash + ' removed from playlist');
+    //   $('wrapper').tooltip('destroy');
+    //   setupPlaylistPageTab();
+    // });
 
   });
 

@@ -595,7 +595,7 @@
               <form id="create_playlist_form" class="form-inline">
                 <div class="form-group">
                   <label for="exampleInputName2">Name</label>
-                  <input name="name" type="text" class="form-control" id="exampleInputName2" placeholder="My Playlist" data-bv-notempty="true" data-bv-notempty-message="A name is required">
+                  <input name="name" type="text" class="form-control" id="exampleInputName2" placeholder="My Playlist" data-bv-notempty="true" data-bv-notempty-message="A name is required" data-bv-regexp="true" data-bv-regexp-regexp="^[\S]*$" data-bv-regexp-message="No spaces">
                 </div>
                 <button class="btn btn-default" type="submit"><i class="fa fa-plus fa-fw"></i> Create New Playlist</button>
               </form>
@@ -624,7 +624,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {{#.}}
+                      {{#tracks}}
                       <tr data-info_hash="{{info_hash}}">
                         <td>
                           <span>
@@ -642,12 +642,12 @@
 
 
                     
-                      {{#file_path}}
-                      <i class="fa fa-arrows fa-fw"></i>
-                      <a name="delete-playlist-track_{{info_hash}}" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
-                      {{/file_path}} {{^file_path}}
+                      
+                      <!-- <i class="fa fa-arrows fa-fw"></i> -->
+                      <a name="delete-playlist-track_{{name}}" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
+                      
                           <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
-                      {{/file_path}}
+                      
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>
@@ -656,7 +656,7 @@
                         <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
                         </td>
                       </tr>
-                      {{/.}}
+                      {{/tracks}}
                     </tbody>
                   </table>
                 </script>
@@ -790,7 +790,10 @@
                         <td>
                           <span>
                         <div class="btn-group text-normal">
-                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" 
+                              info_hash="{{info_hash}}" song_mbid="{{song_mbid}}" file_path="{{file_path}}" title="{{{title}}}" artist_mbid="{{artist_mbid}}" artist="{{{artist}}}" duration_ms="{{duration_ms}}" release_group_mbid="{{release_group_mbid}}" album="{{album}}" seeders="{{seeders}}"
+
+                              class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
                       <ul class="dropdown-menu" role="menu">
