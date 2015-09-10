@@ -589,17 +589,22 @@ function getCookies() {
   return cookies;
 }
 
-function getCookie(name) {
-  var cookie = getCookies()[name];
-  if (cookie != null) {
-    return cookie.replace(/"/g, "");
-  } else {
-    return cookie;
-  }
-
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
 }
 
-function delete_cookie(name) {
+function deleteCookie(name) {
   document.cookie = name + '=; path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
@@ -1152,4 +1157,13 @@ Array.prototype.min = function() {
 
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
+}
+
+function findIndexInArray(array, key, value) {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return i;
+        }
+    }
+    return null;
 }

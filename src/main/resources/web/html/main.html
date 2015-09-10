@@ -117,11 +117,12 @@
             <li>
               <h5 class="sidebar-spaced"><a class="text-muted" href="#playlistTab" data-toggle="tab">PlayLists</a></h5></li>
             <li class="hide"><a href="#playlistPageTab" data-toggle="tab">playlist page tab</a></li>
-            <div id="playlist_left_tab_div"> </div>
-            <script id="playlist_left_tab_template" type="x-tmpl-mustache">
-              {{#.}}
-              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{id}}');" href="javascript:void(0);">{{name}}</a></li> {{/.}}
-            </script>
+            <div id="playlist_left_tab_div" class="nav nav-sidebar main-sidebar">
+              <script id="playlist_left_tab_template" type="x-tmpl-mustache">
+                {{#.}}
+                <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{name}}');" href="#derp">{{name}}</a></li> {{/.}}
+              </script>
+            </div>
           </ul>
         </div>
       </div>
@@ -583,9 +584,9 @@
               <div id="playlist_home_div">
                 <script id="playlist_home_template" type="x-tmpl-mustache">
                   {{#.}}
-                  <h3><a class="text-normal" onclick="showPlaylist('{{id}}');" href="javascript:void(0);">{{name}}</a>
+                  <h3><a class="text-normal" onclick="showPlaylist('{{name}}');" href="javascript:void(0);">{{name}}</a>
                   <small> 
-                  <a name="delete-playlist_{{id}}" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
+                  <a name="delete-playlist_{{name}}" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
                   </small>
                   </h3> {{/.}} {{#0}}
                   <hr>{{/0}}
@@ -602,7 +603,7 @@
             <div role="tabpanel" class="tab-pane fade" id="playlistPageTab">
               <div id="playlist_page_div">
                 <script id="playlist_page_template" type="x-tmpl-mustache">
-                  <h3> {{0.name}}
+                  <h3> {{name}}
                   <small><a class="play-playlist text-normal" href="javascript:void(0)"><i class="fa fa-play-circle-o fa-fw"></i></a>
                     </small>
                 </h3>
@@ -638,6 +639,7 @@
                         <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                         
                       </ul>
+
 
                     
                       {{#file_path}}
@@ -791,13 +793,17 @@
                               <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
-                      <ul class="dropdown-menu add_to_playlist_class" role="menu">
+                      <ul class="dropdown-menu" role="menu">
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                         <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                      
+                       <div class="add_to_playlist_class">
+                      </div>
                       </ul>
+
+
 
 
                     
@@ -937,7 +943,7 @@
       {{#0}}
       <li class="divider"></li>{{/0}} {{#.}}
       <li>
-        <a name="add-to-playlist_{{id}}" class="add_to_playlist"> <i class="fa fa-list fa-fw"></i> Add to Playlist {{name}} </a>
+        <a name="add-to-playlist_{{name}}" class="add_to_playlist"> <i class="fa fa-list fa-fw"></i> Add to Playlist {{name}} </a>
       </li>
       {{/.}}
     </script>

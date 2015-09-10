@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  setupWindowClose();
+  // setupWindowClose();
 
 });
 
@@ -247,8 +247,9 @@ function showAlbumPage(releaseMBID) {
 }
 
 
-function showPlaylist(id) {
-  playlistPageTabID = id;
+function showPlaylist(name) {
+  playlistPageTabID = name;
+  setupPlaylistPageTab();
   // $('a[href="#homeTab"]').tab('show');
   $('a[href="#playlistPageTab"]').tab('show');
   console.log('showing ' + playlistPageTabID);
@@ -296,12 +297,34 @@ function setupAddToPlaylist() {
 
     console.log(full);
     var option = full[0];
-    var playlistId = full[1];
+    var playlistName = full[1];
 
     var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
-    simplePost('add_to_playlist/' + playlistId + "/" + infoHash, null, null, function() {
-      console.log('Track ' + infoHash + ' added to playlist');
-    });
+
+    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+    console.log('playlist index = ' + playlistIndex);
+
+    var playlist = playlists[playlistIndex];
+    var tracks = playlist['tracks'];
+
+    // Make sure that infohash doesn't already exist
+    var trackIndex = findIndexInArray(tracks, 'info_hash', infoHash);
+
+    if (trackIndex == null) {
+      var playlistTrackObj = {
+        info_hash: infoHash
+      };
+
+      tracks.push(playlistTrackObj);
+      savePlaylistsToCookie();
+    } else {
+      toastr.error('Track already exists in playlist');
+    }
+
+    // @deprecated
+    // simplePost('add_to_playlist/' + playlistId + "/" + infoHash, null, null, function() {
+    //   console.log('Track ' + infoHash + ' added to playlist');
+    // });
 
   });
 

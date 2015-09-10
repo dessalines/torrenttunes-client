@@ -26,7 +26,9 @@ var addToPlaylistTemplate = $('#add_to_playlist_template').html();
 
 var hrefToTrackObjMap = {};
 
-
+// The browser playlists object
+// The schema is {id: ,{name: , tracks:[]}, {}, ...}
+var playlists = [];
 
 // the play queue
 var library, playQueue = [];
@@ -60,7 +62,7 @@ $(document).ready(function() {
 
   keyboardShortcuts();
 
-
+  loadPlaylistsFromCookie();
   setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
@@ -80,6 +82,8 @@ $(document).ready(function() {
 
 
 });
+
+
 
 
 function setupUploadDownloadTotals() {
@@ -186,46 +190,79 @@ function setupTabs() {
 }
 
 function setupPlaylistLeftTab() {
-  getJson('get_playlists').done(function(e) {
-    $('li.playlist-left-tab-element').remove();
-    var playlists = JSON.parse(e);
-    console.log(playlists);
-    Mustache.parse(playlistLeftTabTemplate);
-    var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
-    console.log(rendered);
-
-    $('#playlist_left_tab_div').after(rendered);
 
 
-  });
+
+  // Mustache.parse(playlistLeftTabTemplate);
+  // var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
+  // $('#playlist_left_tab_div').after(rendered);
+  fillMustacheWithJson(playlists, playlistLeftTabTemplate, '#playlist_left_tab_div');
+
+
+  // @deprecated
+  // getJson('get_playlists').done(function(e) {
+  //   $('li.playlist-left-tab-element').remove();
+  //   var playlists = JSON.parse(e);
+  //   console.log(playlists);
+  //   Mustache.parse(playlistLeftTabTemplate);
+  //   var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
+  //   console.log(rendered);
+
+  //   $('#playlist_left_tab_div').after(rendered);
+
+
+  // });
 }
 
 function setupPlaylistTab() {
 
-  getJson('get_playlists').done(function(e) {
-    var playLists = JSON.parse(e);
-    fillMustacheWithJson(playLists, playlistHomeTemplate, '#playlist_home_div');
-    setupPlaylistDelete();
-  });
+  fillMustacheWithJson(playlists, playlistHomeTemplate, '#playlist_home_div');
+  setupPlaylistDelete();
+  // @deprecated
+  // getJson('get_playlists').done(function(e) {
+  //   var playLists = JSON.parse(e);
+  //   fillMustacheWithJson(playLists, playlistHomeTemplate, '#playlist_home_div');
+  //   setupPlaylistDelete();
+  // });
 }
 
 function setupPlaylistPageTab() {
-  getJson('get_playlist/' + playlistPageTabID).done(function(e) {
-    var playlist = JSON.parse(e);
-    console.log(playlist);
 
-    fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
-    addPlaylistDropdowns();
-    $('[data-toggle="tooltip"]').tooltip({
-      container: 'body'
-    });
+  var playlistIndex = findIndexInArray(playlists, 'name', playlistPageTabID);
+  var playlist = playlists[playlistIndex];
+  console.log(playlist);
 
-    setupTrackSelect();
-    setupPlaylistPlaySelect(playlist);
+  fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
+  addPlaylistDropdowns();
 
-    $('#playlist_page_div tbody').sortable();
-    setupPlaylistTrackDelete();
+  $('[data-toggle="tooltip"]').tooltip({
+    container: 'body'
   });
+
+  setupTrackSelect();
+
+  setupPlaylistPlaySelect(playlist);
+
+  $('#playlist_page_div tbody').sortable();
+  setupPlaylistTrackDelete();
+
+  // @deprecated
+  // getJson('get_playlist/' + playlistPageTabID).done(function(e) {
+  //   var playlist = JSON.parse(e);
+  //   console.log(playlist);
+
+  //   fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
+  //   addPlaylistDropdowns();
+  //   $('[data-toggle="tooltip"]').tooltip({
+  //     container: 'body'
+  //   });
+
+  //   setupTrackSelect();
+  //   setupPlaylistPlaySelect(playlist);
+
+  //   $('#playlist_page_div tbody').sortable();
+  //   setupPlaylistTrackDelete();
+  // });
 }
 
 function setupPlaylistForm() {
@@ -236,13 +273,49 @@ function setupPlaylistForm() {
 
     })
     .on('success.form.bv', function(event) {
-      event.preventDefault();
-      standardFormPost('create_playlist', "#create_playlist_form", null, null, function(id) {
 
-        console.log('New playlist Created ' + id);
-        showPlaylist(id);
+      event.preventDefault();
+
+      var formData = $(this).serializeArray();
+
+      console.log(formData);
+      var name = formData[0]['value'];
+
+      // Create the playlist object
+      var playlistObj = {
+        name: name,
+        tracks: []
+      };
+
+      // Only add it if it doesn't exist
+      var foundIndex = findIndexInArray(playlists, 'name', name);
+
+      // Add it to the playlists array, keyed on the name
+      if (foundIndex == null) {
+        playlists.push(playlistObj);
+
         setupPlaylistLeftTab();
-      }, true);
+        setupPlaylistTab();
+
+        savePlaylistsToCookie();
+
+
+
+      } else {
+        toastr.error('Playlist ' + name + ' already exists');
+      }
+
+
+
+
+
+      // @deprecated
+      // standardFormPost('create_playlist', "#create_playlist_form", null, null, function(id) {
+
+      //   console.log('New playlist Created ' + id);
+      //   showPlaylist(id);
+      //   setupPlaylistLeftTab();
+      // }, true);
     });
 }
 
@@ -542,21 +615,34 @@ function keyboardShortcuts() {
 }
 
 function addPlaylistDropdowns() {
-  getJson('get_playlists').done(function(e) {
 
-    var playlists = JSON.parse(e);
-    console.log(playlists);
-    // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
-    if (playlists.length > 0) {
+  fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
+  if (playlists.length > 0) {
 
-      Mustache.parse(addToPlaylistTemplate);
-      var rendered = Mustache.render(addToPlaylistTemplate, playlists);
-      $(rendered).appendTo(".add_to_playlist_class");
+    Mustache.parse(addToPlaylistTemplate);
+    var rendered = Mustache.render(addToPlaylistTemplate, playlists);
+    // $(rendered).appendTo(".add_to_playlist_class");
+    $(".add_to_playlist_class").html(rendered);
 
-      setupAddToPlaylist();
-    }
+    setupAddToPlaylist();
+  }
 
-  });
+  // @deprecated
+  // getJson('get_playlists').done(function(e) {
+
+  //   var playlists = JSON.parse(e);
+  //   console.log(playlists);
+  //   // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
+  //   if (playlists.length > 0) {
+
+  //     Mustache.parse(addToPlaylistTemplate);
+  //     var rendered = Mustache.render(addToPlaylistTemplate, playlists);
+  //     $(rendered).appendTo(".add_to_playlist_class");
+
+  //     setupAddToPlaylist();
+  //   }
+
+  // });
 
 }
 
@@ -1077,19 +1163,28 @@ function setupPlaylistDelete() {
 
     console.log(full);
     var option = full[0];
-    var playlistId = full[1];
+    var playlistName = full[1];
 
     console.log(option);
-    console.log(playlistId);
+    console.log(playlistName);
+
+    // remove the index from that array and save it
+    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+    playlists.splice(playlistIndex, 1);
+    savePlaylistsToCookie();
+
+    $('[name=' + name).parent().parent().remove();
+    setupPlaylistLeftTab();
 
 
-    simplePost('delete_playlist/' + playlistId, null, null, function() {
-      // $('[name=' + name).tooltip('hide');
-      // $('[name=' + name).parent().closest("a").remove();
-      $('[name=' + name).parent().parent().remove();
-      setupPlaylistLeftTab();
+    // @deprecated
+    // simplePost('delete_playlist/' + playlistId, null, null, function() {
+    //   // $('[name=' + name).tooltip('hide');
+    //   // $('[name=' + name).parent().closest("a").remove();
+    //   $('[name=' + name).parent().parent().remove();
+    //   setupPlaylistLeftTab();
 
-    });
+    // });
 
   });
 
@@ -1111,5 +1206,19 @@ function setupDonate() {
     "text": btcText,
   });
   $('#receive_address').html(address);
+
+}
+
+function loadPlaylistsFromCookie() {
+  // Load the playlists object from the cookies
+  playlists = JSON.parse(getCookie('playlists'));
+
+}
+
+function savePlaylistsToCookie() {
+
+  var playlistsStr = JSON.stringify(playlists);
+  console.log('Writing playlists cookie ' + playlistsStr);
+  createCookie('playlists', playlistsStr);
 
 }
