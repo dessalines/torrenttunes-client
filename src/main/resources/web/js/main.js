@@ -748,7 +748,7 @@ function downloadOrFetchTrackObj(infoHash, option, successFunctions) {
       // add it to the playqueue
       addToQueueLast(trackObj);
     } else if (option == 'play-radio') {
-      createRadioStation(trackObj);
+      // createRadioStation(trackObj);
     }
 
     $('.sm2-bar-ui').removeClass('hide');
@@ -879,144 +879,144 @@ function playNow(trackObj) {
   setupClickableArtistPlaying();
 }
 
-function createRadioStation(trackObj) {
+// function createRadioStation(trackObj) {
 
-  radioMode.running = true;
-  radioMode.queue = [];
-  radioMode.fullQueue = null;
-
-
-  // first play the first track
-  downloadOrFetchTrackObj(trackObj['info_hash'], 'play-now');
-
-  radioMode.queue.push(trackObj);
-
-  console.log(radioMode);
-
-  var artistMbid = trackObj['artist_mbid'];
+//   radioMode.running = true;
+//   radioMode.queue = [];
+//   radioMode.fullQueue = null;
 
 
-  // radioMode.watch('queue', function(id, oldval, newval) {
+//   // first play the first track
+//   downloadOrFetchTrackObj(trackObj['info_hash'], 'play-now');
 
-  //   console.log('currently track:');
-  //   console.log(currentTrack);
+//   radioMode.queue.push(trackObj);
 
-  //   console.log('radioMode.queue:');
-  //   console.log(newval);
+//   console.log(radioMode);
 
-  //   if (newval.length > 3) {
-  //     var song = newval.shift();
-  //     console.log('song popped');
+//   var artistMbid = trackObj['artist_mbid'];
 
 
-  //   }
-  //   return newval;
-  // });
+//   // radioMode.watch('queue', function(id, oldval, newval) {
 
-  // Create an event listener for the # of songs in the radio queue
-  radioMode.watch('fullQueue', function(id, oldval, newval) {
+//   //   console.log('currently track:');
+//   //   console.log(currentTrack);
 
-    console.log('radioMode.fullQueue:');
-    console.log(newval);
+//   //   console.log('radioMode.queue:');
+//   //   console.log(newval);
 
-
-    // Only do this if the radio is running
-    if (radioMode.running == true) {
-
-      var currentTrack = getCurrentTrackObj();
+//   //   if (newval.length > 3) {
+//   //     var song = newval.shift();
+//   //     console.log('song popped');
 
 
+//   //   }
+//   //   return newval;
+//   // });
 
-      // the first fetch, or if the length gets less than 3, download a new set
-      if (newval == null || newval.length < 3) {
-        // Fetch 10 related song groupings
-        getJson('get_related_songs/' + artistMbid, null, torrentTunesSparkService).done(function(e) {
-          var tenSongArray = JSON.parse(e);
+//   // Create an event listener for the # of songs in the radio queue
+//   radioMode.watch('fullQueue', function(id, oldval, newval) {
+
+//     console.log('radioMode.fullQueue:');
+//     console.log(newval);
 
 
-          console.log(tenSongArray);
+//     // Only do this if the radio is running
+//     if (radioMode.running == true) {
 
-          console.log('returning 10 song array');
-          radioMode.derpQueue = tenSongArray;
-
-          // Array.prototype.push.apply(radioMode.derpQueue, tenSongArray); // appends an array to an array
+//       var currentTrack = getCurrentTrackObj();
 
 
 
-        });
-
-      } else {
-
-
-        return newval;
-      }
+//       // the first fetch, or if the length gets less than 3, download a new set
+//       if (newval == null || newval.length < 3) {
+//         // Fetch 10 related song groupings
+//         getJson('get_related_songs/' + artistMbid, null, torrentTunesSparkService).done(function(e) {
+//           var tenSongArray = JSON.parse(e);
 
 
+//           console.log(tenSongArray);
 
-    }
-    // return newval;
+//           console.log('returning 10 song array');
+//           radioMode.derpQueue = tenSongArray;
 
-  });
-
-
-  // Create an event listenener for when the current track changes
-  hrefToTrackObjMap.watch('current', function(id, oldval, newval) {
-    var currentTrack = newval;
-    console.log(newval);
-    console.log(radioMode.fullQueue[0]);
-
-    // If the the current track playing is the one up on the radio, then pop it off the queue
-    if (currentTrack['info_hash'] == radioMode.queue[0]['info_hash']) {
-      console.log('popped off ' + currentTrack['title']);
-      radioMode.queue.shift();
-
-
-    }
-
-    if (radioMode.queue.length < 2) {
-      // push 1 tracks to the playing queue
-      for (var i = 0; i < 3; i++) {
-
-        var song = radioMode.fullQueue[i];
-        // var song = newval[i];
-        console.log(song);
-        radioMode.fullQueue.shift();
-
-        // radioMode.queue.push(song); this won't trigger a change for some reason
-        // temp.push(song);
-        downloadOrFetchTrackObj(song['info_hash'], 'play-last', function() {
-
-          radioMode.queue.push(song);
-        });
-
-      }
-    }
+//           // Array.prototype.push.apply(radioMode.derpQueue, tenSongArray); // appends an array to an array
 
 
 
-    return newval;
-  });
+//         });
+
+//       } else {
 
 
-  // A stupid necessity of JSON async fetches
-  radioMode.watch('derpQueue', function(id, oldval, newval) {
-    radioMode.fullQueue = newval;
-    return newval;
-  });
-
-  radioMode.fullQueue = []; // triggers the watch function
+//         return newval;
+//       }
 
 
+
+//     }
+//     // return newval;
+
+//   });
+
+
+//   // Create an event listenener for when the current track changes
+//   hrefToTrackObjMap.watch('current', function(id, oldval, newval) {
+//     var currentTrack = newval;
+//     console.log(newval);
+//     console.log(radioMode.fullQueue[0]);
+
+//     // If the the current track playing is the one up on the radio, then pop it off the queue
+//     if (currentTrack['info_hash'] == radioMode.queue[0]['info_hash']) {
+//       console.log('popped off ' + currentTrack['title']);
+//       radioMode.queue.shift();
+
+
+//     }
+
+//     if (radioMode.queue.length < 2) {
+//       // push 1 tracks to the playing queue
+//       for (var i = 0; i < 3; i++) {
+
+//         var song = radioMode.fullQueue[i];
+//         // var song = newval[i];
+//         console.log(song);
+//         radioMode.fullQueue.shift();
+
+//         // radioMode.queue.push(song); this won't trigger a change for some reason
+//         // temp.push(song);
+//         downloadOrFetchTrackObj(song['info_hash'], 'play-last', function() {
+
+//           radioMode.queue.push(song);
+//         });
+
+//       }
+//     }
+
+
+
+//     return newval;
+//   });
+
+
+//   // A stupid necessity of JSON async fetches
+//   radioMode.watch('derpQueue', function(id, oldval, newval) {
+//     radioMode.fullQueue = newval;
+//     return newval;
+//   });
+
+//   radioMode.fullQueue = []; // triggers the watch function
 
 
 
 
-  // Then fetch 3 more tracks, and download them, and play-next
+
+
+//   // Then fetch 3 more tracks, and download them, and play-next
 
 
 
 
-}
+// }
 
 function buildLiFromTrackObject(trackObj) {
   // var encodedAudioFilePath = localSparkService + 'get_audio_file/' +

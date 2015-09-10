@@ -652,7 +652,7 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 				//				torrent.saveResumeData();
 			}
 
