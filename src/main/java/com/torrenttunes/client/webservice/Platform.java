@@ -415,10 +415,6 @@ public class Platform {
 				
 				float progress = th.getStatus().getProgress();
 				
-//				String formattedProgress = Tools.NUMBER_FORMAT.format(progress);
-				
-//				return formattedProgress;
-				
 				return progress;
 				
 
