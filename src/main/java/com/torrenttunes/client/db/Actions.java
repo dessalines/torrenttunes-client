@@ -48,8 +48,9 @@ public class Actions {
 			String filePath, String artist, String artistMbid,
 			String title, Long durationMS) {
 
-
-		Library library = LIBRARY.create("mbid", mbid,
+		log.info("Saving song " + infoHash + " to library");
+		
+		Library library = LIBRARY.createIt("mbid", mbid,
 				"torrent_path", torrentPath,
 				"info_hash", infoHash,
 				"file_path", filePath,
@@ -57,8 +58,6 @@ public class Actions {
 				"artist_mbid", artistMbid,
 				"title", StringEscapeUtils.escapeHtml4(title),
 				"duration_ms", durationMS);
-
-		library.saveIt();
 
 
 		return library;
@@ -205,11 +204,12 @@ public class Actions {
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
 
+				log.info("torrent finished: " + infoHash);
 
 				// Save the track to your DB
 				try {
 					Tools.dbInit();
-					Library newTrack = Actions.saveSongToLibrary(songMbid, 
+					Actions.saveSongToLibrary(songMbid, 
 							torrentPath, 
 							infoHash,
 							audioFilePath, 
@@ -218,7 +218,6 @@ public class Actions {
 							songTitle, 
 							duration);
 
-					newTrack.saveIt();
 				} catch(Exception e) {
 					e.printStackTrace();
 				} finally {
