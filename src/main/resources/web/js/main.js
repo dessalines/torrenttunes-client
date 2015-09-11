@@ -159,6 +159,10 @@ function setupPaths() {
       // Add the playlist to the playlists
       var playlistIndex = playlists.push(playlist);
 
+      // Setup the bars and dropdowns
+      setupPlaylistLeftTab();
+      setupPlaylistTab();
+      addPlaylistDropdowns();
 
 
 
@@ -193,11 +197,8 @@ function setupPaths() {
       setTimeout(function() {
         savePlaylistsToCookie();
 
-        // Setup the bars and dropdowns
-        setupPlaylistLeftTab();
-        setupPlaylistTab();
-        addPlaylistDropdowns();
-      }, 4000);
+
+      }, 7000);
 
     }
 
