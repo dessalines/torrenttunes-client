@@ -1335,7 +1335,7 @@ function loadPlaylistsFromLocalStorage() {
     deleteExtraFieldsFromPlaylists();
   } else {
     console.log('set playlists');
-    playlists = [{}];
+    playlists = [];
   }
 
 
