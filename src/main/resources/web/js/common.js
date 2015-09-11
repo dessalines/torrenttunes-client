@@ -331,7 +331,7 @@ function setupAddToPlaylist() {
         "album": album,
         "artist": artist,
         "artist_mbid": artist_mbid,
-        "duration_ms": parseInt(duration_ms),
+        "duration_ms": duration_ms,
         "info_hash": infoHash,
         "release_group_mbid": release_group_mbid,
         "seeders": seeders,
@@ -340,6 +340,8 @@ function setupAddToPlaylist() {
       };
 
 
+      deleteExtraFieldsFromPlaylists();
+      
       tracks.push(playlistTrackObj);
 
       savePlaylistsToCookie();
