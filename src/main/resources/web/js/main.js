@@ -111,6 +111,7 @@ function setupPaths() {
   var artistMBID = getUrlParameter('artist');
   var albumMBID = getUrlParameter('album');
   var songMBID = getUrlParameter('song');
+  var playlistStr = getUrlParameter('playlist');
 
   if (artistMBID != null) {
     showArtistPageV2(artistMBID);
@@ -128,6 +129,77 @@ function setupPaths() {
       showAlbumPage(albumMBID);
 
     });
+
+  } else if (playlistStr != null) {
+
+    var playlistTemp = JSON.parse(decodeURIComponent(playlistStr));
+    var playlistName = playlistTemp['name'];
+
+    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+
+    // First you need to see if you already have a playlist named that, 
+    // If you do, just go there
+    if (playlistIndex != null) {
+      toastr.info('You already have a playlist named ' + playlistName);
+      showPlaylist(playlistName);
+    }
+    // If it doesn't exist, you need to fetch the rest of the trackObjs,
+    // and create the playlist
+    else {
+
+
+      var songMbids = playlistTemp['song_mbids'];
+      console.log(songMbids);
+      var playlist = {
+        "name": playlistName,
+        "tracks": []
+      };
+
+
+      // Add the playlist to the playlists
+      var playlistIndex = playlists.push(playlist);
+
+
+
+
+
+      for (var i = 0; i < songMbids.length; i++) {
+        console.log('got hore');
+        var songMBID = songMbids[i];
+        console.log(songMBID);
+
+        getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
+          var trackObj = JSON.parse(e);
+          console.log(trackObj);
+          setTimeout(function() {
+            playlists[playlistIndex - 1]['tracks'].push(trackObj);
+
+            console.log(i);
+            console.log(parseInt(songMbids.length));
+
+            if (i == songMbids.length) {
+
+
+
+              showPlaylist(playlistName);
+
+
+            }
+          }, 300 * i);
+
+        });
+      }
+
+      setTimeout(function() {
+        savePlaylistsToCookie();
+
+        // Setup the bars and dropdowns
+        setupPlaylistLeftTab();
+        setupPlaylistTab();
+        addPlaylistDropdowns();
+      }, 4000);
+
+    }
 
   }
 
@@ -176,6 +248,7 @@ function setupTabs() {
       // setupBrowseTab();
     } else if (tabId == "#homeTab") {
       setupHomeTab();
+      clearParams();
     } else if (tabId == "#libraryTab") {
       setupLibrary();
     } else if (tabId == "#uploadTab") {
@@ -230,7 +303,7 @@ function setupPlaylistPageTab() {
 
   var playlistIndex = findIndexInArray(playlists, 'name', playlistPageTabID);
   var playlist = playlists[playlistIndex];
-  console.log(playlist);
+  // console.log(playlist);
 
   fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
   addPlaylistDropdowns();
@@ -245,6 +318,8 @@ function setupPlaylistPageTab() {
 
   // $('#playlist_page_div tbody').sortable();
   setupPlaylistTrackDelete();
+
+  replaceParams('playlist', buildPlaylistParams(playlist));
 
   // @deprecated
   // getJson('get_playlist/' + playlistPageTabID).done(function(e) {
@@ -283,8 +358,8 @@ function setupPlaylistForm() {
 
       // Create the playlist object
       var playlistObj = {
-        name: name,
-        tracks: []
+        "name": name,
+        "tracks": []
       };
 
       // Only add it if it doesn't exist
@@ -374,12 +449,12 @@ function setupBrowseTab() {
 }
 
 function setupHomeTab() {
+
   getJson('get_trending_albums', null, torrentTunesSparkService).done(function(e) {
     var albums = JSON.parse(e);
     console.log(albums);
 
     fillMustacheWithJson(albums, trendingAlbumsTemplate, '#trending_albums_div');
-
   });
 
   getJson('get_trending_songs', null, torrentTunesSparkService).done(function(e) {
@@ -1178,6 +1253,8 @@ function setupPlaylistDelete() {
     savePlaylistsToCookie();
 
     $('[name=' + name).parent().parent().remove();
+    $('.tooltip').tooltip('destroy');
+
     setupPlaylistLeftTab();
     addPlaylistDropdowns();
 
@@ -1215,21 +1292,96 @@ function setupDonate() {
 }
 
 function loadPlaylistsFromCookie() {
+
   // Load the playlists object from the cookies
-  if (playlists != null) {
-    playlists = JSON.parse(getCookie('playlists'));
+  // var cookie = getCookie('playlists');
+  var cookie = Cookies.getJSON('playlists');
+  if (cookie != undefined) {
+    playlists = cookie;
   } else {
     console.log('set playlists');
     playlists = [];
   }
 
 
+  return playlists;
+
+
 }
 
 function savePlaylistsToCookie() {
 
-  var playlistsStr = JSON.stringify(playlists);
-  console.log('Writing playlists cookie ' + playlistsStr);
-  createCookie('playlists', playlistsStr);
+  // var playlistsStr = JSON.stringify(playlists);
+  // console.log('Writing playlists cookie ' + playlistsStr);
+  // createCookie('playlists', playlistsStr);
+  // $.cookie('playlists',playlistsStr);
+
+  // Delete the special shit:
+  deleteExtraFieldsFromPlaylists();
+
+  Cookies.set('playlists', playlists);
+
+}
+
+function deleteExtraFieldsFromPlaylists() {
+  deleteMustacheFieldsFromObj(playlists);
+
+
+  for (var i = 0; i < playlists.length; i++) {
+    var playlist = playlists[i];
+
+    deleteMustacheFieldsFromObj(playlist);
+
+    // delete torrent_path if necessary
+    var tracks = playlist['tracks'];
+
+    for (var j = 0; j < tracks.length; j++) {
+      var track = tracks[j];
+
+      deleteTrackFieldsFromObj(track);
+    }
+  }
+}
+
+function deleteMustacheFieldsFromObj(myObj) {
+  var mustacheFields = ["dateformat", "otherdateformat", "sparkUrl", "toFixed",
+    "htmlDecode", "numToStars", "millisToMinutesAndSeconds", "seedersToType",
+    "seedersToNum"
+  ];
+
+  for (var i = 0; i < mustacheFields.length; i++) {
+    delete myObj[mustacheFields[i]];
+  }
+}
+
+function deleteTrackFieldsFromObj(myObj) {
+  var trackFields = ["album_coverart_thumbnail_large", "album_coverart_thumbnail_small",
+    "album_coverart_url", "disc_number", "file_path", "plays", "torrent_path",
+    "track_number", "year"
+  ];
+
+  for (var i = 0; i < trackFields.length; i++) {
+    delete myObj[trackFields[i]];
+  }
+
+}
+
+function buildPlaylistParams(playlist) {
+  var tracks = playlist['tracks'];
+
+  var str = '{"name":"' + playlist['name'] + '"';
+
+  if (tracks.length > 0) {
+    str += ',"song_mbids":[';
+    str += '"' + tracks[0]['song_mbid'] + '"';
+    for (var i = 1; i < tracks.length; i++) {
+      var mbidStr = ',"' + tracks[i]['song_mbid'] + '"';
+      str += mbidStr;
+    }
+  }
+
+  str += ']}';
+
+  return str;
 
 }

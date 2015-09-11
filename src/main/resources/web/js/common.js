@@ -326,20 +326,20 @@ function setupAddToPlaylist() {
 
     if (trackIndex == null) {
       var playlistTrackObj = {
-        info_hash: infoHash,
-        song_mbid: song_mbid,
-        file_path: file_path,
-        title: title,
-        artist_mbid: artist_mbid,
-        artist: artist,
-        duration_ms: duration_ms,
-        release_group_mbid: release_group_mbid,
-        album: album,
-        seeders: seeders
+        "info_hash": infoHash,
+        "song_mbid": song_mbid,
+        "title": title,
+        "artist_mbid": artist_mbid,
+        "artist": artist,
+        "duration_ms": duration_ms,
+        "release_group_mbid": release_group_mbid,
+        "album": album,
+        "seeders": seeders
       };
 
       tracks.push(playlistTrackObj);
       savePlaylistsToCookie();
+      toastr.success(playlistTrackObj['title'] + ' added to playlist ' + playlist['name']);
     } else {
       toastr.error('Track already exists in playlist');
     }
@@ -377,7 +377,7 @@ function setupTrackDelete() {
     simplePost('delete_song/' + infoHash, null, null, function() {
 
       $('[name=' + name).closest("tr").remove();
-      $('wrapper').tooltip('destroy');
+      $('.tooltip').tooltip('destroy');
     });
 
   });

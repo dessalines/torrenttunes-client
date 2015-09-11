@@ -1,26 +1,37 @@
 /*
  * Base structure
  */
+
+
 /* Move down content because we have a fixed navbar that is 50px tall */
+
+
 /*body {
   padding-top: 50px;
   }*/
+
+
 /*  .alert {
     margin-left: 18px;
      margin-right: 18px;
 
      }*/
+
+
 /*     .btn-default {
 
       position:relative; 
       bottom:0;
       }*/
+
+
 /*.main-sidebar {
   list-style-type: none;
   list-style: none;
   padding:0; margin:0;
 }
 */
+
 
 /*.progress {
     position: absolute;
@@ -32,6 +43,8 @@
     transition:left 1s;
 }
 */
+
+
 /*table {
   table-layout:fixed;
   max-width: none;
@@ -39,6 +52,11 @@
   width:1070px;
 
 }*/
+
+.add_to_playlist_class {
+  padding-left: 20px;
+  list-style-type: none;
+}
 
 #donateModal .modal-body {
   background-color: #FFF;
@@ -59,11 +77,10 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  height:100%;
-
-    /*background:red;*/
+  height: 100%;
+  /*background:red;*/
   /*position:absolute;*/
-/*  color:#fff;
+  /*  color:#fff;
   top:50%;
   left:50%;
   padding:15px;
@@ -95,11 +112,15 @@
 .artist-link {
   font-size: 12px;
 }
+
+
 /* SoundManager2 stuff*/
 
 .nav-tabs-left {
   text-align: left !important;
 }
+
+
 /*.nav-tabs-left li { float: right; }*/
 
 .nav-tabs > li > a,
@@ -121,6 +142,8 @@
   letter-spacing: -0.45em;
   margin-right: 0.5em;
 }
+
+
 /* Tablesorter font awesome icons*/
 
 table.tablesorter thead tr th.headerSortUp:after,
@@ -143,6 +166,8 @@ table.tablesorter thead tr th.headerSortDown:after {
   margin-left: 5px;
   content: "\f0dd";
 }
+
+
 /* Pretty file uploading*/
 
 .btn-file {
@@ -174,7 +199,6 @@ table.tablesorter thead tr th.headerSortDown:after {
 .sm2-bar-ui .sm2-playlist-drawer {
   background-color: #000000;
   /* non-RGBA fallback */
-  
   background-color: rgba(30, 56, 66, 0.72);
 }
 
@@ -199,6 +223,8 @@ table.tablesorter thead tr th.headerSortDown:after {
   font-weight: bold;
   color: #7a62d3;
 }
+
+
 /*.navbar {min-height:28px !important;}*/
 
 .small-nav-link {
@@ -224,14 +250,12 @@ table.tablesorter thead tr th.headerSortDown:after {
 
 .rounded-left {
   /* css 3 */
-  
   border-top-left-radius: 10px !important;
   border-bottom-left-radius: 10px !important;
 }
 
 .rounded-right {
   /* css 3 */
-  
   border-top-right-radius: 10px !important;
   border-bottom-right-radius: 10px !important;
 }
@@ -300,32 +324,29 @@ img {
 .carousel:hover .carousel-control {
   visibility: visible;
 }
+
+
 /* Apply this to the div above the image*/
 
 .crop-height {
   /* max-width: 1200px; /* img src width (if known) */
   /*max-height: 320px;*/
-  
   overflow: hidden;
 }
 
 img.scale {
   /* corrects inline gap in enclosing div */
-  
   display: block;
   /*display: table-cell;*/
-  
   vertical-align: middle;
   margin: auto;
   max-width: 100%;
   /* just in case, to force correct aspect ratio */
   /*height: auto !important;*/
   /*height: 200px !important;*/
-  
   width: auto\9;
   /* ie8+9 */
   /* lt ie8 */
-  
   -ms-interpolation-mode: bicubic;
 }
 
@@ -392,7 +413,6 @@ body.modal-open {
   display: inline-block;
   *display: inline;
   /* ie7 fix */
-  
   zoom: 1;
   /* hasLayout ie7 trigger */
 }
@@ -426,9 +446,9 @@ body.modal-open {
 }
 
 .fa-10 {
-   /*font-size: 20em;*/
-   width: 100%;
-   height: 100%;
+  /*font-size: 20em;*/
+  width: 100%;
+  height: 100%;
 }
 
 .fa-6 {
@@ -462,7 +482,6 @@ body.modal-open {
 .font-spacer {
   /*height: 2px; */
   /*margin-bottom: 3px;*/
-  
   font-size: 1px;
 }
 
@@ -476,16 +495,13 @@ body.modal-open {
   left: 50%;
   margin-left: -50px;
   /* half width of the spinner gif */
-  
   margin-top: -50px;
   /* half height of the spinner gif */
-  
   text-align: center;
   z-index: 1234;
   overflow: auto;
   width: 100px;
   /* width of the spinner gif */
-  
   height: 102px;
   /*hight of the spinner gif +2px to fix IE8 issue */
 }
@@ -508,7 +524,6 @@ body.modal-open {
   white-space: nowrap;
   /* Don't forget this one */
   /*display:inline-block;*/
-  
   text-overflow: ellipsis;
   /*width: 160px;*/
 }
@@ -523,6 +538,8 @@ body.modal-open {
     margin-top: 20px;
     margin-bottom: 20px;*/
 }
+
+
 /* all links */
 
 .bs-docs-sidebar .nav>li>a {
@@ -532,6 +549,8 @@ body.modal-open {
   font-size: 13px;
   font-weight: 400;
 }
+
+
 /* nested links */
 
 .bs-docs-sidebar .nav .nav>li>a {
@@ -540,6 +559,8 @@ body.modal-open {
   padding-left: 30px;
   font-size: 12px;
 }
+
+
 /* active & hover links */
 
 .bs-docs-sidebar .nav>.active>a,
@@ -550,6 +571,8 @@ body.modal-open {
   background-color: transparent;
   border-left-color: #563d7c;
 }
+
+
 /* all active links */
 
 .bs-docs-sidebar .nav>.active>a,
@@ -557,6 +580,8 @@ body.modal-open {
 .bs-docs-sidebar .nav>.active:focus>a {
   font-weight: 700;
 }
+
+
 /* nested active links */
 
 .bs-docs-sidebar .nav .nav>.active>a,
@@ -564,11 +589,15 @@ body.modal-open {
 .bs-docs-sidebar .nav .nav>.active:focus>a {
   font-weight: 500;
 }
+
+
 /* hide inactive nested list */
 
 .bs-docs-sidebar .nav ul.nav {
   display: none;
 }
+
+
 /* show active nested list */
 
 .bs-docs-sidebar .nav>.active>ul.nav {
@@ -608,6 +637,8 @@ body.modal-open {
   vertical-align: top;
   float: none;
 }
+
+
 /*dynamically wraps the discover page*/
 
 #discover_creators_square > div:nth-child(4n+1) {
@@ -764,6 +795,8 @@ img {
 .table {
   font-size: .85em;
 }
+
+
 /*dropdown hover*/
 
 ul.nav li.dropdown:hover > ul.dropdown-menu,
@@ -783,7 +816,6 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   border-radius: 4px;
   padding: 9px;
   /*position: relative;*/
-  
   width: 42px;
 }
 
@@ -829,6 +861,8 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
 .sidebar {
   padding-left: 40px;
 }
+
+
 /*
  * Global add-ons
  */
@@ -837,10 +871,16 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
+
+
 /*#mynav li.active a {background-color:red;}*/
+
+
 /*
  * Sidebar
  */
+
+
 /*
  #mynav.affix-top {
     position: inherit;
@@ -880,19 +920,19 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   #mynav.affix {
     /*    position: fixed;
   top:-200px;*/
-    
     position: static;
     margin-top: -150px;
     width: 275px;
   }
 }
+
+
 /* Hide for mobile, show later */
 
 @media (min-width: 1024px) {
   /*  .affix,.affix-top,#midCol.affix,#midCol.affix-top {
     position:static;
     }*/
-  
   .navbar {
     height: 52px;
   }
@@ -916,7 +956,6 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
     top: 51px;
     bottom: 0;
     /*right: 0;*/
-    
     z-index: 1000;
     display: block;
     padding: 20px;
@@ -927,12 +966,18 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
     /*border-right: 1px solid #eee;*/
   }
 }
+
+
 /*
  * Main content
  */
+
+
 /*.main {
   padding: 20px;
   }*/
+
+
 /*@media (min-width: 768px) {
   .main {
     padding-right: 40px;
@@ -947,6 +992,8 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
 .main .page-header .main-col {
   margin-top: 0;
 }
+
+
 /*
  * Placeholder dashboard ideas
  */
@@ -975,7 +1022,6 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
 
 .small-chart {
   /*height: 50vh;*/
-  
   height: 350px;
   /*overflow: auto;*/
 }
@@ -989,17 +1035,27 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   height: 600px;
   overflow: auto;
 }
+
+
 /*.btn {
     margin: 3px;
 }*/
+
+
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
+
+
 /* Carousel base class */
+
+
 /*.carousel {
   height: 400px;
   margin-bottom: 30px;
   margin-top: -20px;
 }*/
+
+
 /* Since positioning the image, we need to help out the caption */
 
 .carousel-caption {
@@ -1013,11 +1069,17 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   -ms-filter: blur(1px);
   filter: blur(1px);
 }
+
+
 /* Declare heights because of positioning of img element */
+
+
 /*.carousel .item {
   height: 400px;
   background-color: #222222;
 }*/
+
+
 /*.carousel-inner > .item > img {
   position: absolute;
   top: 0;
@@ -1025,8 +1087,12 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   min-width: 100%;
   height: 400px;
 }*/
+
+
 /* MARKETING CONTENT
 -------------------------------------------------- */
+
+
 /* Center align the text within the three columns below the carousel */
 
 .marketing .col-lg-4 {
@@ -1042,6 +1108,8 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   margin-right: 10px;
   margin-left: 10px;
 }
+
+
 /* Featurettes
 ------------------------- */
 
@@ -1049,6 +1117,8 @@ li.dropdown:hover div.navbar-form > ul.dropdown-menu {
   margin: 80px 0;
   /* Space out the Bootstrap <hr> more */
 }
+
+
 /* Thin out the marketing headings */
 
 .featurette-heading {
@@ -1064,6 +1134,7 @@ background-color: #222222;*/
 }
 
 .tt-input,
+
 /* UPDATE: newer versions use tt-input instead of tt-query */
 
 .tt-hint {
@@ -1092,10 +1163,8 @@ background-color: #222222;*/
   padding: 8px 0;
   /*background-color: #fff; */
   /*for light themes*/
-  
   background-color: #424242;
   /*for dark themes*/
-  
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;

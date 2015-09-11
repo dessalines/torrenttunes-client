@@ -1086,10 +1086,10 @@
               utils.css.remove(dom.o, 'buffering');
             }
 
-            if (this.duration > 5000) {
-              this.pause();
-              this.resume();
-            }
+            // if (this.duration > 5000) {
+            //   this.pause();
+            //   this.resume();
+            // }
 
           },
         });
