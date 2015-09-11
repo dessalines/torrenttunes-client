@@ -170,7 +170,7 @@ function setupPaths() {
 
 
       for (var i = 0; i < songMbids.length; i++) {
-        console.log('got hore');
+
         var songMBID = songMbids[i];
         console.log(songMBID);
 
@@ -178,7 +178,32 @@ function setupPaths() {
           var trackObj = JSON.parse(e);
           console.log(trackObj);
           setTimeout(function() {
-            playlists[playlistIndex - 1]['tracks'].push(trackObj);
+
+            // The vars from those fields
+            var infoHash = trackObj['info_hash'];
+            var song_mbid = trackObj['song_mbid'];
+            var file_path = trackObj['file_path'];
+            var title = trackObj['title'];
+            var artist_mbid = trackObj['artist_mbid'];
+            var artist = trackObj['artist'];
+            var duration_ms = trackObj['duration_ms'].toString();
+            var release_group_mbid = trackObj['release_group_mbid'];
+            var album = trackObj['album'];
+            var seeders = trackObj['seeders'];
+
+            var playlistTrackObj = {
+              "album": album,
+              "artist": artist,
+              "artist_mbid": artist_mbid,
+              "duration_ms": duration_ms,
+              "info_hash": infoHash,
+              "release_group_mbid": release_group_mbid,
+              "seeders": seeders,
+              "song_mbid": song_mbid,
+              "title": title
+            };
+
+            playlists[playlistIndex - 1]['tracks'].push(playlistTrackObj);
 
             console.log(i);
             console.log(parseInt(songMbids.length));
