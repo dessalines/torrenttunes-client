@@ -250,6 +250,8 @@ function showAlbumPage(releaseMBID) {
 function showPlaylist(name) {
   playlistPageTabID = name;
   setupPlaylistPageTab();
+
+  deleteExtraFieldsFromPlaylists();
   // $('a[href="#homeTab"]').tab('show');
   $('a[href="#playlistPageTab"]').tab('show');
   console.log('showing ' + playlistPageTabID);

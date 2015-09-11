@@ -164,6 +164,8 @@ function setupPaths() {
       setupPlaylistTab();
       addPlaylistDropdowns();
 
+      deleteExtraFieldsFromPlaylists();
+
 
 
 
@@ -196,9 +198,7 @@ function setupPaths() {
 
       setTimeout(function() {
         savePlaylistsToCookie();
-
-
-      }, 7000);
+      }, 4000);
 
     }
 
@@ -376,6 +376,8 @@ function setupPlaylistForm() {
         savePlaylistsToCookie();
 
         addPlaylistDropdowns();
+
+        deleteExtraFieldsFromPlaylists();
 
 
 
@@ -1259,6 +1261,8 @@ function setupPlaylistDelete() {
     setupPlaylistLeftTab();
     addPlaylistDropdowns();
 
+    deleteExtraFieldsFromPlaylists();
+
 
     // @deprecated
     // simplePost('delete_playlist/' + playlistId, null, null, function() {
@@ -1299,6 +1303,7 @@ function loadPlaylistsFromCookie() {
   var cookie = Cookies.getJSON('playlists');
   if (cookie != undefined) {
     playlists = cookie;
+    deleteExtraFieldsFromPlaylists();
   } else {
     console.log('set playlists');
     playlists = [];
