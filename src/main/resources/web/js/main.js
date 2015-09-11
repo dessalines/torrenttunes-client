@@ -292,6 +292,7 @@ function setupPlaylistTab() {
 
   fillMustacheWithJson(playlists, playlistHomeTemplate, '#playlist_home_div');
   setupPlaylistDelete();
+  deleteExtraFieldsFromPlaylists();
   // @deprecated
   // getJson('get_playlists').done(function(e) {
   //   var playLists = JSON.parse(e);
@@ -319,6 +320,8 @@ function setupPlaylistPageTab() {
 
   // $('#playlist_page_div tbody').sortable();
   setupPlaylistTrackDelete();
+
+  deleteExtraFieldsFromPlaylists();
 
   replaceParams('playlist', buildPlaylistParams(playlist));
 
