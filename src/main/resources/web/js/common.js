@@ -331,7 +331,7 @@ function setupAddToPlaylist() {
         "album": album,
         "artist": artist,
         "artist_mbid": artist_mbid,
-        "duration_ms": duration_ms,
+        "duration_ms": parseInt(duration_ms),
         "info_hash": infoHash,
         "release_group_mbid": release_group_mbid,
         "seeders": seeders,
@@ -339,8 +339,11 @@ function setupAddToPlaylist() {
         "title": title
       };
 
+
       tracks.push(playlistTrackObj);
+
       savePlaylistsToCookie();
+
       toastr.success(playlistTrackObj['title'] + ' added to playlist ' + playlist['name']);
     } else {
       toastr.error('Track already exists in playlist');
