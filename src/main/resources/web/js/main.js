@@ -62,7 +62,7 @@ $(document).ready(function() {
 
   keyboardShortcuts();
 
-  loadPlaylistsFromCookie();
+  loadPlaylistsFromLocalStorage();
   setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
@@ -222,7 +222,7 @@ function setupPaths() {
       }
 
       setTimeout(function() {
-        savePlaylistsToCookie();
+        savePlaylistsToLocalStorage();
       }, 4000);
 
     }
@@ -401,7 +401,7 @@ function setupPlaylistForm() {
         setupPlaylistLeftTab();
         setupPlaylistTab();
 
-        savePlaylistsToCookie();
+        savePlaylistsToLocalStorage();
 
         addPlaylistDropdowns();
 
@@ -1281,7 +1281,7 @@ function setupPlaylistDelete() {
     // remove the index from that array and save it
     var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
     playlists.splice(playlistIndex, 1);
-    savePlaylistsToCookie();
+    savePlaylistsToLocalStorage();
 
     $('[name=' + name).parent().parent().remove();
     $('.tooltip').tooltip('destroy');
@@ -1324,13 +1324,14 @@ function setupDonate() {
 
 }
 
-function loadPlaylistsFromCookie() {
+function loadPlaylistsFromLocalStorage() {
 
   // Load the playlists object from the cookies
   // var cookie = getCookie('playlists');
-  var cookie = Cookies.getJSON('playlists');
-  if (cookie != undefined) {
-    playlists = cookie;
+  // var cookie = Cookies.getJSON('playlists');
+  var localstorage = localStorage.getItem('playlists');
+  if (localstorage != undefined) {
+    playlists = JSON.parse(localstorage);
     deleteExtraFieldsFromPlaylists();
   } else {
     console.log('set playlists');
@@ -1343,7 +1344,7 @@ function loadPlaylistsFromCookie() {
 
 }
 
-function savePlaylistsToCookie() {
+function savePlaylistsToLocalStorage() {
 
   // var playlistsStr = JSON.stringify(playlists);
   // console.log('Writing playlists cookie ' + playlistsStr);
@@ -1353,7 +1354,8 @@ function savePlaylistsToCookie() {
   // Delete the special shit:
   deleteExtraFieldsFromPlaylists();
 
-  Cookies.set('playlists', playlists);
+  // Cookies.set('playlists', playlists);
+  localStorage.setItem('playlists', JSON.stringify(playlists));
 
 }
 

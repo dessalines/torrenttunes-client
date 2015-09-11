@@ -344,7 +344,7 @@ function setupAddToPlaylist() {
       
       tracks.push(playlistTrackObj);
 
-      savePlaylistsToCookie();
+      savePlaylistsToLocalStorage();
 
       toastr.success(playlistTrackObj['title'] + ' added to playlist ' + playlist['name']);
     } else {
@@ -423,7 +423,7 @@ function setupPlaylistTrackDelete() {
     $('[data-info_hash="' + infoHash + '"').remove();
 
 
-    savePlaylistsToCookie();
+    savePlaylistsToLocalStorage();
 
     toastr.success('Track Removed');
 
