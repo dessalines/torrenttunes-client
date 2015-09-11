@@ -326,15 +326,15 @@ function setupAddToPlaylist() {
 
     if (trackIndex == null) {
       var playlistTrackObj = {
-        "info_hash": infoHash,
-        "song_mbid": song_mbid,
-        "title": title,
-        "artist_mbid": artist_mbid,
-        "artist": artist,
-        "duration_ms": duration_ms,
-        "release_group_mbid": release_group_mbid,
         "album": album,
-        "seeders": seeders
+        "artist": artist,
+        "artist_mbid": artist_mbid,
+        "duration_ms": duration_ms,
+        "info_hash": infoHash,
+        "release_group_mbid": release_group_mbid,
+        "seeders": seeders,
+        "song_mbid": song_mbid,
+        "title": title
       };
 
       tracks.push(playlistTrackObj);
