@@ -293,7 +293,7 @@ function setupAddToPlaylist() {
     console.log('adding to playlist');
     // var full = this.id.split('_');
     var name = $(this).attr('name');
-    var full = name.split('_');
+    var full = name.split('][');
 
 
 
