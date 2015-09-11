@@ -54,8 +54,24 @@
 }*/
 
 .add_to_playlist_class {
-  padding-left: 20px;
-  list-style-type: none;
+  clear: both;
+  display: block;
+  font-weight: normal;
+  line-height: 1.42857;
+  padding: 3px 20px;
+  white-space: nowrap;
+  list-style: outside none none;
+}
+
+
+/*  change colors, remove underline and turn on pointer */
+
+.add_to_playlist_class > li a:hover,
+.dropdown-menu > li a:focus {
+  background-color: #2A9FD6;
+  /*color: #262626;*/
+  cursor: pointer;
+  text-decoration: none;
 }
 
 #donateModal .modal-body {
