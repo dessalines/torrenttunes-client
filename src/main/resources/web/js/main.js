@@ -1309,7 +1309,7 @@ function loadPlaylistsFromCookie() {
     deleteExtraFieldsFromPlaylists();
   } else {
     console.log('set playlists');
-    playlists = [];
+    playlists = [{}];
   }
 
 
