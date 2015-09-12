@@ -121,7 +121,7 @@ public enum LibtorrentEngine  {
 
 		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49154, 65535);
 		String iface = "0.0.0.0";
-		session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
+		
 
 		if (Main.log.getLevel().equals(Level.DEBUG)) {
 			// Create a session stats file with headers
@@ -129,12 +129,13 @@ public enum LibtorrentEngine  {
 			default_storage.disk_write_access_log(true);
 			libtorrent.set_utp_stream_logging(true);
 			addDefaultSessionAlerts();
+			session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
+		} else {
+			session = new Session(new Fingerprint(), prange, iface, defaultRouters(), false);
 		}
 
 
 		settings = new SettingsPack();
-
-
 
 
 		settings.setActiveDownloads(10);
@@ -652,7 +653,7 @@ public enum LibtorrentEngine  {
 
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 				//				torrent.saveResumeData();
 			}
 
