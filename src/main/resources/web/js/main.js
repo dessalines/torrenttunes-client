@@ -26,7 +26,9 @@ var addToPlaylistTemplate = $('#add_to_playlist_template').html();
 
 var hrefToTrackObjMap = {};
 
-
+// The browser playlists object
+// The schema is {id: ,{name: , tracks:[]}, {}, ...}
+var playlists;
 
 // the play queue
 var library, playQueue = [];
@@ -60,7 +62,7 @@ $(document).ready(function() {
 
   keyboardShortcuts();
 
-
+  loadPlaylistsFromLocalStorage();
   setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
@@ -80,6 +82,8 @@ $(document).ready(function() {
 
 
 });
+
+
 
 
 function setupUploadDownloadTotals() {
@@ -107,6 +111,7 @@ function setupPaths() {
   var artistMBID = getUrlParameter('artist');
   var albumMBID = getUrlParameter('album');
   var songMBID = getUrlParameter('song');
+  var playlistStr = getUrlParameter('playlist');
 
   if (artistMBID != null) {
     showArtistPageV2(artistMBID);
@@ -124,6 +129,103 @@ function setupPaths() {
       showAlbumPage(albumMBID);
 
     });
+
+  } else if (playlistStr != null) {
+
+    var playlistTemp = JSON.parse(decodeURIComponent(playlistStr));
+    var playlistName = playlistTemp['name'];
+
+    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+
+    // First you need to see if you already have a playlist named that, 
+    // If you do, just go there
+    if (playlistIndex != null) {
+      toastr.info('You already have a playlist named ' + playlistName);
+      showPlaylist(playlistName);
+    }
+    // If it doesn't exist, you need to fetch the rest of the trackObjs,
+    // and create the playlist
+    else {
+
+
+      var songMbids = playlistTemp['song_mbids'];
+      console.log(songMbids);
+      var playlist = {
+        "name": playlistName,
+        "tracks": []
+      };
+
+
+      // Add the playlist to the playlists
+      var playlistIndex = playlists.push(playlist);
+
+      // Setup the bars and dropdowns
+      setupPlaylistLeftTab();
+      setupPlaylistTab();
+      addPlaylistDropdowns();
+
+      deleteExtraFieldsFromPlaylists();
+
+
+
+
+      for (var i = 0; i < songMbids.length; i++) {
+
+        var songMBID = songMbids[i];
+        console.log(songMBID);
+
+        getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
+          var trackObj = JSON.parse(e);
+          console.log(trackObj);
+          setTimeout(function() {
+
+            // The vars from those fields
+            var infoHash = trackObj['info_hash'];
+            var song_mbid = trackObj['song_mbid'];
+            var file_path = trackObj['file_path'];
+            var title = trackObj['title'];
+            var artist_mbid = trackObj['artist_mbid'];
+            var artist = trackObj['artist'];
+            var duration_ms = trackObj['duration_ms'].toString();
+            var release_group_mbid = trackObj['release_group_mbid'];
+            var album = trackObj['album'];
+            var seeders = trackObj['seeders'];
+
+            var playlistTrackObj = {
+              "album": album,
+              "artist": artist,
+              "artist_mbid": artist_mbid,
+              "duration_ms": duration_ms,
+              "info_hash": infoHash,
+              "release_group_mbid": release_group_mbid,
+              "seeders": seeders,
+              "song_mbid": song_mbid,
+              "title": title
+            };
+
+            playlists[playlistIndex - 1]['tracks'].push(playlistTrackObj);
+
+            console.log(i);
+            console.log(parseInt(songMbids.length));
+
+            if (i == songMbids.length) {
+
+
+
+              showPlaylist(playlistName);
+
+
+            }
+          }, 300 * i);
+
+        });
+      }
+
+      setTimeout(function() {
+        savePlaylistsToLocalStorage();
+      }, 4000);
+
+    }
 
   }
 
@@ -172,6 +274,7 @@ function setupTabs() {
       // setupBrowseTab();
     } else if (tabId == "#homeTab") {
       setupHomeTab();
+      clearParams();
     } else if (tabId == "#libraryTab") {
       setupLibrary();
     } else if (tabId == "#uploadTab") {
@@ -186,46 +289,84 @@ function setupTabs() {
 }
 
 function setupPlaylistLeftTab() {
-  getJson('get_playlists').done(function(e) {
-    $('li.playlist-left-tab-element').remove();
-    var playlists = JSON.parse(e);
-    console.log(playlists);
-    Mustache.parse(playlistLeftTabTemplate);
-    var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
-    console.log(rendered);
-
-    $('#playlist_left_tab_div').after(rendered);
 
 
-  });
+
+  // Mustache.parse(playlistLeftTabTemplate);
+  // var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
+  // $('#playlist_left_tab_div').after(rendered);
+  fillMustacheWithJson(playlists, playlistLeftTabTemplate, '#playlist_left_tab_div');
+
+
+  // @deprecated
+  // getJson('get_playlists').done(function(e) {
+  //   $('li.playlist-left-tab-element').remove();
+  //   var playlists = JSON.parse(e);
+  //   console.log(playlists);
+  //   Mustache.parse(playlistLeftTabTemplate);
+  //   var rendered = Mustache.render(playlistLeftTabTemplate, playlists);
+  //   console.log(rendered);
+
+  //   $('#playlist_left_tab_div').after(rendered);
+
+
+  // });
 }
 
 function setupPlaylistTab() {
 
-  getJson('get_playlists').done(function(e) {
-    var playLists = JSON.parse(e);
-    fillMustacheWithJson(playLists, playlistHomeTemplate, '#playlist_home_div');
-    setupPlaylistDelete();
-  });
+  fillMustacheWithJson(playlists, playlistHomeTemplate, '#playlist_home_div');
+  setupPlaylistDelete();
+  deleteExtraFieldsFromPlaylists();
+  // @deprecated
+  // getJson('get_playlists').done(function(e) {
+  //   var playLists = JSON.parse(e);
+  //   fillMustacheWithJson(playLists, playlistHomeTemplate, '#playlist_home_div');
+  //   setupPlaylistDelete();
+  // });
 }
 
 function setupPlaylistPageTab() {
-  getJson('get_playlist/' + playlistPageTabID).done(function(e) {
-    var playlist = JSON.parse(e);
-    console.log(playlist);
 
-    fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
-    addPlaylistDropdowns();
-    $('[data-toggle="tooltip"]').tooltip({
-      container: 'body'
-    });
+  var playlistIndex = findIndexInArray(playlists, 'name', playlistPageTabID);
+  var playlist = playlists[playlistIndex];
+  // console.log(playlist);
 
-    setupTrackSelect();
-    setupPlaylistPlaySelect(playlist);
+  fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
+  addPlaylistDropdowns();
 
-    $('#playlist_page_div tbody').sortable();
-    setupPlaylistTrackDelete();
+  $('[data-toggle="tooltip"]').tooltip({
+    container: 'body'
   });
+
+  setupTrackSelect();
+
+  setupPlaylistPlaySelect(playlist);
+
+  // $('#playlist_page_div tbody').sortable();
+  setupPlaylistTrackDelete();
+
+  deleteExtraFieldsFromPlaylists();
+
+  replaceParams('playlist', buildPlaylistParams(playlist));
+
+  // @deprecated
+  // getJson('get_playlist/' + playlistPageTabID).done(function(e) {
+  //   var playlist = JSON.parse(e);
+  //   console.log(playlist);
+
+  //   fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
+  //   addPlaylistDropdowns();
+  //   $('[data-toggle="tooltip"]').tooltip({
+  //     container: 'body'
+  //   });
+
+  //   setupTrackSelect();
+  //   setupPlaylistPlaySelect(playlist);
+
+  //   $('#playlist_page_div tbody').sortable();
+  //   setupPlaylistTrackDelete();
+  // });
 }
 
 function setupPlaylistForm() {
@@ -236,13 +377,53 @@ function setupPlaylistForm() {
 
     })
     .on('success.form.bv', function(event) {
-      event.preventDefault();
-      standardFormPost('create_playlist', "#create_playlist_form", null, null, function(id) {
 
-        console.log('New playlist Created ' + id);
-        showPlaylist(id);
+      event.preventDefault();
+
+      var formData = $(this).serializeArray();
+
+      console.log(formData);
+      var name = formData[0]['value'];
+
+      // Create the playlist object
+      var playlistObj = {
+        "name": name,
+        "tracks": []
+      };
+
+      // Only add it if it doesn't exist
+      var foundIndex = findIndexInArray(playlists, 'name', name);
+
+      // Add it to the playlists array, keyed on the name
+      if (foundIndex == null) {
+        playlists.push(playlistObj);
+
         setupPlaylistLeftTab();
-      }, true);
+        setupPlaylistTab();
+
+        savePlaylistsToLocalStorage();
+
+        addPlaylistDropdowns();
+
+        deleteExtraFieldsFromPlaylists();
+
+
+
+      } else {
+        toastr.error('Playlist ' + name + ' already exists');
+      }
+
+
+
+
+
+      // @deprecated
+      // standardFormPost('create_playlist', "#create_playlist_form", null, null, function(id) {
+
+      //   console.log('New playlist Created ' + id);
+      //   showPlaylist(id);
+      //   setupPlaylistLeftTab();
+      // }, true);
     });
 }
 
@@ -299,12 +480,12 @@ function setupBrowseTab() {
 }
 
 function setupHomeTab() {
+
   getJson('get_trending_albums', null, torrentTunesSparkService).done(function(e) {
     var albums = JSON.parse(e);
     console.log(albums);
 
     fillMustacheWithJson(albums, trendingAlbumsTemplate, '#trending_albums_div');
-
   });
 
   getJson('get_trending_songs', null, torrentTunesSparkService).done(function(e) {
@@ -542,21 +723,34 @@ function keyboardShortcuts() {
 }
 
 function addPlaylistDropdowns() {
-  getJson('get_playlists').done(function(e) {
 
-    var playlists = JSON.parse(e);
-    console.log(playlists);
-    // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
-    if (playlists.length > 0) {
+  fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
+  if (playlists.length > 0) {
 
-      Mustache.parse(addToPlaylistTemplate);
-      var rendered = Mustache.render(addToPlaylistTemplate, playlists);
-      $(rendered).appendTo(".add_to_playlist_class");
+    Mustache.parse(addToPlaylistTemplate);
+    var rendered = Mustache.render(addToPlaylistTemplate, playlists);
+    // $(rendered).appendTo(".add_to_playlist_class");
+    $(".add_to_playlist_class").html(rendered);
 
-      setupAddToPlaylist();
-    }
+    setupAddToPlaylist();
+  }
 
-  });
+  // @deprecated
+  // getJson('get_playlists').done(function(e) {
+
+  //   var playlists = JSON.parse(e);
+  //   console.log(playlists);
+  //   // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
+  //   if (playlists.length > 0) {
+
+  //     Mustache.parse(addToPlaylistTemplate);
+  //     var rendered = Mustache.render(addToPlaylistTemplate, playlists);
+  //     $(rendered).appendTo(".add_to_playlist_class");
+
+  //     setupAddToPlaylist();
+  //   }
+
+  // });
 
 }
 
@@ -611,19 +805,21 @@ function setupAlbumPlaySelect(albumSongs) {
   });
 }
 
-function setupPlaylistPlaySelect(playlistSongs) {
+function setupPlaylistPlaySelect(playlist) {
   $('.play-playlist').click(function(e) {
 
+    console.log(playlist);
+    var tracks = playlist['tracks'];
 
     // for the first one, play now
-    var trackInfoFirst = playlistSongs[0];
+    var trackInfoFirst = tracks[0];
     var infoHashFirst = trackInfoFirst['info_hash'];
 
     downloadOrFetchTrackObj(infoHashFirst, 'play-now');
 
     // All the others, download them, but add them to the queue at the last
-    for (var z = 1; z < playlistSongs.length; z++) {
-      var trackInfo = playlistSongs[z];
+    for (var z = 1; z < tracks.length; z++) {
+      var trackInfo = tracks[z];
       var infoHash = trackInfo['info_hash'];
 
       downloadOrFetchTrackObj(infoHash, 'play-last');
@@ -1077,19 +1273,33 @@ function setupPlaylistDelete() {
 
     console.log(full);
     var option = full[0];
-    var playlistId = full[1];
+    var playlistName = full[1];
 
     console.log(option);
-    console.log(playlistId);
+    console.log(playlistName);
+
+    // remove the index from that array and save it
+    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+    playlists.splice(playlistIndex, 1);
+    savePlaylistsToLocalStorage();
+
+    $('[name=' + name).parent().parent().remove();
+    $('.tooltip').tooltip('destroy');
+
+    setupPlaylistLeftTab();
+    addPlaylistDropdowns();
+
+    deleteExtraFieldsFromPlaylists();
 
 
-    simplePost('delete_playlist/' + playlistId, null, null, function() {
-      // $('[name=' + name).tooltip('hide');
-      // $('[name=' + name).parent().closest("a").remove();
-      $('[name=' + name).parent().parent().remove();
-      setupPlaylistLeftTab();
+    // @deprecated
+    // simplePost('delete_playlist/' + playlistId, null, null, function() {
+    //   // $('[name=' + name).tooltip('hide');
+    //   // $('[name=' + name).parent().closest("a").remove();
+    //   $('[name=' + name).parent().parent().remove();
+    //   setupPlaylistLeftTab();
 
-    });
+    // });
 
   });
 
@@ -1111,5 +1321,103 @@ function setupDonate() {
     "text": btcText,
   });
   $('#receive_address').html(address);
+
+}
+
+function loadPlaylistsFromLocalStorage() {
+
+  // Load the playlists object from the cookies
+  // var cookie = getCookie('playlists');
+  // var cookie = Cookies.getJSON('playlists');
+  var localstorage = localStorage.getItem('playlists');
+  if (localstorage != undefined) {
+    playlists = JSON.parse(localstorage);
+    deleteExtraFieldsFromPlaylists();
+  } else {
+    console.log('set playlists');
+    playlists = [];
+  }
+
+
+  return playlists;
+
+
+}
+
+function savePlaylistsToLocalStorage() {
+
+  // var playlistsStr = JSON.stringify(playlists);
+  // console.log('Writing playlists cookie ' + playlistsStr);
+  // createCookie('playlists', playlistsStr);
+  // $.cookie('playlists',playlistsStr);
+
+  // Delete the special shit:
+  deleteExtraFieldsFromPlaylists();
+
+  // Cookies.set('playlists', playlists);
+  localStorage.setItem('playlists', JSON.stringify(playlists));
+
+}
+
+function deleteExtraFieldsFromPlaylists() {
+  deleteMustacheFieldsFromObj(playlists);
+
+
+  for (var i = 0; i < playlists.length; i++) {
+    var playlist = playlists[i];
+
+    deleteMustacheFieldsFromObj(playlist);
+
+    // delete torrent_path if necessary
+    var tracks = playlist['tracks'];
+
+    for (var j = 0; j < tracks.length; j++) {
+      var track = tracks[j];
+
+      deleteTrackFieldsFromObj(track);
+    }
+  }
+}
+
+function deleteMustacheFieldsFromObj(myObj) {
+  var mustacheFields = ["dateformat", "otherdateformat", "sparkUrl", "toFixed",
+    "htmlDecode", "numToStars", "millisToMinutesAndSeconds", "seedersToType",
+    "seedersToNum"
+  ];
+
+  for (var i = 0; i < mustacheFields.length; i++) {
+    delete myObj[mustacheFields[i]];
+  }
+}
+
+function deleteTrackFieldsFromObj(myObj) {
+  var trackFields = ["album_coverart_thumbnail_large", "album_coverart_thumbnail_small",
+    "album_coverart_url", "disc_number", "file_path", "plays", "torrent_path",
+    "track_number", "year"
+  ];
+
+  for (var i = 0; i < trackFields.length; i++) {
+    delete myObj[trackFields[i]];
+  }
+
+}
+
+function buildPlaylistParams(playlist) {
+  var tracks = playlist['tracks'];
+
+  var str = '{"name":"' + playlist['name'] + '"';
+
+  if (tracks.length > 0) {
+    str += ',"song_mbids":[';
+    str += '"' + tracks[0]['song_mbid'] + '"';
+    for (var i = 1; i < tracks.length; i++) {
+      var mbidStr = ',"' + tracks[i]['song_mbid'] + '"';
+      str += mbidStr;
+    }
+  }
+
+  str += ']}';
+
+  return str;
 
 }

@@ -117,11 +117,12 @@
             <li>
               <h5 class="sidebar-spaced"><a class="text-muted" href="#playlistTab" data-toggle="tab">PlayLists</a></h5></li>
             <li class="hide"><a href="#playlistPageTab" data-toggle="tab">playlist page tab</a></li>
-            <div id="playlist_left_tab_div"> </div>
-            <script id="playlist_left_tab_template" type="x-tmpl-mustache">
-              {{#.}}
-              <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{id}}');" href="javascript:void(0);">{{name}}</a></li> {{/.}}
-            </script>
+            <div id="playlist_left_tab_div" class="nav nav-sidebar main-sidebar">
+              <script id="playlist_left_tab_template" type="x-tmpl-mustache">
+                {{#.}}
+                <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('{{name}}');" href="#derp">{{name}}</a></li> {{/.}}
+              </script>
+            </div>
           </ul>
         </div>
       </div>
@@ -425,14 +426,17 @@
                                 <td>
                                   <span>
                         <div class="btn-group text-normal">
-                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a> 
+                              <a name="play-button_{{info_hash}}" info_hash="{{info_hash}}" song_mbid="{{song_mbid}}" file_path="{{file_path}}" title="{{{title}}}" artist_mbid="{{artist_mbid}}" artist="{{{artist}}}" duration_ms="{{duration_ms}}" release_group_mbid="{{release_group_mbid}}" album="{{album}}" seeders="{{seeders}}"
+
+                            class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a> 
                               <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
-                                  <ul class="dropdown-menu add_to_playlist_class" role="menu">
+                                  <ul class="dropdown-menu" role="menu">
                                     <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                                     <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                                     <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                                     <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                                    <ul class="add_to_playlist_class"></ul>
                                     
                                   </ul>
                                   <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
@@ -543,14 +547,16 @@
                     <td>
                       <span>
                         <div class="btn-group text-normal">
-                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" info_hash="{{info_hash}}" song_mbid="{{song_mbid}}" file_path="{{file_path}}" title="{{{title}}}" artist_mbid="{{artist_mbid}}" artist="{{{artist}}}" duration_ms="{{duration_ms}}" release_group_mbid="{{release_group_mbid}}" album="{{album}}" seeders="{{seeders}}"
+                              class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu add_to_playlist_class" role="menu">
+                    <ul class="dropdown-menu" role="menu">
                       <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                       <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                       <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                       <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                      <ul class="add_to_playlist_class"></ul>
                       
                     </ul>
                     <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
@@ -583,9 +589,9 @@
               <div id="playlist_home_div">
                 <script id="playlist_home_template" type="x-tmpl-mustache">
                   {{#.}}
-                  <h3><a class="text-normal" onclick="showPlaylist('{{id}}');" href="javascript:void(0);">{{name}}</a>
+                  <h3><a class="text-normal" onclick="showPlaylist('{{name}}');" href="javascript:void(0);">{{name}}</a>
                   <small> 
-                  <a name="delete-playlist_{{id}}" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
+                  <a name="delete-playlist_{{name}}" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
                   </small>
                   </h3> {{/.}} {{#0}}
                   <hr>{{/0}}
@@ -594,7 +600,7 @@
               <form id="create_playlist_form" class="form-inline">
                 <div class="form-group">
                   <label for="exampleInputName2">Name</label>
-                  <input name="name" type="text" class="form-control" id="exampleInputName2" placeholder="My Playlist" data-bv-notempty="true" data-bv-notempty-message="A name is required">
+                  <input name="name" type="text" class="form-control" id="exampleInputName2" placeholder="My Playlist" data-bv-notempty="true" data-bv-notempty-message="A name is required" data-bv-regexp="true" data-bv-regexp-regexp="^[\S]*$" data-bv-regexp-message="No spaces">
                 </div>
                 <button class="btn btn-default" type="submit"><i class="fa fa-plus fa-fw"></i> Create New Playlist</button>
               </form>
@@ -602,7 +608,7 @@
             <div role="tabpanel" class="tab-pane fade" id="playlistPageTab">
               <div id="playlist_page_div">
                 <script id="playlist_page_template" type="x-tmpl-mustache">
-                  <h3> {{0.name}}
+                  <h3> {{name}}
                   <small><a class="play-playlist text-normal" href="javascript:void(0)"><i class="fa fa-play-circle-o fa-fw"></i></a>
                     </small>
                 </h3>
@@ -623,29 +629,32 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {{#.}}
+                      {{#tracks}}
                       <tr data-info_hash="{{info_hash}}">
                         <td>
                           <span>
                         <div class="btn-group text-normal">
-                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" info_hash="{{info_hash}}" song_mbid="{{song_mbid}}" file_path="{{file_path}}" title="{{{title}}}" artist_mbid="{{artist_mbid}}" artist="{{{artist}}}" duration_ms="{{duration_ms}}" release_group_mbid="{{release_group_mbid}}" album="{{album}}" seeders="{{seeders}}"
+                              class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
-                      <ul class="dropdown-menu add_to_playlist_class" role="menu">
+                      <ul class="dropdown-menu" role="menu">
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                         <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                        <ul class="add_to_playlist_class"></ul>
                         
                       </ul>
 
+
                     
-                      {{#file_path}}
-                      <i class="fa fa-arrows fa-fw"></i>
-                      <a name="delete-playlist-track_{{info_hash}}" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
-                      {{/file_path}} {{^file_path}}
+                      
+                      <!-- <i class="fa fa-arrows fa-fw"></i> -->
+                      <a name="delete-playlist-track_{{name}}" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Remove" class="fa text-danger fa-fw fa-trash"></i></a>
+                      
                           <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
-                      {{/file_path}}
+                      
           </div>
           </td>
           <td class="text-overflow"><span>{{{title}}}</span></td>
@@ -654,7 +663,7 @@
                         <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
                         </td>
                       </tr>
-                      {{/.}}
+                      {{/tracks}}
                     </tbody>
                   </table>
                 </script>
@@ -788,16 +797,23 @@
                         <td>
                           <span>
                         <div class="btn-group text-normal">
-                              <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+                              <a name="play-button_{{info_hash}}" 
+                              info_hash="{{info_hash}}" song_mbid="{{song_mbid}}" file_path="{{file_path}}" title="{{{title}}}" artist_mbid="{{artist_mbid}}" artist="{{{artist}}}" duration_ms="{{duration_ms}}" release_group_mbid="{{release_group_mbid}}" album="{{album}}" seeders="{{seeders}}"
+
+                              class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
                               <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
                                 <i class="fa fa-angle-down"></i></a>
-                      <ul class="dropdown-menu add_to_playlist_class" role="menu">
+                      <ul class="dropdown-menu" role="menu">
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                         <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
                         <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                      
+                       <ul class="add_to_playlist_class">
                       </ul>
+                      </ul>
+
+
 
 
                     
@@ -924,11 +940,12 @@
         <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
         <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
           <i class="fa fa-angle-down"></i></a>
-        <ul class="dropdown-menu add_to_playlist_class" role="menu">
+        <ul class="dropdown-menu" role="menu">
           <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
           <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
           <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
           <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+
         </ul>
         <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
       </div>
@@ -937,7 +954,7 @@
       {{#0}}
       <li class="divider"></li>{{/0}} {{#.}}
       <li>
-        <a name="add-to-playlist_{{id}}" class="add_to_playlist"> <i class="fa fa-list fa-fw"></i> Add to Playlist {{name}} </a>
+        <a name="add-to-playlist][{{name}}" class="add_to_playlist"> <i class="fa fa-list fa-fw"></i> Add to Playlist {{name}} </a>
       </li>
       {{/.}}
     </script>
@@ -985,6 +1002,7 @@
     <script src="../bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="../bower_components/jquery.qrcode/dist/jquery.qrcode.min.js"></script>
     <script src="../bower_components/soundmanager2/script/soundmanager2-jsmin.js"></script>
+    <script src="../bower_components/js-cookie/src/js.cookie.js"></script>
     <!-- my scripts -->
     <script src="../js/tools.js"></script>
     <script src="../js/common.js"></script>
