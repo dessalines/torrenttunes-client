@@ -646,7 +646,7 @@ function getUrlParameter(sParam) {
 }
 
 function getUrlPathArray() {
-  return window.location.pathname.split('/');
+  return window.location.toString().split('/');
 }
 
 function getLastUrlPath() {

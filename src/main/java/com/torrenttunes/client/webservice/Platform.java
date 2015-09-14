@@ -430,7 +430,7 @@ public class Platform {
 		get("/clear_cache", (req, res) -> {
 			try {
 
-				Tools.allowAllHeaders(req, res);
+//				Tools.allowAllHeaders(req, res);
 
 				Tools.dbInit();
 				
