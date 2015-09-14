@@ -129,45 +129,51 @@ function setupPaths() {
     });
 
   } else if (playlistStr != null) {
+    setupLoadPlaylistFromPath(playlistStr);
+  }
 
-    var playlistTemp = JSON.parse(decodeURIComponent(playlistStr));
-    var playlistName = playlistTemp['name'];
+}
 
-    var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
-
-    // First you need to see if you already have a playlist named that, 
-    // If you do, just go there
-    if (playlistIndex != null) {
-      toastr.info('You already have a playlist named ' + playlistName);
-      showPlaylist(playlistName);
-    }
-    // If it doesn't exist, you need to fetch the rest of the trackObjs,
-    // and create the playlist
-    else {
+function setupLoadPlaylistFromPath(playlistStr) {
 
 
-      var songMbids = playlistTemp['song_mbids'];
-      console.log(songMbids);
-      var playlist = {
-        "name": playlistName,
-        "tracks": []
-      };
+  var playlistTemp = JSON.parse(decodeURIComponent(playlistStr));
+  var playlistName = playlistTemp['name'];
+
+  var playlistIndex = findIndexInArray(playlists, 'name', playlistName);
+
+  // First you need to see if you already have a playlist named that, 
+  // If you do, just go there
+  if (playlistIndex != null) {
+    toastr.info('You already have a playlist named ' + playlistName);
+    showPlaylist(playlistName);
+  }
+  // If it doesn't exist, you need to fetch the rest of the trackObjs,
+  // and create the playlist
+  else {
+
+    var songMbids = playlistTemp['song_mbids'];
+    console.log(songMbids);
+    var playlist = {
+      "name": playlistName,
+      "tracks": []
+    };
 
 
-      // Add the playlist to the playlists
-      var playlistIndex = playlists.push(playlist);
+    // Add the playlist to the playlists
+    var playlistIndex = playlists.push(playlist);
 
-      // Setup the bars and dropdowns
-      setupPlaylistLeftTab();
-      setupPlaylistTab();
-      addPlaylistDropdowns();
+    // Setup the bars and dropdowns
+    setupPlaylistLeftTab();
+    setupPlaylistTab();
+    addPlaylistDropdowns();
 
-      deleteExtraFieldsFromPlaylists();
-
-
+    deleteExtraFieldsFromPlaylists();
 
 
-      for (var i = 0; i < songMbids.length; i++) {
+    (function loop(i) {
+      if (i < songMbids.length) {
+
 
         var songMBID = songMbids[i];
         console.log(songMBID);
@@ -175,58 +181,50 @@ function setupPaths() {
         getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
           var trackObj = JSON.parse(e);
           console.log(trackObj);
-          setTimeout(function() {
-
-            // The vars from those fields
-            var infoHash = trackObj['info_hash'];
-            var song_mbid = trackObj['song_mbid'];
-            var file_path = trackObj['file_path'];
-            var title = trackObj['title'];
-            var artist_mbid = trackObj['artist_mbid'];
-            var artist = trackObj['artist'];
-            var duration_ms = trackObj['duration_ms'].toString();
-            var release_group_mbid = trackObj['release_group_mbid'];
-            var album = trackObj['album'];
-            var seeders = trackObj['seeders'];
-
-            var playlistTrackObj = {
-              "album": album,
-              "artist": artist,
-              "artist_mbid": artist_mbid,
-              "duration_ms": duration_ms,
-              "info_hash": infoHash,
-              "release_group_mbid": release_group_mbid,
-              "seeders": seeders,
-              "song_mbid": song_mbid,
-              "title": title
-            };
-
-            playlists[playlistIndex - 1]['tracks'].push(playlistTrackObj);
-
-            console.log(i);
-            console.log(parseInt(songMbids.length));
-
-            if (i == songMbids.length) {
 
 
+          // The vars from those fields
+          var infoHash = trackObj['info_hash'];
+          var song_mbid = trackObj['song_mbid'];
+          var file_path = trackObj['file_path'];
+          var title = trackObj['title'];
+          var artist_mbid = trackObj['artist_mbid'];
+          var artist = trackObj['artist'];
+          var duration_ms = trackObj['duration_ms'].toString();
+          var release_group_mbid = trackObj['release_group_mbid'];
+          var album = trackObj['album'];
+          var seeders = trackObj['seeders'];
 
-              showPlaylist(playlistName);
+          var playlistTrackObj = {
+            "album": album,
+            "artist": artist,
+            "artist_mbid": artist_mbid,
+            "duration_ms": duration_ms,
+            "info_hash": infoHash,
+            "release_group_mbid": release_group_mbid,
+            "seeders": seeders,
+            "song_mbid": song_mbid,
+            "title": title
+          };
 
+          playlists[playlistIndex - 1]['tracks'].push(playlistTrackObj);
 
-            }
-          }, 300 * i);
+          console.log(i);
+          console.log(parseInt(songMbids.length));
 
+          if (i == songMbids.length - 1) {
+            savePlaylistsToLocalStorage();
+            showPlaylist(playlistName);
+          }
+
+          loop(i + 1);
         });
       }
 
-      setTimeout(function() {
-        savePlaylistsToLocalStorage();
-      }, 4000);
+    })(0);
 
-    }
 
   }
-
 }
 
 function errorTest() {
@@ -786,19 +784,29 @@ function setupAlbumPlaySelect(albumSongs) {
   $('.play-album').click(function(e) {
 
 
-    // for the first one, play now
-    var trackInfoFirst = albumSongs[0];
-    var infoHashFirst = trackInfoFirst['info_hash'];
+    // downloads and plays them in order
+    (function loop(i) {
 
-    downloadOrFetchTrackObj(infoHashFirst, 'play-now');
+      if (i < albumSongs.length) {
 
-    // All the others, download them, but add them to the queue at the last
-    for (var z = 1; z < albumSongs.length; z++) {
-      var trackInfo = albumSongs[z];
-      var infoHash = trackInfo['info_hash'];
+        var playType;
+        if (i == 0) {
+          playType = 'play-now';
+        } else {
+          playType = 'play-last';
+        }
 
-      downloadOrFetchTrackObj(infoHash, 'play-last');
-    }
+
+        var trackInfo = albumSongs[i];
+        var infoHash = trackInfo['info_hash'];
+
+        downloadOrFetchTrackObj(infoHash, playType).done(function(e) {
+          loop(i + 1);
+        });
+
+      }
+
+    })(0);
 
   });
 }
@@ -809,20 +817,29 @@ function setupPlaylistPlaySelect(playlist) {
     console.log(playlist);
     var tracks = playlist['tracks'];
 
-    // for the first one, play now
-    var trackInfoFirst = tracks[0];
-    var infoHashFirst = trackInfoFirst['info_hash'];
+     // downloads and plays them in order
+    (function loop(i) {
 
-    downloadOrFetchTrackObj(infoHashFirst, 'play-now');
+      if (i < tracks.length) {
 
-    // All the others, download them, but add them to the queue at the last
-    for (var z = 1; z < tracks.length; z++) {
-      var trackInfo = tracks[z];
-      var infoHash = trackInfo['info_hash'];
+        var playType;
+        if (i == 0) {
+          playType = 'play-now';
+        } else {
+          playType = 'play-last';
+        }
 
-      downloadOrFetchTrackObj(infoHash, 'play-last');
-    }
 
+        var trackInfo = tracks[i];
+        var infoHash = trackInfo['info_hash'];
+
+        downloadOrFetchTrackObj(infoHash, playType).done(function(e) {
+          loop(i + 1);
+        });
+
+      }
+
+    })(0);
   });
 }
 
@@ -920,7 +937,7 @@ function downloadOrFetchTrackObj(infoHash, option, successFunctions) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
+  return getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
 
     var trackObj = JSON.parse(e1);
 

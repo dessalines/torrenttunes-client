@@ -413,7 +413,8 @@ public class Platform {
 				log.info("progress info hash: " + infoHash);
 				TorrentHandle th = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
 				
-				float progress = th.getStatus().getProgress();
+				Double progress = th.getStatus().getProgressPpm() / 1E6;
+//				float progress = th.getStatus().getProgress();
 				
 				return progress;
 				
