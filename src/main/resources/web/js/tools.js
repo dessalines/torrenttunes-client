@@ -646,11 +646,17 @@ function getUrlParameter(sParam) {
 }
 
 function getUrlPathArray() {
-  return window.location.toString().split('/');
+  return window.location.pathname.split('/');
 }
 
 function getLastUrlPath() {
-  return getUrlPathArray().slice(-1)[0];
+  var path;
+  if (window.location.toString().startsWith('file:')) {
+    path = getUrlPathArray().slice(-1)[0];;
+  } else {
+    path = torrentTunesSparkService;
+  }
+  return path;
 
 }
 
