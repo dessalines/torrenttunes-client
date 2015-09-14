@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   // closing the window functions
-  // setupWindowClose();
+  setupWindowClose();
 
 });
 
