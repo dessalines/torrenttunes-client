@@ -27,7 +27,7 @@ var addToPlaylistTemplate = $('#add_to_playlist_template').html();
 var hrefToTrackObjMap = {};
 
 // The browser playlists object
-// The schema is {id: ,{name: , tracks:[]}, {}, ...}
+// The schema is {name: , tracks:[]}, {}, ...}
 var playlists;
 
 // the play queue
@@ -53,7 +53,7 @@ soundManager.onready(function() {
   console.log(player.actions);
   // player.actions.play()
   setupPlayQueue();
-  setCurrentTrackObj();
+  // setCurrentTrackObj();
   setupPaths();
 });
 
@@ -75,8 +75,6 @@ $(document).ready(function() {
   setupDonate();
 
   setupTabs();
-
-  // errorTest();
 
   setupUploadDownloadTotals();
 
