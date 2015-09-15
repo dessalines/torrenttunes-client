@@ -13,6 +13,8 @@ Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/t
 
 [:arrow_down: Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
 
+[Change log](https://github.com/tchoulihan/torrenttunes-client/releases)
+
 ## Features include
 * A complete music streaming application including Artist and album pages, playlists, and settings.
 * Fully categorized songs based on IDv3 tags and song duration with [MusicBrainz](http://musicbrainz.org/), with the [Musicbrainz-tagger](https://github.com/tchoulihan/musicbrainz-tagger).
@@ -60,6 +62,7 @@ Have a bug or a feature request? If your issue isn't [already listed](https://gi
 
 ## Contributing
 Start with getting familiar with the [schema](http://ondras.zarovi.cz/sql/demo/?keyword=torrenttunes-client) first, then create some issues and we can start working on them. 
+
 
 ## Feature requests / todos
 * TODO

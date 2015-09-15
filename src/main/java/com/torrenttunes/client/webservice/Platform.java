@@ -430,7 +430,7 @@ public class Platform {
 		get("/clear_cache", (req, res) -> {
 			try {
 
-//				Tools.allowAllHeaders(req, res);
+				Tools.allowOnlyLocalHeaders(req, res);
 
 				Tools.dbInit();
 				
@@ -472,6 +472,8 @@ public class Platform {
 		
 		post("/uninstall", (req, res) -> {
 			try {
+				
+				Tools.allowOnlyLocalHeaders(req, res);
 
 				log.info("Uninstalling torrenttunes");
 				Tools.uninstall();
