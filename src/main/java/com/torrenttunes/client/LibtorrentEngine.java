@@ -583,17 +583,17 @@ public enum LibtorrentEngine  {
 		flags -= add_torrent_params.flags_t.flag_auto_managed.swigValue();
 
 
-		if (saveResumeData.exists()) {
-			byte[] data;
-			try {
-				data = Files.readAllBytes(Paths.get(saveResumeData.getAbsolutePath()));
-				p.setResume_data(Vectors.bytes2char_vector(data));
-				flags += add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
-				log.info("flags = " + flags);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+//		if (saveResumeData.exists()) {
+//			byte[] data;
+//			try {
+//				data = Files.readAllBytes(Paths.get(saveResumeData.getAbsolutePath()));
+//				p.setResume_data(Vectors.bytes2char_vector(data));
+//				flags += add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
+//				log.info("flags = " + flags);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 
 		//		log.info("flags final = " + Long.toBinaryString(flags));
 
