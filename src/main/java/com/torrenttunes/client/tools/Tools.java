@@ -67,6 +67,7 @@ import spark.Request;
 import spark.Response;
 
 import com.frostwire.jlibtorrent.Entry;
+import com.frostwire.jlibtorrent.TorrentStatus;
 import com.frostwire.jlibtorrent.swig.create_torrent;
 import com.frostwire.jlibtorrent.swig.error_code;
 import com.frostwire.jlibtorrent.swig.file_storage;
@@ -908,6 +909,19 @@ public class Tools {
 		}
 
 		return torrentFile;
+	}
+	
+
+	public static void printTorrentStatus(TorrentStatus ts) {
+		
+		StringBuilder s = new StringBuilder();
+		s.append("Torrent status for name: " + ts.getName() + "\n");
+		s.append("info_hash: " + ts.getInfoHash() + "\n");
+		s.append("state: " + ts.getState().toString() + "\n");
+		s.append("error: " + ts.getError() + "\n");
+		s.append("progress: " + ts.getProgress() + "\n");
+		
+		log.info(s.toString());
 	}
 
 }

@@ -92,7 +92,7 @@ import com.torrenttunes.client.tools.Tools;
 
 
 public enum LibtorrentEngine  {
-	
+
 	INSTANCE;
 
 	private final Logger log = LoggerFactory.getLogger(LibtorrentEngine.class);
@@ -107,7 +107,7 @@ public enum LibtorrentEngine  {
 	private List<String> sessionStatsHeaders;
 
 	private long startTime;
-	
+
 
 	private LibtorrentEngine() {
 
@@ -121,7 +121,7 @@ public enum LibtorrentEngine  {
 
 		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49154, 65535);
 		String iface = "0.0.0.0";
-		
+
 
 		if (Main.log.getLevel().equals(Level.DEBUG)) {
 			// Create a session stats file with headers
@@ -156,19 +156,21 @@ public enum LibtorrentEngine  {
 
 		settings.setInteger(int_types.peer_timeout.swigValue(), 20);
 
+		settings.setInteger(int_types.alert_queue_size.swigValue(), 100000);
+
 		DHT dht = new DHT(session);
 		dht.stop();
 
 
-//		settings.broadcastLSD(false);
+		//		settings.broadcastLSD(false);
 		settings.setMaxPeerlistSize(500);
 		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
 		settings.setBoolean(bool_types.utp_dynamic_sock_buf.swigValue(), false);
-//		settings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
-//		settings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
-		
-		
+		//		settings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
+		//		settings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
+
+
 
 		//		sessionSettings.setInteger(int_types.mixed_mode_algorithm.swigValue(), 
 		//				bandwidth_mixed_algo_t.prefer_tcp.swigValue());
@@ -582,18 +584,20 @@ public enum LibtorrentEngine  {
 		// Turn off automanage
 		flags -= add_torrent_params.flags_t.flag_auto_managed.swigValue();
 
+		// Turn on override resume data
+		//		flags += add_torrent_params.flags_t.flag_override_resume_data.swigValue();
 
-//		if (saveResumeData.exists()) {
-//			byte[] data;
-//			try {
-//				data = Files.readAllBytes(Paths.get(saveResumeData.getAbsolutePath()));
-//				p.setResume_data(Vectors.bytes2char_vector(data));
-//				flags += add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
-//				log.info("flags = " + flags);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		if (saveResumeData.exists()) {
+			byte[] data;
+			try {
+				data = Files.readAllBytes(Paths.get(saveResumeData.getAbsolutePath()));
+				p.setResume_data(Vectors.bytes2char_vector(data));
+				flags += add_torrent_params.flags_t.flag_use_resume_save_path.swigValue();
+				log.info("flags = " + flags);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		//		log.info("flags final = " + Long.toBinaryString(flags));
 
@@ -601,14 +605,17 @@ public enum LibtorrentEngine  {
 		TorrentHandle torrent = new TorrentHandle(session.getSwig().add_torrent(p));
 
 
+		String infoHash = torrent.getInfoHash().toString().toLowerCase();
 
+		log.info("added torrent: " + torrent.getName() + 
+				"\npath: " + torrentFile.getAbsolutePath() + 
+				"\ninfo_hash: " + infoHash);
 
-		log.info("added torrent: " + torrent.getName() + " , path: " + torrentFile.getAbsolutePath());
 
 		shareTorrent(torrent);
 		addDefaultListeners(torrent);
 
-		infoHashToTorrentMap.put(torrent.getInfoHash().toString().toLowerCase(), torrent);
+		infoHashToTorrentMap.put(infoHash, torrent);
 
 
 		return torrent;
@@ -654,7 +661,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void torrentFinished(TorrentFinishedAlert alert) {
 				log.info(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-				//				torrent.saveResumeData();
+				torrent.saveResumeData();
 			}
 
 			@Override
@@ -925,16 +932,16 @@ public enum LibtorrentEngine  {
 
 		return list;
 	}
-	
+
 	public String getUploadDownloadTotals() {
 		long uploadPayloadBytes = session.getStats().uploadPayload();
 		long downloadPayloadBytes = session.getStats().downloadPayload();
-		
+
 		StringBuilder s = new StringBuilder();
-		
+
 		s.append("Uploaded:   " + Tools.humanReadableByteCount(uploadPayloadBytes, true) + "\n");
 		s.append("Downloaded: " + Tools.humanReadableByteCount(downloadPayloadBytes, true));
-		
+
 		return s.toString();
 
 	}

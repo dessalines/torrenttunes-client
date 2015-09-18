@@ -15,6 +15,8 @@ import static spark.Spark.post;
 
 
 
+
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +40,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
@@ -50,7 +54,11 @@ import org.slf4j.LoggerFactory;
 
 
 
+
+
 import com.frostwire.jlibtorrent.TorrentHandle;
+import com.frostwire.jlibtorrent.TorrentInfo;
+import com.frostwire.jlibtorrent.TorrentStatus;
 import com.frostwire.jlibtorrent.swig.default_storage;
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.client.ScanDirectory;
@@ -417,6 +425,35 @@ public class Platform {
 //				float progress = th.getStatus().getProgress();
 				
 				return progress;
+				
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} 
+			
+		});
+		
+		get("/get_torrent_status/:infoHash", (req, res) -> {
+			try {
+
+				Tools.allowAllHeaders(req, res);
+				
+				String infoHash = req.params(":infoHash");
+				
+				log.info("progress info hash: " + infoHash);
+				TorrentHandle th = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
+//				th.forceRecheck();
+//				th.saveResumeData();
+				if (th == null) {
+					return "its null derp";
+				}
+				TorrentStatus status = th.getStatus();
+				
+				Tools.printTorrentStatus(status);
+				
+				return status.toString();
 				
 
 			} catch (Exception e) {
