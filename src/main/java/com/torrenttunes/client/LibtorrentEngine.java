@@ -158,6 +158,7 @@ public enum LibtorrentEngine  {
 
 		settings.setInteger(int_types.alert_queue_size.swigValue(), 100000);
 
+
 		DHT dht = new DHT(session);
 		dht.stop();
 

@@ -467,7 +467,7 @@ public class Platform {
 		get("/clear_cache", (req, res) -> {
 			try {
 
-//				Tools.allowAllHeaders(req, res);
+				Tools.allowOnlyLocalHeaders(req, res);
 
 				Tools.dbInit();
 				
@@ -485,6 +485,31 @@ public class Platform {
 			}
 			
 		});
+		
+		get("/remove_artist/:artistMBID", (req, res) -> {
+			try {
+
+				Tools.allowOnlyLocalHeaders(req, res);
+				
+				String artistMBID = req.params(":artistMBID");
+				Tools.dbInit();
+				
+				String json = Actions.removeArtist(artistMBID);
+				
+				return json;
+				
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+			
+		});
+
+		
 
 		post("/power_off", (req, res) -> {
 			try {
