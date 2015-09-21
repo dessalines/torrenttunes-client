@@ -435,7 +435,7 @@
                                     <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                                     <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                                     <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
-                                    <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                                    <li><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                                     <ul class="add_to_playlist_class"></ul>
                                     
                                   </ul>
@@ -501,7 +501,7 @@
                     </div>
                     <div class="col-md-6">
                       <h1> {{{title}}}  
-                    <small><a class="play-album text-normal" href="javascript:void(0)"><i class="fa fa-play-circle-o fa-fw"></i></a></small>
+                    <small><a class="play-album text-normal" href="javascript:void(0)" data-toggle="tooltip" data-placement="auto" title="Play Album"><i class="fa fa-play-circle-o fa-fw"></i></a></small>
                        
                       <br><small>
                       <a onclick="showArtistPage();" href="javascript:void(0);">{{{artist_name}}}
@@ -552,7 +552,7 @@
                       <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                       <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                       <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
-                      <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                      <li><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                       <ul class="add_to_playlist_class"></ul>
                       
                     </ul>
@@ -639,7 +639,7 @@
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                         <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
-                        <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                        <li><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                         <ul class="add_to_playlist_class"></ul>
                         
                       </ul>
@@ -688,6 +688,12 @@
               </p>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="uploadTab">
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <b>Do not share</b> your music unless you plan to have this client running all day. If you close TorrentTunes, you will no longer be sharing your songs.
+                <br>
+                <br> I <b>will</b> remove your songs from the server if you do not continue to run the client in order to share them with others.
+              </div>
               <form id="upload_form" class="form-horizontal" role="form">
                 <div id="upload_form_div" class="form-group">
                   <label for="inputUsername3" class="col-sm-12">Music Directory</label>
@@ -804,7 +810,7 @@
                         <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
                         <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
                         <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
-                        <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+                        <li><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
                      
                        <ul class="add_to_playlist_class">
                       </ul>
@@ -941,7 +947,7 @@
           <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
           <li><a name="play-next_{{info_hash}}" class="track-select"><i class="fa fa-step-forward fa-fw"></i> Play next</a></li>
           <li><a name="play-last_{{info_hash}}" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> Play last</a></li>
-          <li class="hide"><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
+          <li><a name="play-radio_{{info_hash}}" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> Create Station</a></li>
         </ul>
         <i data-toggle="tooltip" data-placement="auto" title="{{#seedersToNum}}{{seeders}}{{/seedersToNum}} seeders" class="fa text-{{#seedersToType}}{{seeders}}{{/seedersToType}} fa-fw fa-circle"></i>
       </div>

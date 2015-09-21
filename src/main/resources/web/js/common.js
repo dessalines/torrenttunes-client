@@ -274,7 +274,6 @@ function setupTrackSelect() {
     console.log(option);
     console.log(infoHash);
 
-    // radioMode.running = false;
     downloadOrFetchTrackObj(infoHash, option);
 
 

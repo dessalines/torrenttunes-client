@@ -536,6 +536,8 @@ public class Platform {
 		
 		post("/uninstall", (req, res) -> {
 			try {
+				
+				Tools.allowOnlyLocalHeaders(req, res);
 
 				log.info("Uninstalling torrenttunes");
 				Tools.uninstall();
