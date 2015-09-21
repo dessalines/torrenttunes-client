@@ -372,15 +372,29 @@ public class Actions {
 	public static String removeArtist(String artistMBID) {
 
 		List<Library> songs = LIBRARY.find("artist_mbid = ?", artistMBID);
-
+		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
+		
 		for (Library song : songs) {
-			removeSong(song);
+			removeSong(song, cacheDir);
 		}
 
 		return "Artist : " + artistMBID + " deleted from library";
 	}
+	
+	public static String removeSong(String songMBID) {
 
+		Library song = LIBRARY.findFirst("mbid = ?", songMBID);
+		removeSong(song);
+		
+		return "Song : " + songMBID + " deleted from library";
+	}
+	
 	public static String removeSong(Library song) {
+		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
+		return removeSong(song, cacheDir);
+	}
+
+	public static String removeSong(Library song, String cacheDir) {
 
 		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
 
@@ -397,9 +411,15 @@ public class Actions {
 		// delete the torrent file
 		new File(song.getString("torrent_path")).delete();
 
-		// delete the song
-		new File(song.getString("file_path")).delete();
+		// delete the song(only if its a cached one)
+		File songFile = new File(song.getString("file_path"));
+		String parent = songFile.getParentFile().getAbsolutePath();
 
+		if (parent.equals(cacheDir)) {
+			log.info("file: " + songFile.getAbsolutePath() + " deleted");
+			songFile.delete();
+		}
+		
 		// delete the row
 		song.delete();
 
@@ -410,12 +430,13 @@ public class Actions {
 	public static String clearCache() {
 
 		List<Library> cachedTracks = getCachedTracks();
+		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
 		
 		for (Library song : cachedTracks) {
 			log.info("Song removed from cache: " + song.getString("file_path"));
-			removeSong(song);
+			removeSong(song, cacheDir);
 		}
-
+		
 		String msg = "Songs removed from cache: " + cachedTracks.size();
 		log.info(msg);
 
