@@ -486,6 +486,8 @@ public class Platform {
 			
 		});
 		
+
+		
 		get("/remove_artist/:artistMBID", (req, res) -> {
 			try {
 
