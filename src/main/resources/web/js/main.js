@@ -773,6 +773,8 @@ function setupLibrary() {
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
     addPlaylistDropdowns();
+
+    // TODO these may be a mistake
     setupTrackSelect();
     setupTrackDelete();
 
@@ -853,7 +855,6 @@ function updateDownloadStatusBar(infoHash) {
 
   getJson('get_torrent_progress/' + infoHash, true).done(function(percentageFloat) {
 
-
     var percentage = parseInt(percentageFloat * 100) + '%';
 
     // if (percentage == '0%') {
@@ -926,7 +927,7 @@ function updateDownloadStatusBar(infoHash) {
 
 }
 
-function downloadOrFetchTrackObj(infoHash, option, successFunctions) {
+function downloadOrFetchTrackObj(infoHash, option) {
 
 
 
@@ -985,10 +986,6 @@ function downloadOrFetchTrackObj(infoHash, option, successFunctions) {
     simplePost('add_play_count/' + infoHash, null, null, function() {
       // console.log('play queue saved');
     }, true, torrentTunesSparkService, null);
-
-    if (successFunctions != null) {
-      successFunctions(trackObj);
-    }
 
   });
 }
