@@ -453,7 +453,6 @@ function setupSettingsTab() {
     toastr.error("TorrentTunes Uninstalled");
     setTimeout(function() {
       open(location, '_self').close();
-
     }, 2000);
 
   });
@@ -901,10 +900,7 @@ function updateDownloadStatusBar(infoHash) {
       });
 
 
-      if (percentage == '100%') {
-        console.log('Download finished');
-        clearInterval(downloadStatusMap[infoHash]);
-        setUploadDownloadTotals();
+      if (percentageFloat == 1.0) {
 
         $(tr).css({
           'background-image': 'none',
@@ -914,6 +910,12 @@ function updateDownloadStatusBar(infoHash) {
       }
 
 
+    }
+
+    if (percentageFloat == 1.0) {
+      console.log('Download finished for infohash: ' + infoHash);
+      clearInterval(downloadStatusMap[infoHash]);
+      setUploadDownloadTotals();
     }
 
 
@@ -946,7 +948,12 @@ function downloadOrFetchTrackObj(infoHash, option, successFunctions) {
     // var id = parseInt(full[1]) - 1;
     var id = parseInt(trackObj['id']);
 
-    toastr.success('Added ' + trackObj['artist'] + ' - ' + trackObj['title']);
+
+    if (option != 'play-radio') {
+      toastr.success('Added ' + trackObj['artist'] + ' - ' + trackObj['title']);
+    }
+
+
     if (option == 'play-now') {
       playNow(trackObj);
     } else if (option == 'play-button') {
@@ -1096,26 +1103,30 @@ function createRadioStation(trackObj) {
 
   var artistMbid = trackObj['artist_mbid'];
 
+
+
   // First get the related songs:
   getJson('get_related_songs/' + artistMbid, null, torrentTunesSparkService).done(function(e) {
 
     var relatedSongs = JSON.parse(e);
 
-    // add original song to beginning of array
-    relatedSongs.unshift(trackObj);
+    // play the first track
+    playNow(trackObj);
 
+    console.log(relatedSongs);
     (function loop(i) {
       if (i < relatedSongs.length) {
         var song = relatedSongs[i];
         console.log(song);
 
-        var playType;
-        if (i == 0) {
-          playType = 'play-now';
-        } else {
-          playType = 'play-last';
-        }
+        var playType = 'play-last';
 
+
+        // set a timeout for downloading: if it takes longer than 1 minute,
+        // go on to the next track
+        // setTimeout(function() {
+        //   loop(i + 1);
+        // }, 60000);
 
         downloadOrFetchTrackObj(song['info_hash'], playType).done(function(e2) {
           loop(i + 1);
