@@ -510,6 +510,29 @@ public class Platform {
 			}
 			
 		});
+		
+		get("/remove_song/:songMBID", (req, res) -> {
+			try {
+
+				Tools.allowOnlyLocalHeaders(req, res);
+				
+				String songMBID = req.params(":songMBID");
+				Tools.dbInit();
+				
+				String json = Actions.removeSong(songMBID);
+				
+				return json;
+				
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+			
+		});
 
 		
 

@@ -920,6 +920,10 @@ public class Tools {
 		s.append("state: " + ts.getState().toString() + "\n");
 		s.append("error: " + ts.getError() + "\n");
 		s.append("progress: " + ts.getProgress() + "\n");
+		s.append("Queue position: " + ts.getQueuePosition() + "\n");
+		
+//		ts.getHandle().forceRecheck();
+//		ts.getHandle().queuePositionTop();
 		
 		log.info(s.toString());
 	}

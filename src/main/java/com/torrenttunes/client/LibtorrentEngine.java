@@ -149,21 +149,22 @@ public enum LibtorrentEngine  {
 		settings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
 		settings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
 
-		//		sessionSettings.setInteger(int_types.file_pool_size.swigValue(), 200000);
+		settings.setInteger(int_types.file_pool_size.swigValue(), 200000);
 
 		settings.setInteger(int_types.tracker_completion_timeout.swigValue(), 10);
 		settings.setBoolean(bool_types.incoming_starts_queued_torrents.swigValue(), true);
 
 		settings.setInteger(int_types.peer_timeout.swigValue(), 20);
 
-		settings.setInteger(int_types.alert_queue_size.swigValue(), 100000);
+		settings.setInteger(int_types.alert_queue_size.swigValue(), 1000000);
 
 
 		DHT dht = new DHT(session);
 		dht.stop();
 
 
-		//		settings.broadcastLSD(false);
+		settings.broadcastLSD(false);
+		
 		settings.setMaxPeerlistSize(500);
 		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
@@ -576,6 +577,8 @@ public enum LibtorrentEngine  {
 
 		//		log.info("flags = " + Long.toBinaryString(flags));
 		// default flags = 10001001110000
+		
+		
 		// Set seed mode
 		if (seedMode) {
 			flags += add_torrent_params.flags_t.flag_seed_mode.swigValue();
