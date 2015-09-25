@@ -17,7 +17,7 @@ public class DataSources {
 	
 	public static String LAUNCHER_NAME = "torrenttunes-launcher";
 	
-	public static String VERSION = "0.6.0";
+	public static String VERSION = "0.6.1";
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
@@ -138,11 +138,16 @@ public class DataSources {
 
 	public static final String LIBTORRENT_OS_LIBRARY_PATH() {
 		String osName = System.getProperty("os.name").toLowerCase();
-		log.info("Operating system " + osName);
+		String jvmBits = System.getProperty("sun.arch.data.model");
+		log.info("Operating system: " + osName + ", JVM bits: " + jvmBits);
 		
 		String ret = null;
 		if (osName.contains("linux")) {
-			ret = SOURCE_CODE_HOME() + "/lib/x86_64/libjlibtorrent.so";
+			if (jvmBits.equals("32")) {
+				ret = SOURCE_CODE_HOME() + "/lib/x86/libjlibtorrent.so";
+			} else {
+				ret = SOURCE_CODE_HOME() + "/lib/x86_64/libjlibtorrent.so";
+			}
 		} else if (osName.contains("windows")) {
 			ret = SOURCE_CODE_HOME() + "/lib/x86/jlibtorrent.dll";
 		} else if (osName.contains("mac")) {
