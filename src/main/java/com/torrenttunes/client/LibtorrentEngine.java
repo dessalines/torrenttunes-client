@@ -122,7 +122,6 @@ public enum LibtorrentEngine  {
 		Pair<Integer, Integer> prange = new Pair<Integer, Integer>(49154, 65535);
 		String iface = "0.0.0.0";
 
-
 		if (Main.log.getLevel().equals(Level.DEBUG)) {
 			// Create a session stats file with headers
 			createSessionStatsFile();
@@ -168,7 +167,7 @@ public enum LibtorrentEngine  {
 		settings.setMaxPeerlistSize(500);
 		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
-		settings.setBoolean(bool_types.utp_dynamic_sock_buf.swigValue(), false);
+//		settings.setBoolean(bool_types.utp_dynamic_sock_buf.swigValue(), false);
 		//		settings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
 		//		settings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
