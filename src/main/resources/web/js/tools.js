@@ -50,6 +50,7 @@ function simpleAjax(url, noToast, name) {
   return $.ajax({
     type: "GET",
     url: url,
+    cache: true,
     xhrFields: {
       withCredentials: true
     },
