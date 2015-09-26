@@ -51,7 +51,7 @@ function simpleAjax(url, noToast, name) {
     type: "GET",
     url: url,
     cache: true,
-    ifModified:true,
+    // ifModified:true,
     xhrFields: {
       withCredentials: true
     },
@@ -88,6 +88,7 @@ function fillSimpleText(url, divId) {
   return $.ajax({
     type: "GET",
     url: url,
+    cache: true,
     xhrFields: {
       withCredentials: true
     },
@@ -111,6 +112,7 @@ function fillStatusText(url, divId) {
     $.ajax({
       type: "GET",
       url: url,
+      cache: true,
       xhrFields: {
         withCredentials: true
       },
@@ -426,6 +428,7 @@ function fillTableFromMustache(url, templateHtml, divId, tableId) {
   var url = localSparkService + url // the script where you handle the form input.
   $.ajax({
     type: "GET",
+    cache: true,
     url: url,
     xhrFields: {
       withCredentials: true
@@ -499,6 +502,7 @@ function fillMustacheFromJson(url, templateHtml, divId) {
   return $.ajax({
     type: "GET",
     url: url,
+    cache: true,
     xhrFields: {
       withCredentials: true
     },
