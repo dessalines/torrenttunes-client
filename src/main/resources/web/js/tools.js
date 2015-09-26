@@ -51,6 +51,7 @@ function simpleAjax(url, noToast, name) {
     type: "GET",
     url: url,
     cache: true,
+    ifModified:true,
     xhrFields: {
       withCredentials: true
     },
