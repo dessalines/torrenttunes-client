@@ -2,6 +2,12 @@ package com.torrenttunes.client.webservice;
 
 import static spark.Spark.*;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+import javax.servlet.ServletOutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,32 +19,29 @@ static final Logger log = LoggerFactory.getLogger(WebService.class);
 
 	
 	public static void start() {
-		
-
-
-//				setupSSL();
-
-		// Add external web service url to beginning of javascript tools
-		//		Tools.addExternalWebServiceVarToTools();
 
 		port(DataSources.SPARK_WEB_PORT) ;
-
-		externalStaticFileLocation(DataSources.WEB_HOME());
 		
-		Platform.setup();
-		
-//		API.setup(tracker);
-		
+		Platform.setup();		
 	
 		get("/hello", (req, res) -> {
 			Tools.allowOnlyLocalHeaders(req, res);
 			return "hi from the torrenttunes-client web service";
 		});
+
 		
-		get("/:page", (req, res) -> {
-			Tools.allowOnlyLocalHeaders(req, res);	
-			String pageName = req.params(":page");
-			return Tools.readFile(DataSources.PAGES(pageName));
+		get("/*", (req, res) -> {
+			Tools.allowAllHeaders(req, res);
+//			Tools.set15MinuteCache(req, res);
+			
+			String pageName = req.splat()[0];
+			
+			String webHomePath = DataSources.WEB_HOME() + "/" + pageName;
+			
+			Tools.setContentTypeFromFileName(pageName, res);
+			
+			return Tools.writeFileToResponse(webHomePath, res);
+			
 		});
 
 	

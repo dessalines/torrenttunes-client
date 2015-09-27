@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -212,5 +213,7 @@ public class DataSources {
 	public static String TEMP_JAR_PATH() {return System.getProperty("user.home") + "/" + APP_NAME + ".jar";}
 
 	public static String INSTALLED_VERSION_FILE() {return SOURCE_CODE_HOME() + "/version";}
+	
+	public static final Date APP_START_DATE = new Date();
 	
 }
