@@ -593,6 +593,7 @@ function setupArtistCatalogCompilationTab() {
 // and all albums and songs
 function setupArtistCatalogTab() {
 
+  $('.tooltip').tooltip('destroy');
   $('#artistcatalogTab').addClass('hide');
   $('#home_page_loading_div').removeClass('hide');
 
