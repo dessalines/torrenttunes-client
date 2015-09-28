@@ -709,6 +709,7 @@ public class Tools {
 	}
 
 	public static void openWebpage(URI uri) {
+		log.info("Opening web page: " + uri);
 		DesktopApi.browse(uri);
 	}
 

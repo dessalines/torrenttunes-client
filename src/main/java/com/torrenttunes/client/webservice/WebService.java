@@ -1,12 +1,7 @@
 package com.torrenttunes.client.webservice;
 
-import static spark.Spark.*;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Arrays;
-
-import javax.servlet.ServletOutputStream;
+import static spark.Spark.get;
+import static spark.Spark.port;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +15,7 @@ static final Logger log = LoggerFactory.getLogger(WebService.class);
 	
 	public static void start() {
 
-		port(DataSources.SPARK_WEB_PORT) ;
+		port(DataSources.SPARK_WEB_PORT);	
 		
 		Platform.setup();		
 	

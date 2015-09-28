@@ -18,6 +18,7 @@ import com.torrenttunes.client.tools.Tools;
 import com.torrenttunes.client.webservice.WebService;
 
 import static com.torrenttunes.client.db.Tables.*;
+import static spark.Spark.awaitInitialization;
 
 
 public class Main {
@@ -71,8 +72,11 @@ public class Main {
 		setupSettings();
 
 		WebService.start();
+		
+		awaitInitialization();
 
-		Tools.pollAndOpenStartPage();
+		Tools.openWebpage(DataSources.MAIN_PAGE_URL());
+		
 
 		if (shareDirectory != null) {
 			ScanDirectory.start(new File(shareDirectory));

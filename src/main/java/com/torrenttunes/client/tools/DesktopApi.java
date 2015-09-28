@@ -197,7 +197,7 @@ public class DesktopApi {
 		log.error(msg);    }
 
 	private static void logOut(String msg) {
-		log.info(msg);
+		log.debug(msg);
 	}
 
 	public static enum EnumOS {

@@ -1,9 +1,5 @@
 package com.torrenttunes.client.db;
 import static com.torrenttunes.client.db.Tables.LIBRARY;
-import static com.torrenttunes.client.db.Tables.PLAYLIST;
-import static com.torrenttunes.client.db.Tables.PLAYLIST_TRACK;
-import static com.torrenttunes.client.db.Tables.PLAYLIST_TRACK_VIEW;
-import static com.torrenttunes.client.db.Tables.QUEUE_TRACK;
 import static com.torrenttunes.client.db.Tables.SETTINGS;
 
 import java.io.File;
@@ -18,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.JsonNode;
-import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +25,6 @@ import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.ScanDirectory.ScanStatus;
 import com.torrenttunes.client.TorrentStats;
 import com.torrenttunes.client.db.Tables.Library;
-import com.torrenttunes.client.db.Tables.Playlist;
-import com.torrenttunes.client.db.Tables.PlaylistTrack;
-import com.torrenttunes.client.db.Tables.PlaylistTrackView;
 import com.torrenttunes.client.db.Tables.Settings;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
@@ -49,7 +41,7 @@ public class Actions {
 			String title, Long durationMS) {
 
 		log.info("Saving song " + infoHash + " to library");
-		
+
 		Library library = LIBRARY.createIt("mbid", mbid,
 				"torrent_path", torrentPath,
 				"info_hash", infoHash,
@@ -62,15 +54,6 @@ public class Actions {
 
 		return library;
 
-	}
-
-	public static void clearAndSavePlayQueue(JsonNode on) {
-		QUEUE_TRACK.deleteAll();
-		for (int i = 0; i < on.size(); i++) {
-			JsonNode track = on.get(i);
-			Integer libraryId = track.get("id").asInt();
-			QUEUE_TRACK.createIt("library_id", libraryId);
-		}
 	}
 
 	public static String saveSettings(String storagePath, Integer maxDownloadSpeed,
@@ -88,14 +71,14 @@ public class Actions {
 			message.append("Moved all music files from " + currentStoragePath  + " to " + storagePath);
 
 			s.set("storage_path", storagePath);
-			
+
 			for (Library track : getCachedTracks()) {
-				
+
 				File trackFile = new File(track.getString("file_path"));
-				
+
 				// moves the file to the new dir
 				trackFile.renameTo(new File(storagePath + "/" + trackFile.getName()));
-				
+
 				// Save its new directory
 				track.set("file_path", storagePath).saveIt();
 			}
@@ -114,7 +97,7 @@ public class Actions {
 
 
 	}
-	
+
 
 	public static void updateLibtorrentSettings(Settings s) {
 
@@ -317,78 +300,28 @@ public class Actions {
 		return message;
 	}
 
-	public static String createPlaylist(String name) {
 
-		// Create it, then fetch the id
-		PLAYLIST.createIt("name", name);
-
-		Playlist p = PLAYLIST.findFirst("name = ?", name);
-
-		return p.getString("id");
-	}
-
-	public static String addToPlaylist(String playlistId, String infoHash) {
-
-		// Find the library id for an infohash
-		String libraryId = LIBRARY.findFirst("info_hash = ?", infoHash).getString("id");
-
-		
-
-		// Check to see if that track isn't already in the playlist
-		PlaylistTrack pt = PLAYLIST_TRACK.findFirst("playlist_id = ? and library_id = ?", playlistId, libraryId);
-		if (pt != null) {
-			throw new NoSuchElementException("Didn't add, track was already in playlist");
-		} 
-		// Otherwise, add it
-		else {
-			PLAYLIST_TRACK.createIt("playlist_id", playlistId,
-					"library_id", libraryId);
-		}
-
-
-		return "Added to playlist";
-	}
-
-	public static String deletePlaylist(String playlistId) {
-
-		PLAYLIST_TRACK.delete("playlist_id = ?", playlistId);
-
-		PLAYLIST.findFirst("id = ?", playlistId).delete();
-
-		return "Playlist deleted";
-	}
-
-	public static String removeFromPlaylist(String playlistId, String infoHash) {
-		PlaylistTrackView p = PLAYLIST_TRACK_VIEW.findFirst("playlist_id = ? and info_hash = ?", playlistId, infoHash);
-
-		String playlistTrackId = p.getString("playlist_track_id");
-
-		log.info("playlist track id = " + playlistId);
-		PLAYLIST_TRACK.findFirst("id = ?",	playlistTrackId).delete();
-
-		return "Track removed from playlist";
-	}
 
 	public static String removeArtist(String artistMBID) {
 
 		List<Library> songs = LIBRARY.find("artist_mbid = ?", artistMBID);
 		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
-		
+
 		for (Library song : songs) {
 			removeSong(song, cacheDir);
 		}
 
 		return "Artist : " + artistMBID + " deleted from library";
 	}
-	
+
 	public static String removeSong(String songMBID) {
 
 		Library song = LIBRARY.findFirst("mbid = ?", songMBID);
 		removeSong(song);
-		
+
 		return "Song : " + songMBID + " deleted from library";
 	}
-	
+
 	public static String removeSong(Library song) {
 		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
 		return removeSong(song, cacheDir);
@@ -411,6 +344,11 @@ public class Actions {
 		// delete the torrent file
 		new File(song.getString("torrent_path")).delete();
 
+		// delete the save resume data file
+		String srDataPath = DataSources.TORRENTS_DIR() + "/srdata_" + 
+				new File(song.getString("file_path")).getName();
+		new File(srDataPath).delete();
+
 		// delete the song(only if its a cached one)
 		File songFile = new File(song.getString("file_path"));
 		String parent = songFile.getParentFile().getAbsolutePath();
@@ -419,7 +357,7 @@ public class Actions {
 			log.info("file: " + songFile.getAbsolutePath() + " deleted");
 			songFile.delete();
 		}
-		
+
 		// delete the row
 		song.delete();
 
@@ -431,12 +369,12 @@ public class Actions {
 
 		List<Library> cachedTracks = getCachedTracks();
 		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
-		
+
 		for (Library song : cachedTracks) {
 			log.info("Song removed from cache: " + song.getString("file_path"));
 			removeSong(song, cacheDir);
 		}
-		
+
 		String msg = "Songs removed from cache: " + cachedTracks.size();
 		log.info(msg);
 
@@ -445,6 +383,12 @@ public class Actions {
 
 
 
+	}
+
+	public static String clearDatabase() {
+		LIBRARY.deleteAll();
+
+		return "Database cleared";
 	}
 
 	public static List<Library> getCachedTracks() {

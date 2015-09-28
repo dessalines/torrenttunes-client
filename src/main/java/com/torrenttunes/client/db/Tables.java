@@ -17,30 +17,6 @@ public class Tables {
 	public static class Library extends Model {}
 	public static final Library LIBRARY = new Library();
 	
-	@DbName("ttc")
-	@Table("queue_track")
-	public static class QueueTrack extends Model {}
-	public static final QueueTrack QUEUE_TRACK = new QueueTrack();
-	
-	@DbName("ttc")
-	@Table("queue_view")
-	public static class QueueView extends Model {}
-	public static final QueueView QUEUE_VIEW = new QueueView();
-	
-	@DbName("ttc")
-	@Table("playlist_track")
-	public static class PlaylistTrack extends Model {}
-	public static final PlaylistTrack PLAYLIST_TRACK = new PlaylistTrack();
-	
-	@DbName("ttc")
-	@Table("playlist_track_view")
-	public static class PlaylistTrackView extends Model {}
-	public static final PlaylistTrackView PLAYLIST_TRACK_VIEW = new PlaylistTrackView();
-	
-	@DbName("ttc")
-	@Table("playlist")
-	public static class Playlist extends Model {}
-	public static final Playlist PLAYLIST = new Playlist();
 	
 	
 

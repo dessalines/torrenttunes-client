@@ -52,8 +52,11 @@ soundManager.onready(function() {
   console.log(player.dom);
   console.log(player.actions);
   // player.actions.play()
-  setupPlayQueue();
+  // setupPlayQueue();
   // setCurrentTrackObj();
+  player.playlistController.refresh();
+  player.actions.next();
+  player.actions.stop();
   setupPaths();
 });
 
@@ -455,6 +458,16 @@ function setupSettingsTab() {
       open(location, '_self').close();
     }, 2000);
 
+  });
+
+  $('#clear_cache_button').click(function() {
+    simplePost('clear_cache', null, false, null, true, localSparkService, '#clear_cache_button');
+    toastr.success("Local song cache cleared");
+  });
+
+  $('#clear_database_button').click(function() {
+    simplePost('clear_database', null, false, null, true, localSparkService, '#clear_database_button');
+    toastr.success("Database Cleared");
   });
 
 
@@ -994,30 +1007,30 @@ function downloadOrFetchTrackObj(infoHash, option) {
 
 
 
-function setupPlayQueue() {
-  // Load it from the DB
-  getJson('get_play_queue').done(function(e) {
-    playQueue = JSON.parse(e);
-    console.log("play queue = " + playQueue);
+// function setupPlayQueue() {
+//   // Load it from the DB
+//   getJson('get_play_queue').done(function(e) {
+//     playQueue = JSON.parse(e);
+//     console.log("play queue = " + playQueue);
 
-    if (playQueue != "") {
-      $('.sm2-bar-ui').removeClass('hide');
-      // Now reload the bottom bar playlist
-
-
-
-    }
-    playQueue.forEach(function(trackObj) {
-      addToQueueLast(trackObj);
-    });
-    player.playlistController.refresh();
-    player.actions.next();
-    player.actions.stop();
+//     if (playQueue != "") {
+//       $('.sm2-bar-ui').removeClass('hide');
+//       // Now reload the bottom bar playlist
 
 
-  });
 
-}
+//     }
+//     playQueue.forEach(function(trackObj) {
+//       addToQueueLast(trackObj);
+//     });
+//     player.playlistController.refresh();
+//     player.actions.next();
+//     player.actions.stop();
+
+
+//   });
+
+// }
 
 function addToQueueLast(trackObj) {
 
