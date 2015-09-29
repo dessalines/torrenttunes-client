@@ -409,7 +409,7 @@ public class Tools {
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			log.info(response.toString());
+			log.debug(response.toString());
 
 		} catch (IOException e) {
 			throw new NoSuchElementException("Filename too long.");
@@ -453,8 +453,8 @@ public class Tools {
 			throw new NoSuchElementException("Couldn't save the torrent info");
 		}
 
-		message = "Rqlite write status : " + message;
-		log.info(message);
+		message = "upload status : " + message;
+		log.debug(message);
 		return message;
 	}
 
