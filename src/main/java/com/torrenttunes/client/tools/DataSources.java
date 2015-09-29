@@ -18,7 +18,7 @@ public class DataSources {
 	
 	public static String LAUNCHER_NAME = "torrenttunes-launcher";
 	
-	public static String VERSION = "0.6.1";
+	public static String VERSION = "0.7.0";
 	
 	public static Integer SPARK_WEB_PORT = 4568;
 	
@@ -32,14 +32,15 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
 	
-	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
+	public static String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
-	
+	public static final String IP_HASH = Tools.getIPHash();
+		
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
 	// The path to the home dir
 	public static String HOME_DIR() {
-		String userHome = System.getProperty( "user.home" ) + "/." + APP_NAME;
+		String userHome = System.getProperty("user.home") + "/." + APP_NAME;
 		return userHome;
 	}
 	

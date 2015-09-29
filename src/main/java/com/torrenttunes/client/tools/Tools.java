@@ -1,6 +1,5 @@
 package com.torrenttunes.client.tools;
 
-import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -76,7 +75,9 @@ import com.frostwire.jlibtorrent.swig.create_torrent;
 import com.frostwire.jlibtorrent.swig.error_code;
 import com.frostwire.jlibtorrent.swig.file_storage;
 import com.frostwire.jlibtorrent.swig.libtorrent;
+import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -98,8 +99,7 @@ public class Tools {
 
 	public static final SimpleDateFormat RESPONSE_HEADER_DATE_FORMAT = 
 			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-	
-	
+
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
 
 
@@ -129,8 +129,8 @@ public class Tools {
 
 
 	}
-	
-	
+
+
 	public static void set15MinuteCache(Request req, Response res) {
 		res.header("Cache-Control", "public,max-age=300,s-maxage=900");
 		res.header("Last-Modified", RESPONSE_HEADER_DATE_FORMAT.format(DataSources.APP_START_DATE));
@@ -409,7 +409,7 @@ public class Tools {
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			log.info(response.toString());
+			log.debug(response.toString());
 
 		} catch (IOException e) {
 			throw new NoSuchElementException("Filename too long.");
@@ -453,8 +453,8 @@ public class Tools {
 			throw new NoSuchElementException("Couldn't save the torrent info");
 		}
 
-		message = "Rqlite write status : " + message;
-		log.info(message);
+		message = "upload status : " + message;
+		log.debug(message);
 		return message;
 	}
 
@@ -475,7 +475,7 @@ public class Tools {
 		}
 		return s;
 	}
-	
+
 	public static HttpServletResponse writeFileToResponse(String path, Response res) {
 
 		byte[] encoded;
@@ -486,7 +486,7 @@ public class Tools {
 			os.write(encoded);
 			os.close();
 			return res.raw();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new NoSuchElementException("Couldn't write result");
@@ -650,7 +650,7 @@ public class Tools {
 
 			String torrentTunesServiceLine = "var torrentTunesSparkService ='" + 
 					DataSources.TORRENTTUNES_URL + "';";
-			
+
 			String externalServiceLine = "var externalSparkService ='" + 
 					DataSources.EXTERNAL_URL + "';";
 
@@ -941,10 +941,10 @@ public class Tools {
 
 		return torrentFile;
 	}
-	
+
 
 	public static void printTorrentStatus(TorrentStatus ts) {
-		
+
 		StringBuilder s = new StringBuilder();
 		s.append("Torrent status for name: " + ts.getName() + "\n");
 		s.append("info_hash: " + ts.getInfoHash() + "\n");
@@ -952,15 +952,15 @@ public class Tools {
 		s.append("error: " + ts.getError() + "\n");
 		s.append("progress: " + ts.getProgress() + "\n");
 		s.append("Queue position: " + ts.getQueuePosition() + "\n");
-		
-//		ts.getHandle().forceRecheck();
-//		ts.getHandle().queuePositionTop();
-		
+
+		//		ts.getHandle().forceRecheck();
+		//		ts.getHandle().queuePositionTop();
+
 		log.info(s.toString());
 	}
 
 	public static void setContentTypeFromFileName(String pageName, Response res) {
-		
+
 		if (pageName.endsWith(".css")) {
 			res.type("text/css");
 		} else if (pageName.endsWith(".js")) {
@@ -973,6 +973,23 @@ public class Tools {
 			res.type("image/svg+xml");
 		}
 	}
+	
+	
+	public static String getIPHash() {
+		
+		// IP address is mixed with the users home directory, 
+		// so that it can't be decrypted by the server.
+		
+		String text = DataSources.EXTERNAL_IP + System.getProperty("user.home");
+		
+		HashFunction hf = Hashing.md5();
+		HashCode hc = hf.hashString(text, Charsets.UTF_8);
+		
+		String ipHash = hc.toString();
+		
+		return ipHash;
+	}
+
 
 }
 

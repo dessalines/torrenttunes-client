@@ -127,8 +127,8 @@ public enum LibtorrentEngine  {
 			createSessionStatsFile();
 			default_storage.disk_write_access_log(true);
 			libtorrent.set_utp_stream_logging(true);
-			addDefaultSessionAlerts();
 			session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
+			addDefaultSessionAlerts();
 		} else {
 			session = new Session(new Fingerprint(), prange, iface, defaultRouters(), false);
 		}
