@@ -15,6 +15,8 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,8 +116,16 @@ public class ScanDirectory {
 
 			// upload it to the server
 			try {
-				String songUploadJson = Tools.MAPPER.writeValueAsString(song);
-				Tools.uploadTorrentInfoToTracker(songUploadJson);
+				String songJson = Tools.MAPPER.writeValueAsString(song);
+				
+				// Add the mac_address
+				ObjectNode on = Tools.MAPPER.valueToTree(Tools.jsonToNode(songJson));
+				on.put("uploader_ip_hash", DataSources.IP_HASH);
+				
+				String songUploadJson = Tools.nodeToJson(on);
+				log.info("song upload json:\n" + songUploadJson);
+				
+				Tools.uploadTorrentInfoToTracker(songJson);
 			} catch(NoSuchElementException | IOException | NullPointerException e) {
 
 				e.printStackTrace();

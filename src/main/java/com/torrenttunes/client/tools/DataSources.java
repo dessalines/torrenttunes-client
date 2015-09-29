@@ -34,12 +34,13 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
-	
+	public static final String IP_HASH = Tools.getIPHash();
+		
 	public static final File SAMPLE_TORRENT = new File("/home/tyler/Downloads/[kat.cr]devious.maids.s03e01.hdtv.x264.asap.ettv.torrent");
 	
 	// The path to the home dir
 	public static String HOME_DIR() {
-		String userHome = System.getProperty( "user.home" ) + "/." + APP_NAME;
+		String userHome = System.getProperty("user.home") + "/." + APP_NAME;
 		return userHome;
 	}
 	

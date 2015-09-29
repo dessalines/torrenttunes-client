@@ -138,9 +138,19 @@ public class DerpTest extends TestCase {
 		}
 	}
 	
-	public static void testDerp6() {
-
+	public static void testDerp6() throws JsonGenerationException, JsonMappingException, IOException {
+//		Song song = Song.fetchSong(new File(DataSources.SAMPLE_SONG));
+//		
+//		String songJson = Tools.MAPPER.writeValueAsString(song);
+//		
+//		// Add the mac_address
+//		ObjectNode on = Tools.MAPPER.valueToTree(Tools.jsonToNode(songJson));
+//		on.put("uploader_ip_hash", DataSources.IP_HASH);
+//		
+//		String songUploadJson = Tools.nodeToJson(on);
+//		log.info("song upload json:\n" + songUploadJson);
 		
 	}
 
 }
+

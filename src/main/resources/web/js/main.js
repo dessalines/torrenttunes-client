@@ -1001,6 +1001,10 @@ function downloadOrFetchTrackObj(infoHash, option) {
       // console.log('play queue saved');
     }, true, torrentTunesSparkService, null);
 
+  }).error(function(err) {
+    simplePost('add_timeout_count/' + infoHash, null, null, function() {
+      // console.log('play queue saved');
+    }, true, torrentTunesSparkService, null);
   });
 }
 
