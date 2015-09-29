@@ -123,9 +123,8 @@ public class ScanDirectory {
 				on.put("uploader_ip_hash", DataSources.IP_HASH);
 				
 				String songUploadJson = Tools.nodeToJson(on);
-				log.info("song upload json:\n" + songUploadJson);
 				
-				Tools.uploadTorrentInfoToTracker(songJson);
+				Tools.uploadTorrentInfoToTracker(songUploadJson);
 			} catch(NoSuchElementException | IOException | NullPointerException e) {
 
 				e.printStackTrace();
