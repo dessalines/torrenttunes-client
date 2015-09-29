@@ -32,7 +32,7 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
 	
-	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
+	public static String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
 	public static final String IP_HASH = Tools.getIPHash();
 		
