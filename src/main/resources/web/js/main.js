@@ -1391,6 +1391,7 @@ function loadPlaylistsFromLocalStorage() {
   // Load the playlists object from the cookies
   // var cookie = getCookie('playlists');
   // var cookie = Cookies.getJSON('playlists');
+
   var localstorage = localStorage.getItem('playlists');
   if (localstorage != undefined) {
     playlists = JSON.parse(localstorage);
@@ -1400,9 +1401,19 @@ function loadPlaylistsFromLocalStorage() {
     playlists = [];
   }
 
+  // Check to make sure favorites exists, if it doesn't, create it
+  var favoritesPlaylistIndex = findIndexInArray(playlists, 'name', 'Favorites');
+  if (favoritesPlaylistIndex == null) {
+    var playlist = {
+      "name": "Favorites",
+      "tracks": []
+    };
+
+    playlists.push(playlist);
+    savePlaylistsToLocalStorage();
+  }
 
   return playlists;
-
 
 }
 
