@@ -97,7 +97,13 @@
 			<artifactId>jlibtorrent-linux</artifactId>
 			<version>${jlibtorrent.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.github.spullara.mustache.java</groupId>
+			<artifactId>compiler</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>

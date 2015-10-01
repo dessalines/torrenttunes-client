@@ -103,7 +103,8 @@ public class DataSources {
 	
 	public static final String WEB_SERVICE_STARTED_URL() {return WEB_SERVICE_URL + "hello";}
 	
-	public static final String MAIN_PAGE_URL() {return "file://" + WEB_HTML() + "/main.html";}
+	public static final String MAIN_PAGE_URL_EN() {return WEB_HTML() + "/main_en.html";}
+	public static final String MAIN_PAGE_URL_ES() {return WEB_HTML() + "/main_es.html";}
 	
 	public static final String SESSION_STATS_FILE() {return CODE_DIR + "/session_stats.0000.log";}
 	
@@ -217,4 +218,9 @@ public class DataSources {
 	
 	public static final Date APP_START_DATE = new Date();
 	
+	public static final String HTML_TEMPLATE_LOCATION() {return WEB_HTML() + "/main.template";}
+	
+	public static final String STRINGS_EN_LOCATION() {return SOURCE_CODE_HOME() + "/values/strings_en.json";}
+	
+	public static final String STRINGS_ES_LOCATION() {return SOURCE_CODE_HOME() + "/values/strings_es.json";}
 }

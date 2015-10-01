@@ -2,6 +2,7 @@ package com.torrenttunes.client;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -15,6 +16,7 @@ import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.client.tools.WriteMultilingualHTMLFiles;
 import com.torrenttunes.client.webservice.WebService;
 
 import static com.torrenttunes.client.db.Tables.*;
@@ -51,14 +53,13 @@ public class Main {
 			Tools.uninstall();
 		}
 
-		log.setLevel(Level.toLevel(loglevel));		
+		log.setLevel(Level.toLevel(loglevel));
 		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
 		log.getLoggerContext().getLogger("spark.webserver").setLevel(Level.OFF);
 
 		// Install Shortcuts
 		Tools.setupDirectories();
 
-		// set recopy to default
 		Tools.copyResourcesToHomeDir(recopy);
 
 		Tools.addExternalWebServiceVarToTools();
@@ -75,9 +76,8 @@ public class Main {
 		
 		awaitInitialization();
 
-		Tools.openWebpage(DataSources.MAIN_PAGE_URL());
+		openCorrectLanguageHomePage();
 		
-
 		if (shareDirectory != null) {
 			ScanDirectory.start(new File(shareDirectory));
 		}
@@ -88,6 +88,18 @@ public class Main {
 
 
 
+	}
+	
+	public static void openCorrectLanguageHomePage() {
+		String lang2 = Locale.getDefault().getLanguage();
+		String lang = System.getProperty("user.language");
+		log.info("System language = " + lang + " or Locale language: " + lang2);
+		
+		if (lang.equals("es")) {
+			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_ES());
+		} else {
+			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_EN());
+		}
 	}
 
 	public static void setupSettings() {

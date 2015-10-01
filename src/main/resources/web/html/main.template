@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>TorrentTunes</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="../image/favicon.ico" type="image/x-icon" />
+  <!-- Bootstrap core CSS -->
+  <link href="../css/cyborg.bootstrap.min.css" rel="stylesheet">
+  <!-- Link to font awesome -->
+  <!-- <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css"> -->
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Bootstrap social css -->
+  <link href="../bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet">
+  <!--   Bootstrap validator -->
+  <link rel="stylesheet" href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.min.css" />
+  <!--   toastr css -->
+  <link href="../bower_components/toastr/toastr.css" rel="stylesheet" />
+  <!--   typeahead css -->
+  <!-- <link href="typeaheadjs.css" rel="stylesheet" /> -->
+  <!-- Pickadate -->
+  <link href="../bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
+  <link href="../bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
+  <!-- Summernote -->
+  <link href="../bower_components/summernote/dist/summernote.css" rel="stylesheet" />
+  <!-- Bootstrap datepicker -->
+  <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+  <!-- Soundmanager css -->
+  <link rel="stylesheet" href="../css/audioplayer.css" />
+  <!-- This main css -->
+  <link href="../css/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navbars -->
+  <!-- the start of the doc -->
+  <div id="wrapper" class="wrapper">
+    <!-- header -->
+    <nav class="navbar navbar-default navbar-top" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand text-muted" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank"><img class="logo pull-left" src="../image/cd_icon_white_512.png" />TorrentTunes</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li id="searchbar">
+              <form id="search_form" class="navbar-form navbar-left navbar-input-group " role="search">
+                <input id='search_id' type='hidden' name='id' />
+                <div class="input-group">
+                  <div id="search_box" class="form-group">
+                    <input name="search_input" type="text" class="form-control typeahead rounded-left" placeholder="{{strings.search_empty}}">
+                  </div>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default rounded-right"><i class="fa fa-search"></i>
+                        </button>
+                   </span>
+                </div>
+              </form>
+            </li>
+            <li id="top_categories_div" class="dropdown">
+              <script id="top_categories_template" type="x-tmpl-mustache">
+                <div class="navbar-form">
+                  <a class="dropdown-toggle btn btn-default rounded-right rounded-left" data-toggle="dropdown">{{strings.browse~~ <span class="caret"></span>
+                </a>
+                  <ul class="dropdown-menu" role="menu">
+                    @@#.~~
+                    <li><a href="/category/@@id}}">@@name~~</a>
+                    </li>
+                    @@/.~~
+                    <li class="divider">
+                    </li>
+                    <li><a href="/browse"> View all</a>
+                    </li>
+                  </ul>
+                </div>
+              </script>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id="upload_download_totals" href="javascript:void(0);" data-toggle="tooltip" data-placement="auto" title=""><i class="fa fa-fw fa-exchange fa-rotate-90"></i></a></li>
+            <li data-toggle="tooltip" data-placement="auto" title="{{strings.support_development}}"><a class="text-normal" href="javascript:void(0);" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-fw"></i></a></li>
+            <li><a href="#settingsTab" data-toggle="tab"><i class="fa fa-fw fa-cog"></i></a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+    <!-- The full page with the sidebar -->
+    <div class="container-fluid">
+      <div class="row">
+        <!-- The sidebar -->
+        <div id="side_col" class="col-md-2 sidebar" role="tabpanel">
+          <ul id="left_tab" class="nav nav-sidebar main-sidebar" role="tablist">
+            <li class="active"><a href="#homeTab" data-toggle="tab">{{strings.home}}</a></li>
+            <li><a href="#browseTab" data-toggle="tab">{{strings.browse}}</a></li>
+            <li><a id="play_queue_btn" href="javascript:void(0);">{{strings.play_queue}}</a></li>
+            <li><a href="#libraryTab" data-toggle="tab">{{strings.library}}</a></li>
+            <li><a href="#settingsTab" data-toggle="tab">{{strings.settings}}</a></li>
+            <li><a href="#uploadTab" data-toggle="tab">{{strings.share}}</a></li>
+            <li class="hide"><a href="#shareTab" data-toggle="tab">{{strings.share}}</a></li>
+            <li class="hide"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
+            <li class="hide"><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
+            <li>
+              <h5 class="sidebar-spaced"><a class="text-muted" href="#playlistTab" data-toggle="tab">{{strings.playlists}}</a></h5></li>
+            <li class="hide"><a href="#playlistPageTab" data-toggle="tab">playlist page tab</a></li>
+            <div id="playlist_left_tab_div" class="nav nav-sidebar main-sidebar">
+              <script id="playlist_left_tab_template" type="x-tmpl-mustache">
+                @@#.~~
+                <li class="playlist-left-tab-element"><a data-toggle="tab" class="text-normal text-overflow" onclick="showPlaylist('@@name~~');" href="#derp">@@name~~</a></li> @@/.~~
+              </script>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <!-- The Page -->
+      <div class="row-fluid">
+        <div class="othermain-col col-md-10 col-md-offset-2">
+          <div id="home_page_loading_div"><i class='fa fa-circle-o-notch fa-spin fa-fw fa-6'></i></div>
+          <!-- Tabs -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="homeTab">
+              <div id="home_page_div" class="hide">
+                <h3 class="text-center no-padding-top">
+              {{strings.trending_albums}}
+              </h3>
+                <hr>
+                <div id="trending_albums_div">
+                  <script id="trending_albums_template" type="x-tmpl-mustache">
+                    <div class="row">
+                      @@#.~~
+                      <div class="col-md-3 col-xs-12">
+                        @@#album_coverart_thumbnail_small~~
+                        <a href="javascript:void(0);" onclick="showAlbumPage('@@mbid~~')"><img class="img-responsive center-block" src="@@album_coverart_thumbnail_small~~"></a>
+                        @@/album_coverart_thumbnail_small~~ @@^album_coverart_thumbnail_small~~
+                        <a a href="javascript:void(0);" onclick="showAlbumPage('@@mbid~~')"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
+                        @@/album_coverart_thumbnail_small~~
+                        <div class="spacer"></div>
+                        <div class="text-overflow">
+                          <a href="javascript:void(0);" onclick="showArtistPageV2('@@artist_mbid~~')" class="text-muted"><b>@@@artist_name~~~</b></a>
+                        </div>
+                        <div class="text-overflow">
+                          <a href="javascript:void(0);" onclick="showAlbumPage('@@mbid~~')" class="text-muted"><i>@@@title~~~</i></a>
+                        </div>
+                        <p class="text-normal">@@year~~ &middot; @@number_of_songs~~ {{strings.songs}}
+                        </p>
+                      </div>
+                      @@/.~~ @@^.~~
+                      <p> {{strings.no_albums}}</p> @@/.~~
+                    </div>
+                  </script>
+                </div>
+                <h3 class="text-center">
+              {{strings.trending_songs}}
+              </h3>
+                <hr>
+                <div id="trending_songs_div"></div>
+                <hr class="featurette-divider">
+                <div id="description">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="panel">
+                        <div class="panel-body panel-fixed">
+                          <div class="row">
+                            <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                            <div class="text-center">
+                              <a class="text-normal" href="https://en.wikipedia.org/wiki/BitTorrent" target="_blank"><i class="fa fa-server fa-6"></i></a>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h2 class="text-center">
+                        <a href="https://en.wikipedia.org/wiki/BitTorrent" target="_blank">{{strings.decentralized}}</a>
+                      </h2>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-muted"> {{{strings.decentralized_section_html}}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="panel">
+                        <div class="panel-body panel-fixed">
+                          <div class="row">
+                            <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                            <div class="text-center">
+                              <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank"><i class="fa fa-github fa-6"></i></a>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h2 class="text-center">
+                        <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">{{strings.open_source}}</a>
+                      </h2>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-muted">{{{strings.open_source_section_html}}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="panel">
+                        <div class="panel-body panel-fixed">
+                          <div class="row">
+                            <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                            <div class="text-center">
+                              <a class="text-normal" href="http://www.reddit.com/r/torrenttunes/" target="_blank"><i class="fa fa-reddit fa-6"></i></a>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h2 class="text-center">
+                        <a href="http://www.reddit.com/r/torrenttunes/" target="_blank">{{strings.requests}}</a>
+                      </h2>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-muted"> {{{strings.requests_section_html}}}
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="panel">
+                        <div class="panel-body panel-fixed">
+                          <div class="row">
+                            <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                            <div class="text-center">
+                              <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank"><i class="fa fa-retweet fa-6"></i></a>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h2 class="text-center">
+                        <a href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank">{{strings.sharing}}</a>
+                      </h2>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-muted"> {{{strings.sharing_section_html}}}
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="panel">
+                        <div class="panel-body panel-fixed">
+                          <div class="row">
+                            <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                            <div class="text-center">
+                              <a class="text-normal" href="javascript:void(0);" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-6"></i></a>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h2 class="text-center">
+                        <a href="javascript:void(0);" data-toggle="modal" data-target="#donateModal">{{strings.free}}</a>
+                      </h2>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-muted"> {{{strings.free_section_html}}}
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="panel">
+                        <div class="panel-body panel-fixed">
+                          <div class="row">
+                            <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                            <div class="text-center">
+                              <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank"><i class="fa fa-download fa-6"></i></a>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h2 class="text-center">
+                        <a href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank">{{strings.download}}</a>
+                      </h2>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-muted"> <br>
+                          <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank"><img class="logo" src="../image/cd_icon_white_512.png" /> {{strings.download_section}}</a><br>&nbsp;</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade " id="artistcatalogTab">
+              <!-- <i class="fa fa-play-circle-o"></i> -->
+              <div id="artist_catalog_div">
+                <script id="artist_catalog_template" type="x-tmpl-mustache">
+                  <h2 class="no-padding-top"> 
+                     <a name="artistcatalog_main" href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">   @@@name~~~</a> <small> 
+                     @@#official_homepage~~
+                     <a href="@@official_homepage~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.home_page}}"><i class="text-muted fa fa-fw fa-home"></i></a>
+                      @@/official_homepage~~
+                      @@#wikipedia_link~~
+                      <a href="@@wikipedia_link~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="Wikipedia"><i class="text-muted fa fa-fw fa-wikipedia-w"></i></a>
+                      @@/wikipedia_link~~
+                      @@#allmusic_link~~
+                      <a href="@@allmusic_link~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="AllMusic"><i class="text-muted fa fa-fw fa-music"></i></a>
+                      @@/allmusic_link~~
+                      @@#lastfm~~
+                      <a href="@@lastfm~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="Last.fm"><i class="text-muted fa fa-fw fa-lastfm"></i></a>
+                      @@/lastfm~~
+                      @@#soundcloud~~
+                      <a href="@@soundcloud~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="SoundCloud"><i class="text-muted fa fa-fw fa-soundcloud"></i></a>
+                      @@/soundcloud~~
+                      @@#youtube~~
+                      <a href="@@youtube~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="YouTube"><i class="text-muted fa fa-fw fa-youtube"></i></a>
+                      @@/youtube~~
+                      @@#imdb~~
+                      <a href="@@imdb~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="IMDB"><i class="text-muted fa fa-fw fa-film"></i></a>
+                      @@/imdb~~
+                      @@#lyrics~~
+                      <a href="@@lyrics~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.lyrics}}"><i class="text-muted fa fa-fw fa-file-text-o"></i></a>
+                      @@/lyrics~~
+                       @@#image_url~~
+                      <a href="@@image_url~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.picture}}"><i class="text-muted fa fa-fw fa-picture-o"></i></a>
+                      @@/image_url~~
+                      </small></h2>
+                </script>
+              </div>
+              <!-- A bunch of tabs for the artistcatalog -->
+              <!-- Nav tabs -->
+              <ul id="artistcatalog_tab" class="nav nav-tabs nav-tabs-left nav-tabs-special" role="tablist">
+                <li class="active hide" role="presentation"><a href="#artistcatalog_main" aria-controls="home" role="tab" data-toggle="tab">Main</a></li>
+                <li name="artistcatalog_album" role="presentation"><a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab">{{strings.albums}}</a></li>
+                <li name="artistcatalog_compilation" role="presentation"><a class="text-normal" href="#artistcatalog_compilation" aria-controls="artistcatalog_compilation" role="tab" data-toggle="tab">{{strings.compilations}}</a></li>
+                <li name="artistcatalog_song" role="presentation"><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">{{strings.songs}}</a></li>
+              </ul>
+              <br>
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
+                  <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> {{strings.top_albums}} </a></h4>
+                  <br>
+                  <div id="top_artist_albums_div">
+                    <script id="top_artist_albums_template" type="x-tmpl-mustache">
+                      <div class="row">
+                        @@#.~~
+                        <div class="col-md-3 col-xs-12">
+                          @@#album_coverart_thumbnail_small~~
+                          <a href="javascript:void(0);" onclick="showAlbumPage('@@mbid~~')"><img class="img-responsive center-block" src="@@album_coverart_thumbnail_small~~"></a>
+                          @@/album_coverart_thumbnail_small~~ @@^album_coverart_thumbnail_small~~
+                          <a a href="javascript:void(0);" onclick="showAlbumPage('@@mbid~~')"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
+                          @@/album_coverart_thumbnail_small~~
+                          <div class="spacer"></div>
+                          <div class="text-overflow">
+                            <a a href="javascript:void(0);" onclick="showAlbumPage('@@mbid~~')" class="text-muted"><b>@@@title~~~</b></a>
+                          </div>
+                          <p class="text-normal">@@year~~ &middot; @@number_of_songs~~ {{strings.songs}}
+                          </p>
+                        </div>
+                        @@/.~~ @@^.~~
+                        <p> {{strings.no_albums}}</p> @@/.~~
+                      </div>
+                    </script>
+                  </div>
+                  <div class="col-md-12">
+                    <p class="text-right"><a class="text-muted" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab">{{strings.more_albums}} <i class="fa fa-arrow-right"></i></a></p>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">{{strings.top_songs}}</a></h4>
+                      <div id="top_artist_songs_div">
+                        <script id="top_artist_songs_template" type="x-tmpl-mustache">
+                          <table id="top_artist_songs_table" class="table table-hover table-striped tablesorter table-overflow">
+                            <colgroup>
+                              <col style="width:8%">
+                                <col style="width:50%">
+                                  <col style="width:7%">
+                                    <col style="width:30%">
+                                      <col style="width:5%">
+                            </colgroup>
+                            <thead>
+                              <tr>
+                                <th colspan="2">{{strings.track}}</th>
+                                <th>{{strings.time}}</th>
+                                <th>{{strings.album}}</th>
+                                <th align="right">{{strings.plays}}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @@#.~~
+                              <tr data-info_hash="@@info_hash~~">
+                                <td>
+                                  <span>
+                        <div class="btn-group text-normal">
+                              <a name="play-button_@@info_hash~~" info_hash="@@info_hash~~" song_mbid="@@song_mbid~~" file_path="@@file_path~~" title="@@@title~~~" artist_mbid="@@artist_mbid~~" artist="@@@artist~~~" duration_ms="@@duration_ms~~" release_group_mbid="@@release_group_mbid~~" album="@@album~~" seeders="@@seeders~~"
+
+                            class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a> 
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
+                                <i class="fa fa-angle-down"></i></a>
+                                  <ul class="dropdown-menu" role="menu">
+                                    <li><a name="play-now_@@info_hash~~" class="track-select"><i class="fa fa-play fa-fw"></i> {{strings.play_now}}</a></li>
+                                    <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
+                                    <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
+                                    <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                                    <ul class="add_to_playlist_class"></ul>
+                                    
+                                  </ul>
+                                  <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ seeders" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
+                      </div>
+                      </td>
+                      <td class="text-overflow"><span>@@@title~~~</span></td>
+                                <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
+                                <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
+                                </td>
+                                <td class="text-overflow" align="right"> <span>@@plays~~</span>
+                                </td>
+                              </tr>
+                              @@/.~~
+                            </tbody>
+                          </table>
+                        </script>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <p class="text-right"><a class="text-muted" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">{{strings.more_songs}} <i class="fa fa-arrow-right"></i></a></p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div id="artist_catalog_div_2">
+                      <script id="artist_catalog_template_2" type="x-tmpl-mustache">
+                        <div class="col-md-6">
+                          <h4 class="text-normal"> {{strings.tags}} </h4> @@#tags~~ <span class="label label-default">@@name~~</span> @@/tags~~
+                        </div>
+                        <div class="col-md-6">
+                          <h4 class="text-normal"> {{strings.related_artists}} </h4> @@#related_artists~~ <a class="label label-default " onclick="showArtistPageV2('@@artist2_mbid~~');" href="javascript:void(0);">@@artist2_name~~</a> @@/related_artists~~
+                        </div>
+                      </script>
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_album">
+                  <div id="all_artist_albums_div">
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_compilation">
+                  <div id="all_artist_compilations_div">
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="artistcatalog_song">
+                  <div id="all_artist_songs_div">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="albumcatalogTab">
+              <div id="album_catalog_div">
+                <script id="album_catalog_template" type="x-tmpl-mustache">
+                  <div class="row">
+                    <div class="col-md-6">
+                      @@#album_coverart_url~~
+                      <a class="text-normal" onclick="showArtistPage();" href="javascript:void(0);">
+                        <img class="img-responsive center-block" src="@@album_coverart_url~~" />
+                      </a>
+                      @@/album_coverart_url~~ @@^album_coverart_url~~
+                      <a a href="javascript:void(0);" onclick="showArtistPage();"><img class="img-responsive center-block" src="../image/music_333333_300.png"></a>
+                      @@/album_coverart_url~~
+                    </div>
+                    <div class="col-md-6">
+                      <h1> @@@title~~~  
+                    <small><a class="play-album text-normal" href="javascript:void(0)" data-toggle="tooltip" data-placement="auto" title="{{strings.play_album}}"><i class="fa fa-play-circle-o fa-fw"></i></a></small>
+                       
+                      <br><small>
+                      <a onclick="showArtistPage();" href="javascript:void(0);">@@@artist_name~~~
+                       </a>
+                      </small>
+                      </h1>
+                      <p class="text-muted"> @@year~~ &middot; @@number_of_songs~~ {{strings.songs}} @@#official_homepage~~&middot;
+                        <a href="@@official_homepage~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.home_page}}"><i class="text-muted fa fa-fw fa-home"></i></a> @@/official_homepage~~ @@#wikipedia_link~~&middot;
+                        <a href="@@wikipedia_link~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="Wikipedia"><i class="text-muted fa fa-fw fa-wikipedia-w"></i></a> @@/wikipedia_link~~ @@#allmusic_link~~&middot;
+                        <a href="@@allmusic_link~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="AllMusic"><i class="text-muted fa fa-fw fa-music"></i></a> @@/allmusic_link~~ @@#lyrics~~&middot;
+                        <a href="@@lyrics~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.lyrics}}"><i class="text-muted fa fa-fw fa-file-text-o"></i></a> @@/lyrics~~
+                        <br>
+                      </p>
+                    </div>
+                  </div>
+                  <br>
+                  <div id="album_catalog_songs_div"></div>
+                </script>
+              </div>
+            </div>
+            <script id="album_catalog_songs_template" type="x-tmpl-mustache">
+              <table id="album_catalog_songs_table" class="table table-hover table-striped tablesorter table-overflow">
+                <colgroup>
+                  <col style="width:8%">
+                    <col style="width:4%">
+                      <col style="width:78%">
+                        <col style="width:10%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>{{strings.track}}</th>
+                    <th>{{strings.time}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @@#.~~
+                  <tr data-info_hash="@@info_hash~~">
+                    <td>
+                      <span>
+                        <div class="btn-group text-normal">
+                              <a name="play-button_@@info_hash~~" info_hash="@@info_hash~~" song_mbid="@@song_mbid~~" file_path="@@file_path~~" title="@@@title~~~" artist_mbid="@@artist_mbid~~" artist="@@@artist~~~" duration_ms="@@duration_ms~~" release_group_mbid="@@release_group_mbid~~" album="@@album~~" seeders="@@seeders~~"
+                              class="track-select text-normal" href="javascript:void(0)"><i class="fa fa-play fa-fw"></i></a>
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
+                                <i class="fa fa-angle-down"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a name="play-now_@@info_hash~~" class="track-select"><i class="fa fa-play fa-fw"></i> {{strings.play_now}}</a></li>
+                      <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
+                      <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
+                      <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                      <ul class="add_to_playlist_class"></ul>
+                      
+                    </ul>
+                    <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ {{strings.seeders}}" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
+        </div>
+        </td>
+        <td class="text-overflow"><span>@@track_number~~</span></td>
+                    <td class="text-overflow"><span>@@@title~~~</span></td>
+                    <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
+                  </tr>
+                  @@/.~~
+                </tbody>
+              </table>
+            </script>
+            <div role="tabpanel" class="tab-pane fade" id="browseTab">
+              <div id="browse_div">
+                <script id="browse_template" type="x-tmpl-mustache">
+                  <div class="row">
+                    @@#.~~
+                    <div class="col-md-3 col-xs-12 text-overflow">
+                      <a class="text-muted" onclick="showArtistPageV2('@@mbid~~');" href="javascript:void(0);">@@@name~~~</a>
+                    </div>
+                    @@/.~~
+                  </div>
+                </script>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="playlistTab">
+              <h2 class="no-padding-top"> {{strings.playlists}}</h2>
+              <hr>
+              <div id="playlist_home_div">
+                <script id="playlist_home_template" type="x-tmpl-mustache">
+                  @@#.~~
+                  <h3><a class="text-normal" onclick="showPlaylist('@@name~~');" href="javascript:void(0);">@@name~~</a>
+                  <small> 
+                  <a name="delete-playlist_@@name~~" class="playlist-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
+                  </small>
+                  </h3> @@/.~~ @@#0~~
+                  <hr>@@/0~~
+                </script>
+              </div>
+              <form id="create_playlist_form" class="form-inline">
+                <div class="form-group">
+                  <label for="exampleInputName2">{{strings.name}}</label>
+                  <input name="name" type="text" class="form-control" id="exampleInputName2" placeholder="{{strings.playlist_empty}}" data-bv-notempty="true" data-bv-notempty-message="A name is required" data-bv-regexp="true" data-bv-regexp-regexp="^[\S]*$" data-bv-regexp-message="No spaces">
+                </div>
+                <button class="btn btn-default" type="submit"><i class="fa fa-plus fa-fw"></i> {{strings.create_new_playlist}}</button>
+              </form>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="playlistPageTab">
+              <div id="playlist_page_div">
+                <script id="playlist_page_template" type="x-tmpl-mustache">
+                  <h3> @@name~~
+                  <small><a class="play-playlist text-normal" href="javascript:void(0)"><i class="fa fa-play-circle-o fa-fw"></i></a>
+                    </small>
+                </h3>
+                  <table name="playlist_table" class="table table-hover table-striped tablesorter table-overflow">
+                    <colgroup>
+                      <col style="width:10%">
+                        <col style="width:35%">
+                          <col style="width:25%">
+                            <col style="width:5%">
+                              <col style="width:25%">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th colspan="2">{{strings.track}}</th>
+                        <th>{{strings.artist}}</th>
+                        <th>{{strings.time}}</th>
+                        <th>{{strings.album}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @@#tracks~~
+                      <tr data-info_hash="@@info_hash~~">
+                        <td>
+                          <span>
+                        <div class="btn-group text-normal">
+                              <a name="play-button_@@info_hash~~" info_hash="@@info_hash~~" song_mbid="@@song_mbid~~" file_path="@@file_path~~" title="@@@title~~~" artist_mbid="@@artist_mbid~~" artist="@@@artist~~~" duration_ms="@@duration_ms~~" release_group_mbid="@@release_group_mbid~~" album="@@album~~" seeders="@@seeders~~"
+                              class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
+                                <i class="fa fa-angle-down"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a name="play-now_@@info_hash~~" class="track-select"><i class="fa fa-play fa-fw"></i> {{strings.play_now}}</a></li>
+                        <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
+                        <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
+                        <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                        <ul class="add_to_playlist_class"></ul>
+                        
+                      </ul>
+
+
+                    
+                      
+                      <!-- <i class="fa fa-arrows fa-fw"></i> -->
+                      <a name="delete-playlist-track_@@name~~" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Remove" class="fa text-danger fa-fw fa-trash"></i></a>
+                      
+                          <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ {{strings.seeders}}" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
+                      
+          </div>
+          </td>
+          <td class="text-overflow"><span>@@@title~~~</span></td>
+                        <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('@@artist_mbid~~')" class="text-normal">@@@artist~~~</a></td>
+                        <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
+                        <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
+                        </td>
+                      </tr>
+                      @@/tracks~~
+                    </tbody>
+                  </table>
+                </script>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="shareTab">
+              <h3> {{strings.install_torrenttunes}}</h3>
+              <p>{{{strings.install_message_html}}}
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="panel">
+                      <div class="panel-body">
+                        <a href="https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar" target="_blank"><img class="logo pull-left" src="../image/cd_icon_white_512.png" /> {{strings.download_torrenttunes}}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br> {{strings.requires}}:
+                <ul>
+                  <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html" target="_blank" class="text-normal">Java 8</a> </li>
+                  <li> {{strings.firewall_message}}</li>
+                </ul>
+              </p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="uploadTab">
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{{strings.upload_warning_html}}}
+              </div>
+              <form id="upload_form" class="form-horizontal" role="form">
+                <div id="upload_form_div" class="form-group">
+                  <label for="inputUsername3" class="col-sm-12">{{strings.music_directory}}</label>
+                  <div class="col-sm-12">
+                    <input name="upload_path" type="inputEmail3" class="form-control" id="inputEmail3" data-bv-notempty="true" data-bv-notempty-message="{{strings.path_required}}" placeholder="C:/Music/...(Windows) or /home/[username]/Downloads(Linux) or /Users/[username]/Music(Mac)" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <button id="uploadBtn" type="submit" class="btn btn-default btn-lg btn-block" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">{{strings.share}}</button>
+                  </div>
+                </div>
+              </form>
+              <!-- Now the table showing the upload statuses -->
+              <div id="upload_panel" class="panel panel-default hide">
+                <div class="panel-body">
+                  <div id="upload_info_div">
+                    <script id="upload_info_template" type="x-tmpl-mustache">
+                      <table class="table table-hover table-striped tablesorter table-overflow">
+                        <colgroup>
+                          <col style="width:75%">
+                            <col style="width:25%">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>File</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @@#.~~
+                          <tr>
+                            <td class="text-overflow"><span><small>@@file~~</small></span></td>
+                            <td class="text-overflow"><span>@@statusString~~</span></td>
+                          </tr>
+                          @@/.~~
+                        </tbody>
+                      </table>
+                    </script>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="settingsTab">
+              <form id="settingsForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label" for="formGroupInputLarge">{{strings.maximum_download_speed}}</label>
+                  <div class="col-sm-4 input-group">
+                    <input name="max_download_speed" type="text" class="form-control " placeholder="-1" data-bv-notempty="true" data-bv-notempty-message="A number is required" data-fv-integer="true" data-fv-integer-message="The value is not an integer" data-bv-greaterthan="true" data-bv-greaterthan-value="-1" data-bv-greaterthan-message="Must be > -1 (-1 is unlimited)">
+                    <span class="input-group-addon" id="basic-addon2">kB/s</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label" for="formGroupInputLarge">{{strings.maximum_upload_speed}}</label>
+                  <div class="col-sm-4 input-group">
+                    <input name="max_upload_speed" type="text" class="form-control " placeholder="-1" data-bv-notempty="true" data-bv-notempty-message="A name is required" data-bv-notempty-message="A number is required" data-fv-integer="true" data-fv-integer-message="The value is not an integer" data-bv-greaterthan="true" data-bv-greaterthan-value="-1" data-bv-greaterthan-message="Must be > -1 (-1 is unlimited)">
+                    <span class="input-group-addon" id="basic-addon3">kB/s</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label" for="formGroupInputLarge">{{strings.maximum_cache_size}}</label>
+                  <div class="col-sm-4 input-group">
+                    <input name="max_cache_size_mb" type="text" class="form-control " placeholder="-1" data-bv-notempty="true" data-bv-notempty-message="A number is required" data-fv-integer="true" data-fv-integer-message="The value is not an integer" data-bv-greaterthan="true" data-bv-greaterthan-value="-1" data-bv-greaterthan-message="Must be > -1 (-1 is unlimited)">
+                    <span class="input-group-addon" id="basic-addon3">MB</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label" for="formGroupInputLarge">{{strings.download_location}}</label>
+                  <div class="col-sm-4 input-group">
+                    <input name="storage_path" type="text" class="form-control " placeholder="/home/.../.torrenttunes-client/cache" data-bv-notempty="true" data-bv-notempty-message="{{strings.path_required}}">
+                  </div>
+                </div>
+                <br>
+                <button name="saveBtn" type="submit" class="btn btn-block btn-default">{{strings.save_settings}}</button>
+              </form>
+              <br>
+              <button id="clear_cache_button" name="clearCacheBtn" type="submit" class="btn btn-block btn-warning">{{strings.remove_cached_songs}}</button>
+              <button id="clear_database_button" name="clearDatabaseBtn" type="submit" class="btn btn-block btn-warning">{{strings.clear_local_database}}</button>
+              <button id="uninstall_button" name="uninstallBtn" type="submit" class="btn btn-block btn-danger">{{strings.uninstall}}</button>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="libraryTab">
+              <!-- <h2 class="text-center no-padding-top"> Library
+                <br>
+              </h2> -->
+              <div id="library_div">
+                <script id="library_template" type="x-tmpl-mustache">
+                  <table name="library_table" class="table table-hover table-striped tablesorter table-overflow">
+                    <colgroup>
+                      <col style="width:8%">
+                        <col style="width:35%">
+                          <col style="width:25%">
+                            <col style="width:7%">
+                              <col style="width:25%">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th colspan="2">{{strings.track}}</th>
+                        <th>{{strings.artist}}</th>
+                        <th>{{strings.time}}</th>
+                        <th>{{strings.album}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @@#.~~
+                      <tr data-info_hash="@@info_hash~~">
+                        <td>
+                          <span>
+                        <div class="btn-group text-normal">
+                              <a name="play-button_@@info_hash~~" 
+                              info_hash="@@info_hash~~" song_mbid="@@song_mbid~~" file_path="@@file_path~~" title="@@@title~~~" artist_mbid="@@artist_mbid~~" artist="@@@artist~~~" duration_ms="@@duration_ms~~" release_group_mbid="@@release_group_mbid~~" album="@@album~~" seeders="@@seeders~~"
+
+                              class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
+                                <i class="fa fa-angle-down"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a name="play-now_@@info_hash~~" class="track-select"><i class="fa fa-play fa-fw"></i> {{strings.play_now}}</a></li>
+                        <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
+                        <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
+                        <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                     
+                       <ul class="add_to_playlist_class">
+                      </ul>
+                      </ul>
+
+
+
+
+                    
+                      @@#file_path~~
+                      <a name="delete-track_@@info_hash~~" class="track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Delete" class="fa text-danger fa-fw fa-trash"></i></a>
+                      @@/file_path~~ @@^file_path~~
+                          <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ seeders" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
+                      @@/file_path~~
+          </div>
+          </td>
+          <td class="text-overflow"><span>@@@title~~~</span></td>
+                        <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('@@artist_mbid~~')" class="text-normal">@@@artist~~~</a></td>
+                        <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
+                        <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
+                        </td>
+                      </tr>
+                      @@/.~~
+                    </tbody>
+                  </table>
+                </script>
+              </div>
+            </div>
+            <!-- Footer -->
+            <div class="row-fluid">
+              <hr class="featurette-divider">
+              <footer>
+                <p class="pull-right"><a href="javascript:void(0);">{{strings.back_to_top}}</a>
+                </p>
+                <p>&copy; 2015 TorrentTunes, Inc. &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">{{strings.about}}</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">{{strings.contact}}</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">{{strings.support}}</a> &middot; <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">Github</a>
+                  <br>
+                </p>
+              </footer>
+            </div>
+            <br>
+          </div>
+        </div>
+        <!-- end of wrapper -->
+      </div>
+      <div class="sm2-bar-ui flat full-width fixed hide">
+        <div class="bd sm2-main-controls">
+          <div class="sm2-inline-texture"></div>
+          <div class="sm2-inline-gradient"></div>
+          <div class="sm2-inline-element sm2-button-element">
+            <div class="sm2-button-bd">
+              <a href="#play" class="sm2-inline-button play-pause">Play / pause</a>
+            </div>
+          </div>
+          <div class="sm2-inline-element sm2-inline-status">
+            <div class="sm2-playlist">
+              <div class="sm2-playlist-target">
+                <!-- playlist <ul> + <li> markup will be injected here -->
+                <!-- if you want default / non-JS content, you can put that here. -->
+                <noscript>
+                  <p>JavaScript is required.</p>
+                </noscript>
+              </div>
+            </div>
+            <div class="sm2-progress">
+              <div class="sm2-row">
+                <div class="sm2-inline-time">0:00</div>
+                <div class="sm2-progress-bd">
+                  <div class="sm2-progress-track">
+                    <div class="sm2-progress-bar"></div>
+                    <div class="sm2-progress-ball">
+                      <div class="icon-overlay"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sm2-inline-duration">0:00</div>
+              </div>
+            </div>
+          </div>
+          <div class="sm2-inline-element sm2-button-element sm2-volume">
+            <div class="sm2-button-bd">
+              <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
+              <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
+            </div>
+          </div>
+          <div class="sm2-inline-element sm2-button-element">
+            <div class="sm2-button-bd">
+              <a href="#prev" title="Previous" class="sm2-inline-button previous">&lt; previous</a>
+            </div>
+          </div>
+          <div class="sm2-inline-element sm2-button-element">
+            <div class="sm2-button-bd">
+              <a href="#next" title="Next" class="sm2-inline-button next">&gt; next</a>
+            </div>
+          </div>
+          <div class="sm2-inline-element sm2-button-element">
+            <div class="sm2-button-bd">
+              <a href="#repeat" title="Repeat playlist" class="sm2-inline-button repeat">∞ repeat</a>
+            </div>
+          </div>
+          <div class="sm2-inline-element sm2-button-element sm2-menu">
+            <div class="sm2-button-bd">
+              <a href="#menu" class="sm2-inline-button menu">menu</a>
+            </div>
+          </div>
+        </div>
+        <div class="bd sm2-playlist-drawer sm2-element">
+          <div class="sm2-inline-texture">
+            <div class="sm2-box-shadow"></div>
+          </div>
+          <!-- playlist content is mirrored here -->
+          <div class="sm2-playlist-wrapper">
+            <ul class="sm2-playlist-bd">
+              <div id="playlist_div">
+                <script id="playlist_template" type="x-tmpl-mustache">
+                  @@#.~~
+                  <li><a href="@@file_path~~"><b>@@artist~~</b> - @@title~~</a><a href="3">test</a></li>
+                  @@/.~~
+                </script>
+              </div>
+              <!-- Some examples
+
+            <li><a href="/home/tyler/Downloads/Feist/Let%20It%20Die/03%20Let%20It%20Die.mp3">
+          DERP</a></li>
+            <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20LA%20%28Prod%20Chin%20Injetti%29.mp3"><b>SonReal</b> - LA (Prod. Chin Injetti)<span class="label">Explicit</span></a></li>
+            <li><a href="http://freshly-ground.com/data/audio/sm2/SonReal%20-%20Let%20Me%20%28Prod%202oolman%29.mp3"><b>SonReal</b> - Let Me <span class="label">Explicit</span></a></li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script id="song_player_template" type="x-tmpl-mustache">
+      <div class="btn-group text-normal">
+        @@@search~~~
+        <a name="play-button_@@info_hash~~" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a>
+        <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
+          <i class="fa fa-angle-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a name="play-now_@@info_hash~~" class="track-select"><i class="fa fa-play fa-fw"></i> {{strings.play_now}}</a></li>
+          <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
+          <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
+          <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+        </ul>
+        <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ seeders" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
+      </div>
+    </script>
+    <script id="add_to_playlist_template" type="x-tmpl-mustache">
+      @@#0~~
+      <li class="divider"></li>@@/0~~ @@#.~~
+      <li>
+        <a name="add-to-playlist][@@name~~" class="add_to_playlist"> <i class="fa fa-list fa-fw"></i> {{strings.add_to_playlist}} @@name~~ </a>
+      </li>
+      @@/.~~
+    </script>
+    <!-- Modals -->
+    <div class="modal fade bs-example-modal-lg" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="userloginModalLabel">{{strings.donate_bitcoin}}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <a class="qrcode_a">
+                <div id="qrcode" class="text-center"></div>
+              </a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <a class="qrcode_a"><h4 id="receive_address" class="text-center well"></h4></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of login modal -->
+    <!-- Bootstrap core JavaScript
+      ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js "></script>
+    <script src="../bower_components/toastr/toastr.js"></script>
+    <script src="../bower_components/mustache/mustache.js"></script>
+    <script src="../bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.min.js"></script>
+    <script src="../bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+    <script src="../bower_components/jquery.qrcode/dist/jquery.qrcode.min.js"></script>
+    <script src="../bower_components/soundmanager2/script/soundmanager2-jsmin.js"></script>
+    <!-- my scripts -->
+    <script src="../js/tools.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/audioplayer.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

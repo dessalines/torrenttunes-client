@@ -217,9 +217,6 @@ public class Tools {
 
 	public static void copyResourcesToHomeDir(Boolean copyAnyway) {
 
-
-		String zipFile = null;
-
 		String foundVersion = "";
 		try {
 			foundVersion = readFile(DataSources.INSTALLED_VERSION_FILE()).trim();
@@ -232,58 +229,58 @@ public class Tools {
 
 			log.info("Copying resources to  ~/." + DataSources.APP_NAME + " dirs");
 
-			try {
-				if (new File(DataSources.SHADED_JAR_FILE).exists()) {
-					java.nio.file.Files.copy(Paths.get(DataSources.SHADED_JAR_FILE), Paths.get(DataSources.ZIP_FILE()), 
-							StandardCopyOption.REPLACE_EXISTING);
-					zipFile = DataSources.SHADED_JAR_FILE;
+			String zipFile = copyJarFileToHome();
 
-				} else if (new File(DataSources.SHADED_JAR_FILE_2()).exists()) {
-					java.nio.file.Files.copy(Paths.get(DataSources.SHADED_JAR_FILE_2()), Paths.get(DataSources.ZIP_FILE()),
-							StandardCopyOption.REPLACE_EXISTING);
-					zipFile = DataSources.SHADED_JAR_FILE_2();
-				} else {
-					log.info("you need to build the project first");
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			deleteTemporaryJarFile();
 
-
-			// unzip and rename it to a jar, if it doesn't already exist
-			// TODO gotta figure this one out
-			File jarFile = new File(DataSources.JAR_FILE());
-			try {
-				File currentJar = new File(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-				if (!jarFile.equals(currentJar)) {
-					jarFile.delete();
-				}
-
-
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-
-			//			if (!new File(DataSources.JAR_FILE()).exists()) {
+			// Unzip it and rename it
 			Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
 			new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
-			//			}
-
+			
 			// Update the version number
-			PrintWriter writer;
-			try {
-				writer = new PrintWriter(DataSources.INSTALLED_VERSION_FILE(), "UTF-8");
-				writer.println(DataSources.VERSION);
-				writer.close();
-
-			} catch (FileNotFoundException | UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			Tools.writeFile(DataSources.VERSION, DataSources.INSTALLED_VERSION_FILE());
 
 			Tools.installShortcuts();
-			//		new Tools().copyJarResourcesRecursively("src", configHome);
+			
+			WriteMultilingualHTMLFiles.write();
+			
 		} else {
 			log.info("The source directory already exists");
+		}
+	}
+
+	private static String copyJarFileToHome() {
+		String zipFile = null;
+		try {
+			if (new File(DataSources.SHADED_JAR_FILE).exists()) {
+				java.nio.file.Files.copy(Paths.get(DataSources.SHADED_JAR_FILE), Paths.get(DataSources.ZIP_FILE()), 
+						StandardCopyOption.REPLACE_EXISTING);
+				zipFile = DataSources.SHADED_JAR_FILE;
+
+			} else if (new File(DataSources.SHADED_JAR_FILE_2()).exists()) {
+				java.nio.file.Files.copy(Paths.get(DataSources.SHADED_JAR_FILE_2()), Paths.get(DataSources.ZIP_FILE()),
+						StandardCopyOption.REPLACE_EXISTING);
+				zipFile = DataSources.SHADED_JAR_FILE_2();
+			} else {
+				log.info("you need to build the project first");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return zipFile;
+	}
+
+	private static void deleteTemporaryJarFile() {
+		File jarFile = new File(DataSources.JAR_FILE());
+		try {
+			File currentJar = new File(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			if (!jarFile.equals(currentJar)) {
+				jarFile.delete();
+			}
+
+
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -474,6 +471,22 @@ public class Tools {
 			log.error("file : " + path + " doesn't exist.");
 		}
 		return s;
+	}
+	
+	public static String readFile(File file) {
+		return readFile(file.getAbsolutePath());
+	}
+	
+	public static void writeFile(String text, String path) {
+		try {
+			java.nio.file.Files.write(Paths.get(path), text.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeFile(String text, File filePath) {
+		writeFile(text, filePath.getAbsolutePath());
 	}
 
 	public static HttpServletResponse writeFileToResponse(String path, Response res) {
@@ -669,39 +682,11 @@ public class Tools {
 
 	}
 
-	public static void pollAndOpenStartPage() {
-		// poll some of the url's every .5 seconds, and load the page when they come back with a result
-		int i = 500;
-		int cTime = 0;
-		while (cTime < 30000) {
-			try {
-				try {
-					String webServiceStartedURL = DataSources.WEB_SERVICE_STARTED_URL();
 
-					HttpURLConnection connection = null;
-					URL url = new URL(webServiceStartedURL);
-					connection = (HttpURLConnection) url.openConnection();
-					connection.setConnectTimeout(5000);//specify the timeout and catch the IOexception
-					connection.connect();
-					Thread.sleep(2*i);
-					Tools.openWebpage(DataSources.MAIN_PAGE_URL());
-					cTime = 30000;
-				} catch (IOException e) {
-					log.info("Could not connect to local webservice, retrying in 500ms up to 30 seconds");
-					cTime += i;
-
-					Thread.sleep(i);
-
-				}
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
-	public static void openWebpage(String urlString) {
+	public static void openFileWebpage(String urlString) {
 		try {
-			URL url = new URL(urlString);
+			String fileUrlString = "file://" + urlString;
+			URL url = new URL(fileUrlString);
 			openWebpage(url.toURI());
 		} catch (URISyntaxException | MalformedURLException e) {
 			e.printStackTrace();
@@ -835,6 +820,7 @@ public class Tools {
 
 
 	}
+	
 
 	public static void installLinuxShortcuts() {
 		log.info("Installing linux shortcuts...");
