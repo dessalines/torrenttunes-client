@@ -1009,33 +1009,6 @@ function downloadOrFetchTrackObj(infoHash, option) {
 }
 
 
-
-
-// function setupPlayQueue() {
-//   // Load it from the DB
-//   getJson('get_play_queue').done(function(e) {
-//     playQueue = JSON.parse(e);
-//     console.log("play queue = " + playQueue);
-
-//     if (playQueue != "") {
-//       $('.sm2-bar-ui').removeClass('hide');
-//       // Now reload the bottom bar playlist
-
-
-
-//     }
-//     playQueue.forEach(function(trackObj) {
-//       addToQueueLast(trackObj);
-//     });
-//     player.playlistController.refresh();
-//     player.actions.next();
-//     player.actions.stop();
-
-
-//   });
-
-// }
-
 function addToQueueLast(trackObj) {
 
   var li = buildLiFromTrackObject(trackObj);

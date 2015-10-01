@@ -321,7 +321,7 @@ public class Platform {
 				log.info("Powering off...");
 				
 				default_storage.disk_write_access_log(false);
-				LibtorrentEngine.INSTANCE.getSession().pause(); // should save all the resumeData
+//				LibtorrentEngine.INSTANCE.getSession().pause(); // should save all the resumeData
 				LibtorrentEngine.INSTANCE.getSession().abort();
 
 				
