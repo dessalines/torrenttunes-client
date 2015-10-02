@@ -1,4 +1,4 @@
-package com.torrenttunes.client;
+package com.torrenttunes.client.extra;
 
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.torrenttunes.client.tools.Tools;

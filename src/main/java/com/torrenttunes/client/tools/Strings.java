@@ -14,7 +14,13 @@ public enum Strings {
 	EN(DataSources.STRINGS_EN_LOCATION()), 
 	ES(DataSources.STRINGS_ES_LOCATION());
 	
-	public Map<String, Map<String, String>> map;
+
+	
+	/**
+	 * This is of the format: {strings: { home: Home, ...}}<br>
+	 * And used like {{strings.home}} in mustache templating
+	 */
+	public Map<String, Map<String, String>> map; 
 	
 	private Strings(String jsonLocation) {
 		
