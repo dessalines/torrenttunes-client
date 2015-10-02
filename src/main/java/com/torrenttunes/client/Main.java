@@ -1,7 +1,9 @@
 package com.torrenttunes.client;
 
+import static com.torrenttunes.client.db.Tables.SETTINGS;
+import static spark.Spark.awaitInitialization;
+
 import java.io.File;
-import java.util.Arrays;
 import java.util.Locale;
 
 import org.kohsuke.args4j.CmdLineException;
@@ -14,13 +16,10 @@ import ch.qos.logback.classic.Logger;
 
 import com.torrenttunes.client.db.Actions;
 import com.torrenttunes.client.db.InitializeTables;
+import com.torrenttunes.client.db.Tables.Settings;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
-import com.torrenttunes.client.tools.WriteMultilingualHTMLFiles;
 import com.torrenttunes.client.webservice.WebService;
-
-import static com.torrenttunes.client.db.Tables.*;
-import static spark.Spark.awaitInitialization;
 
 
 public class Main {
