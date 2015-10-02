@@ -778,12 +778,12 @@ function setupLibrary() {
       container: 'body'
     });
 
-    $("[name=library_table]").tablesorter({
-      sortList: [
-        [2, 0],
-        [4, 0]
-      ]
-    });
+    // $("[name=library_table]").tablesorter({
+    //   sortList: [
+    //     [2, 0],
+    //     [4, 0]
+    //   ]
+    // });
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
     addPlaylistDropdowns();
