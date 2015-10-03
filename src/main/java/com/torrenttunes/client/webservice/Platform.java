@@ -85,6 +85,31 @@ public class Platform {
 
 
 		});
+		
+		post("/share_directory/:path", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+				
+				String path = req.params(":path");
+
+				ScanDirectory.start(new File(path));
+
+
+
+				return "Uploading complete";
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} 
+
+
+
+		});
+		
+		
 
 		get("/get_upload_info", (req, res) -> {
 
