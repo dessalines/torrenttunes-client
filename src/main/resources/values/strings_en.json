@@ -71,6 +71,7 @@
     "remove_cached_songs": "Remove Cached Songs",
     "clear_local_database": "Clear Local Database",
     "uninstall": "Uninstall",
-    "library": "Library"
+    "library": "Library",
+    "download_discography_torrents": "Download Discography of .torrents"
   }
 }

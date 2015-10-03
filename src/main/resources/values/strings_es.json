@@ -72,6 +72,7 @@
     "remove_cached_songs": "Remover canciones en caché",
     "clear_local_database": "Limpiar la base de datos local",
     "uninstall": "Desinstalar",
-    "library": "Biblioteca"
+    "library": "Biblioteca",
+    "download_discography_torrents": "Descarga discografia de .torrents"
   }
 }

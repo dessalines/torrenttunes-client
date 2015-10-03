@@ -617,6 +617,9 @@ function setupArtistCatalogTab() {
     fillMustacheWithJson(artistCatalog, artistCatalogTemplate, '#artist_catalog_div');
     fillMustacheWithJson(artistCatalog, artistCatalogTemplate2, '#artist_catalog_div_2');
 
+    $('#discography_link').attr("href", torrentTunesSparkService + "get_artist_discography_zip/" +
+      artistCatalogMBID);
+
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
