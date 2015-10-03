@@ -1,2 +1,1 @@
-src/main/java/* linguist-vendored
-src/main/resources/web/bower_components/ linguist-vendored
+src/main/resources/web/bower_components/* linguist-documentation
