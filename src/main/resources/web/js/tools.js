@@ -658,7 +658,7 @@ function getUrlPathArray() {
 function getLastUrlPath() {
   var path;
   if (window.location.toString().startsWith('file:')) {
-    path = getUrlPathArray().slice(-1)[0];;
+    path = getUrlPathArray().slice(-1)[0];
   } else {
     path = torrentTunesSparkService;
   }
