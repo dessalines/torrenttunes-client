@@ -357,6 +357,7 @@
                        @@#image_url~~
                       <a href="@@image_url~~" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.picture}}"><i class="text-muted fa fa-fw fa-picture-o"></i></a>
                       @@/image_url~~
+                      <a id="discography_link" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.download_discography_torrents}}"><i class="text-muted fa fa-fw fa-download"></i></a>
                       </small></h2>
                 </script>
               </div>
