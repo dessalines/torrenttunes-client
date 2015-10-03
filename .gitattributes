@@ -1,1 +1,1 @@
-src/main/resources/web/bower_components/*.js linguist-vendored=false
+src/main/resources/web/bower_components/**/*.js linguist-vendored=false
