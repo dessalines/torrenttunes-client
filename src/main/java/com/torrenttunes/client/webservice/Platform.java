@@ -5,18 +5,32 @@ import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+
+
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
+
+
+import java.util.Set;
+
 import javax.servlet.http.HttpServletResponse;
+
+
+
 
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
+
 
 import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.TorrentStatus;
@@ -69,6 +83,8 @@ public class Platform {
 				Map<String, String> vars = Tools.createMapFromAjaxPost(req.body());
 
 				String uploadPath = vars.get("upload_path");
+				
+				log.info(uploadPath);
 
 				ScanDirectory.start(new File(uploadPath));
 
@@ -86,18 +102,22 @@ public class Platform {
 
 		});
 		
-		post("/share_directory/:path", (req, res) -> {
+		// Example : 
+		// curl --data "/home/derp/Music/A Music Dir" http://localhost:4568/share_directory
+		post("/share_directory", (req, res) -> {
 
 			try {
 				Tools.allowAllHeaders(req, res);
 				
-				String path = req.params(":path");
+				log.info(req.body());
 
-				ScanDirectory.start(new File(path));
+				String path = req.body().trim();
 
+				Set<ScanInfo> scanInfos = ScanDirectory.start(new File(path));
 
+				String scanInfoReport = ScanDirectory.scanInfosReport(scanInfos) + "\n";
 
-				return "Uploading complete";
+				return scanInfoReport;
 
 			} catch (Exception e) {
 				res.status(666);
