@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -34,18 +35,26 @@ public class ScanDirectory {
 
 	private File dir;
 
-	public static ScanDirectory start(File dir) {
-		return new ScanDirectory(dir);
-	}
 
-	private ScanDirectory(File dir) {
+
+
+
+	public static Set<ScanInfo> start(File dir) {
+		ScanDirectory sd = new ScanDirectory(dir);
+		return sd.scan();
+	}
+	
+	public ScanDirectory(File dir) {
 		this.dir = dir;
-		scan();
 	}
 
 
 
-	private void scan() {
+	private Set<ScanInfo> scan() {
+		
+		log.info("Scanning directory: " + dir.getAbsolutePath());
+		
+		Set<ScanInfo> newScanInfos = new LinkedHashSet<ScanInfo>();
 
 		List<File> files = fetchUntaggedSongsFromDir(dir);
 
@@ -160,14 +169,36 @@ public class ScanDirectory {
 
 			// Set it as scanned
 			si.setScanned(true);
-			//			}
+			newScanInfos.add(si);
+		
 
 		}
 
 
 
 		log.info("Done scanning");
+		
+		return newScanInfos;
 
+	}
+	
+	public static String scanInfosReport(Set<ScanInfo> sis) {
+		
+		if (sis.size() == 0) {
+			return "No .mp3 files were scanned";
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (ScanInfo si : sis) {
+			sb.append("ScanInfo: " + si.getMbid());
+			sb.append("FileName: " + si.getFileName());
+			sb.append("Status: " + si.getStatusString());
+			sb.append("Scanned: " + si.getScanned());
+			sb.append("\n");
+		}
+		
+		return sb.toString();
+		
 	}
 
 	public static List<File> fetchUntaggedSongsFromDir(File dir) {
@@ -218,49 +249,6 @@ public class ScanDirectory {
 		File torrentFile = new File(DataSources.TORRENTS_DIR() + "/" + torrentFileName + ".torrent");
 
 		return Tools.createAndSaveTorrent(torrentFile, si.getFile());
-		//
-		//
-
-		//		
-		//		FileStorage ffs = new FileStorage(fs);
-		////		ffs.addFile(si.getFileName(), si.getFile().length());
-		//
-		//		
-		//		File fakeMulti = new File(si.getFile().getParent() + "/t");
-		//		try {
-		//			fakeMulti.createNewFile();
-		//		} catch (IOException e1) {
-		//			e1.printStackTrace();
-		//		}
-		//		System.out.println(si.getFile().getParent());
-		//		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
-		//		libtorrent.add_files(fs, fakeMulti.getAbsolutePath());
-		//		
-		////		fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
-		////		fs.add_file(fakeMulti.getAbsolutePath(), fakeMulti.length());
-		//		
-		////		ffs.setName(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
-		////				+ " - tt[" + torrentFileName + "]");
-		//	
-		////		libtorrent.add_files(fs, si.getFile().getAbsolutePath());
-		////		fs.set_name(si.getFile().getParent());
-		//		
-		//	
-		//		
-		//		
-
-
-
-
-
-		//				fs.add_file(si.getFile().getAbsolutePath(), si.getFile().length());
-		//		fs.add_file(DataSources.SAMPLE_TORRENT.getAbsolutePath(), DataSources.SAMPLE_TORRENT.getAbsolutePath().length());
-		//		libtorrent.add_files(fs, DataSources.SAMPLE_TORRENT.getAbsolutePath());
-
-
-		//				ffs.setName(song.getArtist() + " - " + song.getRelease() + " - " + song.getRecording() 
-		//						+ "- tt[" + torrentFileName + "]");
-
 
 
 

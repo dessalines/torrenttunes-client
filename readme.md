@@ -49,6 +49,16 @@ chmod +x install.sh
 # This script does a maven install, and java -jar command
 ./install.sh
 ```
+## Command line client
+
+To run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
+`nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &`
+
+To scan your music directory:
+`curl --data "/home/user-dir/Music/A Music Dir" localhost:4568/share_directory`
+
+To stop the torrenttunes service:
+`curl -XPOST localhost:4568/power_off`
 
 ## Support 
 If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.ml), you can donate directly here:
