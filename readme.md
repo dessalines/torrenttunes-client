@@ -52,12 +52,15 @@ chmod +x install.sh
 ## Command line client
 
 To run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
+
 `nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &`
 
 To scan your music directory:
+
 `curl --data "/home/user-dir/Music/A Music Dir" localhost:4568/share_directory`
 
 To stop the torrenttunes service:
+
 `curl -XPOST localhost:4568/power_off`
 
 ## Support 
