@@ -162,7 +162,7 @@ public class DerpTest extends TestCase {
 //			System.out.println(e.getKey() + " : " + e.getValue());
 //		}
 		
-		WriteMultilingualHTMLFiles.write();
+//		WriteMultilingualHTMLFiles.write();
 		
 		
 		
