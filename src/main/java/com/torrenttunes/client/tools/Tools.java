@@ -692,6 +692,7 @@ public class Tools {
 
 	public static Long folderSize(File directory) {
 		long length = 0;
+		log.info("folder size directory: " + directory);
 		for (File file : directory.listFiles()) {
 			if (file.isFile())
 				length += file.length();

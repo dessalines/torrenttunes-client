@@ -21,15 +21,6 @@
   <link rel="stylesheet" href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.min.css" />
   <!--   toastr css -->
   <link href="../bower_components/toastr/toastr.css" rel="stylesheet" />
-  <!--   typeahead css -->
-  <!-- <link href="typeaheadjs.css" rel="stylesheet" /> -->
-  <!-- Pickadate -->
-  <link href="../bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
-  <link href="../bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
-  <!-- Summernote -->
-  <link href="../bower_components/summernote/dist/summernote.css" rel="stylesheet" />
-  <!-- Bootstrap datepicker -->
-  <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
   <!-- Soundmanager css -->
   <link rel="stylesheet" href="../css/audioplayer.css" />
   <!-- This main css -->
