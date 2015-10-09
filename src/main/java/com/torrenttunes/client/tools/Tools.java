@@ -28,6 +28,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -170,7 +171,7 @@ public class Tools {
 			}
 		}
 
-	
+
 
 		return postMap;
 
@@ -228,14 +229,14 @@ public class Tools {
 			// Unzip it and rename it
 			Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
 			new File(DataSources.ZIP_FILE()).renameTo(new File(DataSources.JAR_FILE()));
-			
+
 			// Update the version number
 			Tools.writeFile(DataSources.VERSION, DataSources.INSTALLED_VERSION_FILE());
 
 			Tools.installShortcuts();
-			
+
 			WriteMultilingualHTMLFiles.write();
-			
+
 		} else {
 			log.info("The source directory already exists");
 		}
@@ -464,11 +465,11 @@ public class Tools {
 		}
 		return s;
 	}
-	
+
 	public static String readFile(File file) {
 		return readFile(file.getAbsolutePath());
 	}
-	
+
 	public static void writeFile(String text, String path) {
 		try {
 			java.nio.file.Files.write(Paths.get(path), text.getBytes());
@@ -476,7 +477,7 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void writeFile(String text, File filePath) {
 		writeFile(text, filePath.getAbsolutePath());
 	}
@@ -693,13 +694,12 @@ public class Tools {
 	public static Long folderSize(File directory) {
 		long length = 0;
 		log.info("folder size directory: " + directory);
-		for (File file : directory.listFiles()) {
-			if (file.isFile())
-				length += file.length();
-			else
-				length += folderSize(file);
+		Collection<File> files = FileUtils.listFiles(directory, new String[]{".mp3"}, true);
+		for (File file : files) {
+			length += file.length();
 		}
 		return length;
+
 	}
 
 	public static void installShortcuts() {
@@ -813,7 +813,7 @@ public class Tools {
 
 
 	}
-	
+
 
 	public static void installLinuxShortcuts() {
 		log.info("Installing linux shortcuts...");
@@ -952,20 +952,20 @@ public class Tools {
 			res.type("image/svg+xml");
 		}
 	}
-	
-	
+
+
 	public static String getIPHash() {
-		
+
 		// IP address is mixed with the users home directory, 
 		// so that it can't be decrypted by the server.
-		
+
 		String text = DataSources.EXTERNAL_IP + System.getProperty("user.home");
-		
+
 		HashFunction hf = Hashing.md5();
 		HashCode hc = hf.hashString(text, Charsets.UTF_8);
-		
+
 		String ipHash = hc.toString();
-		
+
 		return ipHash;
 	}
 
