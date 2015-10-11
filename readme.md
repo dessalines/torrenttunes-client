@@ -51,9 +51,12 @@ chmod +x install.sh
 ```
 ## Command line client
 
-To run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
+To download and run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
 
-`nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &`
+```
+wget https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar
+nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &
+```
 
 To scan your music directory:
 
