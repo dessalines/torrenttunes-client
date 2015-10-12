@@ -72,6 +72,9 @@ public class ScanDirectory {
 
 			// Create a scanInfo from it, check if its a new one added
 			ScanInfo si = ScanInfo.create(file);
+			
+			// Add it to the new scan infos
+			newScanInfos.add(si);
 			boolean isNew = scanInfos.add(si);
 
 
@@ -169,7 +172,7 @@ public class ScanDirectory {
 
 			// Set it as scanned
 			si.setScanned(true);
-			newScanInfos.add(si);
+
 		
 
 		}
