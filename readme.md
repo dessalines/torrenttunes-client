@@ -60,7 +60,7 @@ nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &
 
 To scan your music directory:
 
-`curl --data "/home/user-dir/Music/A Music Dir" localhost:4568/share_directory`
+`curl localhost:4568/share_directory --data "/home/user-dir/Music/A Music Dir"`
 
 To stop the torrenttunes service:
 

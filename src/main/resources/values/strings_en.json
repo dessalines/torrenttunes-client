@@ -72,6 +72,8 @@
     "clear_local_database": "Clear Local Database",
     "uninstall": "Uninstall",
     "library": "Library",
-    "download_discography_torrents": "Download Discography of .torrents"
+    "download_discography_torrents": "Download Discography of .torrents",
+    "download_album_torrents": "Download Album .torrents",
+    "magnet_link": "Magnet Link"
   }
 }

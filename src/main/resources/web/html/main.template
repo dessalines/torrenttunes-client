@@ -428,6 +428,7 @@
                                     <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
                                     <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
                                     <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                                    <li><a name="magnet-link_@@info_hash~~" target="_blank" href="magnet:?xt=urn:btih:@@info_hash~~&dn=@@title~~&tr=udp://open.demonii.com:1337/announce"><i class="fa fa-magnet fa-fw"></i> {{strings.magnet_link}}</a></li>
                                     <ul class="add_to_playlist_class"></ul>
                                     
                                   </ul>
@@ -493,7 +494,10 @@
                     </div>
                     <div class="col-md-6">
                       <h1> @@@title~~~  
-                    <small><a class="play-album text-normal" href="javascript:void(0)" data-toggle="tooltip" data-placement="auto" title="{{strings.play_album}}"><i class="fa fa-play-circle-o fa-fw"></i></a></small>
+                    <small>
+                      <a class="play-album text-normal" href="javascript:void(0)" data-toggle="tooltip" data-placement="auto" title="{{strings.play_album}}"><i class="fa fa-play-circle-o fa-fw"></i></a>
+                      <a id="album_torrents_link" target="_blank" data-toggle="tooltip" data-placement="auto" title="{{strings.download_album_torrents}}"><i class="text-normal fa fa-fw fa-download"></i></a>
+                    </small>
                        
                       <br><small>
                       <a onclick="showArtistPage();" href="javascript:void(0);">@@@artist_name~~~
@@ -545,6 +549,7 @@
                       <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
                       <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
                       <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                      <li><a name="magnet-link_@@info_hash~~" target="_blank" href="magnet:?xt=urn:btih:@@info_hash~~&dn=@@title~~&tr=udp://open.demonii.com:1337/announce"><i class="fa fa-magnet fa-fw"></i> {{strings.magnet_link}}</a></li>
                       <ul class="add_to_playlist_class"></ul>
                       
                     </ul>
@@ -632,6 +637,7 @@
                         <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
                         <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
                         <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                        <li><a name="magnet-link_@@info_hash~~" target="_blank" href="magnet:?xt=urn:btih:@@info_hash~~&dn=@@title~~&tr=udp://open.demonii.com:1337/announce"><i class="fa fa-magnet fa-fw"></i> {{strings.magnet_link}}</a></li>
                         <ul class="add_to_playlist_class"></ul>
                         
                       </ul>
@@ -801,6 +807,7 @@
                         <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
                         <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
                         <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+                        <li><a name="magnet-link_@@info_hash~~" target="_blank" href="magnet:?xt=urn:btih:@@info_hash~~&dn=@@title~~&tr=udp://open.demonii.com:1337/announce"><i class="fa fa-magnet fa-fw"></i> {{strings.magnet_link}}</a></li>
                      
                        <ul class="add_to_playlist_class">
                       </ul>
@@ -942,6 +949,7 @@
           <li><a name="play-next_@@info_hash~~" class="track-select"><i class="fa fa-step-forward fa-fw"></i> {{strings.play_next}}</a></li>
           <li><a name="play-last_@@info_hash~~" class="track-select"><i class="fa fa-fast-forward fa-fw"></i> {{strings.play_last}}</a></li>
           <li><a name="play-radio_@@info_hash~~" class="track-select"><i class="fa fa-bullhorn fa-fw"></i> {{strings.create_station}}</a></li>
+          <li><a name="magnet-link_@@info_hash~~" target="_blank" href="magnet:?xt=urn:btih:@@info_hash~~&dn=@@title~~&tr=udp://open.demonii.com:1337/announce"><i class="fa fa-magnet fa-fw"></i> {{strings.magnet_link}}</a></li>
         </ul>
         <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ seeders" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
       </div>
