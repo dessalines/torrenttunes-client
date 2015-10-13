@@ -527,6 +527,9 @@ function setupAlbumCatalogTab() {
 
     fillMustacheWithJson(album, albumCatalogTemplate, '#album_catalog_div');
 
+    $('#album_torrents_link').attr("href", torrentTunesSparkService + "get_album_zip/" +
+      albumCatalogMBID);
+
 
     getJson('get_album_songs/' + albumCatalogMBID, null, torrentTunesSparkService).done(function(e) {
       var albumSongs = JSON.parse(e);
