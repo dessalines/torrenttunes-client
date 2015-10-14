@@ -318,9 +318,13 @@ public class Actions {
 	public static String removeSong(String songMBID) {
 
 		Library song = LIBRARY.findFirst("mbid = ?", songMBID);
-		removeSong(song);
+		if (song != null) {
+			removeSong(song);
 
-		return "Song : " + songMBID + " deleted from library";
+			return "Song : " + songMBID + " deleted from library";
+		} else {
+			return "Song mbid = " + songMBID + " wasn't found";
+		}
 	}
 
 	public static String removeSong(Library song) {
