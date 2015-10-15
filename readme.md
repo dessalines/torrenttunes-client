@@ -67,7 +67,7 @@ To stop the torrenttunes service:
 `curl -XPOST localhost:4568/power_off`
 
 ## Support 
-If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.ml), you can donate directly here:
+If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.ml), you can donate [here](https://www.bountysource.com/teams/torrenttunes-client), or directly with bitcoin:
 
 [bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX](bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX)
 

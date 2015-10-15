@@ -968,18 +968,22 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="userloginModalLabel">{{strings.donate_bitcoin}}</h4>
+            <h4 class="modal-title" id="userloginModalLabel">{{strings.support_torrenttunes}}</h4>
           </div>
           <div class="modal-body">
             <div class="row">
+              <a href="https://www.bountysource.com/teams/torrenttunes-client">{{strings.bountysource}}</a>
+            
+              <br><br>
+              <a class="qrcode_a">
+                <span>{{strings.donate_bitcoin}}: </span>
+                <span id="receive_address"></span>
+              </a>
+              <br><br>
               <a class="qrcode_a">
                 <div id="qrcode" class="text-center"></div>
               </a>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="row">
-              <a class="qrcode_a"><h4 id="receive_address" class="text-center well"></h4></a>
+
             </div>
           </div>
         </div>

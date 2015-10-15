@@ -11,6 +11,7 @@
     "search_empty": "Buscar por artista, álbum o canción",
     "donate_bitcoin": "Donar Bitcoin",
     "support_development": "Apoya el Desarrollo de TorrentTunes",
+    "support_torrenttunes": "Apoya TorrentTunes",
     "songs": "Canciones",
     "more_songs": "Más Canciones",
     "top_songs": "Top cancioness",
@@ -75,6 +76,7 @@
     "library": "Biblioteca",
     "download_discography_torrents": "Descarga discografia de .torrents",
     "download_album_torrents": "Descarga Álbum de .torrents",
-    "magnet_link": "Magnet Link"
+    "magnet_link": "Magnet Link",
+    "bountysource": "Apoya TorrentTunes con Bounty Source"
   }
 }

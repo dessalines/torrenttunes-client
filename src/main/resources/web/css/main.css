@@ -53,6 +53,10 @@
 
 }*/
 
+#qrcode > canvas:nth-child(1) {
+  border: solid 15px White;
+}
+
 .add_to_playlist_class {
   clear: both;
   display: block;
@@ -74,7 +78,7 @@
   text-decoration: none;
 }
 
-#donateModal .modal-body {
+.section_white {
   background-color: #FFF;
 }
 
