@@ -1200,8 +1200,10 @@ background-color: #222222;*/
 }
 
 .tt-suggestion.tt-cursor {
-  color: #2A9FD6;
-  background-color: #0097cf;
+  color: #3FA9DA;
+  background-color: #424242;
+  /*color: #CC33FF;*/
+  /*background-color: #0097cf;*/
 }
 
 .tt-cursor {
@@ -1215,5 +1217,10 @@ background-color: #222222;*/
 
 .twitter-typeahead {
   float: left;
-  width: 100%
+  width: 100%;
 }
+
+.navbar-collapse.in {
+    overflow-y: visible;
+}
+

@@ -118,8 +118,10 @@ function setupSearch() {
     }
 
 
-  }).bind('typeahead:selected', function(e, data) {
+  }).bind('typeahead:selected', function(e, data, name) {
+    console.log(e);
     console.log(data);
+    console.log(name);
 
     setSearchType(data);
 
@@ -127,6 +129,10 @@ function setupSearch() {
     // $('#search_id').val(searchId);
 
     $(this).submit();
+  }).bind('typeahead:render', function(e) {
+    
+    $('#search_form').parent().find('.tt-selectable:first').addClass('tt-cursor');
+
   });
 
   // $('[name=search_input]').focus();
@@ -137,8 +143,7 @@ function setupSearch() {
   $("#search_form").submit(function(event) {
     var formData = $("#search_form").serializeArray();
 
-
-
+    hideKeyboard($('[name=search_input]'));
 
     // var classList = document.getElementsByName('creators_list').className.split(/\s+/);
     // console.log(classList);
@@ -180,24 +185,20 @@ function setupSearch() {
 
 function setSearchType(data) {
   // add a class for the type
-  var mbidTypes = ['song_mbid', 'artist_mbid', 'album_mbid'];
+  var searchTypes = ['search_song', 'search_artist', 'search_album'];
   var searchTypeIndex = 0;
   for (i = 0; i < 3; i++) {
-    searchTypeIndex = $.inArray(mbidTypes[i], Object.keys(data));
+    searchTypeIndex = $.inArray(searchTypes[i], Object.keys(data));
     console.log(searchTypeIndex);
     if (searchTypeIndex != -1) {
       break;
     }
   }
 
-  var searchType = Object.keys(data)[searchTypeIndex];
-  var searchMbid = data[searchType];
 
-  if (searchType == 'song_mbid') {
-    searchMbid = data['album_mbid'];
-  }
-  console.log(searchType);
-  console.log(searchMbid);
+  var searchType = Object.keys(data)[searchTypeIndex];
+
+
 
   // remove the 3 classes first
   $("#search_form").removeClass('song-search-type');
@@ -205,13 +206,22 @@ function setSearchType(data) {
   $("#search_form").removeClass('artist-search-type');
 
 
-  if (searchType == 'song_mbid') {
+  var searchMbid;
+  if (searchType == 'search_song') {
+    searchMbid = data['release_group_mbid'];
     $("#search_form").addClass('song-search-type');
-  } else if (searchType == 'album_mbid') {
+  } else if (searchType == 'search_album') {
+    searchMbid = data['mbid'];
     $("#search_form").addClass('album-search-type');
-  } else if (searchType == 'artist_mbid') {
+  } else if (searchType == 'search_artist') {
+    searchMbid = data['artist_mbid'];
     $("#search_form").addClass('artist-search-type');
   }
+
+  console.log(searchType);
+  console.log(searchMbid);
+
+
 
   $('#search_id').val(searchMbid);
 }
@@ -340,7 +350,7 @@ function setupAddToPlaylist() {
 
 
       deleteExtraFieldsFromPlaylists();
-      
+
       tracks.push(playlistTrackObj);
 
       savePlaylistsToLocalStorage();
