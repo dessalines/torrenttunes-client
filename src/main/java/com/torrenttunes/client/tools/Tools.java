@@ -368,8 +368,13 @@ public class Tools {
 	public static String constructTrackTorrentFilename(File file, Song song) {
 
 
-		String songName = String.format("%1.80s", song.getRecording());
-		String fileName = song.getArtist() + " - " + song.getRelease() + " - " + songName
+		
+		String artistReleaseSongName = song.getArtist() + " - " + 
+				song.getRelease() + " - " + 
+				song.getRecording();
+		String artistReleaseSongLimitedName = String.format("%1.80s", artistReleaseSongName);
+		
+		String fileName = artistReleaseSongLimitedName
 				+ " - tt[mbid-" + song.getRecordingMBID().toLowerCase()
 				+ "_sha2-" + sha2FileChecksum(file) + "]";
 
