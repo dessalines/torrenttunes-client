@@ -194,7 +194,7 @@ public class ScanDirectory {
 		StringBuilder sb = new StringBuilder();
 		for (ScanInfo si : sis) {
 			sb.append("ScanInfo: " + si.getMbid());
-			sb.append(" | FileName: " + si.getFileName());
+			sb.append(" | FileName: " + si.getFile().getAbsolutePath());
 			sb.append(" | Status: " + si.getStatusString());
 			sb.append(" | Scanned: " + si.getScanned());
 			sb.append("\n");
