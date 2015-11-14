@@ -541,7 +541,7 @@ public enum LibtorrentEngine  {
 
 		// Set the seed_mode flag
 		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath), true);
-
+		
 		// Set up the scanInfo
 		ScanInfo si = ScanInfo.create(new File(filePath));
 		si.setStatus(ScanStatus.Seeding);
@@ -614,7 +614,9 @@ public enum LibtorrentEngine  {
 				"\npath: " + torrentFile.getAbsolutePath() + 
 				"\ninfo_hash: " + infoHash);
 
-
+		torrent.replaceTrackers(DataSources.ANNOUNCE_ENTRIES());
+		
+		
 		shareTorrent(torrent);
 		addDefaultListeners(torrent);
 

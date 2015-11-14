@@ -933,7 +933,7 @@ public class Tools {
 		s.append("Torrent status for name: " + ts.getName() + "\n");
 		s.append("info_hash: " + ts.getInfoHash() + "\n");
 		s.append("state: " + ts.getState().toString() + "\n");
-		s.append("error: " + ts.getError() + "\n");
+		s.append("error: " + ts.errorCode() + "\n");
 		s.append("progress: " + ts.getProgress() + "\n");
 		s.append("Queue position: " + ts.getQueuePosition() + "\n");
 
