@@ -572,6 +572,7 @@ public enum LibtorrentEngine  {
 		p.setTi(ti.getSwig().copy());
 		p.setSave_path(savePath);
 		p.setStorage_mode(storage_mode_t.storage_mode_sparse);
+	
 		long flags = p.getFlags();
 
 		//		log.info("flags = " + Long.toBinaryString(flags));
@@ -615,6 +616,8 @@ public enum LibtorrentEngine  {
 				"\ninfo_hash: " + infoHash);
 
 		torrent.replaceTrackers(DataSources.ANNOUNCE_ENTRIES());
+		
+		
 		
 		
 		shareTorrent(torrent);
