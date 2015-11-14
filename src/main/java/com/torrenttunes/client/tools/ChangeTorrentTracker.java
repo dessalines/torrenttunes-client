@@ -75,7 +75,7 @@ public class ChangeTorrentTracker {
 			bos.flush();
 			bos.close();
 
-			log.info("Trackers updated for torrent: " + torrentFile.getName());
+			log.info("Trackers updated for torrent: " + torrentFile.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
