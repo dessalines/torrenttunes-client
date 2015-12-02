@@ -219,8 +219,10 @@ public class Platform {
 				
 				String infoHash = req.params(":infoHash");
 				
-				log.info("progress info hash: " + infoHash);
+//				log.info("progress info hash: " + infoHash);
+				
 				TorrentHandle th = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
+				log.info("Progress torrent: " + th.getName());
 				
 				Double progress = th.getStatus().getProgressPpm() / 1E6;
 //				float progress = th.getStatus().getProgress();
