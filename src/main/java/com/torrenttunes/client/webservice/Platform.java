@@ -232,7 +232,7 @@ public class Platform {
 
 			} catch (Exception e) {
 				res.status(666);
-				e.printStackTrace();
+//				e.printStackTrace();
 				return e.getMessage();
 			} 
 			
