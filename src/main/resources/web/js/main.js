@@ -58,6 +58,8 @@ soundManager.onready(function() {
   player.actions.next();
   player.actions.stop();
   setupPaths();
+
+
 });
 
 $(document).ready(function() {
@@ -1032,6 +1034,8 @@ function addToQueueLast(trackObj) {
 
   }
 
+  setupTrackRemoveFromQueue();
+
 
   return index;
 
@@ -1047,6 +1051,10 @@ function addToQueueNext(trackObj) {
   console.log(index);
 
   $('#playlist_div li ').eq(index).after(li);
+
+  setupTrackRemoveFromQueue();
+
+  
   return index;
 
 
@@ -1146,16 +1154,32 @@ function buildLiFromTrackObject(trackObj) {
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
 
   var href = '"file://' + trackObj['file_path'] + '"';
-  var li = '<li><a href=' + href + '><b>' +
+  // var li = '<li><a href=' + href + '><b>' +
+  //   '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
+  //   htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
+  //   htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
+
+  var li = '<li><div class="sm2-row">' +
+    '<div class="sm2-col sm2-wide">' +
+    '<a href=' + href + '><b>' +
     '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
-    htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
+    htmlDecode(htmlDecode(trackObj['title'])) +
+    '</a></div>' +
+    '<div class="sm2-col">' +
+    '<a class="sm2-icon sm2-exclude sm2-trash"' +
+    'href="javascript:void(0)" title="Remove From Queue">' +
+    '</a></div>' +
+    '</div></li>';
+
+
 
   console.log(li);
   console.log(trackObj);
   // console.log(encodedAudioFilePath);
 
   hrefToTrackObjMap[href] = trackObj;
+
 
 
 

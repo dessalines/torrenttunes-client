@@ -1454,14 +1454,16 @@
         console.log("trash pushed");
         var target = (e ? e.target || e.srcElement : utils.dom.get(dom.o, '.trash'));
 
+        if (target) {
+          $('#playlist_div').empty();
+          $('.sm2-bar-ui').addClass('hide');
 
-        $('#playlist_div').empty();
-        $('.sm2-bar-ui').addClass('hide');
+          playlistController.refresh();
 
-        playlistController.refresh();
+          player.actions.next();
+          player.actions.stop();
+        }
 
-        player.actions.next();
-        player.actions.stop();
 
 
       },

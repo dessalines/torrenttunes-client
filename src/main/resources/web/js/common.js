@@ -269,7 +269,7 @@ function showPlaylist(name) {
 
 
 function setupTrackSelect() {
-  $('.track-select').click(function(e) {
+  $('.track-select').unbind('click').click(function(e) {
     console.log('track selected');
     // var full = this.id.split('_');
     var name = $(this).attr('name');
@@ -292,13 +292,24 @@ function setupTrackSelect() {
 
   // console.log(library[0]);
   // console.log(library[id]);
+}
 
+function setupTrackRemoveFromQueue() {
 
+  $('.sm2-trash').unbind('click').click(function(e) {
+    console.log('removing track from queue');
+    var li = $(this).closest('li');
+    console.log(li);
+    li.remove();
 
+    player.playlistController.refresh();
+    
+
+  });
 }
 
 function setupAddToPlaylist() {
-  $('.add_to_playlist').click(function(e) {
+  $('.add_to_playlist').unbind('click').click(function(e) {
     console.log('adding to playlist');
     // var full = this.id.split('_');
     var name = $(this).attr('name');
@@ -375,7 +386,7 @@ function setupAddToPlaylist() {
 
 
 function setupTrackDelete() {
-  $('.track-delete').click(function(e) {
+  $('.track-delete').unbind('click').click(function(e) {
     console.log('track selected for delete');
     // var full = this.id.split('_');
     var name = $(this).attr('name');
@@ -401,7 +412,7 @@ function setupTrackDelete() {
 }
 
 function setupPlaylistTrackDelete() {
-  $('.playlist-track-delete').click(function(e) {
+  $('.playlist-track-delete').unbind('click').click(function(e) {
     console.log('Deleting track');
     // var full = this.id.split('_');
     var name = $(this).attr('name');
