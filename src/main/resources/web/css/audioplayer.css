@@ -592,6 +592,13 @@
  background-size: 54%;
 }
 
+.trash {
+ /*background-image: url(../image/icomoon/entypo-20px-ffffff/PNG/loop.png);*/
+ background-image: none, url(../image/trash_icon.svg);
+ background-position: 50% 43%;
+ background-size: 54%;
+}
+
 .sm2-extra-controls .repeat {
  background-position: 50% 45%;
 }

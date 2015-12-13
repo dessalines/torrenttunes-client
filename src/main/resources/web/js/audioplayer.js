@@ -1450,6 +1450,22 @@
 
       },
 
+      trash: function(e) {
+        console.log("trash pushed");
+        var target = (e ? e.target || e.srcElement : utils.dom.get(dom.o, '.trash'));
+
+
+        $('#playlist_div').empty();
+        $('.sm2-bar-ui').addClass('hide');
+
+        playlistController.refresh();
+
+        player.actions.next();
+        player.actions.stop();
+
+
+      },
+
       menu: function(ignoreToggle) {
 
         var isOpen;
