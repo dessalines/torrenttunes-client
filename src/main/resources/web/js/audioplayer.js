@@ -198,7 +198,31 @@
 
       }
 
+      function ancestor(nodeName, element, checkCurrent) {
+
+        var result;
+
+        if (!element || !nodeName) {
+          return element;
+        }
+
+        nodeName = nodeName.toUpperCase();
+
+        // return if current node matches.
+        if (checkCurrent && element && element.nodeName === nodeName) {
+          return element;
+        }
+
+        while (element && element.nodeName !== nodeName && element.parentNode) {
+          element = element.parentNode;
+        }
+
+        return (element && element.nodeName === nodeName ? element : null);
+
+      }
+
       return {
+        ancestor: ancestor,
         get: get,
         getAll: getAll
       };
@@ -632,12 +656,15 @@
           itemBottom,
           containerHeight,
           scrollTop,
-          itemPadding;
+          itemPadding,
+          liElement;
 
         // remove last selected, if any
         resetLastSelected();
 
         if (item) {
+
+          liElement = utils.dom.ancestor('li', item);
 
           utils.css.add(item, css.selected);
 
@@ -655,10 +682,11 @@
             dom.playlist.scrollTop = item.offsetTop - itemPadding;
           }
 
+
         }
 
         // update selected offset, too.
-        offset = findOffsetFromItem(item);
+        offset = findOffsetFromItem(liElement);
 
         data.selectedIndex = offset;
 
