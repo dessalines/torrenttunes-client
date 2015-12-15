@@ -1036,7 +1036,6 @@ function addToQueueLast(trackObj) {
 
   setupTrackRemoveFromQueue();
 
-
   return index;
 
 }
@@ -1054,7 +1053,6 @@ function addToQueueNext(trackObj) {
 
   setupTrackRemoveFromQueue();
 
-  
   return index;
 
 
