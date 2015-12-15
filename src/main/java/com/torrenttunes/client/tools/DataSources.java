@@ -199,7 +199,7 @@ public class DataSources {
 	}
 	public static final List<AnnounceEntry> ANNOUNCE_ENTRIES() {
 		return Arrays.asList(
-				new AnnounceEntry("udp://tracker.openbittorrent.com:80/announce")
+				new AnnounceEntry("udp://tracker.istole.it:80/announce")
 				);
 
 	}

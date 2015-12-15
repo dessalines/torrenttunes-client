@@ -61,7 +61,7 @@ public class ChangeTorrentTracker {
 		for (URI announce : DataSources.ANNOUNCE_LIST()) {
 			t.add_tracker(announce.toASCIIString());
 		}
-
+		
 
 		// Get the bencode and write the file
 		Entry entry =  new Entry(t.generate());
