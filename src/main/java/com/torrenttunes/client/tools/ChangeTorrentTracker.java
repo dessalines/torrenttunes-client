@@ -26,7 +26,7 @@ public class ChangeTorrentTracker {
 
 	public static void saveTorrents() {
 		try {
-			LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
+//			LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
 			Tools.dbInit();
 			List<Library> torrentFiles = LIBRARY.findAll();
 
