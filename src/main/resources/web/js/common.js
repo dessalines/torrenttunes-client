@@ -130,7 +130,7 @@ function setupSearch() {
 
     $(this).submit();
   }).bind('typeahead:render', function(e) {
-    
+
     $('#search_form').parent().find('.tt-selectable:first').addClass('tt-cursor');
 
   });
@@ -303,7 +303,7 @@ function setupTrackRemoveFromQueue() {
     li.remove();
 
     player.playlistController.refresh();
-    
+
 
   });
 }
@@ -381,6 +381,20 @@ function setupAddToPlaylist() {
 
   // console.log(library[0]);
   // console.log(library[id]);
+}
+
+function saveReorderedPlaylist(playlistIndex, oldIndex, newIndex) {
+  var playlist = playlists[playlistIndex];
+  var tracks = playlist['tracks'];
+
+  console.log('old = ' + oldIndex + ' new = ' + newIndex);
+
+  // swap the tracks
+  var temp = tracks[oldIndex];
+  tracks[oldIndex] = tracks[newIndex];
+  tracks[newIndex] = temp;
+  
+  savePlaylistsToLocalStorage();
 }
 
 

@@ -645,7 +645,9 @@
 
                     
                       
-                      <!-- <i class="fa fa-arrows fa-fw"></i> -->
+                      <a class="text-normal" href="javascript:void(0);">
+                                <i class="fa fa-arrows fa-fw"></i></a>
+
                       <a name="delete-playlist-track_@@name~~" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Remove" class="fa text-danger fa-fw fa-trash"></i></a>
                       
                           <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ {{strings.seeders}}" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
@@ -886,7 +888,7 @@
               </div>
             </div>
           </div>
-          <div class="sm2-inline-element sm2-button-element sm2-volume">
+          <div class="sm2-inline-element sm2-button-element sm2-volume hide hide_on_mobile">
             <div class="sm2-button-bd">
               <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
               <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
@@ -902,12 +904,12 @@
               <a href="#next" title="Next" class="sm2-inline-button next">&gt; next</a>
             </div>
           </div>
-          <div class="sm2-inline-element sm2-button-element">
+          <div class="sm2-inline-element sm2-button-element hide hide_on_mobile">
             <div class="sm2-button-bd">
               <a href="#repeat" title="Repeat playlist" class="sm2-inline-button repeat">∞ repeat</a>
             </div>
           </div>
-          <div class="sm2-inline-element sm2-button-element">
+          <div class="sm2-inline-element sm2-button-element hide hide_on_mobile">
             <div class="sm2-button-bd">
               <a href="#trash" title="Clear queue" class="sm2-inline-button trash">Trash</a>
             </div>
@@ -999,6 +1001,7 @@
       ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js "></script>
     <script src="../bower_components/toastr/toastr.js"></script>

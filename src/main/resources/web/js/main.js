@@ -59,6 +59,18 @@ soundManager.onready(function() {
   player.actions.stop();
   setupPaths();
 
+  // unhide a few things if desktop
+  if (!isMobile()) {
+    $('.hide_on_mobile').removeClass('hide');
+  }
+
+  // make the playlist div sortable
+  $('#playlist_div').sortable({
+    update: function(event, ui) {
+      
+    }
+  });
+
 
 });
 
@@ -344,7 +356,21 @@ function setupPlaylistPageTab() {
 
   setupPlaylistPlaySelect(playlist);
 
-  // $('#playlist_page_div tbody').sortable();
+  // Setting up the resorting of the playlist
+  $('#playlist_page_div tbody').sortable({
+    placeholder: "ui-state-highlight",
+    start: function(event, ui) {
+      ui.item.startPos = ui.item.index();
+    },
+    update: function(event, ui) {
+
+      saveReorderedPlaylist(playlistIndex, ui.item.startPos, ui.item.index());
+
+      // setupPlaylistPageTab();
+
+    }
+  });
+
   setupPlaylistTrackDelete();
 
   deleteExtraFieldsFromPlaylists();
@@ -365,7 +391,7 @@ function setupPlaylistPageTab() {
   //   setupTrackSelect();
   //   setupPlaylistPlaySelect(playlist);
 
-  //   $('#playlist_page_div tbody').sortable();
+
   //   setupPlaylistTrackDelete();
   // });
 }
@@ -812,18 +838,10 @@ function setupAlbumPlaySelect(albumSongs) {
 
       if (i < albumSongs.length) {
 
-        var playType;
-        if (i == 0) {
-          playType = 'play-now';
-        } else {
-          playType = 'play-last';
-        }
-
-
         var trackInfo = albumSongs[i];
         var infoHash = trackInfo['info_hash'];
 
-        downloadOrFetchTrackObj(infoHash, playType).done(function(e) {
+        downloadOrFetchTrackObj(infoHash, 'play-last').done(function(e) {
           loop(i + 1);
         });
 
@@ -845,18 +863,10 @@ function setupPlaylistPlaySelect(playlist) {
 
       if (i < tracks.length) {
 
-        var playType;
-        if (i == 0) {
-          playType = 'play-now';
-        } else {
-          playType = 'play-last';
-        }
-
-
         var trackInfo = tracks[i];
         var infoHash = trackInfo['info_hash'];
 
-        downloadOrFetchTrackObj(infoHash, playType).done(function(e) {
+        downloadOrFetchTrackObj(infoHash, 'play-last').done(function(e) {
           loop(i + 1);
         });
 
@@ -1031,7 +1041,7 @@ function addToQueueLast(trackObj) {
 
   if (index <= 0) {
     index = 0;
-
+    player.actions.prev();
   }
 
   setupTrackRemoveFromQueue();
