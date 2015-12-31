@@ -311,7 +311,6 @@ function setupTrackRemoveFromQueue() {
 
     savePlayQueueToLocalStorage();
 
-
     console.log('removing track from queue');
     var li = $(this).closest('li');
     // console.log(li);
@@ -420,8 +419,6 @@ function saveReorderedPlayQueue(oldIndex, newIndex) {
 
   savePlayQueueToLocalStorage();
 }
-
-
 
 function setupTrackDelete() {
   $('.track-delete').unbind('click').click(function(e) {

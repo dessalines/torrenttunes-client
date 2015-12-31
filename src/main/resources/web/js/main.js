@@ -66,10 +66,6 @@ soundManager.onready(function() {
     $('.hide_on_mobile').removeClass('hide');
   }
 
-  
-
-
-
 });
 
 $(document).ready(function() {
@@ -95,7 +91,6 @@ $(document).ready(function() {
 
 
 });
-
 
 function setupSortablePlayQueue() {
   // make the playlist div sortable
@@ -385,23 +380,6 @@ function setupPlaylistPageTab() {
 
   replaceParams('playlist', buildPlaylistParams(playlist));
 
-  // @deprecated
-  // getJson('get_playlist/' + playlistPageTabID).done(function(e) {
-  //   var playlist = JSON.parse(e);
-  //   console.log(playlist);
-
-  //   fillMustacheWithJson(playlist, playlistPageTemplate, '#playlist_page_div');
-  //   addPlaylistDropdowns();
-  //   $('[data-toggle="tooltip"]').tooltip({
-  //     container: 'body'
-  //   });
-
-  //   setupTrackSelect();
-  //   setupPlaylistPlaySelect(playlist);
-
-
-  //   setupPlaylistTrackDelete();
-  // });
 }
 
 function setupPlaylistForm() {
@@ -1181,7 +1159,8 @@ function buildLiFromTrackObject(trackObj) {
   var li = '<li><div class="sm2-row">' +
     '<div class="sm2-col sm2-wide">' +
     '<a href=' + href + '><b>' +
-    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '" mbid="' + trackObj['mbid'] + '">' +
+    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] +
+    '" mbid="' + trackObj['mbid'] + '">' +
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
     htmlDecode(htmlDecode(trackObj['title'])) +
     '</a></div>' +
