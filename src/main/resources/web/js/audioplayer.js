@@ -1484,7 +1484,11 @@
 
         if (target) {
           $('#playlist_div').empty();
+
           $('.sm2-bar-ui').addClass('hide');
+
+          playQueue = [];
+          savePlayQueueToLocalStorage();
 
           playlistController.refresh();
 

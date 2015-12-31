@@ -31,7 +31,7 @@ var hrefToTrackObjMap = {};
 var playlists;
 
 // the play queue
-var library, playQueue = [];
+var library, playQueue;
 
 // The radio station
 var radioMode = {};
@@ -59,17 +59,15 @@ soundManager.onready(function() {
   player.actions.stop();
   setupPaths();
 
+  loadPlayQueueFromLocalStorage();
+  setupSortablePlayQueue();
   // unhide a few things if desktop
   if (!isMobile()) {
     $('.hide_on_mobile').removeClass('hide');
   }
 
-  // make the playlist div sortable
-  $('#playlist_div').sortable({
-    update: function(event, ui) {
-      
-    }
-  });
+  
+
 
 
 });
@@ -99,7 +97,17 @@ $(document).ready(function() {
 });
 
 
-
+function setupSortablePlayQueue() {
+  // make the playlist div sortable
+  $('#playlist_div').sortable({
+    start: function(event, ui) {
+      ui.item.startPos = ui.item.index();
+    },
+    update: function(event, ui) {
+      saveReorderedPlayQueue(ui.item.startPos - 1, ui.item.index() - 1);
+    }
+  });
+}
 
 function setupUploadDownloadTotals() {
   setUploadDownloadTotals();
@@ -1004,7 +1012,10 @@ function downloadOrFetchTrackObj(infoHash, option) {
 
     $('.sm2-bar-ui').removeClass('hide');
 
-    // playQueue.push(trackObj);
+
+    playQueue.push(trackObj);
+    savePlayQueueToLocalStorage();
+
 
     // Refresh the player
     player.playlistController.refresh();
@@ -1170,7 +1181,7 @@ function buildLiFromTrackObject(trackObj) {
   var li = '<li><div class="sm2-row">' +
     '<div class="sm2-col sm2-wide">' +
     '<a href=' + href + '><b>' +
-    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
+    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '" mbid="' + trackObj['mbid'] + '">' +
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
     htmlDecode(htmlDecode(trackObj['title'])) +
     '</a></div>' +
@@ -1309,6 +1320,31 @@ function loadPlaylistsFromLocalStorage() {
 
 }
 
+function loadPlayQueueFromLocalStorage() {
+  var localstorage = localStorage.getItem('queue');
+  if (localstorage != undefined) {
+    playQueue = JSON.parse(localstorage);
+  } else {
+    console.log('set play queue');
+    playQueue = [];
+  }
+
+  if (playQueue.length != 0) {
+    $('.sm2-bar-ui').removeClass('hide');
+  }
+
+  // Fill the current tracks with the play queue
+  playQueue.forEach(function(trackObj) {
+    addToQueueLast(trackObj);
+  });
+
+  player.playlistController.refresh();
+  player.actions.next();
+  player.actions.stop();
+
+
+}
+
 function savePlaylistsToLocalStorage() {
 
   // var playlistsStr = JSON.stringify(playlists);
@@ -1323,6 +1359,11 @@ function savePlaylistsToLocalStorage() {
   localStorage.setItem('playlists', JSON.stringify(playlists));
 
 }
+
+function savePlayQueueToLocalStorage() {
+  localStorage.setItem('queue', JSON.stringify(playQueue));
+}
+
 
 function deleteExtraFieldsFromPlaylists() {
   deleteMustacheFieldsFromObj(playlists);

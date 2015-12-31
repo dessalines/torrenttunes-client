@@ -297,9 +297,24 @@ function setupTrackSelect() {
 function setupTrackRemoveFromQueue() {
 
   $('.sm2-trash').unbind('click').click(function(e) {
+
+    var mbid = $(this).closest('li').find('.artist_playing_clickable').attr('mbid');
+
+    console.log(mbid);
+
+    var queueIndex = findIndexInArray(playQueue, 'mbid', mbid);
+
+    console.log('mbid = ' + mbid);
+    console.log('queueIndex = ' + queueIndex);
+
+    playQueue.splice(queueIndex, 1);
+
+    savePlayQueueToLocalStorage();
+
+
     console.log('removing track from queue');
     var li = $(this).closest('li');
-    console.log(li);
+    // console.log(li);
     li.remove();
 
     player.playlistController.refresh();
@@ -389,12 +404,21 @@ function saveReorderedPlaylist(playlistIndex, oldIndex, newIndex) {
 
   console.log('old = ' + oldIndex + ' new = ' + newIndex);
 
-  // swap the tracks
-  var temp = tracks[oldIndex];
-  tracks[oldIndex] = tracks[newIndex];
-  tracks[newIndex] = temp;
-  
+  // move the tracks
+  tracks.splice(newIndex, 0, tracks.splice(oldIndex, 1)[0]);
+
   savePlaylistsToLocalStorage();
+}
+
+function saveReorderedPlayQueue(oldIndex, newIndex) {
+
+  console.log('old = ' + oldIndex + ' new = ' + newIndex);
+
+  // move the tracks
+  playQueue.splice(newIndex, 0, playQueue.splice(oldIndex, 1)[0]);
+
+
+  savePlayQueueToLocalStorage();
 }
 
 
