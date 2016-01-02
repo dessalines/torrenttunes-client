@@ -55,7 +55,7 @@ To download and run [TorrentTunes](http://torrenttunes.ml) from the command line
 
 ```
 wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.6/torrenttunes-client.jar
-nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &
+nohup java -jar torrenttunes-client.jar &> log.out &
 ```
 
 To scan your music directory:
