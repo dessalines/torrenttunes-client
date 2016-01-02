@@ -54,7 +54,7 @@ chmod +x install.sh
 To download and run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
 
 ```
-wget https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar
+wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.6/torrenttunes-client.jar
 nohup java -jar Downloads/torrenttunes-launcher.jar &> log.out &
 ```
 
