@@ -21,7 +21,7 @@ Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/t
 * Fully categorized songs based on IDv3 tags and song duration with [MusicBrainz](http://musicbrainz.org/), with the [Musicbrainz-tagger](https://github.com/tchoulihan/musicbrainz-tagger).
 * A [LibTorrent-based](http://www.libtorrent.org/) BitTorrent client.
 * Song, album, and artist sharing via URLs: [David Bowie - Diamond Dogs](http://torrenttunes.ml/?album=0dc4835d-b21a-3612-bac6-ab1e782a1396)
-* Playlist sharing via URLS: [Favorites](http://torrenttunes.ml/?playlist={%22name%22:%22Favorites%22,%22song_mbids%22:[%2294bed552-376f-492d-8e87-f470aa7fda0c%22,%228972c8e0-4e44-43b5-9f58-fd7c5d91f304%22,%221d3e9ebe-0738-4f5a-8488-14a985c84d7c%22]})
+* Playlist sharing via URLS: [Sample playlist](http://torrenttunes.ml/?playlist={%22name%22:%22Sample_Playlist%22,%22song_mbids%22:[%2294bed552-376f-492d-8e87-f470aa7fda0c%22,%228972c8e0-4e44-43b5-9f58-fd7c5d91f304%22,%221d3e9ebe-0738-4f5a-8488-14a985c84d7c%22]})
 
 
 
