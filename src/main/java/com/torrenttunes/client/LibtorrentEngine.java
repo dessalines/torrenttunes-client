@@ -155,7 +155,7 @@ public enum LibtorrentEngine  {
 
 		settings.setInteger(int_types.peer_timeout.swigValue(), 20);
 
-		settings.setInteger(int_types.alert_queue_size.swigValue(), 1000000);
+		settings.setInteger(int_types.alert_queue_size.swigValue(), 20000);
 
 
 		DHT dht = new DHT(session);
