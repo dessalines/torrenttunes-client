@@ -12,7 +12,8 @@ import org.codehaus.jackson.JsonNode;
 public enum Strings {
 	
 	EN(DataSources.STRINGS_EN_LOCATION()), 
-	ES(DataSources.STRINGS_ES_LOCATION());
+	ES(DataSources.STRINGS_ES_LOCATION()),
+	FR(DataSources.STRINGS_FR_LOCATION());
 	
 
 	

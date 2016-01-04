@@ -21,6 +21,7 @@ public class WriteMultilingualHTMLFiles {
 
 		writeForLanguageMap(Strings.EN, DataSources.MAIN_PAGE_URL_EN());
 		writeForLanguageMap(Strings.ES, DataSources.MAIN_PAGE_URL_ES());
+		writeForLanguageMap(Strings.FR, DataSources.MAIN_PAGE_URL_FR());
 
 	}
 	

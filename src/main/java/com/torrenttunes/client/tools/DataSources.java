@@ -108,6 +108,7 @@ public class DataSources {
 
 	public static final String MAIN_PAGE_URL_EN() {return WEB_HTML() + "/main_en.html";}
 	public static final String MAIN_PAGE_URL_ES() {return WEB_HTML() + "/main_es.html";}
+	public static final String MAIN_PAGE_URL_FR() {return WEB_HTML() + "/main_fr.html";}
 
 	public static final String SESSION_STATS_FILE() {return CODE_DIR + "/session_stats.0000.log";}
 
@@ -238,4 +239,6 @@ public class DataSources {
 	public static final String STRINGS_EN_LOCATION() {return SOURCE_CODE_HOME() + "/values/strings_en.json";}
 
 	public static final String STRINGS_ES_LOCATION() {return SOURCE_CODE_HOME() + "/values/strings_es.json";}
+	
+	public static final String STRINGS_FR_LOCATION() {return SOURCE_CODE_HOME() + "/values/strings_fr.json";}
 }
