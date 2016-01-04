@@ -96,6 +96,8 @@ public class Main {
 		
 		if (lang.equals("es")) {
 			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_ES());
+		} else if (lang.equals("fr")) {
+			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_FR());
 		} else {
 			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_EN());
 		}
