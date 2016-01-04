@@ -155,7 +155,7 @@ public enum LibtorrentEngine  {
 
 		settings.setInteger(int_types.peer_timeout.swigValue(), 20);
 
-		settings.setInteger(int_types.alert_queue_size.swigValue(), 20000);
+		settings.setInteger(int_types.alert_queue_size.swigValue(), 100000);
 
 
 		DHT dht = new DHT(session);
@@ -650,15 +650,15 @@ public enum LibtorrentEngine  {
 			//				super.stats(alert);
 			//			}
 
-			@Override
-			public void stateChanged(StateChangedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void scrapeFailed(ScrapeFailedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
+//			@Override
+//			public void stateChanged(StateChangedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void scrapeFailed(ScrapeFailedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
 
 
 			@Override
@@ -672,30 +672,30 @@ public enum LibtorrentEngine  {
 				torrent.saveResumeData();
 			}
 
-			@Override
-			public void blockDownloading(BlockDownloadingAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
+//			@Override
+//			public void blockDownloading(BlockDownloadingAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
 
-			@Override
-			public void peerConnect(PeerConnectAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-			@Override
-			public void peerSnubbed(PeerSnubbedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
-
-			@Override
-			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void requestDropped(RequestDroppedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
+//			@Override
+//			public void peerConnect(PeerConnectAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//			@Override
+//			public void peerSnubbed(PeerSnubbedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
+//
+//			@Override
+//			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void requestDropped(RequestDroppedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
 
 			@Override
 			public void saveResumeData(SaveResumeDataAlert alert) {
@@ -721,33 +721,33 @@ public enum LibtorrentEngine  {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-			@Override
-			public void peerDisconnected(PeerDisconnectedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void peerBan(PeerBanAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
-
-			@Override
-			public void peerError(PeerErrorAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
+//			@Override
+//			public void peerDisconnected(PeerDisconnectedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void peerBan(PeerBanAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
+//
+//			@Override
+//			public void peerError(PeerErrorAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
 
 			@Override
 			public void addTorrent(AddTorrentAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-			@Override
-			public void peerBlocked(PeerBlockedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
+//			@Override
+//			public void peerBlocked(PeerBlockedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
 
 			@Override
 			public void trackerAnnounce(TrackerAnnounceAlert alert) {
@@ -763,24 +763,24 @@ public enum LibtorrentEngine  {
 				//				torrent.saveResumeData();
 			}
 
-			@Override
-			public void trackerWarning(TrackerWarningAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
-
-			@Override
-			public void trackerError(TrackerErrorAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
-
-
-			@Override
-			public void dhtReply(DhtReplyAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-				//				torrent.setAutoManaged(true);
-			}
+//			@Override
+//			public void trackerWarning(TrackerWarningAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
+//
+//			@Override
+//			public void trackerError(TrackerErrorAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
+//
+//
+//			@Override
+//			public void dhtReply(DhtReplyAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//				//				torrent.setAutoManaged(true);
+//			}
 
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
@@ -790,88 +790,88 @@ public enum LibtorrentEngine  {
 				//				torrent.resume();
 			}
 
-			@Override
-			public void torrentError(TorrentErrorAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
+//			@Override
+//			public void torrentError(TorrentErrorAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
 
 			@Override
 			public void torrentResumed(TorrentResumedAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-			@Override
-			public void torrentUpdate(TorrentUpdateAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-
-			@Override
-			public void torrentChecked(TorrentCheckedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void torrentRemoved(TorrentRemovedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void torrentAdded(TorrentAddedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void torrentDeleted(TorrentDeletedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void torrentDeleteFailed(TorrentDeleteFailedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-
-			}
-
-
-			@Override
-			public void fastresumeRejected(FastresumeRejectedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void blockTimeout(BlockTimeoutAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void fileError(FileErrorAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void hashFailed(HashFailedAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void performance(PerformanceAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void scrapeReply(ScrapeReplyAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void torrentPrioritize(TorrentPrioritizeAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
-
-			@Override
-			public void unwantedBlock(UnwantedBlockAlert alert) {
-				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-			}
+//			@Override
+//			public void torrentUpdate(TorrentUpdateAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//
+//			@Override
+//			public void torrentChecked(TorrentCheckedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void torrentRemoved(TorrentRemovedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void torrentAdded(TorrentAddedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void torrentDeleted(TorrentDeletedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void torrentDeleteFailed(TorrentDeleteFailedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//
+//			}
+//
+//
+//			@Override
+//			public void fastresumeRejected(FastresumeRejectedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void blockTimeout(BlockTimeoutAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void fileError(FileErrorAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void hashFailed(HashFailedAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void performance(PerformanceAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void scrapeReply(ScrapeReplyAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void torrentPrioritize(TorrentPrioritizeAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
+//
+//			@Override
+//			public void unwantedBlock(UnwantedBlockAlert alert) {
+//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+//			}
 
 
 
