@@ -741,13 +741,17 @@ var millisToMinutesAndSecondsObj = {
   }
 }
 
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+
 var seedersToTypeObj = {
   "seedersToType": function() {
     return function(text, render) {
       var t = render(text);
 
       // don't ask me why this logic works, trial and error
-      if (!isNaN(t)) {
+      if (isEmpty(t)) {
         return "muted";
       }
 
@@ -770,7 +774,7 @@ var seedersToTypeObj = {
   "seedersToNum": function() {
     return function(text, render) {
       var t = render(text);
-      if (!isNaN(t)) {
+      if (isEmpty(t)) {
         return "Unknown # of";
       }
 
