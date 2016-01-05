@@ -241,8 +241,16 @@ public class Actions {
 		track = LIBRARY.findFirst("info_hash = ?", infoHash);
 		Tools.dbClose();
 
+		
 		// if it wasn't successful(IE no peers found or > 40 seconds)
 		if (track == null) {
+			
+			// Set the # of seeders to 0
+			String resp = Tools.httpGetString(DataSources.SEEDER_INFO_UPLOAD(
+					infoHash, "0"));
+			log.info("No peers found, Setting seeders to :" + 0);
+			log.info("Seeder post response: " + resp);
+			
 			throw new NoSuchElementException("No peers found for " + 
 					artist + " - " + songTitle + ", or download took too long. Check to make sure your firewall"
 					+ " is turned off.");
@@ -256,6 +264,7 @@ public class Actions {
 
 	public static Boolean spaceFreeInStoragePath() {
 
+
 		// Check to make sure you have space in the cache
 		Tools.dbInit();
 		Settings settings = SETTINGS.findFirst("id = ?", 1);
@@ -267,8 +276,9 @@ public class Actions {
 		Long temp = Math.round(Tools.folderSize(new File(DataSources.MUSIC_STORAGE_PATH)) * 0.000001);
 		Integer storageFolderSizeMB = temp.intValue();
 
+		// Make sure there is at least 100 MB free
 		Boolean spaceFree = (storageFolderSizeMB < settingsFreeSpaceMB) && 
-				(new File("/").getUsableSpace() > 0);
+				(new File("/").getUsableSpace() > 1E8);
 
 		return spaceFree;
 	}
