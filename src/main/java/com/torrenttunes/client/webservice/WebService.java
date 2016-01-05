@@ -2,6 +2,7 @@ package com.torrenttunes.client.webservice;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
+import static spark.Spark.threadPool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +18,20 @@ static final Logger log = LoggerFactory.getLogger(WebService.class);
 
 		port(DataSources.SPARK_WEB_PORT);	
 		
+		threadPool(4);
+		
 		Platform.setup();		
 	
 		get("/hello", (req, res) -> {
 			Tools.allowOnlyLocalHeaders(req, res);
 			return "hi from the torrenttunes-client web service";
+		});
+		
+		get("/torrenttunes", (req, res) -> {
+			Tools.allowAllHeaders(req, res);
+			Tools.set15MinuteCache(req, res);
+			
+			return Tools.readFile(DataSources.BASE_ENDPOINT);
 		});
 
 		

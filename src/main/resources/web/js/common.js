@@ -228,10 +228,11 @@ function setSearchType(data) {
 
 
 
-function showArtistPage() {
+function showArtistPage(noReplace) {
 
-  replaceParams('artist', artistCatalogMBID);
-
+  if (noReplace === undefined) {
+    replaceParams('artist', artistCatalogMBID);
+  }
 
   // $('a[href="#artistcatalogTab"]').hide();
   $('#left_tab li.active').removeClass('active');
@@ -244,13 +245,16 @@ function showArtistPage() {
 
 }
 
-function showArtistPageV2(artistMBID) {
+function showArtistPageV2(artistMBID, noReplace) {
   artistCatalogMBID = artistMBID;
-  showArtistPage();
+  showArtistPage(noReplace);
 }
 
-function showAlbumPage(releaseMBID) {
-  replaceParams('album', releaseMBID);
+function showAlbumPage(releaseMBID, noReplace) {
+  if (noReplace === undefined) {
+    replaceParams('album', releaseMBID);
+  }
+
   albumCatalogMBID = releaseMBID;
   $('#albumcatalogTab').addClass('hide');
   $('a[href="#albumcatalogTab"]').tab('show');

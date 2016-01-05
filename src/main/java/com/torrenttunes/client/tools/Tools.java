@@ -368,12 +368,12 @@ public class Tools {
 	public static String constructTrackTorrentFilename(File file, Song song) {
 
 
-		
+
 		String artistReleaseSongName = song.getArtist() + " - " + 
 				song.getRelease() + " - " + 
 				song.getRecording();
 		String artistReleaseSongLimitedName = String.format("%1.80s", artistReleaseSongName);
-		
+
 		String fileName = artistReleaseSongLimitedName
 				+ " - tt[mbid-" + song.getRecordingMBID().toLowerCase()
 				+ "_sha2-" + sha2FileChecksum(file) + "]";
@@ -682,18 +682,18 @@ public class Tools {
 
 
 	public static void openFileWebpage(String urlString) {
-		try {
-			String fileUrlString = "file://" + urlString;
-			URL url = new URL(fileUrlString);
-			openWebpage(url.toURI());
-		} catch (URISyntaxException | MalformedURLException e) {
-			e.printStackTrace();
-		}
+		String fileUrlString = "file://" + urlString;
+		openWebpage(fileUrlString);
 	}
 
-	public static void openWebpage(URI uri) {
+	public static void openWebpage(String uri) {
 		log.info("Opening web page: " + uri);
-		DesktopApi.browse(uri);
+
+		try {
+			DesktopApi.browse(new URI(uri));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static Long folderSize(File directory) {

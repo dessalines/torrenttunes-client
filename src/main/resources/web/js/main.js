@@ -1142,24 +1142,16 @@ function createRadioStation(trackObj) {
 }
 
 function buildLiFromTrackObject(trackObj) {
-  // var encodedAudioFilePath = localSparkService + 'get_audio_file/' +
-  //   encodeURIComponent(trackObj['file_path']);
+  var encodedAudioFilePath = localSparkService + 'get_audio_file/' +
+    encodeURIComponent(trackObj['file_path']);
 
-
-
-  // var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
-  //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
-
-  var href = '"file://' + trackObj['file_path'] + '"';
-  // var li = '<li><a href=' + href + '><b>' +
-  //   '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
-  //   htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
-  //   htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
+  encodedAudioFilePath = encodedAudioFilePath.replace(/\%2F/g, 'qzvkn');
+  console.log(encodedAudioFilePath);
 
   var li = '<li><div class="sm2-row">' +
     '<div class="sm2-col sm2-wide">' +
-    '<a href=' + href + '><b>' +
-    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] +
+    '<a href=' + encodedAudioFilePath + '><b>' +
+    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + 
     '" mbid="' + trackObj['mbid'] + '">' +
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
     htmlDecode(htmlDecode(trackObj['title'])) +
@@ -1171,15 +1163,13 @@ function buildLiFromTrackObject(trackObj) {
     '</div></li>';
 
 
+  // console.log(trackObj['artist']);
 
-  console.log(li);
-  console.log(trackObj);
+  // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
+  //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
+
+  // console.log(li);
   // console.log(encodedAudioFilePath);
-
-  hrefToTrackObjMap[href] = trackObj;
-
-
-
 
 
   return li;
