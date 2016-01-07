@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +18,7 @@ import java.util.Map.Entry;
 import junit.framework.TestCase;
 
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
@@ -142,7 +145,7 @@ public class DerpTest extends TestCase {
 		}
 	}
 	
-	public static void testDerp6() throws JsonGenerationException, JsonMappingException, IOException {
+	public static void derp6() throws JsonGenerationException, JsonMappingException, IOException {
 //		Song song = Song.fetchSong(new File(DataSources.SAMPLE_SONG));
 //		
 //		String songJson = Tools.MAPPER.writeValueAsString(song);
@@ -164,6 +167,33 @@ public class DerpTest extends TestCase {
 		
 //		WriteMultilingualHTMLFiles.write();
 		
+		
+		
+	}
+	
+	public void testDerp7() {
+		
+		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+		
+		String json = Tools.readFile(DataSources.STRINGS_FR_LOCATION());
+		
+		JsonNode node = Tools.jsonToNode(json);
+		
+		Map<String, String> innerMap = new HashMap<String, String>();
+		
+		// Iterate over all the string fields
+		JsonNode s = node.get("strings");
+		
+		Iterator<Entry<String, JsonNode>> sIt = s.getFields();
+		while (sIt.hasNext()) {
+			Entry<String, JsonNode> e = sIt.next();
+			
+			innerMap.put(e.getKey(), e.getValue().asText());
+			
+			log.info(e.getValue().asText());
+		}
+		
+		map.put("strings", innerMap);
 		
 		
 	}

@@ -657,7 +657,7 @@ function getUrlPathArray() {
 
 function getLastUrlPath() {
   var path;
-  if (window.location.toString().startsWith('file:')) {
+  if (window.location.toString().startsWith('http://localhost')) {
     path = getUrlPathArray().slice(-1)[0];
   } else {
     path = torrentTunesSparkService;
@@ -703,6 +703,7 @@ function insertParam(key, value) {
 
 function replaceParams(key, value) {
   var newURL = '?' + key + '=' + value;
+  console.log(newURL);
   window.history.pushState({
     path: newURL
   }, 'TorrentTunes', getLastUrlPath() + newURL);
@@ -716,6 +717,35 @@ function clearParams() {
   // window.history.go(-window.history.length+1);
   // window.history.go(window.history[0]);
 }
+
+
+function showState(event) {
+  var cPath = (event.state == null) ? null : event.state.path;
+  // alert("state: " + cPath);
+
+  if (cPath == null || cPath == 'torrenttunes' || cPath == 'http://torrenttunes.ml:80/') {
+    $('a[href="#homeTab"]').tab('show');
+  } else {
+    var arr = cPath.substr(1, cPath.length).split('=');
+    var type = arr[0];
+    var mbid = arr[1];
+
+    if (type == 'artist') {
+      showArtistPageV2(mbid, true)
+    } else if (type == 'album') {
+      showAlbumPage(mbid, true);
+    } else if (type == 'song') {
+      showAlbumPage(mbid, true);
+    }
+
+    console.log(type);
+
+
+  }
+}
+
+// Make sure back and forward buttons work
+window.onpopstate = showState;
 
 
 
@@ -742,7 +772,7 @@ var millisToMinutesAndSecondsObj = {
 }
 
 function isEmpty(str) {
-    return (!str || 0 === str.length);
+  return (!str || 0 === str.length);
 }
 
 var seedersToTypeObj = {
@@ -1190,12 +1220,12 @@ function findIndexInArray(array, key, value) {
 }
 
 function hideKeyboard(element) {
-    element.attr('readonly', 'readonly'); // Force keyboard to hide on input field.
-    element.attr('disabled', 'true'); // Force keyboard to hide on textarea field.
-    setTimeout(function() {
-        element.blur();  //actually close the keyboard
-        // Remove readonly attribute after keyboard is hidden.
-        element.removeAttr('readonly');
-        element.removeAttr('disabled');
-    }, 100);
+  element.attr('readonly', 'readonly'); // Force keyboard to hide on input field.
+  element.attr('disabled', 'true'); // Force keyboard to hide on textarea field.
+  setTimeout(function() {
+    element.blur(); //actually close the keyboard
+    // Remove readonly attribute after keyboard is hidden.
+    element.removeAttr('readonly');
+    element.removeAttr('disabled');
+  }, 100);
 }

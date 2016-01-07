@@ -8,12 +8,20 @@ import static spark.Spark.post;
 
 
 
+
+
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
@@ -25,9 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
+
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
 
 
 
@@ -536,6 +548,190 @@ public class Platform {
 			}
 
 		});
+		
+		get("/get_audio_file/:encodedPath", (req, res) -> {
+
+			//			res.header("Content-Disposition", "filename=\"music.mp3\"");
+
+			HttpServletResponse raw = res.raw();
+
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				log.debug(req.params(":encodedPath"));
+
+				String correctedEncoded = req.params(":encodedPath").replaceAll("qzvkn", "%2F");
+
+				log.info("Streaming to corrected encoded = " + correctedEncoded);
+
+				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
+
+				if (!path.endsWith(".mp3")) {
+					throw new NoSuchElementException("Not an audio file");
+				}
+
+
+				File mp3 = new File(path);				
+
+
+				// write out the request headers:
+				//								for (String h : req.headers()) {
+				//									log.info("Header:" + h + " = " + req.headers(h));
+				//								}
+
+				String range = req.headers("Range");
+
+
+				// Check if its a non-streaming browser, for example, firefox can't stream
+				Boolean nonStreamingBrowser = false;
+				String userAgent = req.headers("User-Agent").toLowerCase();
+				for (String browser : DataSources.NON_STREAMING_BROWSERS) {
+					if (userAgent.contains(browser.toLowerCase())) {
+						nonStreamingBrowser = true;
+						log.debug("Its a non-streaming browser.");
+						break;
+					}
+				}
+
+
+				//				res.status(206);
+
+				OutputStream os = raw.getOutputStream();
+
+				BufferedOutputStream bos = new BufferedOutputStream(os);
+
+
+				if (range == null || nonStreamingBrowser) {
+					res.header("Content-Length", String.valueOf(mp3.length())); 
+					Files.copy(mp3.toPath(), os);
+
+					return res.raw();
+
+				}
+
+				int[] fromTo = fromTo(mp3, range);
+
+				//					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
+
+				int length = (int) (fromTo[1] - fromTo[0] + 1);
+
+				res.status(206);
+				res.type("audio/mpeg");
+
+				res.header("Accept-Ranges",  "bytes");
+
+				//					res.header("Content-Length", String.valueOf(mp3.length())); 
+				res.header("Content-Range", contentRangeByteString(fromTo));
+				res.header("Content-Length", String.valueOf(length)); 
+				//				res.header("Content-Length", String.valueOf(mp3.length())); 
+				res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
+				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
+				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+				//				res.header("Server", "Apache");
+				res.header("X-Content-Duration", "30");
+				res.header("Content-Duration", "30");
+				res.header("Connection", "Keep-Alive");
+				//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
+				//					res.header("Etag", etag);
+				res.header("Cache-Control", "no-cache, private");
+				res.header("X-Pad","avoid browser bug");
+				res.header("Expires", "0");
+				res.header("Pragma", "no-cache");
+				res.header("Content-Transfer-Encoding", "binary");
+				res.header("Transfer-Encoding", "chunked");
+				res.header("Keep-Alive", "timeout=15, max=100");
+				res.header("If-None-Match", "webkit-no-cache");
+				//					res.header("X-Sendfile", path);
+				res.header("X-Stream", "true");
+
+				// This one works, but doesn't stream
+
+
+
+				log.debug("writing random access file instead");
+				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+				raf.seek(fromTo[0]);
+				writeAudioToOS(length, raf, bos);
+
+				raf.close();
+
+				bos.flush();
+				bos.close();
+
+				return res.raw();
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} 
+		});
+		
+		
+
+	}
+	
+	public static int[] fromTo(File mp3, String range) {
+		int[] ret = new int[3];
+
+		if (range == null || range.equals("bytes=0-")) {
+			//			ret[0] = 0;
+			//			ret[1] = mp3.length() -1;
+			//			ret[2] = mp3.length();
+			//			
+			//			return ret;
+
+			//			range = "bytes=0-";
+
+		}
+
+		String[] ranges = range.split("=")[1].split("-");
+		log.info(range);
+		log.debug("ranges[] = " + Arrays.toString(ranges));
+
+		Integer chunkSize = 512;
+		Integer from = Integer.parseInt(ranges[0]);
+		Integer to = chunkSize + from;
+		if (to >= mp3.length()) {
+			to = (int) (mp3.length() - 1);
+		}
+		if (ranges.length == 2) {
+			to = Integer.parseInt(ranges[1]);
+		}
+
+		ret[0] = from;
+		ret[1] = to;
+		ret[2] = (int) mp3.length();
+		//		ret[2] = (int) (ret[1] - ret[0] + 1);
+
+		return ret;
+
+	}
+
+	public static String contentRangeByteString(int[] fromTo) {
+
+		String responseRange = "bytes " + fromTo[0] + "-" + fromTo[1] + "/" + fromTo[2];
+
+		log.debug("response range = " + responseRange);
+		return responseRange;
+
+	}
+
+	public static void writeAudioToOS(Integer length, RandomAccessFile raf, BufferedOutputStream os) throws IOException {
+
+		byte[] buf = new byte[256];
+		while(length != 0) {
+			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
+			os.write(buf, 0, read);
+			length -= read;
+		}
+
+		log.debug("before closing");
+		//		
+
+
+
+
 
 	}
 

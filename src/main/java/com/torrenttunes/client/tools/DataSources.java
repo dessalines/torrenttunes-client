@@ -6,7 +6,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,8 @@ public class DataSources {
 	public static Integer SPARK_WEB_PORT = 4568;
 
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
+	
+	public static final String WEB_SERVICE_URL_HOME = "http://localhost:" + SPARK_WEB_PORT + "/torrenttunes";
 
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 
@@ -109,6 +113,14 @@ public class DataSources {
 	public static final String MAIN_PAGE_URL_EN() {return WEB_HTML() + "/main_en.html";}
 	public static final String MAIN_PAGE_URL_ES() {return WEB_HTML() + "/main_es.html";}
 	public static final String MAIN_PAGE_URL_FR() {return WEB_HTML() + "/main_fr.html";}
+
+	
+	public static final String MAINTENANCE_PAGE_URL() {return WEB_HTML() + "/maintenance.html";}
+	
+	public static String BASE_ENDPOINT = MAIN_PAGE_URL_EN();
+	
+	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(
+			"Firefox", "Android"));
 
 	public static final String SESSION_STATS_FILE() {return CODE_DIR + "/session_stats.0000.log";}
 

@@ -4,6 +4,7 @@ import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static spark.Spark.awaitInitialization;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Locale;
 
 import org.kohsuke.args4j.CmdLineException;
@@ -95,12 +96,14 @@ public class Main {
 		log.info("System language = " + lang + " or Locale language: " + lang2);
 		
 		if (lang.equals("es")) {
-			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_ES());
+			DataSources.BASE_ENDPOINT = DataSources.MAIN_PAGE_URL_ES();
 		} else if (lang.equals("fr")) {
-			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_FR());
+			DataSources.BASE_ENDPOINT = DataSources.MAIN_PAGE_URL_FR();
 		} else {
-			Tools.openFileWebpage(DataSources.MAIN_PAGE_URL_EN());
+			DataSources.BASE_ENDPOINT = DataSources.MAIN_PAGE_URL_EN();
 		}
+		
+		Tools.openWebpage(DataSources.WEB_SERVICE_URL_HOME);
 	}
 
 	public static void setupSettings() {
