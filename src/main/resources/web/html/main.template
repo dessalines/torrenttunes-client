@@ -96,18 +96,18 @@
         <!-- The sidebar -->
         <div id="side_col" class="col-md-2 sidebar" role="tabpanel">
           <ul id="left_tab" class="nav nav-sidebar main-sidebar" role="tablist">
-            <li class="active"><a href="#homeTab" data-toggle="tab">{{strings.home}}</a></li>
-            <li><a href="#browseTab" data-toggle="tab">{{strings.browse}}</a></li>
-            <li><a id="play_queue_btn" href="javascript:void(0);">{{strings.play_queue}}</a></li>
-            <li><a href="#libraryTab" data-toggle="tab">{{strings.library}}</a></li>
-            <li><a href="#settingsTab" data-toggle="tab">{{strings.settings}}</a></li>
-            <li><a href="#uploadTab" data-toggle="tab">{{strings.share}}</a></li>
-            <li class="hide"><a href="#shareTab" data-toggle="tab">{{strings.share}}</a></li>
-            <li class="hide"><a href="#artistcatalogTab" data-toggle="tab">artistcatalog</a></li>
-            <li class="hide"><a href="#albumcatalogTab" data-toggle="tab">albumcatalog</a></li>
+            <li class="active"><a href="#homeTab" data-toggle="tab" class="text-overflow">{{strings.home}}</a></li>
+            <li><a href="#browseTab" data-toggle="tab" class="text-overflow">{{strings.browse}}</a></li>
+            <li><a id="play_queue_btn" href="javascript:void(0);" class="text-overflow">{{strings.play_queue}}</a></li>
+            <li><a href="#libraryTab" data-toggle="tab" class="text-overflow">{{strings.library}}</a></li>
+            <li><a href="#settingsTab" data-toggle="tab" class="text-overflow">{{strings.settings}}</a></li>
+            <li><a href="#uploadTab" data-toggle="tab" class="text-overflow">{{strings.share}}</a></li>
+            <li class="hide"><a href="#shareTab" data-toggle="tab" class="text-overflow">{{strings.share}}</a></li>
+            <li class="hide"><a href="#artistcatalogTab" data-toggle="tab" class="text-overflow">artistcatalog</a></li>
+            <li class="hide"><a href="#albumcatalogTab" data-toggle="tab" class="text-overflow">albumcatalog</a></li>
             <li>
-              <h5 class="sidebar-spaced"><a class="text-muted" href="#playlistTab" data-toggle="tab">{{strings.playlists}}</a></h5></li>
-            <li class="hide"><a href="#playlistPageTab" data-toggle="tab">playlist page tab</a></li>
+              <h5 class="sidebar-spaced"><a class="text-muted text-overflow" href="#playlistTab" data-toggle="tab">{{strings.playlists}}</a></h5></li>
+            <li class="hide"><a href="#playlistPageTab" data-toggle="tab" class="text-overflow">playlist page tab</a></li>
             <div id="playlist_left_tab_div" class="nav nav-sidebar main-sidebar">
               <script id="playlist_left_tab_template" type="x-tmpl-mustache">
                 @@#.~~

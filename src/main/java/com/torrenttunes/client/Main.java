@@ -72,11 +72,13 @@ public class Main {
 		
 		setupSettings();
 
+		setCorrectLanguage();
+		
 		WebService.start();
 		
 		awaitInitialization();
 
-		openCorrectLanguageHomePage();
+		openHomePage();
 		
 		if (shareDirectory != null) {
 			ScanDirectory.start(new File(shareDirectory));
@@ -90,7 +92,7 @@ public class Main {
 
 	}
 	
-	public static void openCorrectLanguageHomePage() {
+	public static void setCorrectLanguage() {
 		String lang2 = Locale.getDefault().getLanguage();
 		String lang = System.getProperty("user.language");
 		log.info("System language = " + lang + " or Locale language: " + lang2);
@@ -102,7 +104,10 @@ public class Main {
 		} else {
 			DataSources.BASE_ENDPOINT = DataSources.MAIN_PAGE_URL_EN();
 		}
-		
+	}
+	
+	public static void openHomePage() {
+
 		Tools.openWebpage(DataSources.WEB_SERVICE_URL_HOME);
 	}
 
