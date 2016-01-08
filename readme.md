@@ -1,6 +1,6 @@
 [TorrentTunes](http://torrenttunes.ml) &mdash; A free, BitTorrent-based music streaming service.
 ==========
-![](http://img.shields.io/version/0.7.6.png?color=green)
+![](http://img.shields.io/version/0.7.7.png?color=green)
 
 
 [TorrentTunes](http://torrenttunes.ml) is an open-source, [BitTorrent-based](https://en.wikipedia.org/wiki/BitTorrent) music service, like Rdio or Spotify, where you can stream any music, or share your own library of music with others.
@@ -57,7 +57,7 @@ chmod +x install.sh
 To download and run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
 
 ```
-wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.6/torrenttunes-client.jar
+wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.7/torrenttunes-client.jar
 nohup java -jar torrenttunes-client.jar &> log.out &
 ```
 
