@@ -18,7 +18,7 @@ static final Logger log = LoggerFactory.getLogger(WebService.class);
 
 		port(DataSources.SPARK_WEB_PORT);	
 		
-		threadPool(4);
+		threadPool(8);
 		
 		Platform.setup();		
 	
