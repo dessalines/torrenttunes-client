@@ -8,15 +8,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -162,12 +166,12 @@ public enum LibtorrentEngine  {
 		dht.stop();
 
 
-		settings.broadcastLSD(false);
-		
+		settings.broadcastLSD(true);
+
 		settings.setMaxPeerlistSize(500);
 		settings.setInteger(int_types.min_announce_interval.swigValue(), 1740);
 
-//		settings.setBoolean(bool_types.utp_dynamic_sock_buf.swigValue(), false);
+		//		settings.setBoolean(bool_types.utp_dynamic_sock_buf.swigValue(), false);
 		//		settings.setBoolean(bool_types.enable_outgoing_utp.swigValue(), false);
 		//		settings.setBoolean(bool_types.enable_incoming_utp.swigValue(), false);
 
@@ -400,7 +404,7 @@ public enum LibtorrentEngine  {
 
 	}
 
-	public void startSeedingLibraryVersion1() {
+	public void seedLibrary() {
 
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
@@ -420,8 +424,34 @@ public enum LibtorrentEngine  {
 		log.info("Done seeding library, total of " + session.getTorrents().size() + " torrents shared");
 	}
 
+	public void seedExtraDirectory(File dir) {
 
-	public void startSeedingLibraryVersion2() {
+		// List all the torrent files in the sub or sub directories
+		Collection<File> torrentFiles = null;
+		try {
+			torrentFiles = FileUtils.listFiles(dir, new String[]{"torrent"} , true);
+		} catch(java.lang.IllegalArgumentException e) {
+			throw new NoSuchElementException("Couldn't find directory: " + dir);
+		}
+
+		// Make a downloads directory if necessary
+		File outputDirectory = new File(dir, "downloads");
+		if (!outputDirectory.exists()) {
+			outputDirectory.mkdirs();
+		}
+
+		// Scan and add the files
+		int i = 0;
+		for (File torrentFile : torrentFiles) {
+			log.info("File #" + i++ + "/" + torrentFiles.size() + " torrents in directory");
+			TorrentHandle torrent = addTorrent(outputDirectory, torrentFile, false, true);
+		}
+
+		log.info("Done seeding directory, total of " + session.getTorrents().size() + " torrents shared");
+	}
+
+
+	public void seedLibraryV2() {
 
 		Tools.dbInit();
 		List<Library> library = LIBRARY.findAll();
@@ -540,8 +570,8 @@ public enum LibtorrentEngine  {
 		File outputParent = new File(filePath).getParentFile();
 
 		// Set the seed_mode flag
-		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath), true);
-		
+		TorrentHandle torrent = addTorrent(outputParent, new File(torrentPath), true, true);
+
 		// Set up the scanInfo
 		ScanInfo si = ScanInfo.create(new File(filePath));
 		si.setStatus(ScanStatus.Seeding);
@@ -552,7 +582,8 @@ public enum LibtorrentEngine  {
 	}
 
 
-	public TorrentHandle addTorrent(File outputParent, File torrentFile, Boolean seedMode) {
+	public TorrentHandle addTorrent(File outputParent, File torrentFile, 
+			Boolean seedMode, Boolean replaceTrackers) {
 
 
 
@@ -572,13 +603,13 @@ public enum LibtorrentEngine  {
 		p.setTi(ti.getSwig().copy());
 		p.setSave_path(savePath);
 		p.setStorage_mode(storage_mode_t.storage_mode_sparse);
-	
+
 		long flags = p.getFlags();
 
 		//		log.info("flags = " + Long.toBinaryString(flags));
 		// default flags = 10001001110000
-		
-		
+
+
 		// Set seed mode
 		if (seedMode) {
 			flags += add_torrent_params.flags_t.flag_seed_mode.swigValue();
@@ -615,11 +646,10 @@ public enum LibtorrentEngine  {
 				"\npath: " + torrentFile.getAbsolutePath() + 
 				"\ninfo_hash: " + infoHash);
 
-		torrent.replaceTrackers(DataSources.ANNOUNCE_ENTRIES());
-		
-		
-		
-		
+		if (replaceTrackers) {
+			torrent.replaceTrackers(DataSources.ANNOUNCE_ENTRIES());
+		}
+
 		shareTorrent(torrent);
 		addDefaultListeners(torrent);
 
@@ -650,15 +680,15 @@ public enum LibtorrentEngine  {
 			//				super.stats(alert);
 			//			}
 
-//			@Override
-//			public void stateChanged(StateChangedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void scrapeFailed(ScrapeFailedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
+			//			@Override
+			//			public void stateChanged(StateChangedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void scrapeFailed(ScrapeFailedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
 
 
 			@Override
@@ -672,30 +702,30 @@ public enum LibtorrentEngine  {
 				torrent.saveResumeData();
 			}
 
-//			@Override
-//			public void blockDownloading(BlockDownloadingAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
+			//			@Override
+			//			public void blockDownloading(BlockDownloadingAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
 
-//			@Override
-//			public void peerConnect(PeerConnectAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//			@Override
-//			public void peerSnubbed(PeerSnubbedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
-//
-//			@Override
-//			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void requestDropped(RequestDroppedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
+			//			@Override
+			//			public void peerConnect(PeerConnectAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//			@Override
+			//			public void peerSnubbed(PeerSnubbedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
+			//
+			//			@Override
+			//			public void peerUnsnubbe(PeerUnsnubbedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void requestDropped(RequestDroppedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
 
 			@Override
 			public void saveResumeData(SaveResumeDataAlert alert) {
@@ -721,33 +751,33 @@ public enum LibtorrentEngine  {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-//			@Override
-//			public void peerDisconnected(PeerDisconnectedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void peerBan(PeerBanAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
-//
-//			@Override
-//			public void peerError(PeerErrorAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
+			//			@Override
+			//			public void peerDisconnected(PeerDisconnectedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void peerBan(PeerBanAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
+			//
+			//			@Override
+			//			public void peerError(PeerErrorAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
 
 			@Override
 			public void addTorrent(AddTorrentAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-//			@Override
-//			public void peerBlocked(PeerBlockedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
+			//			@Override
+			//			public void peerBlocked(PeerBlockedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
 
 			@Override
 			public void trackerAnnounce(TrackerAnnounceAlert alert) {
@@ -763,24 +793,24 @@ public enum LibtorrentEngine  {
 				//				torrent.saveResumeData();
 			}
 
-//			@Override
-//			public void trackerWarning(TrackerWarningAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
-//
-//			@Override
-//			public void trackerError(TrackerErrorAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
-//
-//
-//			@Override
-//			public void dhtReply(DhtReplyAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//				//				torrent.setAutoManaged(true);
-//			}
+			//			@Override
+			//			public void trackerWarning(TrackerWarningAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
+			//
+			//			@Override
+			//			public void trackerError(TrackerErrorAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
+			//
+			//
+			//			@Override
+			//			public void dhtReply(DhtReplyAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//				//				torrent.setAutoManaged(true);
+			//			}
 
 			@Override
 			public void torrentPaused(TorrentPausedAlert alert) {
@@ -790,88 +820,88 @@ public enum LibtorrentEngine  {
 				//				torrent.resume();
 			}
 
-//			@Override
-//			public void torrentError(TorrentErrorAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
+			//			@Override
+			//			public void torrentError(TorrentErrorAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
 
 			@Override
 			public void torrentResumed(TorrentResumedAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
 			}
 
-//			@Override
-//			public void torrentUpdate(TorrentUpdateAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//
-//			@Override
-//			public void torrentChecked(TorrentCheckedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void torrentRemoved(TorrentRemovedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void torrentAdded(TorrentAddedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void torrentDeleted(TorrentDeletedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void torrentDeleteFailed(TorrentDeleteFailedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//
-//			}
-//
-//
-//			@Override
-//			public void fastresumeRejected(FastresumeRejectedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void blockTimeout(BlockTimeoutAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void fileError(FileErrorAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void hashFailed(HashFailedAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void performance(PerformanceAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void scrapeReply(ScrapeReplyAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void torrentPrioritize(TorrentPrioritizeAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
-//
-//			@Override
-//			public void unwantedBlock(UnwantedBlockAlert alert) {
-//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-//			}
+			//			@Override
+			//			public void torrentUpdate(TorrentUpdateAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//
+			//			@Override
+			//			public void torrentChecked(TorrentCheckedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void torrentRemoved(TorrentRemovedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void torrentAdded(TorrentAddedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void torrentDeleted(TorrentDeletedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void torrentDeleteFailed(TorrentDeleteFailedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//
+			//			}
+			//
+			//
+			//			@Override
+			//			public void fastresumeRejected(FastresumeRejectedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void blockTimeout(BlockTimeoutAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void fileError(FileErrorAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void hashFailed(HashFailedAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void performance(PerformanceAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void scrapeReply(ScrapeReplyAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void torrentPrioritize(TorrentPrioritizeAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
+			//
+			//			@Override
+			//			public void unwantedBlock(UnwantedBlockAlert alert) {
+			//				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
+			//			}
 
 
 

@@ -154,7 +154,7 @@ public class Actions {
 
 		// add the torrent file(saving to the storage dir), scan info, and start seeding it					
 		TorrentHandle torrent = lte.addTorrent(
-				new File(DataSources.MUSIC_STORAGE_PATH), new File(torrentPath), false);
+				new File(DataSources.MUSIC_STORAGE_PATH), new File(torrentPath), false, true);
 
 		String audioFilePath = DataSources.AUDIO_FILE(torrent.getName());
 

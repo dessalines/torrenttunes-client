@@ -74,7 +74,7 @@ public class DerpTest extends TestCase {
 
 		TorrentHandle torrent = lte.addTorrent(
 				new File(DataSources.DEFAULT_MUSIC_STORAGE_PATH()), new File(track.getString("torrent_path")),
-				false);
+				false, true);
 
 
 		ObjectNode on = Tools.MAPPER.valueToTree(Tools.jsonToNode(track.toJson(false)));

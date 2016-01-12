@@ -100,6 +100,7 @@ function setupSortablePlayQueue() {
     },
     update: function(event, ui) {
       saveReorderedPlayQueue(ui.item.startPos - 1, ui.item.index() - 1);
+      player.playlistController.refresh();
     }
   });
 }
@@ -368,6 +369,7 @@ function setupPlaylistPageTab() {
     update: function(event, ui) {
 
       saveReorderedPlaylist(playlistIndex, ui.item.startPos, ui.item.index());
+      player.playlistController.refresh();
 
       // setupPlaylistPageTab();
 

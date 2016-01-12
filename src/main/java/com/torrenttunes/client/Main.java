@@ -41,6 +41,9 @@ public class Main {
 
 	@Option(name="-sharedirectory", usage="Scans a directory to share")     
 	private String shareDirectory = null;
+	
+	@Option(name="-extradirectory", usage="Adds an extra directory of torrents to share")     
+	private String extraDirectory = null;
 
 
 	public void doMain(String[] args) {
@@ -79,14 +82,16 @@ public class Main {
 		awaitInitialization();
 
 		openHomePage();
+	
+		LibtorrentEngine.INSTANCE.seedLibrary();
 		
 		if (shareDirectory != null) {
 			ScanDirectory.start(new File(shareDirectory));
 		}
-	
-		
-		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion1();
 
+		if (extraDirectory != null) {
+			LibtorrentEngine.INSTANCE.seedExtraDirectory(new File(extraDirectory));
+		}
 
 
 
