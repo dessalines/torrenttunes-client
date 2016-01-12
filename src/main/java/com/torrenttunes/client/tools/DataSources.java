@@ -254,5 +254,5 @@ public class DataSources {
 	
 	public static final String STRINGS_FR_LOCATION() {return SOURCE_CODE_HOME() + "/values/strings_fr.json";}
 	
-	public static Integer MAX_ACTIVE_DOWNLOADS = 10;
+	public static Integer MAX_DOWNLOAD_SPEED_BYTES = 0;
 }

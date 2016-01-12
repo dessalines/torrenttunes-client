@@ -45,8 +45,8 @@ public class Main {
 	@Option(name="-extradirectory", usage="Adds an extra directory of torrents to share")     
 	private String extraDirectory = null;
 	
-	@Option(name="-maxactivedownloads", usage="Sets a custom max active downloads")  
-	private Integer activeDownloads = null;
+	@Option(name="-maxdownloadspeed", usage="Sets a custom max download speed (kb/s")  
+	private Integer maxDownloadSpeed = null;
 
 
 
@@ -77,8 +77,8 @@ public class Main {
 			System.exit(0);
 		}
 		
-		if (activeDownloads != null) {
-			DataSources.MAX_ACTIVE_DOWNLOADS = activeDownloads;
+		if (maxDownloadSpeed != null) {
+			DataSources.MAX_DOWNLOAD_SPEED_BYTES = maxDownloadSpeed * 1024;
 		}
 		
 		setupSettings();

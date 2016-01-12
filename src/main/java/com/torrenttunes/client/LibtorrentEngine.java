@@ -141,13 +141,14 @@ public enum LibtorrentEngine  {
 		settings = new SettingsPack();
 
 
-		settings.setActiveDownloads(DataSources.MAX_ACTIVE_DOWNLOADS);
+		settings.setActiveDownloads(10);
 		settings.setActiveSeeds(999999);
 		settings.setInteger(int_types.active_limit.swigValue(), 999999);
 		settings.setInteger(int_types.active_tracker_limit.swigValue(), 999999);
 
 		settings.setUploadRateLimit(0);
-		settings.setDownloadRateLimit(0);
+		settings.setDownloadRateLimit(DataSources.MAX_DOWNLOAD_SPEED_BYTES);
+
 
 		settings.setBoolean(bool_types.announce_double_nat.swigValue(), true);
 		settings.setInteger(int_types.peer_connect_timeout.swigValue(), 60);
