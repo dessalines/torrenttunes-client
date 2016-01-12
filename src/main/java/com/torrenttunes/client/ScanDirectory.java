@@ -122,7 +122,7 @@ public class ScanDirectory {
 			si.setStatus(ScanStatus.Seeding);
 			log.info(si.getFile().getParentFile().getAbsolutePath());
 			TorrentHandle torrent = LibtorrentEngine.INSTANCE.addTorrent(si.getFile().getParentFile(), 
-					torrentFile, true);
+					torrentFile, true, true);
 			//			torrent.pause();
 
 
