@@ -141,7 +141,7 @@ public enum LibtorrentEngine  {
 		settings = new SettingsPack();
 
 
-		settings.setActiveDownloads(10);
+		settings.setActiveDownloads(DataSources.MAX_ACTIVE_DOWNLOADS);
 		settings.setActiveSeeds(999999);
 		settings.setInteger(int_types.active_limit.swigValue(), 999999);
 		settings.setInteger(int_types.active_tracker_limit.swigValue(), 999999);

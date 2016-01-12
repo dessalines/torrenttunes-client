@@ -44,6 +44,10 @@ public class Main {
 	
 	@Option(name="-extradirectory", usage="Adds an extra directory of torrents to share")     
 	private String extraDirectory = null;
+	
+	@Option(name="-maxactivedownloads", usage="Sets a custom max active downloads")  
+	private Integer activeDownloads = null;
+
 
 
 	public void doMain(String[] args) {
@@ -71,6 +75,10 @@ public class Main {
 
 		if (installOnly) {
 			System.exit(0);
+		}
+		
+		if (activeDownloads != null) {
+			DataSources.MAX_ACTIVE_DOWNLOADS = activeDownloads;
 		}
 		
 		setupSettings();
