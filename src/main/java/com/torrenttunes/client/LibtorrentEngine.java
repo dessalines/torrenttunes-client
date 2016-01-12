@@ -444,7 +444,7 @@ public enum LibtorrentEngine  {
 		int i = 0;
 		for (File torrentFile : torrentFiles) {
 			log.info("File #" + i++ + "/" + torrentFiles.size() + " torrents in directory");
-			TorrentHandle torrent = addTorrent(outputDirectory, torrentFile, false, false);
+			TorrentHandle torrent = addTorrent(outputDirectory, torrentFile, false, true);
 		}
 
 		log.info("Done seeding directory, total of " + session.getTorrents().size() + " torrents shared");
