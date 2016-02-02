@@ -41,17 +41,20 @@ public class Main {
 
 	@Option(name="-sharedirectory", usage="Scans a directory to share")     
 	private String shareDirectory = null;
-	
+
 	@Option(name="-extradirectory", usage="Adds an extra directory of torrents to share")     
 	private String extraDirectory = null;
-	
+
 	@Option(name="-maxdownloadspeed", usage="Sets a custom max download speed (kb/s")  
 	private Integer maxDownloadSpeed = null;
+
+	@Option(name="-nobrowser",usage="Doesn't open up torrenttunes-client in a browser window")
+	private boolean noBrowser;
 
 
 
 	public void doMain(String[] args) {
-		
+
 
 		parseArguments(args);
 
@@ -76,23 +79,25 @@ public class Main {
 		if (installOnly) {
 			System.exit(0);
 		}
-		
+
 		if (maxDownloadSpeed != null) {
 			DataSources.MAX_DOWNLOAD_SPEED_BYTES = maxDownloadSpeed * 1024;
 		}
-		
+
 		setupSettings();
 
 		setCorrectLanguage();
-		
+
 		WebService.start();
-		
+
 		awaitInitialization();
 
-		openHomePage();
-	
+		if (!noBrowser) {
+			openHomePage();
+		}
+
 		LibtorrentEngine.INSTANCE.seedLibrary();
-		
+
 		if (shareDirectory != null) {
 			ScanDirectory.start(new File(shareDirectory));
 		}
@@ -104,12 +109,12 @@ public class Main {
 
 
 	}
-	
+
 	public static void setCorrectLanguage() {
 		String lang2 = Locale.getDefault().getLanguage();
 		String lang = System.getProperty("user.language");
 		log.info("System language = " + lang + " or Locale language: " + lang2);
-		
+
 		if (lang.equals("es")) {
 			DataSources.BASE_ENDPOINT = DataSources.MAIN_PAGE_URL_ES();
 		} else if (lang.equals("fr")) {
@@ -118,7 +123,7 @@ public class Main {
 			DataSources.BASE_ENDPOINT = DataSources.MAIN_PAGE_URL_EN();
 		}
 	}
-	
+
 	public static void openHomePage() {
 
 		Tools.openWebpage(DataSources.WEB_SERVICE_URL_HOME);
