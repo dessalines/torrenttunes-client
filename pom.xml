@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.tchoulihan</groupId>
 	<artifactId>torrenttunes-client</artifactId>
-	<version>0.7.7-SNAPSHOT</version>
+	<version>0.7.8-SNAPSHOT</version>
 
 	<properties>
 		<java.library.path>${basedir}/src/main/resources/lib</java.library.path>
