@@ -52,7 +52,7 @@
                 <input id='search_id' type='hidden' name='id' />
                 <div class="input-group">
                   <div id="search_box" class="form-group">
-                    <input name="search_input" type="text" class="form-control typeahead rounded-left" placeholder="{{strings.search_empty}}">
+                    <input name="search_input" type="text" class="form-control typeahead rounded-left" placeholder="{{strings.search_empty}}" onfocus="this.value=''">
                   </div>
                   <span class="input-group-btn">
                     <button type="submit" class="btn btn-default rounded-right"><i class="fa fa-search"></i>
