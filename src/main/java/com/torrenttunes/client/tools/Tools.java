@@ -41,6 +41,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -66,6 +67,7 @@ import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Response;
+import spark.utils.GzipUtils;
 
 import com.frostwire.jlibtorrent.Entry;
 import com.frostwire.jlibtorrent.TorrentStatus;
@@ -119,6 +121,7 @@ public class Tools {
 		String origin = req.headers("Origin");
 		res.header("Access-Control-Allow-Credentials", "true");
 		res.header("Access-Control-Allow-Origin", origin);
+		res.header("Content-Encoding", "gzip");
 
 
 	}
@@ -487,20 +490,45 @@ public class Tools {
 		writeFile(text, filePath.getAbsolutePath());
 	}
 
-	public static HttpServletResponse writeFileToResponse(String path, Response res) {
+	public static Boolean writeFileToResponse(File file, Request req, Response res) {
+		return writeFileToResponse(file.getAbsolutePath(), req, res);
+	}
+
+
+	public static Boolean writeFileToResponse(String path, Request req, Response res) {
+		try {
+			
+			OutputStream wrappedOutputStream = GzipUtils.checkAndWrap(req.raw(), 
+					res.raw());
+
+			IOUtils.copy(new FileInputStream(new File(path)), wrappedOutputStream);
+
+			wrappedOutputStream.flush();
+			wrappedOutputStream.close();
+			
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public static HttpServletResponse writeFileToResponse2(String path, Response res) {
 
 		byte[] encoded;
 		try {
 			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
 
+
 			ServletOutputStream os = res.raw().getOutputStream();
 			os.write(encoded);
 			os.close();
+
 			return res.raw();
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new NoSuchElementException("Couldn't write result");
+			throw new NoSuchElementException("Couldn't write response from path: " + path);
 		}
 	}
 

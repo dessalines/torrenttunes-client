@@ -10,6 +10,7 @@ import static spark.Spark.post;
 
 
 
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -35,9 +36,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 
@@ -556,7 +559,9 @@ public class Platform {
 			HttpServletResponse raw = res.raw();
 
 			try {
-				Tools.allowAllHeaders(req, res);
+				String origin = req.headers("Origin");
+				res.header("Access-Control-Allow-Credentials", "true");
+				res.header("Access-Control-Allow-Origin", origin);
 
 				log.debug(req.params(":encodedPath"));
 

@@ -46,7 +46,7 @@ static final Logger log = LoggerFactory.getLogger(WebService.class);
 			Tools.setContentTypeFromFileName(pageName, res);
 			
 			
-			return Tools.writeFileToResponse(webHomePath, res);
+			return Tools.writeFileToResponse(webHomePath, req, res);
 			
 		});
 
