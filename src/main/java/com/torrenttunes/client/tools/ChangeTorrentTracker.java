@@ -12,8 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.frostwire.jlibtorrent.Entry;
+import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.TorrentInfo;
+import com.frostwire.jlibtorrent.Vectors;
 import com.frostwire.jlibtorrent.swig.create_torrent;
+import com.frostwire.jlibtorrent.swig.entry;
+import com.frostwire.jlibtorrent.swig.string_entry_map;
 import com.torrenttunes.client.LibtorrentEngine;
 
 import static com.torrenttunes.client.db.Tables.*;
@@ -50,13 +54,19 @@ public class ChangeTorrentTracker {
 
 
 	}
+	
+
 
 	public static void updateTrackerForTorrent(File torrentFile) {
 
 		TorrentInfo ti = new TorrentInfo(torrentFile);
-
+		
+		// Delete the other trackers. 
+		ti.getSwig().trackers().clear();
+        
 		create_torrent t = new create_torrent(ti.getSwig());
-
+		
+		
 		// Changing the tracker
 		for (URI announce : DataSources.ANNOUNCE_LIST()) {
 			t.add_tracker(announce.toASCIIString());

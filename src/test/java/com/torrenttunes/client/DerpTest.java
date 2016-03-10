@@ -30,6 +30,7 @@ import com.frostwire.jlibtorrent.TorrentHandle;
 import com.musicbrainz.mp3.tagger.Tools.Song;
 import com.torrenttunes.client.ScanDirectory.ScanInfo;
 import com.torrenttunes.client.db.Tables.Library;
+import com.torrenttunes.client.tools.ChangeTorrentTracker;
 import com.torrenttunes.client.tools.WriteMultilingualHTMLFiles;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Strings;
@@ -194,6 +195,16 @@ public class DerpTest extends TestCase {
 		}
 		
 		map.put("strings", innerMap);
+		
+		
+	}
+	
+	public void testDerp8() {
+		
+		LibtorrentEngine lte = LibtorrentEngine.INSTANCE;
+		
+		File torrentFile = new File("/home/tyler/.torrenttunes-client/torrents/15f994bfdbe4dd45e3207be9bf5133785f462131.torrent");
+		ChangeTorrentTracker.updateTrackerForTorrent(torrentFile);
 		
 		
 	}

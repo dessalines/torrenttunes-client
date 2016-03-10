@@ -72,7 +72,6 @@ import com.frostwire.jlibtorrent.alerts.TorrentDeletedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentErrorAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentFinishedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentPausedAlert;
-import com.frostwire.jlibtorrent.alerts.TorrentPrioritizeAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentRemovedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentResumedAlert;
 import com.frostwire.jlibtorrent.alerts.TorrentUpdateAlert;
@@ -83,6 +82,7 @@ import com.frostwire.jlibtorrent.alerts.TrackerWarningAlert;
 import com.frostwire.jlibtorrent.alerts.UnwantedBlockAlert;
 import com.frostwire.jlibtorrent.swig.add_torrent_params;
 import com.frostwire.jlibtorrent.swig.default_storage;
+import com.frostwire.jlibtorrent.swig.error_code;
 import com.frostwire.jlibtorrent.swig.libtorrent;
 import com.frostwire.jlibtorrent.swig.settings_pack.bool_types;
 import com.frostwire.jlibtorrent.swig.settings_pack.int_types;
@@ -131,7 +131,7 @@ public enum LibtorrentEngine  {
 			createSessionStatsFile();
 			default_storage.disk_write_access_log(true);
 			libtorrent.set_utp_stream_logging(true);
-			session = new Session(new Fingerprint(), prange, iface, defaultRouters(), true);
+			session = new Session(new Fingerprint(), prange, iface, defaultRouters());
 			addDefaultSessionAlerts();
 		} else {
 			session = new Session(new Fingerprint(), prange, iface, defaultRouters(), false);
@@ -601,7 +601,7 @@ public enum LibtorrentEngine  {
 		add_torrent_params p = add_torrent_params.create_instance();
 		TorrentInfo ti = new TorrentInfo(torrentFile);
 		String savePath = outputParent.getAbsolutePath();
-		p.setTi(ti.getSwig().copy());
+		p.set_ti(ti.getSwig());
 		p.setSave_path(savePath);
 		p.setStorage_mode(storage_mode_t.storage_mode_sparse);
 
@@ -638,8 +638,8 @@ public enum LibtorrentEngine  {
 		//		log.info("flags final = " + Long.toBinaryString(flags));
 
 		p.setFlags(flags);
-		TorrentHandle torrent = new TorrentHandle(session.getSwig().add_torrent(p));
-
+		
+		TorrentHandle torrent = new TorrentHandle(session.getSwig().add_torrent(p, new error_code()));
 
 		String infoHash = torrent.getInfoHash().toString().toLowerCase();
 
@@ -731,7 +731,7 @@ public enum LibtorrentEngine  {
 			@Override
 			public void saveResumeData(SaveResumeDataAlert alert) {
 				log.debug(alert.getType() + " - " + alert.getSwig().what() + " - " + alert.getSwig().message());
-				Entry srdata = alert.getResumeData();
+				Entry srdata = alert.resumeData();
 				try {
 					String srDataPath = DataSources.TORRENTS_DIR() + "/srdata_" + torrent.getName();
 					Files.write(Paths.get(srDataPath), 
