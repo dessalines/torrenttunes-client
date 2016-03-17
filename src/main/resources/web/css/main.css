@@ -53,6 +53,9 @@
 
 }*/
 
+
+.thright {text-align:right}
+
 #qrcode > canvas:nth-child(1) {
   border: solid 15px White;
 }
@@ -527,7 +530,7 @@ body.modal-open {
 }
 
 .table-overflow {
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 .no-padding-top {

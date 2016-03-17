@@ -398,18 +398,14 @@
                         <script id="top_artist_songs_template" type="x-tmpl-mustache">
                           <table id="top_artist_songs_table" class="table table-hover table-striped tablesorter table-overflow">
                             <colgroup>
-                              <col style="width:8%">
-                                <col style="width:50%">
-                                  <col style="width:7%">
-                                    <col style="width:30%">
-                                      <col style="width:5%">
+                              <col style="width:65px">
                             </colgroup>
                             <thead>
                               <tr>
                                 <th colspan="2">{{strings.track}}</th>
-                                <th>{{strings.time}}</th>
                                 <th>{{strings.album}}</th>
-                                <th align="right">{{strings.plays}}</th>
+                                <th class="text-center">{{strings.time}}</th>
+                                <th class="text-right">{{strings.plays}}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -436,10 +432,10 @@
                       </div>
                       </td>
                       <td class="text-overflow"><span>@@@title~~~</span></td>
-                                <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                                 <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
                                 </td>
-                                <td class="text-overflow" align="right"> <span>@@plays~~</span>
+                                <td class="text-overflow text-center"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
+                                <td class="text-overflow text-right"> <span>@@plays~~</span>
                                 </td>
                               </tr>
                               @@/.~~
@@ -521,17 +517,15 @@
             <script id="album_catalog_songs_template" type="x-tmpl-mustache">
               <table id="album_catalog_songs_table" class="table table-hover table-striped tablesorter table-overflow">
                 <colgroup>
-                  <col style="width:8%">
-                    <col style="width:4%">
-                      <col style="width:78%">
-                        <col style="width:10%">
+                  <col style="width:65px">
+                  <col style="width:25px">
                 </colgroup>
                 <thead>
                   <tr>
                     <th></th>
                     <th>#</th>
                     <th>{{strings.track}}</th>
-                    <th>{{strings.time}}</th>
+                    <th class="text-right">{{strings.time}}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -558,7 +552,7 @@
         </td>
         <td class="text-overflow"><span>@@track_number~~</span></td>
                     <td class="text-overflow"><span>@@@title~~~</span></td>
-                    <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
+                    <td class="text-overflow text-right"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                   </tr>
                   @@/.~~
                 </tbody>
@@ -608,18 +602,14 @@
                 </h3>
                   <table name="playlist_table" class="table table-hover table-striped tablesorter table-overflow">
                     <colgroup>
-                      <col style="width:10%">
-                        <col style="width:35%">
-                          <col style="width:25%">
-                            <col style="width:5%">
-                              <col style="width:25%">
+                      <col style="width:85px">
                     </colgroup>
                     <thead>
                       <tr>
                         <th colspan="2">{{strings.track}}</th>
                         <th>{{strings.artist}}</th>
-                        <th>{{strings.time}}</th>
                         <th>{{strings.album}}</th>
+                        <th class="text-right">{{strings.time}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -656,9 +646,9 @@
           </td>
           <td class="text-overflow"><span>@@@title~~~</span></td>
                         <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('@@artist_mbid~~')" class="text-normal">@@@artist~~~</a></td>
-                        <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                         <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
                         </td>
+                        <td class="text-overflow text-right"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                       </tr>
                       @@/tracks~~
                     </tbody>
@@ -778,18 +768,14 @@
                 <script id="library_template" type="x-tmpl-mustache">
                   <table name="library_table" class="table table-hover table-striped tablesorter table-overflow">
                     <colgroup>
-                      <col style="width:8%">
-                        <col style="width:35%">
-                          <col style="width:25%">
-                            <col style="width:7%">
-                              <col style="width:25%">
+                      <col style="width:65px">
                     </colgroup>
                     <thead>
                       <tr>
                         <th colspan="2">{{strings.track}}</th>
                         <th>{{strings.artist}}</th>
-                        <th>{{strings.time}}</th>
                         <th>{{strings.album}}</th>
+                        <th class="text-right">{{strings.time}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -828,9 +814,9 @@
           </td>
           <td class="text-overflow"><span>@@@title~~~</span></td>
                         <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('@@artist_mbid~~')" class="text-normal">@@@artist~~~</a></td>
-                        <td class="text-overflow"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                         <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
                         </td>
+                        <td class="text-overflow text-right"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                       </tr>
                       @@/.~~
                     </tbody>
