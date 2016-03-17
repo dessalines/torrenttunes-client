@@ -20,6 +20,7 @@ import com.torrenttunes.client.db.InitializeTables;
 import com.torrenttunes.client.db.Tables.Settings;
 import com.torrenttunes.client.tools.DataSources;
 import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.client.tools.watchservice.Watcher;
 import com.torrenttunes.client.webservice.WebService;
 
 
@@ -104,6 +105,7 @@ public class Main {
 
 		if (extraDirectory != null) {
 			LibtorrentEngine.INSTANCE.seedExtraDirectory(new File(extraDirectory));
+			Watcher.watch(extraDirectory);
 		}
 
 
