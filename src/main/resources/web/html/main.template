@@ -774,7 +774,7 @@
                       <tr>
                         <th colspan="2">{{strings.track}}</th>
                         <th>{{strings.artist}}</th>
-                        <th>{{strings.album}}</th>
+                        <th class="hide-on-mobile">{{strings.album}}</th>
                         <th class="text-right">{{strings.time}}</th>
                       </tr>
                     </thead>
@@ -814,7 +814,7 @@
           </td>
           <td class="text-overflow"><span>@@@title~~~</span></td>
                         <td class="text-overflow"><a href="javascript:void(0);" onclick="showArtistPageV2('@@artist_mbid~~')" class="text-normal">@@@artist~~~</a></td>
-                        <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
+                        <td class="text-overflow hide-on-mobile"> <a href="javascript:void(0);" onclick="showAlbumPage('@@release_group_mbid~~')" class="text-normal">@@@album~~~</a>
                         </td>
                         <td class="text-overflow text-right"><span>@@#millisToMinutesAndSeconds~~@@duration_ms~~@@/millisToMinutesAndSeconds~~</span></td>
                       </tr>

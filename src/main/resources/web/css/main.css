@@ -53,8 +53,11 @@
 
 }*/
 
-
-.thright {text-align:right}
+@media (max-width: 900px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
 
 #qrcode > canvas:nth-child(1) {
   border: solid 15px White;
@@ -1224,6 +1227,5 @@ background-color: #222222;*/
 }
 
 .navbar-collapse.in {
-    overflow-y: visible;
+  overflow-y: visible;
 }
-
