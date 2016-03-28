@@ -398,7 +398,7 @@
                         <script id="top_artist_songs_template" type="x-tmpl-mustache">
                           <table id="top_artist_songs_table" class="table table-hover table-striped tablesorter table-overflow">
                             <colgroup>
-                              <col style="width:65px">
+                              <col style="min-width:65px; width:65px">
                             </colgroup>
                             <thead>
                               <tr>
@@ -517,7 +517,7 @@
             <script id="album_catalog_songs_template" type="x-tmpl-mustache">
               <table id="album_catalog_songs_table" class="table table-hover table-striped tablesorter table-overflow">
                 <colgroup>
-                  <col style="width:65px">
+                  <col style="min-width:65px; width:65px">
                   <col style="width:25px">
                 </colgroup>
                 <thead>
@@ -768,7 +768,7 @@
                 <script id="library_template" type="x-tmpl-mustache">
                   <table name="library_table" class="table table-hover table-striped tablesorter table-overflow">
                     <colgroup>
-                      <col style="width:65px">
+                      <col style="min-width:65px; width:65px">
                     </colgroup>
                     <thead>
                       <tr>
