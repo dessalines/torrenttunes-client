@@ -35,7 +35,7 @@ public class DataSources {
 
 	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + SPARK_WEB_PORT + "/";
 
-	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
+	public static final String TORRENTTUNES_IP = "torrenttunes.tk";
 
 	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
 

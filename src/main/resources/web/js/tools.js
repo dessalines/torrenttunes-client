@@ -1,5 +1,5 @@
 var localSparkService = 'http://localhost:4568/';
-var torrentTunesSparkService = 'http://torrenttunes.ml/';
+var torrentTunesSparkService = 'http://torrenttunes.tk/';
 var externalSparkService = 'http://derp:4568/';
 
 // var externalSparkService = 'http://127.0.0.1:4567/';
@@ -723,7 +723,7 @@ function showState(event) {
   var cPath = (event.state == null) ? null : event.state.path;
   // alert("state: " + cPath);
 
-  if (cPath == null || cPath == 'torrenttunes' || cPath == 'http://torrenttunes.ml:80/') {
+  if (cPath == null || cPath == 'torrenttunes' || cPath == 'http://torrenttunes.tk:80/') {
     $('a[href="#homeTab"]').tab('show');
   } else {
     var arr = cPath.substr(1, cPath.length).split('=');

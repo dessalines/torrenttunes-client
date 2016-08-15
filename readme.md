@@ -1,13 +1,13 @@
-[TorrentTunes](http://torrenttunes.ml) &mdash; A free, BitTorrent-based music streaming service.
+[TorrentTunes](http://torrenttunes.tk) &mdash; A free, BitTorrent-based music streaming service.
 ==========
-![](http://img.shields.io/version/0.7.8.png?color=green)
+![](http://img.shields.io/version/0.7.9.png?color=green)
 
 
-[TorrentTunes](http://torrenttunes.ml) is an open-source, [BitTorrent-based](https://en.wikipedia.org/wiki/BitTorrent) music service, like Rdio or Spotify, where you can stream any music, or share your own library of music with others.
+[TorrentTunes](http://torrenttunes.tk) is an open-source, [BitTorrent-based](https://en.wikipedia.org/wiki/BitTorrent) music service, like Rdio or Spotify, where you can stream any music, or share your own library of music with others.
 
 Each individual song is tagged using [MusicBrainz](http://musicbrainz.org/), and shared as a *.torrent* file using the client's built-in, [LibTorrent-based](http://www.libtorrent.org/) BitTorrent client, on publicly available trackers.
 
-TorrentTunes works on Windows, Mac OS X, and Linux, and also has a web client at [TorrentTunes.ml](http://torrenttunes.ml).
+TorrentTunes works on Windows, Mac OS X, and Linux, and also has a web client at [torrenttunes.tk](http://torrenttunes.tk).
 
 Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/torrenttunes-client/issues/), or on the subreddit [/r/torrenttunes](http://www.reddit.com/r/torrenttunes).
 
@@ -20,8 +20,8 @@ Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/t
 * A complete music streaming application including Artist and album pages, playlists, and settings.
 * Fully categorized songs based on IDv3 tags and song duration with [MusicBrainz](http://musicbrainz.org/), with the [Musicbrainz-tagger](https://github.com/tchoulihan/musicbrainz-tagger).
 * A [LibTorrent-based](http://www.libtorrent.org/) BitTorrent client.
-* Song, album, and artist sharing via URLs: [David Bowie - Diamond Dogs](http://torrenttunes.ml/?album=0dc4835d-b21a-3612-bac6-ab1e782a1396)
-* Playlist sharing via URLS: [Sample playlist](http://torrenttunes.ml/?playlist={%22name%22:%22Sample_Playlist%22,%22song_mbids%22:[%2294bed552-376f-492d-8e87-f470aa7fda0c%22,%228972c8e0-4e44-43b5-9f58-fd7c5d91f304%22,%221d3e9ebe-0738-4f5a-8488-14a985c84d7c%22]})
+* Song, album, and artist sharing via URLs: [David Bowie - Diamond Dogs](http://torrenttunes.tk/?album=0dc4835d-b21a-3612-bac6-ab1e782a1396)
+* Playlist sharing via URLS: [Sample playlist](http://torrenttunes.tk/?playlist={%22name%22:%22Sample_Playlist%22,%22song_mbids%22:[%2294bed552-376f-492d-8e87-f470aa7fda0c%22,%228972c8e0-4e44-43b5-9f58-fd7c5d91f304%22,%221d3e9ebe-0738-4f5a-8488-14a985c84d7c%22]})
 
 
 
@@ -54,7 +54,7 @@ chmod +x install.sh
 ```
 ## Command line client
 
-To download and run [TorrentTunes](http://torrenttunes.ml) from the command line(the output is written to `log.out`):
+To download and run [TorrentTunes](http://torrenttunes.tk) from the command line(the output is written to `log.out`):
 
 *The -nobrowser flag prevents TorrentTunes from loading up in a browser window.*
 
@@ -72,7 +72,7 @@ To stop the torrenttunes service:
 `curl -XPOST localhost:4568/power_off`
 
 ## Support 
-If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.ml), you can donate [here](https://www.bountysource.com/teams/torrenttunes-client), or directly with bitcoin:
+If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttunes.tk), you can donate [here](https://www.bountysource.com/teams/torrenttunes-client), or directly with bitcoin:
 
 [bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX](bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX)
 
