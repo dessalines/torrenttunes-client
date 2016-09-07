@@ -23,7 +23,7 @@ public class DataSources {
 
 	public static String LAUNCHER_NAME = "torrenttunes-launcher";
 
-	public static String VERSION = "0.7.8";
+	public static String VERSION = "0.7.9";
 
 	public static Integer SPARK_WEB_PORT = 4568;
 

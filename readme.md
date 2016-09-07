@@ -59,7 +59,7 @@ To download and run [TorrentTunes](http://torrenttunes.tk) from the command line
 *The -nobrowser flag prevents TorrentTunes from loading up in a browser window.*
 
 ```
-wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.8/torrenttunes-client.jar
+wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.9/torrenttunes-client.jar
 nohup java -jar torrenttunes-client.jar -nobrowser &> log.out &
 ```
 
