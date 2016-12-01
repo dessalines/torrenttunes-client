@@ -9,16 +9,16 @@ Each individual song is tagged using [MusicBrainz](http://musicbrainz.org/), and
 
 TorrentTunes works on Windows, Mac OS X, and Linux, and also has a web client at [torrenttunes.tk](http://torrenttunes.tk).
 
-Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/torrenttunes-client/issues/), or on the subreddit [/r/torrenttunes](http://www.reddit.com/r/torrenttunes).
+Suggest features, new music, or post bugs [here](https://github.com/dessalines/torrenttunes-client/issues/), or on the subreddit [/r/torrenttunes](http://www.reddit.com/r/torrenttunes).
 
-[:arrow_down: Install TorrentTunes](https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
+[:arrow_down: Install TorrentTunes](https://github.com/dessalines/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
 
 
-[Change log](https://github.com/tchoulihan/torrenttunes-client/releases)
+[Change log](https://github.com/dessalines/torrenttunes-client/releases)
 
 ## Features include
 * A complete music streaming application including Artist and album pages, playlists, and settings.
-* Fully categorized songs based on IDv3 tags and song duration with [MusicBrainz](http://musicbrainz.org/), with the [Musicbrainz-tagger](https://github.com/tchoulihan/musicbrainz-tagger).
+* Fully categorized songs based on IDv3 tags and song duration with [MusicBrainz](http://musicbrainz.org/), with the [Musicbrainz-tagger](https://github.com/dessalines/musicbrainz-tagger).
 * A [LibTorrent-based](http://www.libtorrent.org/) BitTorrent client.
 * Song, album, and artist sharing via URLs: [David Bowie - Diamond Dogs](http://torrenttunes.tk/?album=0dc4835d-b21a-3612-bac6-ab1e782a1396)
 * Playlist sharing via URLS: [Sample playlist](http://torrenttunes.tk/?playlist={%22name%22:%22Sample_Playlist%22,%22song_mbids%22:[%2294bed552-376f-492d-8e87-f470aa7fda0c%22,%228972c8e0-4e44-43b5-9f58-fd7c5d91f304%22,%221d3e9ebe-0738-4f5a-8488-14a985c84d7c%22]})
@@ -37,7 +37,7 @@ Suggest features, new music, or post bugs [here](https://github.com/tchoulihan/t
 - Java 8
 - If behind a router, make sure bittorrent has enough open ports forwarded to your local IP address.
 
-Download and double click the jar, located [here](https://github.com/tchoulihan/torrenttunes-launcher/releases/download/1.0.0/torrenttunes-launcher.jar)
+Download and double click the jar, located [here](https://github.com/dessalines/torrenttunes-launcher/releases/download/1.0.1/torrenttunes-launcher.jar)
 
 Torrenttunes will install, create system shortcuts for Windows, Mac, or Debian-based Linux distributions, and load up in a browser window.
 
@@ -45,7 +45,7 @@ Torrenttunes will install, create system shortcuts for Windows, Mac, or Debian-b
 
 To build TorrentTunes, run the following commands:
 ```
-git clone https://github.com/tchoulihan/torrenttunes-client
+git clone https://github.com/dessalines/torrenttunes-client
 cd torrenttunes-client
 chmod +x install.sh
 
@@ -59,7 +59,7 @@ To download and run [TorrentTunes](http://torrenttunes.tk) from the command line
 *The -nobrowser flag prevents TorrentTunes from loading up in a browser window.*
 
 ```
-wget https://github.com/tchoulihan/torrenttunes-client/releases/download/0.7.9/torrenttunes-client.jar
+wget https://github.com/dessalines/torrenttunes-client/releases/download/0.7.9/torrenttunes-client.jar
 nohup java -jar torrenttunes-client.jar -nobrowser &> log.out &
 ```
 
@@ -79,7 +79,7 @@ If you'd like to help fund me to keep developing [TorrentTunes](http://torrenttu
 ![bitcoin:14zPZaTFT8ipbi77FHw1uUEyCbGspWCzFX](http://i.imgur.com/RRGOvl2.png)
 
 ## Bugs and feature requests
-Have a bug or a feature request? If your issue isn't [already listed](https://github.com/tchoulihan/torrenttunes-client/issues/), then open a [new issue here](https://github.com/tchoulihan/torrenttunes-client/issues/new).
+Have a bug or a feature request? If your issue isn't [already listed](https://github.com/dessalines/torrenttunes-client/issues/), then open a [new issue here](https://github.com/dessalines/torrenttunes-client/issues/new).
 
 ## Contributing
 Start with getting familiar with the [schema](http://ondras.zarovi.cz/sql/demo/?keyword=torrenttunes-client) first, then create some issues and we can start working on them. 
