@@ -1,3 +1,5 @@
+# This project is deprecated for lack of interest.
+
 [TorrentTunes](http://torrenttunes.tk) &mdash; A free, BitTorrent-based music streaming service.
 ==========
 ![](http://img.shields.io/version/0.7.9.png?color=green)
